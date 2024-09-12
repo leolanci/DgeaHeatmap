@@ -1,10 +1,10 @@
 Package: DgeaHeatmap
-Title: What the Package Does (One Line, Title Case)
+Title: Implementation of functions to analyze nanostring and other data for DGE and to generate heatmaps.
 Version: 0.0.0.9000
 Authors@R: 
     person("Leonie", "Lancelle", , "leonie.lancelle@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+Description: Package for DGEA and heatmap generation primarly for Nanostring GeoMx DSP data, also works for other data.
 License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
     license
 Encoding: UTF-8
