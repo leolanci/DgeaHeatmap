@@ -15,6 +15,3 @@ A plot visualizing the data distribution of Z-count scaled data.
 \description{
 Function to visualize the data distribution within the data of a matrix.
 }
-\examples{
-scaled_counts <- scale_counts(matrix)
-}

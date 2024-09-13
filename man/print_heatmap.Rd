@@ -49,7 +49,7 @@ Function to build a heatmap using other functions.
 seed <- 1
 m_top_genes_matrix <- matrix
 title <- "Heatmap of Data"
-split <- performing_kMeans(m_top_genes_matrix)
+split <- #split
 fontsize_columnNames <- 6
 fontsize_rowNames <- 4
 title_heatmaoLegend <- "Expression"

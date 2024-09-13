@@ -1,4 +1,4 @@
-#' Build a matrix from an input .csv file, with one column as rownames
+#' Build a matrix from an input csv file, with one column as rownames
 #'
 #' @param counts_data A data frame with floats or integers that has strings in one column.
 #' @param x Number of column which contains the rownames description.
@@ -7,7 +7,7 @@
 #' @export
 #'
 #' @examples
-#' counts_data <- read.csv("Counts_data.csv")
+#' counts_data <- file
 #' x <- 1
 
 build_matrix <- function(counts_data, x){
@@ -87,9 +87,6 @@ scale_counts <- function(countsmatrix){
 #'
 #' @return A plot visualizing the data distribution of Z-count scaled data.
 #' @export
-#'
-#' @examples
-#' scaled_counts <- scale_counts(matrix)
 show_data_distribution <- function(scaled_counts){
   apply(scaled_counts, MARGIN = 1, mean) %>%  #calculate the mean per row
     graphics::hist(., main = "", xlab = "Z-score values", col = "dodgerblue2") #build histogram to see data distribution
@@ -206,7 +203,7 @@ Kmean_generation <- function(m_top_genes_matrix, seed,k){
 #' @export
 #'
 #' @examples
-#' m_kmeans <- matrix_with_kmeans
+#' m_kmeans <- matrix
 #' number_of_annotations_per_cluster <- 10
 #' k <- 1
 most_variable_genes <- function(m_kmeans,number_of_annotations_per_cluster, k){
@@ -246,10 +243,7 @@ most_variable_genes <- function(m_kmeans,number_of_annotations_per_cluster, k){
 #'
 #' @return A numeric index from the orginal matrix.
 #' @export
-#'
-#' @examples
-#' m_top_genes_matrix <- matrix
-#' top_x_genes_cluster <- list(genes)
+
 set_annotation <- function(m_top_genes_matrix, top_x_genes_cluster){
   #get numeric indices of top_x_genes_clusters
   top_x_genes_clusters <- which(BiocGenerics::rownames(m_top_genes_matrix) %in% top_x_genes_cluster)
@@ -298,7 +292,7 @@ performing_kMeans <- function(m_top_genes_matrix, k){
 #' seed <- 1
 #' m_top_genes_matrix <- matrix
 #' title <- "Heatmap of Data"
-#' split <- performing_kMeans(m_top_genes_matrix)
+#' split <- #split
 #' fontsize_columnNames <- 6
 #' fontsize_rowNames <- 4
 #' title_heatmaoLegend <- "Expression"
@@ -319,7 +313,25 @@ print_heatmap <- function(seed,m_top_genes_matrix, title, split, anno,fontsize_c
   return(hm)
 }
 
-
+#' Creating a heatmap with annotation of x most variable rows(genes).
+#'
+#' @param topGenes_matrix An input matrix to create the heatmap.
+#' @param probes A list of strings to summarize biological replicated in the columns.
+#' @param number_of_annotations_per_cluster An integer used to set the number of annotations per cluster in the heatmap.
+#' @param k An integer used to set number of cluster in the heatmap.
+#' @param seed An integer used to set seed for reproducibility and k-Mean clustering.
+#' @param Title A string to set the title of the heatmap.
+#'
+#' @return A plotted heatmap of the input data.
+#' @export
+#'
+#' @examples
+#' topGenes_matrix <- matrix
+#' probes <- list("Female", "Male")
+#' number_of_annotations_per_cluster <- 10
+#' k <- 3
+#' seed <- 1
+#' Title <- "Heatmap with annotation of most variable genes"
 function_complexHeatmap_var <- function(topGenes_matrix, probes, number_of_annotations_per_cluster, k, seed, Title){
   m_top_genes_matrix <- summarise_bio_replicates(topGenes_matrix, probes)
 
@@ -331,13 +343,4 @@ function_complexHeatmap_var <- function(topGenes_matrix, probes, number_of_annot
   return(hm)
 }
 
-function_complexHeatmap_woSum <- function(topGenes_matrix, probes, number_of_annotations_per_cluster, k, seed, Title){
-
-  m_kmeans <- Kmean_generation(topGenes_matrix, seed, k)
-  top_x_genes_cluster <- most_variable_genes(m_kmeans, number_of_annotations_per_cluster, k)
-  anno <- set_annotation(topGenes_matrix, top_x_genes_cluster)
-  split <- performing_kMeans(topGenes_matrix, k)
-  hm <- print_heatmap(seed, topGenes_matrix, Title, split, anno)
-  return(hm)
-}
 
