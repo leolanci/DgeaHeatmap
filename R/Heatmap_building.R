@@ -52,7 +52,7 @@ individual_matrix <- function(factors_for_matrix_devision, mmatrix) {
 #' top_number_of_genes <- 500
 #' counts_data <- matrix
 filtering_for_top_exprGenes <- function(counts_data, top_number_of_genes){
-  var_genes <- apply(counts_data, 1, var) #estimating the variance of each gene
+  var_genes <- apply(counts_data, 1, stats::var) #estimating the variance of each gene
   # Sorting the genes by their variance and creating a new object with chosen number of most variable genes
   select_var <- names(sort(var_genes, decreasing = TRUE))[1:top_number_of_genes]
   anaMatrix <- counts_data
@@ -62,9 +62,13 @@ filtering_for_top_exprGenes <- function(counts_data, top_number_of_genes){
   return(highly_variable_genes)
 }
 
+
 #' Function to Z-count scale the values of a matrix.
 #'
 #' @param countsmatrix An input matrix whose values are scaled by Z-count.
+#'
+#' @importFrom magrittr %>%
+#' @importFrom rlang .data
 #'
 #' @return A new matrix with Z-count scaled values.
 #' @export
@@ -74,14 +78,16 @@ filtering_for_top_exprGenes <- function(counts_data, top_number_of_genes){
 
 scale_counts <- function(countsmatrix){
   scaled_counts =
-    countsmatrix%>%
-    t(.) %>% #transpose to have genes in columns
+    countsmatrix %>%
+    t(.data) %>% #transpose to have genes in columns
     scale() %>%  #scale (x, center = TRUE, scale = TRUE)
-    t(.)  #'transpose back in original shape
+    t(.data)  #'transpose back in original shape
   return(scaled_counts)
 }
 
 #' Function to visualize the data distribution within the data of a matrix.
+#'
+#' @importFrom rlang .data
 #'
 #' @param scaled_counts An input matrix with Z-count scaled values.
 #'
@@ -89,7 +95,7 @@ scale_counts <- function(countsmatrix){
 #' @export
 show_data_distribution <- function(scaled_counts){
   apply(scaled_counts, MARGIN = 1, mean) %>%  #calculate the mean per row
-    graphics::hist(., main = "", xlab = "Z-score values", col = "dodgerblue2") #build histogram to see data distribution
+    graphics::hist(.data, main = "", xlab = "Z-score values", col = "dodgerblue2") #build histogram to see data distribution
 }
 
 #' Function to create an elbow plot to choose k for clustering by k-Means.
@@ -213,7 +219,7 @@ most_variable_genes <- function(m_kmeans,number_of_annotations_per_cluster, k){
     cluster_matrix <- m_kmeans[(m_kmeans[,last_column]) == i,]
     cluster_matrix <- cluster_matrix[,-last_column]
     #estimates the variance for each row
-    variance_row <- apply(cluster_matrix, 1, var)
+    variance_row <- apply(cluster_matrix, 1, stats::var)
 
     # binds a column with the estimated variance of each gene to clustermatrix
     cluster_matrix <- BiocGenerics::cbind(cluster_matrix, variance_row)
@@ -278,6 +284,7 @@ performing_kMeans <- function(m_top_genes_matrix, k){
 #' @param m_top_genes_matrix An input matrix for which the heatmap is created.
 #' @param title A string used to set the title of the heatmap.
 #' @param split A dataframe containing information about the clustering of the rows of the input matrix.
+#' @param anno A numeric index containing row informations for annotation.
 #' @param fontsize_columnNames An integer used to set the font size of the columns in the heatmap.
 #' @param fontsize_rowNames An integer used to set the font size of the rownames in the heatmap.
 #' @param title_heatmapLegend A string setting the title of the legend of the heatmap.

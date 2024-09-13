@@ -27,6 +27,8 @@ print_heatmap(
 
 \item{split}{A dataframe containing information about the clustering of the rows of the input matrix.}
 
+\item{anno}{A numeric index containing row informations for annotation.}
+
 \item{fontsize_columnNames}{An integer used to set the font size of the columns in the heatmap.}
 
 \item{fontsize_rowNames}{An integer used to set the font size of the rownames in the heatmap.}
