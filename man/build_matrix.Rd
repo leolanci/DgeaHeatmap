@@ -2,7 +2,7 @@
 % Please edit documentation in R/Heatmap_building.R
 \name{build_matrix}
 \alias{build_matrix}
-\title{Build a matrix from an input .csv file, with one column as rownames}
+\title{Build a matrix from an input csv file, with one column as rownames}
 \usage{
 build_matrix(counts_data, x)
 }
@@ -15,9 +15,9 @@ build_matrix(counts_data, x)
 A matrix.
 }
 \description{
-Build a matrix from an input .csv file, with one column as rownames
+Build a matrix from an input csv file, with one column as rownames
 }
 \examples{
-counts_data <- read.csv("Counts_data.csv")
+counts_data <- file
 x <- 1
 }

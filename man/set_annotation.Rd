@@ -17,7 +17,3 @@ A numeric index from the orginal matrix.
 \description{
 Function to set annotation for a heatmap.
 }
-\examples{
-m_top_genes_matrix <- matrix
-top_x_genes_cluster <- list(genes)
-}

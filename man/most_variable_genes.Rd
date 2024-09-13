@@ -20,7 +20,7 @@ A list of the most variable rows (genes) of each cluster.
 Function to determine the most variable genes of each cluster to enable annotation..
 }
 \examples{
-m_kmeans <- matrix_with_kmeans
+m_kmeans <- matrix
 number_of_annotations_per_cluster <- 10
 k <- 1
 }
