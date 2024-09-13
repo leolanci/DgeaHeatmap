@@ -8,12 +8,13 @@ Heatmap_building
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-Heatmap_building(x)
+Heatmap_building(counts_data)
 }
+
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{
-%%     ~~Describe \code{x} here~~
+  \item{counts_data}{
+%%     ~~Describe \code{counts_data} here~~
 }
 }
 \details{
@@ -47,7 +48,7 @@ Heatmap_building(x)
 ##--	or standard data sets, see data().
 
 ## The function is currently defined as
-function (x)
+function (counts_Data)
 {
   }
 }
