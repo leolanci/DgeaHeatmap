@@ -10,7 +10,13 @@ function_complexHeatmap_var(
   number_of_annotations_per_cluster,
   k,
   seed,
-  Title
+  Title,
+  fontsize_columnNames,
+  fontsize_rowNames,
+  title_heatmapLegend,
+  WidthNum,
+  HeightNum,
+  UnitSize
 )
 }
 \arguments{
@@ -25,6 +31,18 @@ function_complexHeatmap_var(
 \item{seed}{An integer used to set seed for reproducibility and k-Mean clustering.}
 
 \item{Title}{A string to set the title of the heatmap.}
+
+\item{fontsize_columnNames}{An integer used to set the font size of the columns in the heatmap.}
+
+\item{fontsize_rowNames}{An integer used to set the font size of the rownames in the heatmap.}
+
+\item{title_heatmapLegend}{A string setting the title of the legend of the heatmap.}
+
+\item{WidthNum}{A float setting the width of the heatmap.}
+
+\item{HeightNum}{A float setting the height of the heatmap.}
+
+\item{UnitSize}{A string such as "cm" or "inch" to set the unit of HeightNum and WidthNum.}
 }
 \value{
 A plotted heatmap of the input data.
