@@ -11,11 +11,11 @@
 #' x <- 1
 
 build_matrix <- function(counts_data, x){
-  BiocGenerics::colnames(counts_data)[x] <- "genes"
+  #BiocGenerics::colnames(counts_data)[x] <- "genes"
   list_rownames <- as.list(counts_data[,x])
   print(list_rownames)
   counts_data <- as.matrix(counts_data[,-x])
-  rownames(counts_data) <-list_rownames$genes
+  rownames(counts_data) <-list_rownames
   return(counts_data)
 }
 
