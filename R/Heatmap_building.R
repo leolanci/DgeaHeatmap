@@ -79,9 +79,10 @@ filtering_for_top_exprGenes <- function(counts_data, top_number_of_genes){
 scale_counts <- function(countsmatrix){
   scaled_counts =
     countsmatrix %>%
-    t(.data) %>% #transpose to have genes in columns
+    t(.) %>% #transpose to have genes in columns
     scale() %>%  #scale (x, center = TRUE, scale = TRUE)
-    t(.data)  #'transpose back in original shape
+    t(.)  #'transpose back in original shape
+  #scaled_counts <- scale(countsmatrix, center = TRUE, scale = TRUE)
   return(scaled_counts)
 }
 

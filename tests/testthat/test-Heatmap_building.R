@@ -38,3 +38,12 @@ test_that("Variance of each gene is estimated and only the most variable genes a
 
 
 })
+
+test_that("Counts are scaled through Z-score scaling", {
+  input_data <- read.csv(test_path("1_Counts_All_Regions_All_Ages_Pos_Neg.csv"))
+  counts_data <- build_matrix(input_data, 1)
+
+  expect_snapshot(scale_counts(counts_data))
+})
+
+
