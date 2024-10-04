@@ -55,8 +55,7 @@ filtering_for_top_exprGenes <- function(counts_data, top_number_of_genes){
   var_genes <- apply(counts_data, 1, stats::var) #estimating the variance of each gene
   # Sorting the genes by their variance and creating a new object with chosen number of most variable genes
   select_var <- names(sort(var_genes, decreasing = TRUE))[1:top_number_of_genes]
-  anaMatrix <- counts_data
-  highly_variable_genes <- anaMatrix[select_var,]
+  highly_variable_genes <- counts_data[select_var,]
   dim(highly_variable_genes)
 
   return(highly_variable_genes)
@@ -78,11 +77,10 @@ filtering_for_top_exprGenes <- function(counts_data, top_number_of_genes){
 
 scale_counts <- function(countsmatrix){
   scaled_counts =
-    countsmatrix %>%
+    countsmatrix%>%
     t(.) %>% #transpose to have genes in columns
     scale() %>%  #scale (x, center = TRUE, scale = TRUE)
     t(.)  #'transpose back in original shape
-  #scaled_counts <- scale(countsmatrix, center = TRUE, scale = TRUE)
   return(scaled_counts)
 }
 
@@ -96,8 +94,10 @@ scale_counts <- function(countsmatrix){
 #' @export
 show_data_distribution <- function(scaled_counts){
   apply(scaled_counts, MARGIN = 1, mean) %>%  #calculate the mean per row
-    graphics::hist(.data, main = "", xlab = "Z-score values", col = "dodgerblue2") #build histogram to see data distribution
+    graphics::hist(., main = "", xlab = "Z-score values", col = "dodgerblue2") #build histogram to see data distribution
 }
+
+
 
 #' Function to create an elbow plot to choose k for clustering by k-Means.
 #'
