@@ -1,6 +1,7 @@
 library(testthat)
 library(DgeaHeatmap)
 library(tinysnapshot)
+library(visualTest)
 
 test_that("I can use the 3rd edition", {
   local_edition(3)
@@ -98,17 +99,52 @@ test_that("data ist distributed equally", {
 
 })
 
-test_that("elbow plot works",{
+#test_that("elbow plot works",{
+#  input_data <- read.csv(test_path("1_Counts_All_Regions_All_Ages_Pos_Neg.csv"))
+#  counts_data <- build_matrix(input_data, 1)
+#  scaled_counts <- scale_counts(counts_data)
+#  p1 <- elbow_plot(2, scaled_counts)
+#  tinysnapshot::expect_snapshot_plot(p1, label = "test8.pdf")
+#})
+
+test_that("summarizing the biological replicates works", {
   input_data <- read.csv(test_path("1_Counts_All_Regions_All_Ages_Pos_Neg.csv"))
   counts_data <- build_matrix(input_data, 1)
-  scaled_counts <- scale_counts(counts_data)
-    #elbow_plot(2, scaled_counts)
-  #dev.off
-  #expected_output <- getFingerprint(file = "testElbowPlot.pdf")
-  #actual_output <- getFingerprint(file = "testElbowPlotTrial.pdf")
-  #isSimilar(file = "testElbowPlot.pdf",
-   #         fingerprint = getFingerprint(file = "testElbowPlotTrial.pdf"))
-  #expect_equal(actual_output, expected_output)
+  factors_for_matrix <- list("hippo", "pos")
+  matrix_class <- c("matrix","array")
+  indi_matrix <- individual_matrix(factors_for_matrix, counts_data)
+  probes <- list("P0_hippo_Iba1_pos", "P5_hippo_Iba1_pos", "P15_hippo_Iba1_pos","P0_hippo_Iba1_neg", "P5_hippo_Iba1_neg","P15_hippo_Iba1_neg")
+  actual_outcome <- summarise_bio_replicates(indi_matrix, probes)
+  # testing the outcome of the function to be "matrix" "array"
+  expect_equal(class(actual_outcome), matrix_class)
+  # testing the outcome to have strings as rownames
+  expect_equal(class(rownames(actual_outcome)), "character")
+  # testing if number of columns that contain string in original matrix equals number of column in output matrix
+  actual_output <- ncol(actual_outcome)
+  expected_output <- 6
+  expect_equal(actual_output, expected_output)
+})
+
+test_that("K-mean generation works",{
+  input_data <- read.csv(test_path("1_Counts_All_Regions_All_Ages_Pos_Neg.csv"))
+  counts_data <- build_matrix(input_data, 1)
+  factors_for_matrix <- list("hippo", "pos")
+  matrix_class <- c("matrix","array")
+  indi_matrix <- individual_matrix(factors_for_matrix, counts_data)
+  probes <- list("P0_hippo_Iba1_pos", "P5_hippo_Iba1_pos", "P15_hippo_Iba1_pos")
+  SumTable <- summarise_bio_replicates(indi_matrix, probes)
+  K_meanTable <- Kmean_generation(SumTable, 1, 3)
+  colNumSum <- ncol(SumTable)
+  expected_outcome <- colNumSum +1
+  actual_outcome <- ncol(K_meanTable)
+  # testing that a new column is added
+  expect_equal(actual_outcome, expected_outcome)
+  # testing the outcome of the function to be "matrix" "array"
+  actual_outcome <- Kmean_generation(SumTable, 1, 3)
+  expect_equal(class(actual_outcome), matrix_class)
+
+
+
 })
 #input_data <- read.csv(test_path("1_Counts_All_Regions_All_Ages_Pos_Neg.csv"))
 #counts_data <- build_matrix(input_data, 1)
@@ -119,12 +155,12 @@ test_that("elbow plot works",{
 #top_number_of_genes <- 500
 #highly_variable_genes <- filtering_for_top_exprGenes(indi_matrix, top_number_of_genes)
 #scaled_counts <- scale_counts(highly_variable_genes)
-#png("testElbowPlotControl.png")
+#png("testElbowPlot.png")
 #elbow_plot(1, scaled_counts)
 #dev.off()
-input_data <- read.csv(test_path("1_Counts_All_Regions_All_Ages_Pos_Neg.csv"))
-factors_for_matrix <- list("hippo", "pos")
-indi_matrix <- individual_matrix(factors_for_matrix, input_data)
-counts_data <- build_matrix(indi_matrix, 1)
-scaled_counts <- scale_counts(counts_data)
-elbow_plot(2, scaled_counts)
+#input_data <- read.csv(test_path("1_Counts_All_Regions_All_Ages_Pos_Neg.csv"))
+#factors_for_matrix <- list("hippo", "pos")
+#indi_matrix <- individual_matrix(factors_for_matrix, input_data)
+#counts_data <- build_matrix(indi_matrix, 1)
+#scaled_counts <- scale_counts(counts_data)
+#elbow_plot(2, scaled_counts)
