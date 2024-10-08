@@ -113,13 +113,14 @@ show_data_distribution <- function(scaled_counts){
 elbow_plot <- function(seed, top_genes_matrix){
   set.seed(seed) # reproducible outcome
   wss <- function(k) {
-    stats::kmeans(top_genes_matrix, k, nstart = 10)$tot.withinss
+    stats::kmeans(top_genes_matrix, algorithm = "Lloyd", k, nstart = 10, iter.max = 50)$tot.withinss
   }
   k.values <- 1:15 # compute and plot wws for k = 1 to k = 15
   wss_values <- purrr::map_dbl(k.values, wss)
   plot(k.values, wss_values, type = "b", pch = 19, frame = FALSE, xlab = "Number of clusters K", ylab = "Total within-clusters sum of squares")
 
 }
+
 
 #' Function to set color scheme for a heatmap.
 #'

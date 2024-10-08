@@ -11,4 +11,4 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Imports: BiocGenerics, ComplexHeatmap, RColorBrewer, purrr, magrittr, rlang, NanoStringNCTools, Biobase, GeomxTools
 Suggests: 
-    testthat (>= 3.0.0), tinysnapshot
+    testthat (>= 3.0.0), tinysnapshot, visualTest
