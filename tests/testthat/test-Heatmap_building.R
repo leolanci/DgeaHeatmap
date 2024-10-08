@@ -146,6 +146,7 @@ test_that("K-mean generation works",{
 
 
 })
+
 #input_data <- read.csv(test_path("1_Counts_All_Regions_All_Ages_Pos_Neg.csv"))
 #counts_data <- build_matrix(input_data, 1)
 #del_layer6 <- grep("layer", colnames(counts_data))
