@@ -161,7 +161,7 @@ test_that("function makes list of most variable genes (rows) of each cluster", {
 
 })
 
-test_that("", {
+test_that("performing k_mean clustering outside of the heatmap works", {
   input_data <- read.csv(test_path("1_Counts_All_Regions_All_Ages_Pos_Neg.csv"))
   counts_data <- build_matrix(input_data, 1)
   factors_for_matrix <- list("hippo", "pos")
@@ -177,21 +177,5 @@ test_that("", {
 
 
 })
-#input_data <- read.csv(test_path("1_Counts_All_Regions_All_Ages_Pos_Neg.csv"))
-#counts_data <- build_matrix(input_data, 1)
-#del_layer6 <- grep("layer", colnames(counts_data))
-#counts_data <- counts_data[, -del_layer6]
-#factors_for_matrix <- list("hippo", "pos")
-#indi_matrix <- individual_matrix(factors_for_matrix, counts_data)
-#top_number_of_genes <- 500
-#highly_variable_genes <- filtering_for_top_exprGenes(indi_matrix, top_number_of_genes)
-#scaled_counts <- scale_counts(highly_variable_genes)
-#png("testElbowPlot.png")
-#elbow_plot(1, scaled_counts)
-#dev.off()
-#input_data <- read.csv(test_path("1_Counts_All_Regions_All_Ages_Pos_Neg.csv"))
-#factors_for_matrix <- list("hippo", "pos")
-#indi_matrix <- individual_matrix(factors_for_matrix, input_data)
-#counts_data <- build_matrix(indi_matrix, 1)
-#scaled_counts <- scale_counts(counts_data)
-#elbow_plot(2, scaled_counts)
+
+
