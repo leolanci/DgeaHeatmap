@@ -160,6 +160,23 @@ test_that("function makes list of most variable genes (rows) of each cluster", {
   expect_equal(class(actualOutput), expected_outcome)
 
 })
+
+test_that("", {
+  input_data <- read.csv(test_path("1_Counts_All_Regions_All_Ages_Pos_Neg.csv"))
+  counts_data <- build_matrix(input_data, 1)
+  factors_for_matrix <- list("hippo", "pos")
+  matrix_class <- c("matrix","array")
+  indi_matrix <- individual_matrix(factors_for_matrix, counts_data)
+  probes <- list("P0_hippo_Iba1_pos", "P5_hippo_Iba1_pos", "P15_hippo_Iba1_pos")
+  SumTable <- summarise_bio_replicates(indi_matrix, probes)
+  K_meanTable <- Kmean_generation(SumTable, 1, 3)
+  actualOutput <- performing_kMeans(SumTable, 3)
+  # testing that outcomes is right class
+  expect_outcome <- "character"
+  expect_equal(class(actualOutput), expect_outcome)
+
+
+})
 #input_data <- read.csv(test_path("1_Counts_All_Regions_All_Ages_Pos_Neg.csv"))
 #counts_data <- build_matrix(input_data, 1)
 #del_layer6 <- grep("layer", colnames(counts_data))
