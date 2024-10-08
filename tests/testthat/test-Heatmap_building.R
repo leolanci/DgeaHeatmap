@@ -143,10 +143,23 @@ test_that("K-mean generation works",{
   actual_outcome <- Kmean_generation(SumTable, 1, 3)
   expect_equal(class(actual_outcome), matrix_class)
 
-
-
 })
 
+test_that("function makes list of most variable genes (rows) of each cluster", {
+  input_data <- read.csv(test_path("1_Counts_All_Regions_All_Ages_Pos_Neg.csv"))
+  counts_data <- build_matrix(input_data, 1)
+  factors_for_matrix <- list("hippo", "pos")
+  matrix_class <- c("matrix","array")
+  indi_matrix <- individual_matrix(factors_for_matrix, counts_data)
+  probes <- list("P0_hippo_Iba1_pos", "P5_hippo_Iba1_pos", "P15_hippo_Iba1_pos")
+  SumTable <- summarise_bio_replicates(indi_matrix, probes)
+  K_meanTable <- Kmean_generation(SumTable, 1, 3)
+  actualOutput <- most_variable_genes(K_meanTable, 5, 3)
+  # testing the outcome is a list
+  expected_outcome <- "list"
+  expect_equal(class(actualOutput), expected_outcome)
+
+})
 #input_data <- read.csv(test_path("1_Counts_All_Regions_All_Ages_Pos_Neg.csv"))
 #counts_data <- build_matrix(input_data, 1)
 #del_layer6 <- grep("layer", colnames(counts_data))
