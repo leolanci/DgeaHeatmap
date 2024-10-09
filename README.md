@@ -56,6 +56,22 @@ indiMatrix <- individual_matrix(factors_for_individual_matrix, matrixCounts)
 | Aftph         |                  7.0 |                10.50 |                  8.4 |                         2.33 |                         8.40 |                 2.80 |                 4.66 |                 5.60 |                         7.00 |
 | Tmem41b       |                  3.5 |                 7.00 |                  8.4 |                         4.66 |                         8.40 |                 5.60 |                 4.66 |                 5.60 |                        20.99 |
 
+Filtering the matrix for only an x amount of most variable expressed
+genes:
+
+``` r
+top_number_of_genes <- 500
+varGenesMatrix <- filtering_for_top_exprGenes(indiMatrix, top_number_of_genes)
+print(nrow(varGenesMatrix))
+#> [1] 500
+```
+
+Using Z-score scaling to scale the values of the matrix:
+
+``` r
+scaled_counts <- scale_counts(varGenesMatrix)
+```
+
 What is special about using `README.Rmd` instead of just `README.md`?
 You can include R chunks like so:
 

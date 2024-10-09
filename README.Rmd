@@ -57,6 +57,19 @@ indiMatrix <- individual_matrix(factors_for_individual_matrix, matrixCounts)
 knitr::kable(head(indiMatrix[, 1:9]),"pipe")
 ```
 
+Filtering the matrix for only an x amount of most variable expressed genes:
+```{r exampleFilteringForTopExprGenes, echo=TRUE}
+top_number_of_genes <- 500
+varGenesMatrix <- filtering_for_top_exprGenes(indiMatrix, top_number_of_genes)
+print(nrow(varGenesMatrix))
+```
+
+Using Z-score scaling to scale the values of the matrix:
+```{r exampleZScoreScaling, echo=TRUE, results='hide'}
+scaled_counts <- scale_counts(varGenesMatrix)
+```
+
+
 What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
 
 ```{r cars}
