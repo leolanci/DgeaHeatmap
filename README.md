@@ -164,6 +164,52 @@ print(mostVarGeneslist)
 #> [1] "Purb"
 ```
 
+To set the annotation for a heatmap the following function can be used:
+
+``` r
+number_of_annotations_per_cluster <- 5
+annotation_for_heatmap <- set_annotation(sumBioRepsMatrix, number_of_annotations_per_cluster)
+```
+
+“performing_kMeans” is a function specifically written to perform k-mean
+clustering outside of the general heatmap function. This allows a more
+reliable splitting of the heatmap by their assigned clusters.
+
+``` r
+k_clusters <- 2
+split_heatmap_clusters <- performing_kMeans(sumBioRepsMatrix, k_clusters)
+```
+
+``` r
+colorPalette <- "RdBu"
+color_setting(colorPalette)
+#>  [1] "#053061" "#0A3B70" "#10467F" "#16518E" "#1B5C9E" "#2166AC" "#2870B1"
+#>  [8] "#2F79B5" "#3682BA" "#3D8BBF" "#4695C4" "#569FC9" "#66A9CF" "#76B3D4"
+#> [15] "#86BDDA" "#95C6DF" "#A2CDE2" "#AFD4E6" "#BCDAEA" "#C9E1ED" "#D4E6F0"
+#> [22] "#DBEAF2" "#E3EDF3" "#EBF1F4" "#F3F5F6" "#F7F4F2" "#F8EEE8" "#FAE8DE"
+#> [29] "#FBE3D4" "#FCDDCA" "#FBD4BE" "#FAC9B0" "#F8BEA2" "#F6B394" "#F4A886"
+#> [36] "#EF9B7A" "#E98D6F" "#E37E64" "#DD7059" "#D7624F" "#D05447" "#C84540"
+#> [43] "#C13639" "#BA2832" "#B2192B" "#A41328" "#940E26" "#850923" "#760421"
+#> [50] "#67001F"
+```
+
+Finally, a heatmap with clusters can be generated as in this example:
+
+``` r
+seed <- 1
+title <- "Heatmap Cortex Iba1 positive"
+fontsize_columnNames <-6
+fontsize_rowNames <-4
+title_heatmap_legend <- "Expression"
+WidthNum <- 4.5
+HeightNum <- 3
+UnitSize <- "cm"
+colorPalette <- "RdBu"
+print_heatmap(seed, sumBioRepsMatrix, title, split_heatmap_clusters, annotation_for_heatmap, fontsize_columnNames, fontsize_rowNames, title_heatmap_legend, WidthNum, HeightNum, UnitSize, colorPalette)
+```
+
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" /><img src="man/figures/README-unnamed-chunk-3-2.png" width="100%" />
+
 What is special about using `README.Rmd` instead of just `README.md`?
 You can include R chunks like so:
 

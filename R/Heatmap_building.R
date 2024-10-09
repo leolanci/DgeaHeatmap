@@ -293,6 +293,7 @@ performing_kMeans <- function(m_top_genes_matrix, k){
 #' @param WidthNum A float setting the width of the heatmap.
 #' @param HeightNum A float setting the height of the heatmap.
 #' @param UnitSize A string such as "cm" or "inch" to set the unit of HeightNum and WidthNum.
+#' @param colorPalette Name of the colorPalette used for the heatmap.
 #'
 #' @return A plotted heatmap.
 #' @export
@@ -308,8 +309,9 @@ performing_kMeans <- function(m_top_genes_matrix, k){
 #' WidthNum <- 4.5
 #' HeightNum <- 3
 #' UnitSize <- "cm"
-print_heatmap <- function(seed,m_top_genes_matrix, title, split, anno,fontsize_columnNames,fontsize_rowNames, title_heatmapLegend,WidthNum, HeightNum, UnitSize){
-  color_setting()
+#' colorPalette <- "RdBu"
+print_heatmap <- function(seed,m_top_genes_matrix, title, split, anno,fontsize_columnNames,fontsize_rowNames, title_heatmapLegend,WidthNum, HeightNum, UnitSize, colorPalette){
+  color_setting(colorPalette)
   set.seed(seed)
   ht = ComplexHeatmap::Heatmap(m_top_genes_matrix, name = "mat", split = split,
                column_title = title ,

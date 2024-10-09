@@ -105,6 +105,36 @@ k_clusters <- 2
 mostVarGeneslist <- most_variable_genes(K_meanTable, number_of_annotations_per_cluster, k_clusters)
 print(mostVarGeneslist)
 ```
+To set the annotation for a heatmap the following function can be used:
+```{r exampleSetAnnotation, echo=TRUE}
+number_of_annotations_per_cluster <- 5
+annotation_for_heatmap <- set_annotation(sumBioRepsMatrix, number_of_annotations_per_cluster)
+```
+
+"performing_kMeans" is a function specifically written to perform k-mean clustering outside of the general heatmap function. This allows a more reliable splitting of the heatmap by their assigned clusters.
+```{r examplePerformingKmeansClustering, echo=TRUE}
+k_clusters <- 2
+split_heatmap_clusters <- performing_kMeans(sumBioRepsMatrix, k_clusters)
+```
+
+```{r}
+colorPalette <- "RdBu"
+color_setting(colorPalette)
+```
+
+Finally, a heatmap with clusters can be generated as in this example:
+```{r}
+seed <- 1
+title <- "Heatmap Cortex Iba1 positive"
+fontsize_columnNames <-6
+fontsize_rowNames <-4
+title_heatmap_legend <- "Expression"
+WidthNum <- 4.5
+HeightNum <- 3
+UnitSize <- "cm"
+colorPalette <- "RdBu"
+print_heatmap(seed, sumBioRepsMatrix, title, split_heatmap_clusters, annotation_for_heatmap, fontsize_columnNames, fontsize_rowNames, title_heatmap_legend, WidthNum, HeightNum, UnitSize, colorPalette)
+```
 
 
 What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
