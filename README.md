@@ -6,7 +6,10 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of DgeaHeatmap is to …
+The goal of DgeaHeatmap is to enable R users to generate heatmaps more
+easily and to help with preprocessing read counts. Furthermore, the
+package is aimed to simplify the extraction of raw read counts from .dcc
+and .pkc files generated through Nanostring GeoMx DSP.
 
 ## Installation
 
@@ -18,7 +21,7 @@ You can install the development version of DgeaHeatmap from
 pak::pak("leolanci/Dgea_Heatmap_Package")
 ```
 
-## Example
+## Usage
 
 This is a basic example which shows you how to solve a common problem:
 
