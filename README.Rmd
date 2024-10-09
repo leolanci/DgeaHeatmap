@@ -32,6 +32,10 @@ pak::pak("leolanci/Dgea_Heatmap_Package")
 ## Usage
 
 This is a basic example which shows you how to solve a common problem:
+```{r input normalizedReadCountsExample, echo=FALSE, results='hide'}
+library(testthat)
+input_data <- read.csv(test_path("1_Counts_All_Regions_All_Ages_Pos_Neg.csv"))
+```
 
 ```{r example}
 library(DgeaHeatmap)
