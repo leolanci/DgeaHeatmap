@@ -86,7 +86,7 @@ probes <- list("P0_cortex_Iba1_pos", "P5_cortex_Iba1_pos", "P15_cortex_Iba1_pos"
 sumBioRepsMatrix <- summarise_bio_replicates(scaled_counts, probes)
 ```
 ```{r showSummedBioReplicates, echo=FALSE}
-knitr::kable(head(indiMatrix[, 1:4]),"pipe")
+knitr::kable(head(sumBioRepsMatrix[, 1:3]),"pipe")
 ```
 
 What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:

@@ -96,14 +96,14 @@ probes <- list("P0_cortex_Iba1_pos", "P5_cortex_Iba1_pos", "P15_cortex_Iba1_pos"
 sumBioRepsMatrix <- summarise_bio_replicates(scaled_counts, probes)
 ```
 
-|               | P0_cortex_Iba1_pos_1 | P0_cortex_Iba1_pos_2 | P0_cortex_Iba1_pos_3 | P5_cortex_Iba1_pos_1 |
-|:--------------|---------------------:|---------------------:|---------------------:|---------------------:|
-| Casp6         |                 10.5 |                 7.00 |                  2.8 |                11.20 |
-| Atl3          |                  7.0 |                13.99 |                  8.4 |                13.99 |
-| C030006K11Rik |                 10.5 |                 7.00 |                  8.4 |                13.99 |
-| Cflar         |                 10.5 |                17.49 |                  5.6 |                13.99 |
-| Aftph         |                  7.0 |                10.50 |                  8.4 |                 2.80 |
-| Tmem41b       |                  3.5 |                 7.00 |                  8.4 |                 5.60 |
+|         | P0_cortex_Iba1_pos | P5_cortex_Iba1_pos | P15_cortex_Iba1_pos |
+|:--------|-------------------:|-------------------:|--------------------:|
+| Hba-a1  |          0.2388201 |          0.6255464 |          -0.8643665 |
+| Hbb-b1  |          0.1717879 |          0.7083344 |          -0.8801224 |
+| Nrgn    |         -0.8124253 |         -0.3790624 |           1.1914877 |
+| Gm52800 |          1.0355657 |          0.1047927 |          -1.1403584 |
+| Lrr1    |          0.8561965 |         -0.0353765 |          -0.8208200 |
+| Tuba1a  |          0.8549090 |          0.1379734 |          -0.9928824 |
 
 What is special about using `README.Rmd` instead of just `README.md`?
 You can include R chunks like so:
