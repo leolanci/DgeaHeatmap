@@ -35,6 +35,8 @@ This is a basic example which shows you how to solve a common problem:
 ```{r input normalizedReadCountsExample, echo=FALSE, results='hide'}
 library(testthat)
 input_data <- read.csv(test_path("1_Counts_All_Regions_All_Ages_Pos_Neg.csv"))
+del_layer6 <- grep("layer", colnames(input_data))
+input_data <- input_data[, -del_layer6]
 ```
 
 
@@ -77,6 +79,14 @@ Generating an elbow plot to choose k for k-mean generation:
 ```{r exampleElbowPlot, echo=TRUE}
 seed <- 1 # setting a seed for a reproducible outcome
 elbow_plot(seed, scaled_counts)
+```
+As desired, the samples can further be summarized as biological replicates to help generate more clearly arranged heatmaps and giving a better overview.
+```{r exampleSummariseBioReplicates, echo=TRUE, results='hide'}
+probes <- list("P0_cortex_Iba1_pos", "P5_cortex_Iba1_pos", "P15_cortex_Iba1_pos")
+sumBioRepsMatrix <- summarise_bio_replicates(scaled_counts, probes)
+```
+```{r showSummedBioReplicates, echo=FALSE}
+knitr::kable(head(indiMatrix[, 1:4]),"pipe")
 ```
 
 What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
