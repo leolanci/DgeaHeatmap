@@ -72,6 +72,22 @@ Using Z-score scaling to scale the values of the matrix:
 scaled_counts <- scale_counts(varGenesMatrix)
 ```
 
+How to visualize the data distribution of the scaled counts:
+
+``` r
+show_data_distribution(scaled_counts)
+```
+
+<img src="man/figures/README-exampleShowDataDistribution-1.png" width="100%" />
+Generating an elbow plot to choose k for k-mean generation:
+
+``` r
+seed <- 1 # setting a seed for a reproducible outcome
+elbow_plot(seed, scaled_counts)
+```
+
+<img src="man/figures/README-exampleElbowPlot-1.png" width="100%" />
+
 What is special about using `README.Rmd` instead of just `README.md`?
 You can include R chunks like so:
 
