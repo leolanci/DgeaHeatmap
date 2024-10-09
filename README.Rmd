@@ -37,9 +37,24 @@ library(testthat)
 input_data <- read.csv(test_path("1_Counts_All_Regions_All_Ages_Pos_Neg.csv"))
 ```
 
-```{r example}
+
+```{r exampleBuildMatrix, echo=TRUE}
 library(DgeaHeatmap)
-## basic example code
+x <- 1
+matrixCounts <- build_matrix(input_data, x)
+
+```
+```{r showTable, echo=FALSE, message=FALSE, warning=FALSE, include=TRUE, out.height="60%", out.width="60%"}
+knitr::kable(head(matrixCounts[, 1:4]),"pipe")
+```
+```{r exampleIndividualMatrix, echo=TRUE}
+parameter1 = "cortex"
+parameter2 = "pos"
+factors_for_individual_matrix = list(parameter1, parameter2)
+indiMatrix <- individual_matrix(factors_for_individual_matrix, matrixCounts)
+```
+```{r showIndividualMatrix, echo=FALSE}
+knitr::kable(head(indiMatrix[, 1:9]),"pipe")
 ```
 
 What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
