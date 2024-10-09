@@ -88,6 +88,24 @@ sumBioRepsMatrix <- summarise_bio_replicates(scaled_counts, probes)
 ```{r showSummedBioReplicates, echo=FALSE}
 knitr::kable(head(sumBioRepsMatrix[, 1:3]),"pipe")
 ```
+Generating K-means for clustering in the heatmap:
+```{r exampleKmeanGeneration, echo=TRUE}
+seed <- 1 #set a seed for reproducibility, but try different seeds first
+k_clusters <- 2
+K_meanTable <- Kmean_generation(sumBioRepsMatrix, seed, k_clusters)
+```
+```{r showGeneratedKmeans, echo=FALSE}
+knitr::kable(head(K_meanTable[, 1:4]),"pipe")
+```
+
+The most variable genes of each cluster are selected through the following function. A new object is created with the purpose of saving the most variable genes for each cluster, while the matrix with included cluster for each gene is divided into individual cluster matrices. These matrices are each sorted by their variance. 
+```{r exampleMostVariableGenes, echo=TRUE}
+number_of_annotations_per_cluster <- 5
+k_clusters <- 2
+mostVarGeneslist <- most_variable_genes(K_meanTable, number_of_annotations_per_cluster, k_clusters)
+print(mostVarGeneslist)
+```
+
 
 What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
 

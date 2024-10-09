@@ -105,6 +105,65 @@ sumBioRepsMatrix <- summarise_bio_replicates(scaled_counts, probes)
 | Lrr1    |          0.8561965 |         -0.0353765 |          -0.8208200 |
 | Tuba1a  |          0.8549090 |          0.1379734 |          -0.9928824 |
 
+Generating K-means for clustering in the heatmap:
+
+``` r
+seed <- 1 #set a seed for reproducibility, but try different seeds first
+k_clusters <- 2
+K_meanTable <- Kmean_generation(sumBioRepsMatrix, seed, k_clusters)
+```
+
+|         | P0_cortex_Iba1_pos | P5_cortex_Iba1_pos | P15_cortex_Iba1_pos |     |
+|:--------|-------------------:|-------------------:|--------------------:|----:|
+| Hba-a1  |          0.2388201 |          0.6255464 |          -0.8643665 |   1 |
+| Hbb-b1  |          0.1717879 |          0.7083344 |          -0.8801224 |   1 |
+| Gm52800 |          1.0355657 |          0.1047927 |          -1.1403584 |   1 |
+| Lrr1    |          0.8561965 |         -0.0353765 |          -0.8208200 |   1 |
+| Tuba1a  |          0.8549090 |          0.1379734 |          -0.9928824 |   1 |
+| Gm52416 |          0.8877816 |          0.1610086 |          -1.0487902 |   1 |
+
+The most variable genes of each cluster are selected through the
+following function. A new object is created with the purpose of saving
+the most variable genes for each cluster, while the matrix with included
+cluster for each gene is divided into individual cluster matrices. These
+matrices are each sorted by their variance.
+
+``` r
+number_of_annotations_per_cluster <- 5
+k_clusters <- 2
+mostVarGeneslist <- most_variable_genes(K_meanTable, number_of_annotations_per_cluster, k_clusters)
+print(mostVarGeneslist)
+#> [[1]]
+#> [1] "Gm40862"
+#> 
+#> [[2]]
+#> [1] "Rps17"
+#> 
+#> [[3]]
+#> [1] "Fabp7"
+#> 
+#> [[4]]
+#> [1] "Gm52432"
+#> 
+#> [[5]]
+#> [1] "Ptma"
+#> 
+#> [[6]]
+#> [1] "Pacsin1"
+#> 
+#> [[7]]
+#> [1] "Clu"
+#> 
+#> [[8]]
+#> [1] "Zfp365"
+#> 
+#> [[9]]
+#> [1] "Diras2"
+#> 
+#> [[10]]
+#> [1] "Purb"
+```
+
 What is special about using `README.Rmd` instead of just `README.md`?
 You can include R chunks like so:
 
