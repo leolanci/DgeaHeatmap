@@ -15,7 +15,8 @@ print_heatmap(
   title_heatmapLegend,
   WidthNum,
   HeightNum,
-  UnitSize
+  UnitSize,
+  colorPalette
 )
 }
 \arguments{
@@ -40,6 +41,8 @@ print_heatmap(
 \item{HeightNum}{A float setting the height of the heatmap.}
 
 \item{UnitSize}{A string such as "cm" or "inch" to set the unit of HeightNum and WidthNum.}
+
+\item{colorPalette}{Name of the colorPalette used for the heatmap.}
 }
 \value{
 A plotted heatmap.
@@ -58,4 +61,5 @@ title_heatmaoLegend <- "Expression"
 WidthNum <- 4.5
 HeightNum <- 3
 UnitSize <- "cm"
+colorPalette <- "RdBu"
 }
