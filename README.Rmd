@@ -38,7 +38,7 @@ input_data <- read.csv(test_path("1_Counts_All_Regions_All_Ages_Pos_Neg.csv"))
 ```
 
 
-```{r exampleBuildMatrix, echo=TRUE}
+```{r exampleBuildMatrix, echo=TRUE, results='hide'}
 library(DgeaHeatmap)
 x <- 1
 matrixCounts <- build_matrix(input_data, x)
