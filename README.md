@@ -47,14 +47,14 @@ factors_for_individual_matrix = list(parameter1, parameter2)
 indiMatrix <- individual_matrix(factors_for_individual_matrix, matrixCounts)
 ```
 
-|               | P0_cortex_Iba1_pos_1 | P0_cortex_Iba1_pos_2 | P0_cortex_Iba1_pos_3 | P0_cortex_layer_6_Iba1_pos_2 | P0_cortex_layer_6_Iba1_pos_3 | P5_cortex_Iba1_pos_1 | P5_cortex_Iba1_pos_2 | P5_cortex_Iba1_pos_3 | P5_cortex_layer_6_Iba1_pos_1 |
-|:--------------|---------------------:|---------------------:|---------------------:|-----------------------------:|-----------------------------:|---------------------:|---------------------:|---------------------:|-----------------------------:|
-| Casp6         |                 10.5 |                 7.00 |                  2.8 |                         4.66 |                         8.40 |                11.20 |                 4.66 |                16.79 |                        13.99 |
-| Atl3          |                  7.0 |                13.99 |                  8.4 |                         7.00 |                         8.40 |                13.99 |                 9.33 |                 5.60 |                         7.00 |
-| C030006K11Rik |                 10.5 |                 7.00 |                  8.4 |                         4.66 |                         2.80 |                13.99 |                 4.66 |                11.20 |                         3.50 |
-| Cflar         |                 10.5 |                17.49 |                  5.6 |                        16.33 |                        13.99 |                13.99 |                18.66 |                 8.40 |                         3.50 |
-| Aftph         |                  7.0 |                10.50 |                  8.4 |                         2.33 |                         8.40 |                 2.80 |                 4.66 |                 5.60 |                         7.00 |
-| Tmem41b       |                  3.5 |                 7.00 |                  8.4 |                         4.66 |                         8.40 |                 5.60 |                 4.66 |                 5.60 |                        20.99 |
+|               | P0_cortex_Iba1_pos_1 | P0_cortex_Iba1_pos_2 | P0_cortex_Iba1_pos_3 | P5_cortex_Iba1_pos_1 | P5_cortex_Iba1_pos_2 | P5_cortex_Iba1_pos_3 | P15_cortex_Iba1_pos_1 | P15_cortex_Iba1_pos_2 | P15_cortex_Iba1_pos_3 |
+|:--------------|---------------------:|---------------------:|---------------------:|---------------------:|---------------------:|---------------------:|----------------------:|----------------------:|----------------------:|
+| Casp6         |                 10.5 |                 7.00 |                  2.8 |                11.20 |                 4.66 |                16.79 |                  4.87 |                  9.80 |                 10.38 |
+| Atl3          |                  7.0 |                13.99 |                  8.4 |                13.99 |                 9.33 |                 5.60 |                  8.92 |                 12.60 |                  7.67 |
+| C030006K11Rik |                 10.5 |                 7.00 |                  8.4 |                13.99 |                 4.66 |                11.20 |                 10.55 |                 15.39 |                  7.67 |
+| Cflar         |                 10.5 |                17.49 |                  5.6 |                13.99 |                18.66 |                 8.40 |                  9.74 |                 11.20 |                  9.03 |
+| Aftph         |                  7.0 |                10.50 |                  8.4 |                 2.80 |                 4.66 |                 5.60 |                 16.23 |                  9.80 |                  9.03 |
+| Tmem41b       |                  3.5 |                 7.00 |                  8.4 |                 5.60 |                 4.66 |                 5.60 |                  8.92 |                 16.79 |                  4.97 |
 
 Filtering the matrix for only an x amount of most variable expressed
 genes:
@@ -86,7 +86,24 @@ seed <- 1 # setting a seed for a reproducible outcome
 elbow_plot(seed, scaled_counts)
 ```
 
-<img src="man/figures/README-exampleElbowPlot-1.png" width="100%" />
+<img src="man/figures/README-exampleElbowPlot-1.png" width="100%" /> As
+desired, the samples can further be summarized as biological replicates
+to help generate more clearly arranged heatmaps and giving a better
+overview.
+
+``` r
+probes <- list("P0_cortex_Iba1_pos", "P5_cortex_Iba1_pos", "P15_cortex_Iba1_pos")
+sumBioRepsMatrix <- summarise_bio_replicates(scaled_counts, probes)
+```
+
+|               | P0_cortex_Iba1_pos_1 | P0_cortex_Iba1_pos_2 | P0_cortex_Iba1_pos_3 | P5_cortex_Iba1_pos_1 |
+|:--------------|---------------------:|---------------------:|---------------------:|---------------------:|
+| Casp6         |                 10.5 |                 7.00 |                  2.8 |                11.20 |
+| Atl3          |                  7.0 |                13.99 |                  8.4 |                13.99 |
+| C030006K11Rik |                 10.5 |                 7.00 |                  8.4 |                13.99 |
+| Cflar         |                 10.5 |                17.49 |                  5.6 |                13.99 |
+| Aftph         |                  7.0 |                10.50 |                  8.4 |                 2.80 |
+| Tmem41b       |                  3.5 |                 7.00 |                  8.4 |                 5.60 |
 
 What is special about using `README.Rmd` instead of just `README.md`?
 You can include R chunks like so:
