@@ -293,7 +293,7 @@ performing_kMeans <- function(m_top_genes_matrix, k){
 #' @param WidthNum A float setting the width of the heatmap.
 #' @param HeightNum A float setting the height of the heatmap.
 #' @param UnitSize A string such as "cm" or "inch" to set the unit of HeightNum and WidthNum.
-#' @param colorPalette Name of the colorPalette used for the heatmap.
+#' @param color_Palette Name of the colorPalette used for the heatmap.
 #'
 #' @return A plotted heatmap.
 #' @export
@@ -309,9 +309,9 @@ performing_kMeans <- function(m_top_genes_matrix, k){
 #' WidthNum <- 4.5
 #' HeightNum <- 3
 #' UnitSize <- "cm"
-#' colorPalette <- "RdBu"
-print_heatmap <- function(seed,m_top_genes_matrix, title, split, anno,fontsize_columnNames,fontsize_rowNames, title_heatmapLegend,WidthNum, HeightNum, UnitSize, colorPalette){
-  color_setting(colorPalette)
+#' color_Palette <- "RdBu"
+print_heatmap <- function(seed,m_top_genes_matrix, title, split, anno,fontsize_columnNames,fontsize_rowNames, title_heatmapLegend,WidthNum, HeightNum, UnitSize, color_Palette){
+  color_setting(color_Palette)
   set.seed(seed)
   ht = ComplexHeatmap::Heatmap(m_top_genes_matrix, name = "mat", split = split,
                column_title = title ,
@@ -338,6 +338,7 @@ print_heatmap <- function(seed,m_top_genes_matrix, title, split, anno,fontsize_c
 #' @param WidthNum A float setting the width of the heatmap.
 #' @param HeightNum A float setting the height of the heatmap.
 #' @param UnitSize A string such as "cm" or "inch" to set the unit of HeightNum and WidthNum.
+#' @param color_Palette Name of the colorPalette used for the heatmap.
 #'
 #' @return A plotted heatmap of the input data.
 #' @export
@@ -349,14 +350,15 @@ print_heatmap <- function(seed,m_top_genes_matrix, title, split, anno,fontsize_c
 #' k <- 3
 #' seed <- 1
 #' Title <- "Heatmap with annotation of most variable genes"
-function_complexHeatmap_var <- function(topGenes_matrix, probes, number_of_annotations_per_cluster, k, seed, Title, fontsize_columnNames,fontsize_rowNames, title_heatmapLegend,WidthNum, HeightNum, UnitSize){
+#' color_Palette <- "RdBu"
+function_complexHeatmap_var <- function(topGenes_matrix, probes, number_of_annotations_per_cluster, k, seed, Title, fontsize_columnNames,fontsize_rowNames, title_heatmapLegend,WidthNum, HeightNum, UnitSize, color_Palette){
   m_top_genes_matrix <- summarise_bio_replicates(topGenes_matrix, probes)
 
   m_kmeans <- Kmean_generation(m_top_genes_matrix, seed, k)
   top_x_genes_cluster <- most_variable_genes(m_kmeans, number_of_annotations_per_cluster, k)
   anno <- set_annotation(m_top_genes_matrix, top_x_genes_cluster)
   split <- performing_kMeans(m_top_genes_matrix, k)
-  hm <- print_heatmap(seed,m_top_genes_matrix, Title, split, anno,fontsize_columnNames,fontsize_rowNames, title_heatmapLegend,WidthNum, HeightNum, UnitSize)
+  hm <- print_heatmap(seed,m_top_genes_matrix, Title, split, anno,fontsize_columnNames,fontsize_rowNames, title_heatmapLegend,WidthNum, HeightNum, UnitSize, color_Palette)
   return(hm)
 }
 
