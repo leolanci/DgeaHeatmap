@@ -229,6 +229,34 @@ hm <- function_complexHeatmap_var(scaled_counts, probes, number_of_annotations_p
 ```
 
 <img src="man/figures/README-exampleFunctionComplexHeatmapVar-1.png" width="100%" />
+A heatmap can further be generated with annotation of specific genes, as
+in this example:
+
+``` r
+probes <- list("P0_cortex_Iba1_pos", "P5_cortex_Iba1_pos", "P15_cortex_Iba1_pos")
+sumBioRepsMatrix <- summarise_bio_replicates(scaled_counts, probes)
+
+seed <- 1
+k_clusters <- 2
+K_meanTable <- Kmean_generation(sumBioRepsMatrix, seed, k_clusters)
+
+anno_specific_genes <- list("Stmn1", "Sox4", "Cldn5", "Mapt", "Camk2a", "Gapdh", "Plp1", "Apoe")
+annotation_for_heatmap <- set_annotation(sumBioRepsMatrix, anno_specific_genes)
+split_heatmap_clusters <- performing_kMeans(sumBioRepsMatrix, k_clusters)
+
+title <- "Heatmap with specific annotation"
+k_clusters <- 2
+fontsize_columnNames <-6
+fontsize_rowNames <-4
+title_heatmap_legend <- "Expression"
+WidthNum <- 4.5
+HeightNum <- 3
+UnitSize <- "cm"
+colorPalette <- "RdBu"
+print_heatmap(seed, sumBioRepsMatrix, title, split_heatmap_clusters, annotation_for_heatmap, fontsize_columnNames, fontsize_rowNames, title_heatmap_legend, WidthNum, HeightNum, UnitSize, colorPalette)
+```
+
+<img src="man/figures/README-exampleHeatmapSpecificAnnotation-1.png" width="100%" /><img src="man/figures/README-exampleHeatmapSpecificAnnotation-2.png" width="100%" />
 
 In that case, don’t forget to commit and push the resulting figure
 files, so they display on GitHub and CRAN.
