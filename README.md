@@ -257,13 +257,13 @@ print_heatmap(seed, sumBioRepsMatrix, title, split_heatmap_clusters, annotation_
 ```
 
 <img src="man/figures/README-exampleHeatmapSpecificAnnotation-1.png" width="100%" /><img src="man/figures/README-exampleHeatmapSpecificAnnotation-2.png" width="100%" />
-<font size="7"> Functions to analyze Nanostring GeoMx DSP data</font>
+<font size="7"> Functions to analyze Nanostring GeoMx DSP data: </font>
 
 The raw Nanostring GeoMx DSP files are read in and then united into an
 instance of class “NanostringGeoMxSet”.
 
 ``` r
-demoData <- suppressWarnings(readNanoStringGeoMxSet(dccFiles = DCCFiles,
+rawDataObject <- suppressWarnings(readNanoStringGeoMxSet(dccFiles = DCCFiles,
                                           pkcFiles = PKCFiles,
                                           phenoDataFile = SampleAnnotationFile,
                                           phenoDataSheet = "Template",
@@ -273,6 +273,23 @@ demoData <- suppressWarnings(readNanoStringGeoMxSet(dccFiles = DCCFiles,
                                           analyte = "RNA",
                                           phenoDataColPrefix = "",
                                           experimentDataColNames = NULL))
+```
+
+To pre-process the data, the logarithm of the count matrix is computed
+and added into the demoData object. Furthermore, the data is summarized
+by splitting the data by a chosen column and calculating the mean.
+
+``` r
+PrePro_rawDataObject <- add_demoElem(rawDataObject)
+
+class(PrePro_rawDataObject)
+#loop over the features(1) or samples(2) of the assayData element and get the mean
+assayDataApply(PrePro_rawDataObject, MARGIN=1, FUN=mean, elt="demoElem")[1:5]
+
+#split the data by group column with feature, pheno or protrocol data then get the mean
+VGroup <- "aoi"
+elt <- "demoElem"
+PrePro_rawDataObject <- split_data_by_column(PrePro_rawDataObject, VGroup, elt)
 ```
 
 In that case, don’t forget to commit and push the resulting figure

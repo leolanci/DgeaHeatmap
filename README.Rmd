@@ -173,7 +173,7 @@ colorPalette <- "RdBu"
 print_heatmap(seed, sumBioRepsMatrix, title, split_heatmap_clusters, annotation_for_heatmap, fontsize_columnNames, fontsize_rowNames, title_heatmap_legend, WidthNum, HeightNum, UnitSize, colorPalette)
 
 ```
-<font size="7"> Functions to analyze Nanostring GeoMx DSP data</font>
+<font size="7"> Functions to analyze Nanostring GeoMx DSP data: </font>
 ```{r loadingPackagesNanostringData, warning=FALSE, include=FALSE, results='hide'}
 library(NanoStringNCTools)
 library(GeomxTools)
@@ -220,7 +220,7 @@ SampleAnnotationFile <- file.path(datadir, "AllAnnotationNanostring1.xlsx")
 ```
 The raw Nanostring GeoMx DSP files are read in and then united into an instance of class "NanostringGeoMxSet".
 ```{r ReadData, echo=TRUE, results='hide', warning=FALSE}
-demoData <- suppressWarnings(readNanoStringGeoMxSet(dccFiles = DCCFiles,
+rawDataObject <- suppressWarnings(readNanoStringGeoMxSet(dccFiles = DCCFiles,
                                           pkcFiles = PKCFiles,
                                           phenoDataFile = SampleAnnotationFile,
                                           phenoDataSheet = "Template",
@@ -232,6 +232,19 @@ demoData <- suppressWarnings(readNanoStringGeoMxSet(dccFiles = DCCFiles,
                                           experimentDataColNames = NULL))
 
 
+```
+To pre-process the data, the logarithm of the count matrix is computed and added into the demoData object. Furthermore, the data is summarized by splitting the data by a chosen column and calculating the mean.
+```{r examplePreProcess, echo=TRUE, results='hide'}
+PrePro_rawDataObject <- add_demoElem(rawDataObject)
+
+class(PrePro_rawDataObject)
+#loop over the features(1) or samples(2) of the assayData element and get the mean
+assayDataApply(PrePro_rawDataObject, MARGIN=1, FUN=mean, elt="demoElem")[1:5]
+
+#split the data by group column with feature, pheno or protrocol data then get the mean
+VGroup <- "aoi"
+elt <- "demoElem"
+PrePro_rawDataObject <- split_data_by_column(PrePro_rawDataObject, VGroup, elt)
 ```
 
 
