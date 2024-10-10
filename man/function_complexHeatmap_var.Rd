@@ -16,7 +16,8 @@ function_complexHeatmap_var(
   title_heatmapLegend,
   WidthNum,
   HeightNum,
-  UnitSize
+  UnitSize,
+  color_Palette
 )
 }
 \arguments{
@@ -43,6 +44,8 @@ function_complexHeatmap_var(
 \item{HeightNum}{A float setting the height of the heatmap.}
 
 \item{UnitSize}{A string such as "cm" or "inch" to set the unit of HeightNum and WidthNum.}
+
+\item{color_Palette}{Name of the colorPalette used for the heatmap.}
 }
 \value{
 A plotted heatmap of the input data.
@@ -57,4 +60,5 @@ number_of_annotations_per_cluster <- 10
 k <- 3
 seed <- 1
 Title <- "Heatmap with annotation of most variable genes"
+color_Palette <- "RdBu"
 }

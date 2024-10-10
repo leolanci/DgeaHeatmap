@@ -209,6 +209,26 @@ print_heatmap(seed, sumBioRepsMatrix, title, split_heatmap_clusters, annotation_
 ```
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" /><img src="man/figures/README-unnamed-chunk-3-2.png" width="100%" />
+With “function_complexHeatmap_var” a heatmap can be created with
+automatic annotation of x most variable genes from each cluster. As
+input a matrix with the scaled counts of the most varible genes from a
+dataset can be used. The function is able to summarize biological
+replicates.
+
+``` r
+title <- "Heatmap Cortex Iba1 positive"
+fontsize_columnNames <-6
+fontsize_rowNames <-4
+title_heatmap_legend <- "Expression"
+WidthNum <- 4.5
+HeightNum <- 3
+UnitSize <- "cm"
+colorPalette <- "RdBu"
+
+hm <- function_complexHeatmap_var(scaled_counts, probes, number_of_annotations_per_cluster, k_clusters, seed, title, fontsize_columnNames, fontsize_rowNames, title_heatmap_legend, WidthNum, HeightNum, UnitSize, colorPalette)
+```
+
+<img src="man/figures/README-exampleFunctionComplexHeatmapVar-1.png" width="100%" />
 
 In that case, don’t forget to commit and push the resulting figure
 files, so they display on GitHub and CRAN.
