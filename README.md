@@ -299,5 +299,21 @@ print_heatmap(seed, sumBioRepsMatrix, title, split_heatmap_clusters, annotation_
     #> 
     #>     predict, predict.lm
 
+The raw Nanostring GeoMx DSP files are read in and then united into an
+instance of class “NanostringGeoMxSet”.
+
+``` r
+demoData <- suppressWarnings(readNanoStringGeoMxSet(dccFiles = DCCFiles,
+                                          pkcFiles = PKCFiles,
+                                          phenoDataFile = SampleAnnotationFile,
+                                          phenoDataSheet = "Template",
+                                          phenoDataDccColName = "Sample_ID",
+                                          protocolDataColNames = c("aoi","roi"),
+                                          configFile = NULL,
+                                          analyte = "RNA",
+                                          phenoDataColPrefix = "",
+                                          experimentDataColNames = NULL))
+```
+
 In that case, don’t forget to commit and push the resulting figure
 files, so they display on GitHub and CRAN.

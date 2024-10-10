@@ -203,4 +203,36 @@ if(packageVersion("GeomxTools") > "2.1" &
 
 ```
 
+```{r readInNanostringRawFiles, echo=FALSE, results='hide', warning=FALSE}
+datadir <- file.path("C:/Users/llancell/Documents/Paper")
+
+DCCFiles <- dir(file.path(datadir, "dcc"), pattern = ".dcc$",
+                full.names = TRUE, recursive = TRUE)
+
+#has to be in file directory
+
+PKCFiles <- file.path(datadir, "Mm_R_NGS_WTA_v1.0 (1).pkc")
+PKCData <- dir(file.path(datadir, "pkc"), pattern = ".pkc$",
+               full.names = TRUE, recursive = TRUE)
+
+# has to be in file directory
+SampleAnnotationFile <- file.path(datadir, "AllAnnotationNanostring1.xlsx")
+```
+The raw Nanostring GeoMx DSP files are read in and then united into an instance of class "NanostringGeoMxSet".
+```{r ReadData, echo=TRUE, results='hide', warning=FALSE}
+demoData <- suppressWarnings(readNanoStringGeoMxSet(dccFiles = DCCFiles,
+                                          pkcFiles = PKCFiles,
+                                          phenoDataFile = SampleAnnotationFile,
+                                          phenoDataSheet = "Template",
+                                          phenoDataDccColName = "Sample_ID",
+                                          protocolDataColNames = c("aoi","roi"),
+                                          configFile = NULL,
+                                          analyte = "RNA",
+                                          phenoDataColPrefix = "",
+                                          experimentDataColNames = NULL))
+
+
+```
+
+
 In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
