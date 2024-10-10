@@ -173,8 +173,8 @@ colorPalette <- "RdBu"
 print_heatmap(seed, sumBioRepsMatrix, title, split_heatmap_clusters, annotation_for_heatmap, fontsize_columnNames, fontsize_rowNames, title_heatmap_legend, WidthNum, HeightNum, UnitSize, colorPalette)
 
 ```
-<font size="5"> Functions to analyze Nanostring GeoMx DSP data</font>
-```{r loadingPackagesNanostringData, echo=FALSE, results='hide', warning=FALSE}
+<font size="7"> Functions to analyze Nanostring GeoMx DSP data</font>
+```{r loadingPackagesNanostringData, warning=FALSE, include=FALSE, results='hide'}
 library(NanoStringNCTools)
 library(GeomxTools)
 library("GeoMxWorkflows")
