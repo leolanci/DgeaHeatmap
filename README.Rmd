@@ -174,7 +174,7 @@ print_heatmap(seed, sumBioRepsMatrix, title, split_heatmap_clusters, annotation_
 
 ```
 <font size="5"> Functions to analyze Nanostring GeoMx DSP data</font>
-```{r loadingPackagesNanostringData, echo=FALSE, results='hide'}
+```{r loadingPackagesNanostringData, echo=FALSE, results='hide', warning=FALSE}
 library(NanoStringNCTools)
 library(GeomxTools)
 library("GeoMxWorkflows")
