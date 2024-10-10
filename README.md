@@ -290,6 +290,10 @@ assayDataApply(PrePro_rawDataObject, MARGIN=1, FUN=mean, elt="demoElem")[1:5]
 VGroup <- "aoi"
 elt <- "demoElem"
 PrePro_rawDataObject <- split_data_by_column(PrePro_rawDataObject, VGroup, elt)
+
+QCPassed <- aExprsDataQC(PrePro_rawDataObject, "QCFlags")
+
+df_Exp <- genRawReadCountTable(QCPassed)
 ```
 
 In that case, don’t forget to commit and push the resulting figure
