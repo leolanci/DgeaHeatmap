@@ -173,6 +173,34 @@ colorPalette <- "RdBu"
 print_heatmap(seed, sumBioRepsMatrix, title, split_heatmap_clusters, annotation_for_heatmap, fontsize_columnNames, fontsize_rowNames, title_heatmap_legend, WidthNum, HeightNum, UnitSize, colorPalette)
 
 ```
+<font size="5"> Functions to analyze Nanostring GeoMx DSP data</font>
+```{r loadingPackagesNanostringData, echo=FALSE, results='hide'}
+library(NanoStringNCTools)
+library(GeomxTools)
+library("GeoMxWorkflows")
+library(EnvStats)
+library(ggiraph)
+library(ggsankey)
 
+
+if(packageVersion("GeomxTools") < "2.1" & 
+   packageVersion("GeoMxWorkflows") >= "1.0.1"){
+  stop("GeomxTools and Workflow versions do not match. Please use the same version. 
+    This workflow is meant to be used with most current version of packages. 
+    If you are using an older version of Bioconductor please reinstall GeoMxWorkflows and use vignette(GeoMxWorkflows) instead")
+}
+
+if(packageVersion("GeomxTools") > "2.1" & 
+   packageVersion("GeoMxWorkflows") <= "1.0.1"){
+  stop("GeomxTools and Workflow versions do not match. 
+         Please use the same version, see install instructions above.")
+  
+  # to remove current package version
+  # remove.packages("GeomxTools")
+  # remove.packages("GeoMxWorkflows")
+  # see install instructions above 
+}
+
+```
 
 In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.

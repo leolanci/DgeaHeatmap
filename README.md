@@ -257,6 +257,47 @@ print_heatmap(seed, sumBioRepsMatrix, title, split_heatmap_clusters, annotation_
 ```
 
 <img src="man/figures/README-exampleHeatmapSpecificAnnotation-1.png" width="100%" /><img src="man/figures/README-exampleHeatmapSpecificAnnotation-2.png" width="100%" />
+<font size="5"> Functions to analyze Nanostring GeoMx DSP data</font>
+
+    #> Loading required package: Biobase
+    #> Loading required package: BiocGenerics
+    #> 
+    #> Attaching package: 'BiocGenerics'
+    #> The following objects are masked from 'package:stats':
+    #> 
+    #>     IQR, mad, sd, var, xtabs
+    #> The following objects are masked from 'package:base':
+    #> 
+    #>     anyDuplicated, aperm, append, as.data.frame, basename, cbind,
+    #>     colnames, dirname, do.call, duplicated, eval, evalq, Filter, Find,
+    #>     get, grep, grepl, intersect, is.unsorted, lapply, Map, mapply,
+    #>     match, mget, order, paste, pmax, pmax.int, pmin, pmin.int,
+    #>     Position, rank, rbind, Reduce, rownames, sapply, setdiff, table,
+    #>     tapply, union, unique, unsplit, which.max, which.min
+    #> Welcome to Bioconductor
+    #> 
+    #>     Vignettes contain introductory material; view with
+    #>     'browseVignettes()'. To cite Bioconductor, see
+    #>     'citation("Biobase")', and for packages 'citation("pkgname")'.
+    #> Loading required package: S4Vectors
+    #> Loading required package: stats4
+    #> 
+    #> Attaching package: 'S4Vectors'
+    #> The following object is masked from 'package:utils':
+    #> 
+    #>     findMatches
+    #> The following objects are masked from 'package:base':
+    #> 
+    #>     expand.grid, I, unname
+    #> Loading required package: ggplot2
+    #> Registered S3 method overwritten by 'GGally':
+    #>   method from   
+    #>   +.gg   ggplot2
+    #> 
+    #> Attaching package: 'EnvStats'
+    #> The following objects are masked from 'package:stats':
+    #> 
+    #>     predict, predict.lm
 
 In that case, don’t forget to commit and push the resulting figure
 files, so they display on GitHub and CRAN.
