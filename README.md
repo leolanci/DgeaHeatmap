@@ -291,9 +291,78 @@ VGroup <- "aoi"
 elt <- "demoElem"
 PrePro_rawDataObject <- split_data_by_column(PrePro_rawDataObject, VGroup, elt)
 
+# Quality Control
 QCPassed <- aExprsDataQC(PrePro_rawDataObject, "QCFlags")
 
-df_Exp <- genRawReadCountTable(QCPassed)
+df_Exp <- genRawReadCountTable(PrePro_rawDataObject)
+```
+
+|               | DSP-1012500008461-B-A02.dcc | DSP-1012500008461-B-A03.dcc | DSP-1012500008461-B-A04.dcc | DSP-1012500008461-B-A05.dcc | DSP-1012500008461-B-A06.dcc | DSP-1012500008461-B-A07.dcc | DSP-1012500008461-B-A08.dcc | DSP-1012500008461-B-A09.dcc | DSP-1012500008461-B-A10.dcc |
+|:--------------|----------------------------:|----------------------------:|----------------------------:|----------------------------:|----------------------------:|----------------------------:|----------------------------:|----------------------------:|----------------------------:|
+| 0610009B22Rik |                          13 |                          80 |                           5 |                          19 |                           8 |                          27 |                          12 |                         124 |                          11 |
+| Sanbr         |                           9 |                          58 |                           3 |                          12 |                           3 |                          42 |                          16 |                          86 |                           4 |
+| 0610010K14Rik |                          20 |                         101 |                           9 |                          25 |                           6 |                          58 |                          22 |                         112 |                          10 |
+| 0610012G03Rik |                          24 |                         100 |                          12 |                          35 |                          16 |                          91 |                          31 |                         138 |                          11 |
+| 0610030E20Rik |                          10 |                          61 |                           9 |                          31 |                           8 |                          25 |                          14 |                         112 |                           3 |
+| 0610040J01Rik |                          11 |                          33 |                           4 |                           7 |                           7 |                          22 |                          23 |                         115 |                           6 |
+
+Next, an usable matrix of column data is extracted from the sample data:
+
+``` r
+annotation_matrix <- sData(rawDataObject)
+
+annotation_matrix$Samplename <- paste(annotation_matrix$age_region, annotation_matrix$segment, annotation_matrix$sample, sep="_")
+class(annotation_matrix)
+library(tibble)
+
+annotation_matrix <- tibble::rownames_to_column(annotation_matrix, "Samplenummern")
+
+rownames(annotation_matrix)
+
+annotation_matrix1 <- data.frame(annotation_matrix$Samplenummern, annotation_matrix$Samplename)
+
+coldata_2 <- data.frame(annotation_matrix$Samplename, annotation_matrix$age, annotation_matrix$region, annotation_matrix$segment, annotation_matrix$sample)
+
+rownames(coldata_2) <- coldata_2[,1]
+# Renaming the columns
+names(coldata_2)[names(coldata_2) == "annotation_matrix.Samplename"] <- "Samplename"
+names(coldata_2)[names(coldata_2) == "annotation_matrix.age"] <- "age"
+names(coldata_2)[names(coldata_2) == "annotation_matrix.region"] <- "region"
+names(coldata_2)[names(coldata_2) == "annotation_matrix.segment"] <- "segment"
+names(coldata_2)[names(coldata_2) == "annotation_matrix.sample"] <- "sample"
+
+# Combines sample describing columns into one
+coldata_2$comp <- paste(coldata_2$age, coldata_2$region, coldata_2$segment, sep = "_")
+
+coldata_2 <- coldata_2[,-1]
+coldata_2 <- as.matrix(coldata_2)
+
+# Creates a new dataframe wich only includes the necessary information
+coldata_df <- as.data.frame(coldata_2)
+class(coldata_df)
+```
+
+The columns in the counts table can now be exchanged with the matching
+sample names of the table containing the column data. For this, the
+following code can be used:
+
+``` r
+list_columnNames <- list(colnames(df_Exp)) # list of column names in counts table
+print(list_columnNames)
+annotationMatrix <- annotation_matrix1 # creates copy of column data 
+rownames(annotationMatrix) <- annotationMatrix[,2] # makes values in second colum into rownames
+x <- match(rownames(annotationMatrix), colnames(df_Exp))
+print(x)
+copy_df_Expr <- df_Exp # creates copy of counts table
+
+for (i in list_columnNames) {
+  matchingRow <- which(annotationMatrix$annotation_matrix.Samplenummern == i)
+  matchingColumn <- match(i, names(copy_df_Expr))
+  print(matchingColumn)
+  print(matchingRow)
+  colnames(copy_df_Expr)[matchingColumn] <- rownames(annotationMatrix)[matchingRow]
+  print(rownames(annotationMatrix)[matchingRow])
+  }
 ```
 
 In that case, don’t forget to commit and push the resulting figure
