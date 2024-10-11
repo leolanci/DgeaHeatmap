@@ -308,5 +308,8 @@ for (i in list_columnNames) {
   print(rownames(annotationMatrix)[matchingRow])
   }
 ```
+```{r exampleColumnNameExchange, echo=FALSE}
+knitr::kable(head(copy_df_Expr[, 1:9]),"pipe")
+```
 
 In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
