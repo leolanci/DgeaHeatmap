@@ -233,6 +233,13 @@ rawDataObject <- suppressWarnings(readNanoStringGeoMxSet(dccFiles = DCCFiles,
 
 
 ```
+Anon Analyzing GeoMx-NGS RNA Expression Data with GeomxTools. Available from: 
+http://bioconductor.riken.jp/packages/3.15/workflows/vignettes/GeoMxWorkflows/
+inst/doc/GeomxTools_RNA-NGS_Analysis.html (September 21, 2023b). 
+Anon Developer Introduction to the NanoStringGeoMxSet. Available from: 
+https://www.bioconductor.org/packages/devel/bioc/vignettes/GeomxTools/inst/doc
+/Developer_Introduction_to_the_NanoStringGeoMxSet.html (September 21, 2023c).
+
 To pre-process the data, the logarithm of the count matrix is computed and added into the demoData object. Furthermore, the data is summarized by splitting the data by a chosen column and calculating the mean.
 ```{r examplePreProcess, echo=TRUE, results='hide'}
 PrePro_rawDataObject <- add_demoElem(rawDataObject)
@@ -254,6 +261,13 @@ df_Exp <- genRawReadCountTable(PrePro_rawDataObject)
 ```{r showExpressionMatrix, echo=FALSE, warning=FALSE}
 knitr::kable(head(df_Exp[, 1:9]),"pipe")
 ``` 
+Anon Analyzing GeoMx-NGS RNA Expression Data with GeomxTools. Available from: 
+http://bioconductor.riken.jp/packages/3.15/workflows/vignettes/GeoMxWorkflows/
+inst/doc/GeomxTools_RNA-NGS_Analysis.html (September 21, 2023b). 
+Anon Developer Introduction to the NanoStringGeoMxSet. Available from: 
+https://www.bioconductor.org/packages/devel/bioc/vignettes/GeomxTools/inst/doc
+/Developer_Introduction_to_the_NanoStringGeoMxSet.html (September 21, 2023c).
+
 Next, an usable matrix of column data is extracted from the sample data:
 ```{r ColdataDEG, echo=TRUE, results='hide', warning=FALSE}
 annotation_matrix <- sData(rawDataObject)
@@ -322,6 +336,10 @@ class(coldata_2)
 all(colnames(copy_df_Expr) == rownames(coldata_2)) #check if the order of the data column names == order of metadata rownames
 
 ```
+Love M, Ahlmann-Eltze C, Forbes K, Anders S, Huber W, FP7 RE, NHGRI N, CZI (2023) DESeq2: 
+Differential gene expression analysis based on the negative binomial distribution. 
+https://doi.org/10.18129/B9.bioc.DESeq2
+
 To perform the differential gene expression analysis limma voom is utilized. First a matrix is created in which each coefficient represents the average of the samples from one group. Afterwards the contrasts are set to direct testing between chosen groups in the analysis. To scale the raw library sizes the normalization factor are calculated. The count data is then transformed to log2-counts per million and the mean-variance relationship is estimated. By fitting a linear model to each gene both fold changes and standard errors are estimated. The fitted model objects are next reorientated from the coefficients of the design matrix to any set of contrasts of the the original coefficients. The standard error are smoothed by empirical Bayes. Finally the results of the differential gene expression analysis are classified as up, down or not significantly differently expressed.
 ```{r PerformingDEGLimmaVoom,echo=TRUE, include=TRUE, error=TRUE, warning=FALSE}
 library(edgeR)
@@ -376,6 +394,15 @@ sigDEresults <- result1 %>%
   dplyr::filter(isSignificant == TRUE)
 
 ```
+inesdesantiago (2020) 10 Tips & Tricks for complex model.matrix designs in DGE analysis. 
+Sequencing QC and data analysis blog. Available from: 
+Bibliography
+96
+https://seqqc.wordpress.com/2020/11/28/10-tips-tricks-for-complex-model-matrixdesigns-in-dge-analysis/ (September 21, 2023).
+Anon Developer Introduction to the NanoStringGeoMxSet. Available from: 
+https://www.bioconductor.org/packages/devel/bioc/vignettes/GeomxTools/inst/doc
+/Developer_Introduction_to_the_NanoStringGeoMxSet.html (September 21, 2023c). 
+
 <font size="4"> Visualisation </font>
 The results from the differential gene expression analysis are visualised using a venn diagramm to represent the up and down regulated genes between groups. This is set up the following way:
 ```{r VennDiagramm, echo=TRUE, error=TRUE, warning=FALSE}

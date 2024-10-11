@@ -275,6 +275,15 @@ rawDataObject <- suppressWarnings(readNanoStringGeoMxSet(dccFiles = DCCFiles,
                                           experimentDataColNames = NULL))
 ```
 
+Anon Analyzing GeoMx-NGS RNA Expression Data with GeomxTools. Available
+from:
+<http://bioconductor.riken.jp/packages/3.15/workflows/vignettes/GeoMxWorkflows/>
+inst/doc/GeomxTools_RNA-NGS_Analysis.html (September 21, 2023b). Anon
+Developer Introduction to the NanoStringGeoMxSet. Available from:
+<https://www.bioconductor.org/packages/devel/bioc/vignettes/GeomxTools/inst/doc>
+/Developer_Introduction_to_the_NanoStringGeoMxSet.html (September 21,
+2023c).
+
 To pre-process the data, the logarithm of the count matrix is computed
 and added into the demoData object. Furthermore, the data is summarized
 by splitting the data by a chosen column and calculating the mean.
@@ -305,6 +314,15 @@ df_Exp <- genRawReadCountTable(PrePro_rawDataObject)
 | 0610012G03Rik |                          24 |                         100 |                          12 |                          35 |                          16 |                          91 |                          31 |                         138 |                          11 |
 | 0610030E20Rik |                          10 |                          61 |                           9 |                          31 |                           8 |                          25 |                          14 |                         112 |                           3 |
 | 0610040J01Rik |                          11 |                          33 |                           4 |                           7 |                           7 |                          22 |                          23 |                         115 |                           6 |
+
+Anon Analyzing GeoMx-NGS RNA Expression Data with GeomxTools. Available
+from:
+<http://bioconductor.riken.jp/packages/3.15/workflows/vignettes/GeoMxWorkflows/>
+inst/doc/GeomxTools_RNA-NGS_Analysis.html (September 21, 2023b). Anon
+Developer Introduction to the NanoStringGeoMxSet. Available from:
+<https://www.bioconductor.org/packages/devel/bioc/vignettes/GeomxTools/inst/doc>
+/Developer_Introduction_to_the_NanoStringGeoMxSet.html (September 21,
+2023c).
 
 Next, an usable matrix of column data is extracted from the sample data:
 
@@ -388,6 +406,11 @@ class(coldata_2)
 all(colnames(copy_df_Expr) == rownames(coldata_2)) #check if the order of the data column names == order of metadata rownames
 #> [1] TRUE
 ```
+
+Love M, Ahlmann-Eltze C, Forbes K, Anders S, Huber W, FP7 RE, NHGRI N,
+CZI (2023) DESeq2: Differential gene expression analysis based on the
+negative binomial distribution.
+<https://doi.org/10.18129/B9.bioc.DESeq2>
 
 To perform the differential gene expression analysis limma voom is
 utilized. First a matrix is created in which each coefficient represents
@@ -546,6 +569,17 @@ result1 <- result1 %>%
 sigDEresults <- result1 %>%
   dplyr::filter(isSignificant == TRUE)
 ```
+
+inesdesantiago (2020) 10 Tips & Tricks for complex model.matrix designs
+in DGE analysis. Sequencing QC and data analysis blog. Available from:
+Bibliography 96 <a
+href="https://seqqc.wordpress.com/2020/11/28/10-tips-tricks-for-complex-model-matrixdesigns-in-dge-analysis/"
+class="uri">https://seqqc.wordpress.com/2020/11/28/10-tips-tricks-for-complex-model-matrixdesigns-in-dge-analysis/</a>
+(September 21, 2023). Anon Developer Introduction to the
+NanoStringGeoMxSet. Available from:
+<https://www.bioconductor.org/packages/devel/bioc/vignettes/GeomxTools/inst/doc>
+/Developer_Introduction_to_the_NanoStringGeoMxSet.html (September 21,
+2023c).
 
 <font size="4"> Visualisation </font> The results from the differential
 gene expression analysis are visualised using a venn diagramm to
