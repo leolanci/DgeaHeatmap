@@ -563,6 +563,10 @@ venn.plot <- vennDiagram(results_all_DEG,
               circle.col = c("red", "blue", "green3"))
 ```
 
-<img src="man/figures/README-VennDiagramm-1.png" width="100%" /> In that
-case, don’t forget to commit and push the resulting figure files, so
-they display on GitHub and CRAN.
+<img src="man/figures/README-VennDiagramm-1.png" width="100%" /> Chen,
+H., Boutros, P.C. VennDiagram: a package for the generation of
+highly-customizable Venn and Euler diagrams in R. BMC Bioinformatics 12,
+35 (2011). <https://doi.org/10.1186/1471-2105-12-35>
+
+In that case, don’t forget to commit and push the resulting figure
+files, so they display on GitHub and CRAN.
