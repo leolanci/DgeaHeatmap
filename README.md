@@ -374,5 +374,195 @@ for (i in list_columnNames) {
 | 0610030E20Rik |                     10 |                     61 |                                  9 |                                 31 |                         8 |                        25 |                         14 |                        112 |                          3 |
 | 0610040J01Rik |                     11 |                     33 |                                  4 |                                  7 |                         7 |                        22 |                         23 |                        115 |                          6 |
 
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.
+<font size="4"> Differential gene expression analysis </font> The
+process of doing a differential gene expression analysis starts by
+checking if all columns of the raw data are in the metadata and if the
+column names are in the same order in both raw data and metadata.
+
+``` r
+all(colnames(copy_df_Expr) %in% rownames(coldata_2)) #check if all column names of data are in rownames of metadata #check if TRUE
+#> [1] TRUE
+class(coldata_2)
+#> [1] "matrix" "array"
+
+all(colnames(copy_df_Expr) == rownames(coldata_2)) #check if the order of the data column names == order of metadata rownames
+#> [1] TRUE
+```
+
+To perform the differential gene expression analysis limma voom is
+utilized. First a matrix is created in which each coefficient represents
+the average of the samples from one group. Afterwards the contrasts are
+set to direct testing between chosen groups in the analysis. To scale
+the raw library sizes the normalization factor are calculated. The count
+data is then transformed to log2-counts per million and the
+mean-variance relationship is estimated. By fitting a linear model to
+each gene both fold changes and standard errors are estimated. The
+fitted model objects are next reorientated from the coefficients of the
+design matrix to any set of contrasts of the the original coefficients.
+The standard error are smoothed by empirical Bayes. Finally the results
+of the differential gene expression analysis are classified as up, down
+or not significantly differently expressed.
+
+``` r
+library(edgeR)
+#> Loading required package: limma
+#> 
+#> Attaching package: 'limma'
+#> The following object is masked from 'package:BiocGenerics':
+#> 
+#>     plotMA
+library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following object is masked from 'package:NanoStringNCTools':
+#> 
+#>     groups
+#> The following objects are masked from 'package:S4Vectors':
+#> 
+#>     first, intersect, rename, setdiff, setequal, union
+#> The following object is masked from 'package:Biobase':
+#> 
+#>     combine
+#> The following objects are masked from 'package:BiocGenerics':
+#> 
+#>     combine, intersect, setdiff, union
+#> The following object is masked from 'package:testthat':
+#> 
+#>     matches
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
+library(tidyr)
+#> 
+#> Attaching package: 'tidyr'
+#> The following object is masked from 'package:S4Vectors':
+#> 
+#>     expand
+#> The following object is masked from 'package:testthat':
+#> 
+#>     matches
+library(tidyverse)
+#> ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+#> ✔ forcats   1.0.0     ✔ readr     2.1.5
+#> ✔ lubridate 1.9.3     ✔ stringr   1.5.1
+#> ✔ purrr     1.0.2
+#> ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+#> ✖ dplyr::combine()       masks Biobase::combine(), BiocGenerics::combine()
+#> ✖ readr::edition_get()   masks testthat::edition_get()
+#> ✖ tidyr::expand()        masks S4Vectors::expand()
+#> ✖ dplyr::filter()        masks stats::filter()
+#> ✖ dplyr::first()         masks S4Vectors::first()
+#> ✖ dplyr::groups()        masks NanoStringNCTools::groups()
+#> ✖ purrr::is_null()       masks testthat::is_null()
+#> ✖ dplyr::lag()           masks stats::lag()
+#> ✖ readr::local_edition() masks testthat::local_edition()
+#> ✖ tidyr::matches()       masks dplyr::matches(), testthat::matches()
+#> ✖ ggplot2::Position()    masks BiocGenerics::Position(), base::Position()
+#> ✖ dplyr::rename()        masks S4Vectors::rename()
+#> ✖ lubridate::second()    masks S4Vectors::second()
+#> ✖ lubridate::second<-()  masks S4Vectors::second<-()
+#> ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+
+coldata2 <- as.data.frame((coldata_2))
+comp <- paste0(coldata2$age, coldata2$region, coldata2$segment)
+design <- model.matrix(~0 + comp)
+
+
+contrasts <- makeContrasts(P0_Iba1_neg_cortex_vs_cc = compP0cortexIba1_neg - compP0ccIba1_neg,
+                           P0_Iba1_neg_cortex_vs_hippo = compP0cortexIba1_neg - compP0hippoIba1_neg,
+                           P0_Iba1_neg_cc_vs_hippo = compP0ccIba1_neg - compP0hippoIba1_neg,
+                           levels = design)
+
+y = DGEList(counts = copy_df_Expr)
+y = calcNormFactors(y)
+v = voom(y, design)
+
+fit <- lmFit(v, design) 
+fit2 <- contrasts.fit(fit, contrasts) # contrasts.fit must be run before eBayes
+fit2 <- eBayes(fit2)
+
+results_all_DEG <- decideTests(fit2)
+summary(results_all_DEG)
+#>        P0_Iba1_neg_cortex_vs_cc P0_Iba1_neg_cortex_vs_hippo
+#> Down                        167                          25
+#> NotSig                    19295                       19890
+#> Up                          501                          48
+#>        P0_Iba1_neg_cc_vs_hippo
+#> Down                       235
+#> NotSig                   19622
+#> Up                         106
+
+result1 = topTable(fit2, coef= "P0_Iba1_neg_cc_vs_hippo", number = Inf, adjust.method = "fdr") %>%
+  as.data.frame() # differnetially expressed genes are obtained by topTreat() function
+# filter results to get significantly differentially expressed genes
+
+
+
+
+topUp <- result1[which(result1$logFC > 0),] [1:100,] # up reg top 100
+topDown <- result1[which(result1$logFC < 0),] [1:100,] # down reg top 100
+
+class(topUp)
+#> [1] "data.frame"
+
+NamesUpReg <- row.names(topUp)
+NamesDownReg <- row.names(topDown)
+print(NamesDownReg)
+#>   [1] "Shisa6"        "Reln"          "Ndnf"          "Kctd12"       
+#>   [5] "Sertm1"        "Bhlhe22"       "Bex1"          "Gria1"        
+#>   [9] "Maf"           "Crym"          "Vstm2l"        "Lonrf2"       
+#>  [13] "Vstm2a"        "Camk2b"        "Cxcl14"        "Epha6"        
+#>  [17] "Tbc1d16"       "Snca"          "Nts"           "Mafb"         
+#>  [21] "Trim67"        "Rac3"          "Jph4"          "Nr3c2"        
+#>  [25] "Npas1"         "Ppp2r2c"       "Psd"           "Cxcl12"       
+#>  [29] "Calb2"         "Xkr4"          "Lhx6"          "Mapt"         
+#>  [33] "Rims4"         "Cnr1"          "Gpr27"         "Reep1"        
+#>  [37] "Nr4a3"         "Shank1"        "Rcan2"         "Rell2"        
+#>  [41] "Nr2f2"         "Selenom"       "Dner"          "Serp2"        
+#>  [45] "Pcdh19"        "Ablim3"        "Tceal5"        "Tmem130"      
+#>  [49] "Hecw1"         "NegProbe-WTX"  "Tub"           "Ccdc184"      
+#>  [53] "Ina"           "Ly6h"          "Camk2n2"       "Clec2l"       
+#>  [57] "Ripor2"        "Mlip"          "Homer2"        "Jph3"         
+#>  [61] "Ids"           "Chl1"          "Gap43"         "Nxph1"        
+#>  [65] "Clstn2"        "Cdh11"         "Pak6"          "9330159F19Rik"
+#>  [69] "Syt4"          "Lrp11"         "Nhlh2"         "Kcnq2"        
+#>  [73] "Zfp998"        "Gabra5"        "C1qtnf4"       "Stk32b"       
+#>  [77] "Map6"          "Atp1a3"        "Camk2a"        "Vmn2r86"      
+#>  [81] "Cd200"         "Grm5"          "Mmp24"         "Chrm3"        
+#>  [85] "Amph"          "Ren2"          "Syt1"          "Rasl10b"      
+#>  [89] "Adap1"         "Fgf13"         "Scn3b"         "Lrfn5"        
+#>  [93] "Olfm2"         "Grin2b"        "Dpf1"          "Spock2"       
+#>  [97] "Nexmif"        "Gng2"          "Cck"           "Dnajc6"
+
+result1 <- result1 %>%
+  dplyr::mutate(isSignificant = case_when(
+    adj.P.Val < 0.05& abs(logFC) >1 ~TRUE,
+    TRUE ~ FALSE # If condictions in the line above are not met, gene is not DE.
+    ))
+
+sigDEresults <- result1 %>%
+  dplyr::filter(isSignificant == TRUE)
+```
+
+<font size="4"> Visualisation </font> The results from the differential
+gene expression analysis are visualised using a venn diagramm to
+represent the up and down regulated genes between groups. This is set up
+the following way:
+
+``` r
+library(VennDiagram)
+#> Loading required package: grid
+#> Loading required package: futile.logger
+venn.plot <- vennDiagram(results_all_DEG,
+              imagetype = "tiff",
+              include=c("up", "down"), mar=rep(1,4), cex=c(1.5,1,0.7), lwd=1,
+              counts.col=c("red", "blue"),
+              circle.col = c("red", "blue", "green3"))
+```
+
+<img src="man/figures/README-VennDiagramm-1.png" width="100%" /> In that
+case, don’t forget to commit and push the resulting figure files, so
+they display on GitHub and CRAN.
