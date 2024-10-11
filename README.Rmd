@@ -311,5 +311,79 @@ for (i in list_columnNames) {
 ```{r exampleColumnNameExchange, echo=FALSE}
 knitr::kable(head(copy_df_Expr[, 1:9]),"pipe")
 ```
+<font size="4"> Differential gene expression analysis </font>
+The process of doing a differential gene expression analysis starts by checking if all columns of the raw data are in the metadata and if the column names are in the same order in both raw data and metadata.
 
+
+```{r EqualOrder, echo=TRUE, warning=FALSE}
+all(colnames(copy_df_Expr) %in% rownames(coldata_2)) #check if all column names of data are in rownames of metadata #check if TRUE
+class(coldata_2)
+
+all(colnames(copy_df_Expr) == rownames(coldata_2)) #check if the order of the data column names == order of metadata rownames
+
+```
+To perform the differential gene expression analysis limma voom is utilized. First a matrix is created in which each coefficient represents the average of the samples from one group. Afterwards the contrasts are set to direct testing between chosen groups in the analysis. To scale the raw library sizes the normalization factor are calculated. The count data is then transformed to log2-counts per million and the mean-variance relationship is estimated. By fitting a linear model to each gene both fold changes and standard errors are estimated. The fitted model objects are next reorientated from the coefficients of the design matrix to any set of contrasts of the the original coefficients. The standard error are smoothed by empirical Bayes. Finally the results of the differential gene expression analysis are classified as up, down or not significantly differently expressed.
+```{r PerformingDEGLimmaVoom,echo=TRUE, include=TRUE, error=TRUE, warning=FALSE}
+library(edgeR)
+library(dplyr)
+library(tidyr)
+library(tidyverse)
+
+coldata2 <- as.data.frame((coldata_2))
+comp <- paste0(coldata2$age, coldata2$region, coldata2$segment)
+design <- model.matrix(~0 + comp)
+
+
+contrasts <- makeContrasts(P0_Iba1_neg_cortex_vs_cc = compP0cortexIba1_neg - compP0ccIba1_neg,
+                           P0_Iba1_neg_cortex_vs_hippo = compP0cortexIba1_neg - compP0hippoIba1_neg,
+                           P0_Iba1_neg_cc_vs_hippo = compP0ccIba1_neg - compP0hippoIba1_neg,
+                           levels = design)
+
+y = DGEList(counts = copy_df_Expr)
+y = calcNormFactors(y)
+v = voom(y, design)
+
+fit <- lmFit(v, design) 
+fit2 <- contrasts.fit(fit, contrasts) # contrasts.fit must be run before eBayes
+fit2 <- eBayes(fit2)
+
+results_all_DEG <- decideTests(fit2)
+summary(results_all_DEG)
+
+result1 = topTable(fit2, coef= "P0_Iba1_neg_cc_vs_hippo", number = Inf, adjust.method = "fdr") %>%
+  as.data.frame() # differnetially expressed genes are obtained by topTreat() function
+# filter results to get significantly differentially expressed genes
+
+
+
+
+topUp <- result1[which(result1$logFC > 0),] [1:100,] # up reg top 100
+topDown <- result1[which(result1$logFC < 0),] [1:100,] # down reg top 100
+
+class(topUp)
+
+NamesUpReg <- row.names(topUp)
+NamesDownReg <- row.names(topDown)
+print(NamesDownReg)
+
+result1 <- result1 %>%
+  dplyr::mutate(isSignificant = case_when(
+    adj.P.Val < 0.05& abs(logFC) >1 ~TRUE,
+    TRUE ~ FALSE # If condictions in the line above are not met, gene is not DE.
+    ))
+
+sigDEresults <- result1 %>%
+  dplyr::filter(isSignificant == TRUE)
+
+```
+<font size="4"> Visualisation </font>
+The results from the differential gene expression analysis are visualised using a venn diagramm to represent the up and down regulated genes between groups. This is set up the following way:
+```{r VennDiagramm, echo=TRUE, error=TRUE, warning=FALSE}
+library(VennDiagram)
+venn.plot <- vennDiagram(results_all_DEG,
+              imagetype = "tiff",
+              include=c("up", "down"), mar=rep(1,4), cex=c(1.5,1,0.7), lwd=1,
+              counts.col=c("red", "blue"),
+              circle.col = c("red", "blue", "green3"))
+```
 In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
