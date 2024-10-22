@@ -393,8 +393,9 @@ for (i in list_columnNames) {
 
 <font size="4"> Differential gene expression analysis </font> The
 process of doing a differential gene expression analysis starts by
-checking if all columns of the raw data are in the metadata and if the
-column names are in the same order in both raw data and metadata.
+checking if all the columns of the raw data are present in the metadata
+and if the column names appear in the same order in both the raw data
+and metadata.
 
 ``` r
 all(colnames(copy_df_Expr) %in% rownames(coldata_2)) #check if all column names of data are in rownames of metadata #check if TRUE

@@ -326,7 +326,7 @@ for (i in list_columnNames) {
 knitr::kable(head(copy_df_Expr[, 1:9]),"pipe")
 ```
 <font size="4"> Differential gene expression analysis </font>
-The process of doing a differential gene expression analysis starts by checking if all columns of the raw data are in the metadata and if the column names are in the same order in both raw data and metadata.
+The process of doing a differential gene expression analysis starts by checking if all the columns of the raw data are present in the metadata and if the column names appear in the same order in both the    raw data and metadata.
 
 
 ```{r EqualOrder, echo=TRUE, warning=FALSE}
