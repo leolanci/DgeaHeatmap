@@ -391,8 +391,9 @@ for (i in list_columnNames) {
 | 0610030E20Rik |                     10 |                     61 |                                  9 |                                 31 |                         8 |                        25 |                         14 |                        112 |                          3 |
 | 0610040J01Rik |                     11 |                     33 |                                  4 |                                  7 |                         7 |                        22 |                         23 |                        115 |                          6 |
 
-<font size="4"> Differential gene expression analysis </font> The
-process of doing a differential gene expression analysis starts by
+<font size="4"> Differential gene expression analysis </font>
+
+The process of doing a differential gene expression analysis starts by
 checking if all the columns of the raw data are present in the metadata
 and if the column names appear in the same order in both the raw data
 and metadata.
