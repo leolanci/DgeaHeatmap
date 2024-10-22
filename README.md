@@ -205,15 +205,14 @@ WidthNum <- 4.5
 HeightNum <- 3
 UnitSize <- "cm"
 colorPalette <- "RdBu"
-print_heatmap(seed, sumBioRepsMatrix, title, split_heatmap_clusters, annotation_for_heatmap, fontsize_columnNames, fontsize_rowNames, title_heatmap_legend, WidthNum, HeightNum, UnitSize, colorPalette)
+hm <- print_heatmap(seed, sumBioRepsMatrix, title, split_heatmap_clusters, annotation_for_heatmap, fontsize_columnNames, fontsize_rowNames, title_heatmap_legend, WidthNum, HeightNum, UnitSize, colorPalette)
 ```
 
-<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" /><img src="man/figures/README-unnamed-chunk-3-2.png" width="100%" />
-With “function_complexHeatmap_var” a heatmap can be created with
-automatic annotation of x most variable genes from each cluster. As
-input a matrix with the scaled counts of the most varible genes from a
-dataset can be used. The function is able to summarize biological
-replicates.
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" /> With
+“function_complexHeatmap_var” a heatmap can be created with automatic
+annotation of x most variable genes from each cluster. As input a matrix
+with the scaled counts of the most varible genes from a dataset can be
+used. The function is able to summarize biological replicates.
 
 ``` r
 title <- "Heatmap Cortex Iba1 positive"
@@ -253,10 +252,10 @@ WidthNum <- 4.5
 HeightNum <- 3
 UnitSize <- "cm"
 colorPalette <- "RdBu"
-print_heatmap(seed, sumBioRepsMatrix, title, split_heatmap_clusters, annotation_for_heatmap, fontsize_columnNames, fontsize_rowNames, title_heatmap_legend, WidthNum, HeightNum, UnitSize, colorPalette)
+hm <- print_heatmap(seed, sumBioRepsMatrix, title, split_heatmap_clusters, annotation_for_heatmap, fontsize_columnNames, fontsize_rowNames, title_heatmap_legend, WidthNum, HeightNum, UnitSize, colorPalette)
 ```
 
-<img src="man/figures/README-exampleHeatmapSpecificAnnotation-1.png" width="100%" /><img src="man/figures/README-exampleHeatmapSpecificAnnotation-2.png" width="100%" />
+<img src="man/figures/README-exampleHeatmapSpecificAnnotation-1.png" width="100%" />
 <font size="7"> Functions to analyze Nanostring GeoMx DSP data: </font>
 
 The raw Nanostring GeoMx DSP files are read in and then united into an
