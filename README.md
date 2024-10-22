@@ -412,18 +412,18 @@ negative binomial distribution.
 <https://doi.org/10.18129/B9.bioc.DESeq2>
 
 To perform the differential gene expression analysis limma voom is
-utilized. First a matrix is created in which each coefficient represents
-the average of the samples from one group. Afterwards the contrasts are
-set to direct testing between chosen groups in the analysis. To scale
-the raw library sizes the normalization factor are calculated. The count
-data is then transformed to log2-counts per million and the
-mean-variance relationship is estimated. By fitting a linear model to
-each gene both fold changes and standard errors are estimated. The
-fitted model objects are next reorientated from the coefficients of the
-design matrix to any set of contrasts of the the original coefficients.
-The standard error are smoothed by empirical Bayes. Finally the results
-of the differential gene expression analysis are classified as up, down
-or not significantly differently expressed.
+utilized. First, a matrix is created in which each coefficient
+represents the average of the samples from one group. Afterwards, the
+contrasts are set to direct testing between chosen groups in the
+analysis. To scale the raw library sizes, the normalization factor are
+calculated. The count data is then transformed to log2-counts per
+million, and the mean-variance relationship is estimated. By fitting a
+linear model to each gene both fold changes and standard errors are
+estimated. The fitted model objects are next reorientated from the
+coefficients of the design matrix to any set of contrasts of the
+original coefficients. The standard errors are smoothed by empirical
+Bayes. Finally the results of the differential gene expression analysis
+are classified as up, down or not significantly differently expressed.
 
 ``` r
 library(edgeR)
