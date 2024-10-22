@@ -10,10 +10,22 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Imports: BiocGenerics, ComplexHeatmap, RColorBrewer, purrr, magrittr, rlang, NanoStringNCTools, Biobase, GeomxTools
+VignetteBuilder: knitr
 Suggests: 
+    BiocStyle,
     knitr,
     rmarkdown,
     testthat (>= 3.0.0),
     tinysnapshot,
-    visualTest
-VignetteBuilder: knitr
+    visualTest,
+    dplyr, 
+    tibble,
+    tidyr, 
+    tidyverse,
+    EnvStats,
+    GeoMxWorkflows, 
+    VennDiagram,
+    edgeR,
+    ggiraph,
+    ggsankey, 
+    utils
