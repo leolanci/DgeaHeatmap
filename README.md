@@ -167,7 +167,8 @@ print(mostVarGeneslist)
 #> [1] "Purb"
 ```
 
-To set the annotation for a heatmap the following function can be used:
+**To set the annotation for a heatmap the following function can be
+used:**
 
 ``` r
 number_of_annotations_per_cluster <- 5
@@ -196,7 +197,8 @@ color_setting(colorPalette)
 #> [50] "#67001F"
 ```
 
-Finally, a heatmap with clusters can be generated as in this example:
+**Finally, a heatmap with clusters can be generated as in this
+example:**
 
 ``` r
 seed <- 1
@@ -231,8 +233,9 @@ hm <- function_complexHeatmap_var(scaled_counts, probes, number_of_annotations_p
 ```
 
 <img src="man/figures/README-exampleFunctionComplexHeatmapVar-1.png" width="100%" />
-A heatmap can further be generated with annotation of specific genes, as
-in this example:
+
+**A heatmap can further be generated with annotation of specific genes,
+as in this example:**
 
 ``` r
 probes <- list("P0_cortex_Iba1_pos", "P5_cortex_Iba1_pos", "P15_cortex_Iba1_pos")
@@ -259,7 +262,8 @@ hm <- print_heatmap(seed, sumBioRepsMatrix, title, split_heatmap_clusters, annot
 ```
 
 <img src="man/figures/README-exampleHeatmapSpecificAnnotation-1.png" width="100%" />
-\### Differential Gene Expression Analysis Using Nanostring Data
+
+### Differential Gene Expression Analysis Using Nanostring Data
 
 **Functions to analyze Nanostring GeoMx DSP data:**
 
