@@ -591,8 +591,6 @@ NanoStringGeoMxSet. Available from:
 /Developer_Introduction_to_the_NanoStringGeoMxSet.html (September 21,
 2023c).
 
-<font size="4"> Visualisation </font>
-
 **Visualisation with a Venn Diagramm:**
 
 The results from the differential gene expression analysis are
