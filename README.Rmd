@@ -31,7 +31,8 @@ pak::pak("leolanci/Dgea_Heatmap_Package")
 
 ## Usage
 
-This is a basic example which shows you how to solve a common problem:
+**This is a basic example which shows you how to solve a common problem:**
+
 ```{r input normalizedReadCountsExample, echo=FALSE, results='hide'}
 library(testthat)
 input_data <- read.csv(test_path("1_Counts_All_Regions_All_Ages_Pos_Neg.csv"))
@@ -59,23 +60,27 @@ indiMatrix <- individual_matrix(factors_for_individual_matrix, matrixCounts)
 knitr::kable(head(indiMatrix[, 1:9]),"pipe")
 ```
 
-Filtering the matrix for only an x amount of most variable expressed genes:
+**Filtering the matrix for only an x amount of most variable expressed genes:**
+
 ```{r exampleFilteringForTopExprGenes, echo=TRUE}
 top_number_of_genes <- 500
 varGenesMatrix <- filtering_for_top_exprGenes(indiMatrix, top_number_of_genes)
 print(nrow(varGenesMatrix))
 ```
 
-Using Z-score scaling to scale the values of the matrix:
+**Using Z-score scaling to scale the values of the matrix:**
+
 ```{r exampleZScoreScaling, echo=TRUE, results='hide'}
 scaled_counts <- scale_counts(varGenesMatrix)
 ```
 
-How to visualize the data distribution of the scaled counts:
+**How to visualize the data distribution of the scaled counts:**
+
 ```{r exampleShowDataDistribution, echo=TRUE}
 show_data_distribution(scaled_counts)
 ```
-Generating an elbow plot to choose k for k-mean generation:
+**Generating an elbow plot to choose k for k-mean generation:**
+
 ```{r exampleElbowPlot, echo=TRUE}
 seed <- 1 # setting a seed for a reproducible outcome
 elbow_plot(seed, scaled_counts)
@@ -88,7 +93,8 @@ sumBioRepsMatrix <- summarise_bio_replicates(scaled_counts, probes)
 ```{r showSummedBioReplicates, echo=FALSE}
 knitr::kable(head(sumBioRepsMatrix[, 1:3]),"pipe")
 ```
-Generating K-means for clustering in the heatmap:
+**Generating K-means for clustering in the heatmap:**
+
 ```{r exampleKmeanGeneration, echo=TRUE}
 seed <- 1 #set a seed for reproducibility, but try different seeds first
 k_clusters <- 2
@@ -173,7 +179,6 @@ colorPalette <- "RdBu"
 hm <- print_heatmap(seed, sumBioRepsMatrix, title, split_heatmap_clusters, annotation_for_heatmap, fontsize_columnNames, fontsize_rowNames, title_heatmap_legend, WidthNum, HeightNum, UnitSize, colorPalette)
 
 ```
-<font size="7"> Functions to analyze Nanostring GeoMx DSP data: </font>
 
 **Functions to analyze Nanostring GeoMx DSP data:**
 ```{r loadingPackagesNanostringData, warning=FALSE, include=FALSE, results='hide'}
@@ -327,7 +332,9 @@ for (i in list_columnNames) {
 ```{r exampleColumnNameExchange, echo=FALSE}
 knitr::kable(head(copy_df_Expr[, 1:9]),"pipe")
 ```
-<font size="4"> Differential gene expression analysis </font>
+
+
+**Differential gene expression analysis**
 
 The process of doing a differential gene expression analysis starts by checking if all the columns of the raw data are present in the metadata and if the column names appear in the same order in both the raw data and metadata.
 
@@ -407,6 +414,9 @@ https://www.bioconductor.org/packages/devel/bioc/vignettes/GeomxTools/inst/doc
 /Developer_Introduction_to_the_NanoStringGeoMxSet.html (September 21, 2023c). 
 
 <font size="4"> Visualisation </font>
+
+**Visualisation with a Venn Diagramm:**
+
 The results from the differential gene expression analysis are visualised using a venn diagramm to represent the up and down regulated genes between groups. This is set up the following way:
 ```{r VennDiagramm, echo=TRUE, error=TRUE, warning=FALSE}
 library(VennDiagram)
