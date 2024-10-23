@@ -113,7 +113,8 @@ k_clusters <- 2
 mostVarGeneslist <- most_variable_genes(K_meanTable, number_of_annotations_per_cluster, k_clusters)
 print(mostVarGeneslist)
 ```
-To set the annotation for a heatmap the following function can be used:
+**To set the annotation for a heatmap the following function can be used:**
+
 ```{r exampleSetAnnotation, echo=TRUE}
 number_of_annotations_per_cluster <- 5
 annotation_for_heatmap <- set_annotation(sumBioRepsMatrix, number_of_annotations_per_cluster)
@@ -130,7 +131,8 @@ colorPalette <- "RdBu"
 color_setting(colorPalette)
 ```
 
-Finally, a heatmap with clusters can be generated as in this example:
+**Finally, a heatmap with clusters can be generated as in this example:**
+
 ```{r}
 seed <- 1
 title <- "Heatmap Cortex Iba1 positive"
@@ -156,7 +158,9 @@ colorPalette <- "RdBu"
 
 hm <- function_complexHeatmap_var(scaled_counts, probes, number_of_annotations_per_cluster, k_clusters, seed, title, fontsize_columnNames, fontsize_rowNames, title_heatmap_legend, WidthNum, HeightNum, UnitSize, colorPalette)
 ```
-A heatmap can further be generated with annotation of specific genes, as in this example:
+
+**A heatmap can further be generated with annotation of specific genes, as in this example:**
+
 ```{r exampleHeatmapSpecificAnnotation}
 probes <- list("P0_cortex_Iba1_pos", "P5_cortex_Iba1_pos", "P15_cortex_Iba1_pos")
 sumBioRepsMatrix <- summarise_bio_replicates(scaled_counts, probes)
@@ -181,6 +185,7 @@ colorPalette <- "RdBu"
 hm <- print_heatmap(seed, sumBioRepsMatrix, title, split_heatmap_clusters, annotation_for_heatmap, fontsize_columnNames, fontsize_rowNames, title_heatmap_legend, WidthNum, HeightNum, UnitSize, colorPalette)
 
 ```
+
 ### Differential Gene Expression Analysis Using Nanostring Data
 
 **Functions to analyze Nanostring GeoMx DSP data:**
