@@ -23,6 +23,8 @@ pak::pak("leolanci/Dgea_Heatmap_Package")
 
 ## Usage
 
+### Building Heatmaps
+
 **This is a basic example which shows you how to solve a common
 problem:**
 
@@ -257,6 +259,7 @@ hm <- print_heatmap(seed, sumBioRepsMatrix, title, split_heatmap_clusters, annot
 ```
 
 <img src="man/figures/README-exampleHeatmapSpecificAnnotation-1.png" width="100%" />
+\### Differential Gene Expression Analysis Using Nanostring Data
 
 **Functions to analyze Nanostring GeoMx DSP data:**
 
