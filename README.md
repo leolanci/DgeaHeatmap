@@ -257,6 +257,7 @@ hm <- print_heatmap(seed, sumBioRepsMatrix, title, split_heatmap_clusters, annot
 
 <img src="man/figures/README-exampleHeatmapSpecificAnnotation-1.png" width="100%" />
 <font size="7"> Functions to analyze Nanostring GeoMx DSP data: </font>
+
 **Functions to analyze Nanostring GeoMx DSP data:**
 
 The raw Nanostring GeoMx DSP files are read in and then united into an
