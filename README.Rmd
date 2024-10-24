@@ -30,12 +30,15 @@ pak::pak("leolanci/Dgea_Heatmap_Package")
 ```
 
 ## Usage
-![Workflow.](C:/Users/llancell/Downloads/SCheme_BioinformaticsPaper (6).jpeg)
+![Workflow.](SCheme_BioinformaticsPaper (1).png)
 ```{r ImageREADME, echo=FALSE, fig.cap="Step-by-step workflow of data processing using DgeaHeatmap"}
 #print(knitr::include_graphics("C:/Users/llancell/Downloads/SCheme_BioinformaticsPaper (6).jpeg"))
 #print("C:/Users/llancell/Downloads/SCheme_BioinformaticsPaper (6).jpeg")
 #! [Workflow.](/Users/llancell/Downloads/SCheme_BioinformaticsPaper (6).jpeg)
-
+#library(png)
+#library(grid)
+#img <- readPNG("C:/Users/llancell/Downloads/SCheme_BioinformaticsPaper (1).png")
+# grid.raster(img)
 ```
 
 
