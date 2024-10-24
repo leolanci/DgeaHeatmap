@@ -30,6 +30,10 @@ pak::pak("leolanci/Dgea_Heatmap_Package")
 ```
 
 ## Usage
+```{r}
+knitr::include_graphics("C:/Users/llancell/Downloads/SCheme_BioinformaticsPaper (6).jpeg")
+```
+
 
 ### Building Heatmaps
 
