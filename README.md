@@ -23,12 +23,6 @@ pak::pak("leolanci/Dgea_Heatmap_Package")
 
 ## Usage
 
-``` r
-knitr::include_graphics("C:/Users/llancell/Downloads/SCheme_BioinformaticsPaper (6).jpeg")
-```
-
-<img src="../../Downloads/SCheme_BioinformaticsPaper (6).jpeg" width="100%" />
-
 ### Building Heatmaps
 
 **This is a basic example that shows you how to solve a common
@@ -219,7 +213,7 @@ colorPalette <- "RdBu"
 hm <- print_heatmap(seed, sumBioRepsMatrix, title, split_heatmap_clusters, annotation_for_heatmap, fontsize_columnNames, fontsize_rowNames, title_heatmap_legend, WidthNum, HeightNum, UnitSize, colorPalette)
 ```
 
-<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" /> With
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" /> With
 “function_complexHeatmap_var”, a heatmap can be created with automatic
 annotation of the x most variable genes from each cluster. As input, a
 matrix with the scaled counts of the most variable genes from a dataset
