@@ -25,7 +25,7 @@ pak::pak("leolanci/Dgea_Heatmap_Package")
 
 <figure>
 <img
-src="/Users/llancell/Downloads/SCheme_BioinformaticsPaper%20(6).jpeg"
+src="C:/Users/llancell/Downloads/SCheme_BioinformaticsPaper%20(6).jpeg"
 alt="Workflow." />
 <figcaption aria-hidden="true">Workflow.</figcaption>
 </figure>
