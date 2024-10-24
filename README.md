@@ -23,6 +23,15 @@ pak::pak("leolanci/Dgea_Heatmap_Package")
 
 ## Usage
 
+<div class="figure">
+
+<img src="../../Downloads/SCheme_BioinformaticsPaper (6).jpeg" alt="Step-by-step workflow of data processing using DgeaHeatmap" width="100%" />
+<p class="caption">
+Step-by-step workflow of data processing using DgeaHeatmap
+</p>
+
+</div>
+
 ### Building Heatmaps
 
 **This is a basic example that shows you how to solve a common
