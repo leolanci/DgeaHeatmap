@@ -24,8 +24,19 @@ pak::pak("leolanci/Dgea_Heatmap_Package")
 ## Usage
 
 <figure>
-<img src="SCheme_BioinformaticsPaper%20(1).png" alt="Workflow." />
-<figcaption aria-hidden="true">Workflow.</figcaption>
+<img src="vignettes/plots/Scheme_Workflow.png"
+alt="Step-by-step workflow of a data analysis using either Read Counts or raw Nanostring GeoMx DSP data files. (A) Description of the steps starting with Read Counts using functions from the package DgeaHeatmap. (B) The raw files generated through Nanostring GeoMx DSP are loaded, preprocessed, and filtered in order to then extract the Read Counts of all evaluated genes and to perform a differential gene expression analysis. (C) Using prepared data, the depicted functions can be utilized to visualize the data distribution and to choose the fitting number of clusters for the dataset. Heatmaps can be genereated as wished, showing no annotation, automatically generated annotation, or specifically chosen annotation." />
+<figcaption aria-hidden="true">Step-by-step workflow of a data analysis
+using either Read Counts or raw Nanostring GeoMx DSP data files. (A)
+Description of the steps starting with Read Counts using functions from
+the package DgeaHeatmap. (B) The raw files generated through Nanostring
+GeoMx DSP are loaded, preprocessed, and filtered in order to then
+extract the Read Counts of all evaluated genes and to perform a
+differential gene expression analysis. (C) Using prepared data, the
+depicted functions can be utilized to visualize the data distribution
+and to choose the fitting number of clusters for the dataset. Heatmaps
+can be genereated as wished, showing no annotation, automatically
+generated annotation, or specifically chosen annotation.</figcaption>
 </figure>
 
 ### Building Heatmaps
