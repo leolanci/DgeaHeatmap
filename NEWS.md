@@ -1,3 +1,3 @@
 # DgeaHeatmap (development version)
 
-* Initial CRAN submission.
+* Initial Package Release
