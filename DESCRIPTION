@@ -5,7 +5,7 @@ Authors@R:
     person("Leonie", "Lancelle", , "leonie.lancelle@uni-bielefeld.de", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
 Description: Package for DGEA and heatmap generation primarly for Nanostring GeoMx DSP data, also works for other data.
-License: MIT + file LICENSE
+License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
