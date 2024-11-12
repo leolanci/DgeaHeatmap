@@ -25,22 +25,13 @@ The goal of DgeaHeatmap is to enable R users to generate heatmaps more easily an
 
 You can install the development version of DgeaHeatmap from [GitHub](https://github.com/) with:
 
-``` r
+``` {r installDgeaHeatmaps, eval=FALSE} 
 # install.packages("pak")
 pak::pak("leolanci/Dgea_Heatmap_Package")
 ```
 
 ## Usage
 ![Step-by-step workflow of a data analysis using either Read Counts or raw Nanostring GeoMx DSP data files. (A) Description of the steps starting with Read Counts using functions from the package DgeaHeatmap. (B) The raw files generated through Nanostring GeoMx DSP are loaded, preprocessed, and filtered in order to then extract the Read Counts of all evaluated genes and to perform a differential gene expression analysis. (C) Using prepared data, the depicted functions can be utilized to visualize the data distribution and to choose the fitting number of clusters for the dataset. Heatmaps can be genereated as wished, showing no annotation, automatically generated annotation, or specifically chosen annotation.](vignettes/plots/Scheme_Workflow_4.png)
-```{r ImageREADME, echo=FALSE, fig.cap="Step-by-step workflow of data processing using DgeaHeatmap"}
-#print(knitr::include_graphics("C:/Users/llancell/Downloads/SCheme_BioinformaticsPaper (6).jpeg"))
-#print("C:/Users/llancell/Downloads/SCheme_BioinformaticsPaper (6).jpeg")
-#! [Workflow.](/Users/llancell/Downloads/SCheme_BioinformaticsPaper (6).jpeg)
-#library(png)
-#library(grid)
-#img <- readPNG("C:/Users/llancell/Downloads/SCheme_BioinformaticsPaper (1).png")
-# grid.raster(img)
-```
 
 
 ### Building Heatmaps
