@@ -1,4 +1,4 @@
-#' Build a matrix from an input csv file, with one column as rownames
+#' Builds a matrix from an input csv file, with one column as rownames
 #'
 #' @param counts_data A data frame with floats or integers that has strings in one column.
 #' @param x Number of column which contains the rownames description.
