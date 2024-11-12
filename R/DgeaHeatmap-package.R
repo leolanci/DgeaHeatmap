@@ -1,0 +1,4 @@
+#' @section Package options:
+#'
+#'
+#'
