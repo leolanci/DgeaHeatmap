@@ -7,7 +7,7 @@
 genRawReadCountTable(demoData)
 }
 \arguments{
-\item{demoData}{A demoData object, storing all expression, annotation, and probe information linked together.}
+\item{demoData}{A NanostringGeoMxSet object, storing all expression, annotation, and probe information linked together.}
 }
 \value{
 A dataframe containing only the raw read counts that have passed quality control.

@@ -7,14 +7,14 @@
 split_data_by_column(demoData, vGroup, vElt)
 }
 \arguments{
-\item{demoData}{A demoData object, storing all expression, annotation, and probe information linked together.}
+\item{demoData}{A NanostringGeoMxSet object, storing all expression, annotation, and probe information linked together.}
 
 \item{vGroup}{Group of features in column.}
 
 \item{vElt}{Character string of the expression matrix name.}
 }
 \value{
-A demoData object.
+A NanostringGeoMxSet object.
 }
 \description{
 Splitting data by group column with feature, pheno or protocol data to then get the mean.

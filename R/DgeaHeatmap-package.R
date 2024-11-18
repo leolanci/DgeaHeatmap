@@ -1,4 +1,7 @@
-#' @section Package options:
-#'
+#' @keywords internal
+#' "_PACKAGE"
+
+## usethis namespace: start
+#' @import package
 #'
 #'
