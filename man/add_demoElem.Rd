@@ -7,10 +7,10 @@
 add_demoElem(demoData)
 }
 \arguments{
-\item{demoData}{A demoData object, storing all expression, annotation, and probe information linked together.}
+\item{demoData}{A NanostringGeoMxSet object, storing all expression, annotation, and probe information linked together.}
 }
 \value{
-A demoData object.
+A NanostringGeoMxSet object.
 }
 \description{
 Build a matrix from an input csv file, with one column as rownames

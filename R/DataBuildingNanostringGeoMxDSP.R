@@ -1,8 +1,8 @@
 #' Build a matrix from an input csv file, with one column as rownames
 #'
-#' @param demoData A demoData object, storing all expression, annotation, and probe information linked together.
+#' @param demoData A NanostringGeoMxSet object, storing all expression, annotation, and probe information linked together.
 #'
-#' @return A demoData object.
+#' @return A NanostringGeoMxSet object.
 #' @export
 #'
 #' @examples
@@ -17,11 +17,11 @@ add_demoElem <- function(demoData){
 
 #' Splitting data by group column with feature, pheno or protocol data to then get the mean.
 #'
-#' @param demoData A demoData object, storing all expression, annotation, and probe information linked together.
+#' @param demoData A NanostringGeoMxSet object, storing all expression, annotation, and probe information linked together.
 #' @param vGroup Group of features in column.
 #' @param vElt Character string of the expression matrix name.
 #'
-#' @return A demoData object.
+#' @return A NanostringGeoMxSet object.
 #' @export
 #'
 #' @examples
@@ -39,7 +39,7 @@ split_data_by_column <- function(demoData, vGroup, vElt){
 
 #' Function for automatized quality control.
 #'
-#' @param demoData A demoData object, storing all expression, annotation, and probe information linked together.
+#' @param demoData A NanostringGeoMxSet object, storing all expression, annotation, and probe information linked together.
 #' @param vFlags Character string to set the flags for quality control.
 #'
 #' @return A matrix.
@@ -64,7 +64,7 @@ aExprsDataQC <- function(demoData, vFlags){
 
 #' Function to generating a raw read count table.
 #'
-#' @param demoData A demoData object, storing all expression, annotation, and probe information linked together.
+#' @param demoData A NanostringGeoMxSet object, storing all expression, annotation, and probe information linked together.
 #'
 #' @return A dataframe containing only the raw read counts that have passed quality control.
 #' @export
