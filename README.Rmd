@@ -222,19 +222,19 @@ if(packageVersion("GeomxTools") > "2.1" &
 ```
 
 ```{r readInNanostringRawFiles, echo=FALSE, results='hide', warning=FALSE}
-datadir <- file.path("C:/Users/llancell/Documents/Paper")
+datadir <- file.path("C:/Users/llancell/Documents/Demo Data for R Package/Kidney_Dataset")
 
-DCCFiles <- dir(file.path(datadir, "dcc"), pattern = ".dcc$",
+DCCFiles <- dir(file.path(datadir, "dccs"), pattern = ".dcc$",
                 full.names = TRUE, recursive = TRUE)
 
 #has to be in file directory
 
-PKCFiles <- file.path(datadir, "Mm_R_NGS_WTA_v1.0 (1).pkc")
+PKCFiles <- file.path(datadir, "TAP_H_WTA_v1.0.pkc")
 PKCData <- dir(file.path(datadir, "pkc"), pattern = ".pkc$",
                full.names = TRUE, recursive = TRUE)
 
 # has to be in file directory
-SampleAnnotationFile <- file.path(datadir, "AllAnnotationNanostring1.xlsx")
+SampleAnnotationFile <- file.path(datadir, "kidney_demo_AOI_Annotations.xlsx")
 ```
 The raw Nanostring GeoMx DSP files are read in and then united into an instance of class "NanostringGeoMxSet".
 ```{r ReadData, echo=TRUE, results='hide', warning=FALSE}
@@ -290,7 +290,7 @@ Next, an usable matrix of column data is extracted from the sample data:
 ```{r ColdataDEG, echo=TRUE, results='hide', warning=FALSE}
 annotation_matrix <- sData(rawDataObject)
 
-annotation_matrix$Samplename <- paste(annotation_matrix$age_region, annotation_matrix$segment, annotation_matrix$sample, sep="_")
+annotation_matrix$Samplename <- paste(annotation_matrix$slide_name, annotation_matrix$class, annotation_matrix$region, annotation_matrix$segment, annotation_matrix$roi, sep="_")
 class(annotation_matrix)
 library(tibble)
 
@@ -300,45 +300,69 @@ rownames(annotation_matrix)
 
 annotation_matrix1 <- data.frame(annotation_matrix$Samplenummern, annotation_matrix$Samplename)
 
-coldata_2 <- data.frame(annotation_matrix$Samplename, annotation_matrix$age, annotation_matrix$region, annotation_matrix$segment, annotation_matrix$sample)
+coldata_2 <- data.frame(annotation_matrix$Samplename, annotation_matrix$slide_name, annotation_matrix$class, annotation_matrix$region, annotation_matrix$segment, annotation_matrix$roi, annotation_matrix$Samplenummern)
 
-rownames(coldata_2) <- coldata_2[,1]
 # Renaming the columns
 names(coldata_2)[names(coldata_2) == "annotation_matrix.Samplename"] <- "Samplename"
-names(coldata_2)[names(coldata_2) == "annotation_matrix.age"] <- "age"
-names(coldata_2)[names(coldata_2) == "annotation_matrix.region"] <- "region"
+names(coldata_2)[names(coldata_2) == "annotation_matrix.slide_name"] <- "slide_name"
+names(coldata_2)[names(coldata_2) == "annotation_matrix.class"] <- "class"
 names(coldata_2)[names(coldata_2) == "annotation_matrix.segment"] <- "segment"
 names(coldata_2)[names(coldata_2) == "annotation_matrix.sample"] <- "sample"
+names(coldata_2)[names(coldata_2) == "annotation_matrix.region"] <- "region"
+names(coldata_2)[names(coldata_2) == "annotation_matrix.Samplenummern"] <- "Samplenummern"
+
+coldata_2$Samplename <- gsub(" ", "_", coldata_2$Samplename)
+
+list_rownames <- as.list(coldata_2[,1])
 
 # Combines sample describing columns into one
-coldata_2$comp <- paste(coldata_2$age, coldata_2$region, coldata_2$segment, sep = "_")
+coldata_2$comp <- paste(coldata_2$segment, coldata_2$region, coldata_2$class, coldata_2$slide_name, sep = "_")
+
+annotationMatrix <- data.frame(coldata_2$Samplenummern, coldata_2$Samplename) 
 
 coldata_2 <- coldata_2[,-1]
 coldata_2 <- as.matrix(coldata_2)
+
+list_rownames <- gsub("\\.", "_", list_rownames)
+uniq_rownames <- make.names(list_rownames, unique = TRUE) # makes all names in the list_rownames unique to later use them as rownames
+print(uniq_rownames)
+uniq_rownames <- gsub("\\.", "_", uniq_rownames)
+
+rownames(coldata_2) <- uniq_rownames
 
 # Creates a new dataframe wich only includes the necessary information
 coldata_df <- as.data.frame(coldata_2)
 class(coldata_df)
 
+# exchange of "." with "_" in the rownames of the column data
+rownames(coldata_2) <- gsub("\\.", "_", rownames(coldata_2))
 ```
 The columns in the counts table can now be replaced with the corresponding sample names from the table containing the column data. To do this, the following code can be used:
 ```{r exampleExchangeColumnNamesWMatchingSampleNames, echo=TRUE, results='hide'}
-list_columnNames <- list(colnames(df_Exp)) # list of column names in counts table
-print(list_columnNames)
-annotationMatrix <- annotation_matrix1 # creates copy of column data 
-rownames(annotationMatrix) <- annotationMatrix[,2] # makes values in second colum into rownames
+list_columnNames <- as.list(colnames(df_Exp)) # list of column names in counts table
+
+list_rownames <- as.list(annotationMatrix[,2])
+
+annotationMatrix <- as.matrix(annotationMatrix)
+rownames(annotationMatrix) <- list_rownames
 x <- match(rownames(annotationMatrix), colnames(df_Exp))
 print(x)
 copy_df_Expr <- df_Exp # creates copy of counts table
 
+annotationMatrix <- as.data.frame(annotationMatrix)
+
 for (i in list_columnNames) {
-  matchingRow <- which(annotationMatrix$annotation_matrix.Samplenummern == i)
+  matchingRow <- which(annotationMatrix$coldata_2.Samplenummern == i)
   matchingColumn <- match(i, names(copy_df_Expr))
   print(matchingColumn)
   print(matchingRow)
   colnames(copy_df_Expr)[matchingColumn] <- rownames(annotationMatrix)[matchingRow]
   print(rownames(annotationMatrix)[matchingRow])
-  }
+}
+
+# exchange of "." with "_" in the column names of copy_df_Expr
+colnames(copy_df_Expr) <- gsub("\\.", "_", colnames(copy_df_Expr))
+
 ```
 ```{r exampleColumnNameExchange, echo=FALSE}
 knitr::kable(head(copy_df_Expr[, 1:9]),"pipe")
@@ -353,6 +377,12 @@ The process of performing a differential gene expression analysis starts by chec
 ```{r EqualOrder, echo=TRUE, warning=FALSE}
 all(colnames(copy_df_Expr) %in% rownames(coldata_2)) #check if all column names of data are in rownames of metadata #check if TRUE
 class(coldata_2)
+setdiff(colnames(copy_df_Expr), rownames(coldata_2))
+
+index_row_col <- match(colnames(copy_df_Expr), rownames(coldata_2))
+print(index_row_col)
+print(colnames(copy_df_Expr))
+"disease3_DKD_glomerulus_Geometric.Segment" == "disease3_DKD_glomerulus_Geometric.Segment"
 
 all(colnames(copy_df_Expr) == rownames(coldata_2)) #check if the order of the data column names == order of metadata rownames
 
@@ -369,13 +399,19 @@ library(tidyr)
 library(tidyverse)
 
 coldata2 <- as.data.frame((coldata_2))
-comp <- paste0(coldata2$age, coldata2$region, coldata2$segment)
+comp <- paste0(coldata2$segment, coldata2$region, coldata2$class, coldata2$slide_name)
+comp <- gsub(" ", "_", comp)
 design <- model.matrix(~0 + comp)
 
+print(design)
 
-contrasts <- makeContrasts(P0_Iba1_neg_cortex_vs_cc = compP0cortexIba1_neg - compP0ccIba1_neg,
-                           P0_Iba1_neg_cortex_vs_hippo = compP0cortexIba1_neg - compP0hippoIba1_neg,
-                           P0_Iba1_neg_cc_vs_hippo = compP0ccIba1_neg - compP0hippoIba1_neg,
+coldata2$comp <- gsub(" ", "_", coldata2$comp)
+
+print(comp)
+
+contrasts <- makeContrasts(GeometricSegment_glomerulus_Dkd_disease1b_vs_disease2B = compGeometric_SegmentglomerulusDKDdisease1B - compGeometric_SegmentglomerulusDKDdisease2B,
+                           GeometricSegmentglomerulus_DKD_disease1B_vs_disease3 = compGeometric_SegmentglomerulusDKDdisease1B - compGeometric_SegmentglomerulusDKDdisease3,
+                           GeometricSegmentglomerulus_DKD_disease2B_vs_disease3 = compGeometric_SegmentglomerulusDKDdisease2B - compGeometric_SegmentglomerulusDKDdisease3,
                            levels = design)
 
 y = DGEList(counts = copy_df_Expr)
@@ -389,7 +425,7 @@ fit2 <- eBayes(fit2)
 results_all_DEG <- decideTests(fit2)
 summary(results_all_DEG)
 
-result1 = topTable(fit2, coef= "P0_Iba1_neg_cc_vs_hippo", number = Inf, adjust.method = "fdr") %>%
+result1 = topTable(fit2, coef= "GeometricSegment_glomerulus_Dkd_disease1b_vs_disease2B", number = Inf, adjust.method = "fdr") %>%
   as.data.frame() # differnetially expressed genes are obtained by topTreat() function
 # filter results to get significantly differentially expressed genes
 
