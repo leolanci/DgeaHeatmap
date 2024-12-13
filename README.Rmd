@@ -403,11 +403,7 @@ comp <- paste0(coldata2$segment, coldata2$region, coldata2$class, coldata2$slide
 comp <- gsub(" ", "_", comp)
 design <- model.matrix(~0 + comp)
 
-print(design)
-
 coldata2$comp <- gsub(" ", "_", coldata2$comp)
-
-print(comp)
 
 contrasts <- makeContrasts(GeometricSegment_glomerulus_Dkd_disease1b_vs_disease2B = compGeometric_SegmentglomerulusDKDdisease1B - compGeometric_SegmentglomerulusDKDdisease2B,
                            GeometricSegmentglomerulus_DKD_disease1B_vs_disease3 = compGeometric_SegmentglomerulusDKDdisease1B - compGeometric_SegmentglomerulusDKDdisease3,
