@@ -331,14 +331,14 @@ QCPassed <- aExprsDataQC(PrePro_rawDataObject, "QCFlags")
 df_Exp <- genRawReadCountTable(PrePro_rawDataObject)
 ```
 
-|               | DSP-1012500008461-B-A02.dcc | DSP-1012500008461-B-A03.dcc | DSP-1012500008461-B-A04.dcc | DSP-1012500008461-B-A05.dcc | DSP-1012500008461-B-A06.dcc | DSP-1012500008461-B-A07.dcc | DSP-1012500008461-B-A08.dcc | DSP-1012500008461-B-A09.dcc | DSP-1012500008461-B-A10.dcc |
-|:--------------|----------------------------:|----------------------------:|----------------------------:|----------------------------:|----------------------------:|----------------------------:|----------------------------:|----------------------------:|----------------------------:|
-| 0610009B22Rik |                          13 |                          80 |                           5 |                          19 |                           8 |                          27 |                          12 |                         124 |                          11 |
-| Sanbr         |                           9 |                          58 |                           3 |                          12 |                           3 |                          42 |                          16 |                          86 |                           4 |
-| 0610010K14Rik |                          20 |                         101 |                           9 |                          25 |                           6 |                          58 |                          22 |                         112 |                          10 |
-| 0610012G03Rik |                          24 |                         100 |                          12 |                          35 |                          16 |                          91 |                          31 |                         138 |                          11 |
-| 0610030E20Rik |                          10 |                          61 |                           9 |                          31 |                           8 |                          25 |                          14 |                         112 |                           3 |
-| 0610040J01Rik |                          11 |                          33 |                           4 |                           7 |                           7 |                          22 |                          23 |                         115 |                           6 |
+|        | DSP-1001250007851-H-A01.dcc | DSP-1001250007851-H-A02.dcc | DSP-1001250007851-H-A03.dcc | DSP-1001250007851-H-A04.dcc | DSP-1001250007851-H-A05.dcc | DSP-1001250007851-H-A06.dcc | DSP-1001250007851-H-A07.dcc | DSP-1001250007851-H-A08.dcc | DSP-1001250007851-H-A09.dcc |
+|:-------|----------------------------:|----------------------------:|----------------------------:|----------------------------:|----------------------------:|----------------------------:|----------------------------:|----------------------------:|----------------------------:|
+| A2M    |                           0 |                         485 |                         262 |                         225 |                         312 |                         563 |                         214 |                         432 |                         176 |
+| NAT2   |                           0 |                          15 |                          18 |                           5 |                          19 |                          26 |                           9 |                          18 |                          13 |
+| ACADM  |                           0 |                          31 |                          15 |                          15 |                          25 |                          31 |                          18 |                          32 |                          14 |
+| ACADS  |                           0 |                          27 |                          17 |                          24 |                          19 |                          43 |                          15 |                          26 |                          13 |
+| ACAT1  |                           0 |                          29 |                          24 |                          21 |                          17 |                          46 |                          12 |                          32 |                          20 |
+| ACVRL1 |                           0 |                          52 |                          22 |                          24 |                          26 |                          51 |                          18 |                          44 |                          15 |
 
 Anon Analyzing GeoMx-NGS RNA Expression Data with GeomxTools. Available
 from:
@@ -354,7 +354,7 @@ Next, an usable matrix of column data is extracted from the sample data:
 ``` r
 annotation_matrix <- sData(rawDataObject)
 
-annotation_matrix$Samplename <- paste(annotation_matrix$age_region, annotation_matrix$segment, annotation_matrix$sample, sep="_")
+annotation_matrix$Samplename <- paste(annotation_matrix$slide_name, annotation_matrix$class, annotation_matrix$region, annotation_matrix$segment, annotation_matrix$roi, sep="_")
 class(annotation_matrix)
 library(tibble)
 
@@ -364,25 +364,42 @@ rownames(annotation_matrix)
 
 annotation_matrix1 <- data.frame(annotation_matrix$Samplenummern, annotation_matrix$Samplename)
 
-coldata_2 <- data.frame(annotation_matrix$Samplename, annotation_matrix$age, annotation_matrix$region, annotation_matrix$segment, annotation_matrix$sample)
+coldata_2 <- data.frame(annotation_matrix$Samplename, annotation_matrix$slide_name, annotation_matrix$class, annotation_matrix$region, annotation_matrix$segment, annotation_matrix$roi, annotation_matrix$Samplenummern)
 
-rownames(coldata_2) <- coldata_2[,1]
 # Renaming the columns
 names(coldata_2)[names(coldata_2) == "annotation_matrix.Samplename"] <- "Samplename"
-names(coldata_2)[names(coldata_2) == "annotation_matrix.age"] <- "age"
-names(coldata_2)[names(coldata_2) == "annotation_matrix.region"] <- "region"
+names(coldata_2)[names(coldata_2) == "annotation_matrix.slide_name"] <- "slide_name"
+names(coldata_2)[names(coldata_2) == "annotation_matrix.class"] <- "class"
 names(coldata_2)[names(coldata_2) == "annotation_matrix.segment"] <- "segment"
 names(coldata_2)[names(coldata_2) == "annotation_matrix.sample"] <- "sample"
+names(coldata_2)[names(coldata_2) == "annotation_matrix.region"] <- "region"
+names(coldata_2)[names(coldata_2) == "annotation_matrix.Samplenummern"] <- "Samplenummern"
+
+coldata_2$Samplename <- gsub(" ", "_", coldata_2$Samplename)
+
+list_rownames <- as.list(coldata_2[,1])
 
 # Combines sample describing columns into one
-coldata_2$comp <- paste(coldata_2$age, coldata_2$region, coldata_2$segment, sep = "_")
+coldata_2$comp <- paste(coldata_2$segment, coldata_2$region, coldata_2$class, coldata_2$slide_name, sep = "_")
+
+annotationMatrix <- data.frame(coldata_2$Samplenummern, coldata_2$Samplename) 
 
 coldata_2 <- coldata_2[,-1]
 coldata_2 <- as.matrix(coldata_2)
 
+list_rownames <- gsub("\\.", "_", list_rownames)
+uniq_rownames <- make.names(list_rownames, unique = TRUE) # makes all names in the list_rownames unique to later use them as rownames
+print(uniq_rownames)
+uniq_rownames <- gsub("\\.", "_", uniq_rownames)
+
+rownames(coldata_2) <- uniq_rownames
+
 # Creates a new dataframe wich only includes the necessary information
 coldata_df <- as.data.frame(coldata_2)
 class(coldata_df)
+
+# exchange of "." with "_" in the rownames of the column data
+rownames(coldata_2) <- gsub("\\.", "_", rownames(coldata_2))
 ```
 
 The columns in the counts table can now be replaced with the
@@ -390,32 +407,39 @@ corresponding sample names from the table containing the column data. To
 do this, the following code can be used:
 
 ``` r
-list_columnNames <- list(colnames(df_Exp)) # list of column names in counts table
-print(list_columnNames)
-annotationMatrix <- annotation_matrix1 # creates copy of column data 
-rownames(annotationMatrix) <- annotationMatrix[,2] # makes values in second colum into rownames
+list_columnNames <- as.list(colnames(df_Exp)) # list of column names in counts table
+
+list_rownames <- as.list(annotationMatrix[,2])
+
+annotationMatrix <- as.matrix(annotationMatrix)
+rownames(annotationMatrix) <- list_rownames
 x <- match(rownames(annotationMatrix), colnames(df_Exp))
 print(x)
 copy_df_Expr <- df_Exp # creates copy of counts table
 
+annotationMatrix <- as.data.frame(annotationMatrix)
+
 for (i in list_columnNames) {
-  matchingRow <- which(annotationMatrix$annotation_matrix.Samplenummern == i)
+  matchingRow <- which(annotationMatrix$coldata_2.Samplenummern == i)
   matchingColumn <- match(i, names(copy_df_Expr))
   print(matchingColumn)
   print(matchingRow)
   colnames(copy_df_Expr)[matchingColumn] <- rownames(annotationMatrix)[matchingRow]
   print(rownames(annotationMatrix)[matchingRow])
-  }
+}
+
+# exchange of "." with "_" in the column names of copy_df_Expr
+colnames(copy_df_Expr) <- gsub("\\.", "_", colnames(copy_df_Expr))
 ```
 
-|               | P5_cc_Iba1_pos_3_496_3 | P5_cc_Iba1_neg_3_496_3 | P5_cortex_layer_6_Iba1_pos_3_496_3 | P5_cortex_layer_6_Iba1_neg_3_496_3 | P5_hippo_Iba1_pos_3_496_3 | P5_hippo_Iba1_neg_3_496_3 | P15_hippo_Iba1_pos_3_496_3 | P15_hippo_Iba1_neg_3_496_3 | P5_cortex_Iba1_pos_3_496_3 |
-|:--------------|-----------------------:|-----------------------:|-----------------------------------:|-----------------------------------:|--------------------------:|--------------------------:|---------------------------:|---------------------------:|---------------------------:|
-| 0610009B22Rik |                     13 |                     80 |                                  5 |                                 19 |                         8 |                        27 |                         12 |                        124 |                         11 |
-| Sanbr         |                      9 |                     58 |                                  3 |                                 12 |                         3 |                        42 |                         16 |                         86 |                          4 |
-| 0610010K14Rik |                     20 |                    101 |                                  9 |                                 25 |                         6 |                        58 |                         22 |                        112 |                         10 |
-| 0610012G03Rik |                     24 |                    100 |                                 12 |                                 35 |                        16 |                        91 |                         31 |                        138 |                         11 |
-| 0610030E20Rik |                     10 |                     61 |                                  9 |                                 31 |                         8 |                        25 |                         14 |                        112 |                          3 |
-| 0610040J01Rik |                     11 |                     33 |                                  4 |                                  7 |                         7 |                        22 |                         23 |                        115 |                          6 |
+|        | No_Template_Control_NA_NA_NA_NA | disease3_DKD_glomerulus_Geometric_Segment_7 | disease3_DKD_glomerulus_Geometric_Segment_8 | disease3_DKD_glomerulus_Geometric_Segment_9 | disease3_DKD_glomerulus_Geometric_Segment_10 | disease3_DKD_glomerulus_Geometric_Segment_11 | disease3_DKD_glomerulus_Geometric_Segment_12 | disease3_DKD_glomerulus_Geometric_Segment_13 | disease3_DKD_glomerulus_Geometric_Segment_14 |
+|:-------|--------------------------------:|--------------------------------------------:|--------------------------------------------:|--------------------------------------------:|---------------------------------------------:|---------------------------------------------:|---------------------------------------------:|---------------------------------------------:|---------------------------------------------:|
+| A2M    |                               0 |                                         485 |                                         262 |                                         225 |                                          312 |                                          563 |                                          214 |                                          432 |                                          176 |
+| NAT2   |                               0 |                                          15 |                                          18 |                                           5 |                                           19 |                                           26 |                                            9 |                                           18 |                                           13 |
+| ACADM  |                               0 |                                          31 |                                          15 |                                          15 |                                           25 |                                           31 |                                           18 |                                           32 |                                           14 |
+| ACADS  |                               0 |                                          27 |                                          17 |                                          24 |                                           19 |                                           43 |                                           15 |                                           26 |                                           13 |
+| ACAT1  |                               0 |                                          29 |                                          24 |                                          21 |                                           17 |                                           46 |                                           12 |                                           32 |                                           20 |
+| ACVRL1 |                               0 |                                          52 |                                          22 |                                          24 |                                           26 |                                           51 |                                           18 |                                           44 |                                           15 |
 
 **Differential gene expression analysis**
 
@@ -429,6 +453,310 @@ all(colnames(copy_df_Expr) %in% rownames(coldata_2)) #check if all column names 
 #> [1] TRUE
 class(coldata_2)
 #> [1] "matrix" "array"
+setdiff(colnames(copy_df_Expr), rownames(coldata_2))
+#> character(0)
+
+index_row_col <- match(colnames(copy_df_Expr), rownames(coldata_2))
+print(index_row_col)
+#>   [1]   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18
+#>  [19]  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36
+#>  [37]  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53  54
+#>  [55]  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71  72
+#>  [73]  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89  90
+#>  [91]  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107 108
+#> [109] 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126
+#> [127] 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144
+#> [145] 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162
+#> [163] 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180
+#> [181] 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198
+#> [199] 199 200 201 202 203 204 205 206 207 208 209 210 211 212 213 214 215 216
+#> [217] 217 218 219 220 221 222 223 224 225 226 227 228 229 230 231 232 233 234
+#> [235] 235 236 237 238 239 240 241 242 243 244 245 246 247 248 249 250 251 252
+#> [253] 253 254 255 256 257 258 259 260 261 262 263 264 265 266 267 268 269 270
+#> [271] 271 272 273 274 275 276 277 278 279 280
+print(colnames(copy_df_Expr))
+#>   [1] "No_Template_Control_NA_NA_NA_NA"                
+#>   [2] "disease3_DKD_glomerulus_Geometric_Segment_7"    
+#>   [3] "disease3_DKD_glomerulus_Geometric_Segment_8"    
+#>   [4] "disease3_DKD_glomerulus_Geometric_Segment_9"    
+#>   [5] "disease3_DKD_glomerulus_Geometric_Segment_10"   
+#>   [6] "disease3_DKD_glomerulus_Geometric_Segment_11"   
+#>   [7] "disease3_DKD_glomerulus_Geometric_Segment_12"   
+#>   [8] "disease3_DKD_glomerulus_Geometric_Segment_13"   
+#>   [9] "disease3_DKD_glomerulus_Geometric_Segment_14"   
+#>  [10] "disease3_DKD_glomerulus_Geometric_Segment_15"   
+#>  [11] "disease3_DKD_glomerulus_Geometric_Segment_16"   
+#>  [12] "disease3_DKD_glomerulus_Geometric_Segment_17"   
+#>  [13] "disease3_DKD_glomerulus_Geometric_Segment_18"   
+#>  [14] "disease3_DKD_glomerulus_Geometric_Segment_19"   
+#>  [15] "disease3_DKD_glomerulus_Geometric_Segment_20"   
+#>  [16] "disease3_DKD_glomerulus_Geometric_Segment_21"   
+#>  [17] "disease3_DKD_glomerulus_Geometric_Segment_22"   
+#>  [18] "disease3_DKD_glomerulus_Geometric_Segment_23"   
+#>  [19] "disease3_DKD_glomerulus_Geometric_Segment_24"   
+#>  [20] "disease3_DKD_glomerulus_Geometric_Segment_25"   
+#>  [21] "disease3_DKD_glomerulus_Geometric_Segment_26"   
+#>  [22] "disease3_DKD_glomerulus_Geometric_Segment_27"   
+#>  [23] "disease3_DKD_glomerulus_Geometric_Segment_28"   
+#>  [24] "disease3_DKD_glomerulus_Geometric_Segment_29"   
+#>  [25] "disease3_DKD_glomerulus_Geometric_Segment_30"   
+#>  [26] "disease3_DKD_glomerulus_Geometric_Segment_31"   
+#>  [27] "disease3_DKD_glomerulus_Geometric_Segment_32"   
+#>  [28] "disease3_DKD_glomerulus_Geometric_Segment_33"   
+#>  [29] "disease3_DKD_glomerulus_Geometric_Segment_34"   
+#>  [30] "disease3_DKD_glomerulus_Geometric_Segment_35"   
+#>  [31] "disease3_DKD_glomerulus_Geometric_Segment_36"   
+#>  [32] "disease3_DKD_glomerulus_Geometric_Segment_37"   
+#>  [33] "disease3_DKD_glomerulus_Geometric_Segment_38"   
+#>  [34] "disease3_DKD_glomerulus_Geometric_Segment_39"   
+#>  [35] "disease3_DKD_glomerulus_Geometric_Segment_40"   
+#>  [36] "disease3_DKD_glomerulus_Geometric_Segment_41"   
+#>  [37] "disease3_DKD_glomerulus_Geometric_Segment_42"   
+#>  [38] "disease3_DKD_glomerulus_Geometric_Segment_43"   
+#>  [39] "disease3_DKD_glomerulus_Geometric_Segment_44"   
+#>  [40] "disease3_DKD_glomerulus_Geometric_Segment_45"   
+#>  [41] "disease3_DKD_glomerulus_Geometric_Segment_46"   
+#>  [42] "disease3_DKD_glomerulus_Geometric_Segment_47"   
+#>  [43] "disease3_DKD_glomerulus_Geometric_Segment_48"   
+#>  [44] "disease3_DKD_glomerulus_Geometric_Segment_49"   
+#>  [45] "disease3_DKD_glomerulus_Geometric_Segment_50"   
+#>  [46] "disease3_DKD_glomerulus_Geometric_Segment_51"   
+#>  [47] "disease3_DKD_glomerulus_Geometric_Segment_52"   
+#>  [48] "disease3_DKD_glomerulus_Geometric_Segment_53"   
+#>  [49] "disease4_DKD_tubule_PanCK_1"                    
+#>  [50] "disease4_DKD_tubule_neg_1"                      
+#>  [51] "disease4_DKD_tubule_PanCK_2"                    
+#>  [52] "disease4_DKD_tubule_neg_2"                      
+#>  [53] "disease4_DKD_tubule_PanCK_3"                    
+#>  [54] "disease4_DKD_tubule_neg_3"                      
+#>  [55] "disease4_DKD_tubule_PanCK_4"                    
+#>  [56] "disease4_DKD_tubule_neg_4"                      
+#>  [57] "disease4_DKD_tubule_PanCK_5"                    
+#>  [58] "disease4_DKD_tubule_neg_5"                      
+#>  [59] "disease4_DKD_tubule_PanCK_6"                    
+#>  [60] "disease4_DKD_tubule_neg_6"                      
+#>  [61] "disease4_DKD_glomerulus_Geometric_Segment_7"    
+#>  [62] "disease4_DKD_glomerulus_Geometric_Segment_8"    
+#>  [63] "disease4_DKD_glomerulus_Geometric_Segment_9"    
+#>  [64] "disease4_DKD_glomerulus_Geometric_Segment_10"   
+#>  [65] "disease4_DKD_glomerulus_Geometric_Segment_11"   
+#>  [66] "disease4_DKD_glomerulus_Geometric_Segment_12"   
+#>  [67] "disease4_DKD_glomerulus_Geometric_Segment_13"   
+#>  [68] "disease4_DKD_glomerulus_Geometric_Segment_14"   
+#>  [69] "disease4_DKD_glomerulus_Geometric_Segment_15"   
+#>  [70] "disease4_DKD_glomerulus_Geometric_Segment_16"   
+#>  [71] "disease4_DKD_glomerulus_Geometric_Segment_17"   
+#>  [72] "disease4_DKD_glomerulus_Geometric_Segment_18"   
+#>  [73] "No_Template_Control_NA_NA_NA_NA_1"              
+#>  [74] "normal3_normal_tubule_PanCK_1"                  
+#>  [75] "normal3_normal_tubule_neg_1"                    
+#>  [76] "normal3_normal_tubule_PanCK_2"                  
+#>  [77] "normal3_normal_tubule_neg_2"                    
+#>  [78] "normal3_normal_tubule_PanCK_3"                  
+#>  [79] "normal3_normal_tubule_neg_3"                    
+#>  [80] "normal3_normal_tubule_PanCK_4"                  
+#>  [81] "normal3_normal_tubule_neg_4"                    
+#>  [82] "normal3_normal_tubule_PanCK_5"                  
+#>  [83] "normal3_normal_tubule_neg_5"                    
+#>  [84] "normal3_normal_tubule_PanCK_6"                  
+#>  [85] "normal3_normal_tubule_neg_6"                    
+#>  [86] "normal3_normal_glomerulus_Geometric_Segment_7"  
+#>  [87] "normal3_normal_glomerulus_Geometric_Segment_8"  
+#>  [88] "normal3_normal_glomerulus_Geometric_Segment_9"  
+#>  [89] "normal3_normal_glomerulus_Geometric_Segment_10" 
+#>  [90] "normal3_normal_glomerulus_Geometric_Segment_11" 
+#>  [91] "normal3_normal_glomerulus_Geometric_Segment_12" 
+#>  [92] "normal3_normal_glomerulus_Geometric_Segment_13" 
+#>  [93] "normal3_normal_glomerulus_Geometric_Segment_14" 
+#>  [94] "normal3_normal_glomerulus_Geometric_Segment_15" 
+#>  [95] "normal3_normal_glomerulus_Geometric_Segment_16" 
+#>  [96] "normal3_normal_glomerulus_Geometric_Segment_17" 
+#>  [97] "normal3_normal_glomerulus_Geometric_Segment_18" 
+#>  [98] "normal3_normal_glomerulus_Geometric_Segment_19" 
+#>  [99] "normal3_normal_glomerulus_Geometric_Segment_20" 
+#> [100] "normal3_normal_glomerulus_Geometric_Segment_21" 
+#> [101] "normal3_normal_glomerulus_Geometric_Segment_22" 
+#> [102] "normal3_normal_glomerulus_Geometric_Segment_23" 
+#> [103] "normal3_normal_glomerulus_Geometric_Segment_24" 
+#> [104] "normal3_normal_glomerulus_Geometric_Segment_25" 
+#> [105] "normal3_normal_glomerulus_Geometric_Segment_26" 
+#> [106] "normal3_normal_glomerulus_Geometric_Segment_28" 
+#> [107] "normal3_normal_glomerulus_Geometric_Segment_29" 
+#> [108] "normal3_normal_glomerulus_Geometric_Segment_30" 
+#> [109] "normal3_normal_glomerulus_Geometric_Segment_31" 
+#> [110] "normal3_normal_glomerulus_Geometric_Segment_32" 
+#> [111] "normal3_normal_glomerulus_Geometric_Segment_33" 
+#> [112] "normal3_normal_glomerulus_Geometric_Segment_34" 
+#> [113] "normal3_normal_glomerulus_Geometric_Segment_35" 
+#> [114] "normal3_normal_glomerulus_Geometric_Segment_36" 
+#> [115] "normal3_normal_glomerulus_Geometric_Segment_37" 
+#> [116] "normal3_normal_glomerulus_Geometric_Segment_38" 
+#> [117] "normal3_normal_glomerulus_Geometric_Segment_39" 
+#> [118] "normal3_normal_glomerulus_Geometric_Segment_40" 
+#> [119] "normal3_normal_glomerulus_Geometric_Segment_41" 
+#> [120] "normal3_normal_glomerulus_Geometric_Segment_42" 
+#> [121] "normal3_normal_glomerulus_Geometric_Segment_43" 
+#> [122] "normal3_normal_glomerulus_Geometric_Segment_44" 
+#> [123] "normal3_normal_glomerulus_Geometric_Segment_45" 
+#> [124] "normal3_normal_glomerulus_Geometric_Segment_46" 
+#> [125] "normal3_normal_glomerulus_Geometric_Segment_47" 
+#> [126] "normal3_normal_glomerulus_Geometric_Segment_48" 
+#> [127] "normal3_normal_glomerulus_Geometric_Segment_49" 
+#> [128] "normal3_normal_glomerulus_Geometric_Segment_50" 
+#> [129] "normal3_normal_glomerulus_Geometric_Segment_51" 
+#> [130] "normal3_normal_glomerulus_Geometric_Segment_52" 
+#> [131] "normal3_normal_glomerulus_Geometric_Segment_53" 
+#> [132] "normal3_normal_glomerulus_Geometric_Segment_54" 
+#> [133] "normal4_normal_tubule_PanCK_1"                  
+#> [134] "normal4_normal_tubule_neg_1"                    
+#> [135] "normal4_normal_tubule_PanCK_2"                  
+#> [136] "normal4_normal_tubule_neg_2"                    
+#> [137] "normal4_normal_tubule_PanCK_3"                  
+#> [138] "normal4_normal_tubule_neg_3"                    
+#> [139] "normal4_normal_tubule_PanCK_4"                  
+#> [140] "normal4_normal_tubule_neg_4"                    
+#> [141] "normal4_normal_tubule_PanCK_5"                  
+#> [142] "normal4_normal_tubule_neg_5"                    
+#> [143] "normal4_normal_tubule_PanCK_6"                  
+#> [144] "normal4_normal_tubule_neg_6"                    
+#> [145] "normal4_normal_glomerulus_Geometric_Segment_7"  
+#> [146] "normal4_normal_glomerulus_Geometric_Segment_8"  
+#> [147] "normal4_normal_glomerulus_Geometric_Segment_9"  
+#> [148] "normal4_normal_glomerulus_Geometric_Segment_10" 
+#> [149] "normal4_normal_glomerulus_Geometric_Segment_11" 
+#> [150] "normal4_normal_glomerulus_Geometric_Segment_12" 
+#> [151] "normal4_normal_glomerulus_Geometric_Segment_13" 
+#> [152] "normal4_normal_glomerulus_Geometric_Segment_14" 
+#> [153] "normal4_normal_glomerulus_Geometric_Segment_15" 
+#> [154] "normal4_normal_glomerulus_Geometric_Segment_16" 
+#> [155] "normal4_normal_glomerulus_Geometric_Segment_17" 
+#> [156] "disease3_DKD_tubule_PanCK_1"                    
+#> [157] "disease3_DKD_tubule_neg_1"                      
+#> [158] "disease3_DKD_tubule_PanCK_2"                    
+#> [159] "disease3_DKD_tubule_neg_2"                      
+#> [160] "disease3_DKD_tubule_PanCK_3"                    
+#> [161] "disease3_DKD_tubule_neg_3"                      
+#> [162] "disease3_DKD_tubule_PanCK_4"                    
+#> [163] "disease3_DKD_tubule_neg_4"                      
+#> [164] "disease3_DKD_tubule_PanCK_5"                    
+#> [165] "disease3_DKD_tubule_neg_5"                      
+#> [166] "disease3_DKD_tubule_PanCK_6"                    
+#> [167] "disease3_DKD_tubule_neg_6"                      
+#> [168] "No_Template_Control_NA_NA_NA_NA_2"              
+#> [169] "disease1B_DKD_glomerulus_Geometric_Segment_15"  
+#> [170] "disease1B_DKD_glomerulus_Geometric_Segment_16"  
+#> [171] "disease1B_DKD_glomerulus_Geometric_Segment_17"  
+#> [172] "disease1B_DKD_glomerulus_Geometric_Segment_18"  
+#> [173] "disease1B_DKD_glomerulus_Geometric_Segment_19"  
+#> [174] "disease1B_DKD_glomerulus_Geometric_Segment_20"  
+#> [175] "disease1B_DKD_glomerulus_Geometric_Segment_21"  
+#> [176] "disease1B_DKD_glomerulus_Geometric_Segment_22"  
+#> [177] "disease1B_DKD_glomerulus_Geometric_Segment_23"  
+#> [178] "disease1B_DKD_glomerulus_Geometric_Segment_24"  
+#> [179] "disease2B_DKD_glomerulus_WT1_1"                 
+#> [180] "disease2B_DKD_glomerulus_neg_1"                 
+#> [181] "disease2B_DKD_glomerulus_WT1_2"                 
+#> [182] "disease2B_DKD_glomerulus_PanCK_2"               
+#> [183] "disease2B_DKD_glomerulus_neg_2"                 
+#> [184] "disease2B_DKD_glomerulus_WT1_3"                 
+#> [185] "disease2B_DKD_glomerulus_neg_3"                 
+#> [186] "disease2B_DKD_glomerulus_WT1_4"                 
+#> [187] "disease2B_DKD_glomerulus_neg_4"                 
+#> [188] "disease2B_DKD_glomerulus_WT1_5"                 
+#> [189] "disease2B_DKD_glomerulus_PanCK_5"               
+#> [190] "disease2B_DKD_glomerulus_neg_5"                 
+#> [191] "disease2B_DKD_glomerulus_WT1_6"                 
+#> [192] "disease2B_DKD_tubule_PanCK_6"                   
+#> [193] "disease2B_DKD_tubule_neg_6"                     
+#> [194] "disease2B_DKD_tubule_PanCK_7"                   
+#> [195] "disease2B_DKD_tubule_neg_7"                     
+#> [196] "disease2B_DKD_tubule_PanCK_8"                   
+#> [197] "disease2B_DKD_tubule_neg_8"                     
+#> [198] "disease2B_DKD_tubule_PanCK_9"                   
+#> [199] "disease2B_DKD_tubule_neg_9"                     
+#> [200] "disease2B_DKD_tubule_PanCK_10"                  
+#> [201] "disease2B_DKD_tubule_neg_10"                    
+#> [202] "disease2B_DKD_tubule_PanCK_11"                  
+#> [203] "disease2B_DKD_tubule_neg_11"                    
+#> [204] "disease2B_DKD_glomerulus_Geometric_Segment_12"  
+#> [205] "disease2B_DKD_glomerulus_Geometric_Segment_13"  
+#> [206] "disease2B_DKD_glomerulus_Geometric_Segment_14"  
+#> [207] "disease2B_DKD_glomerulus_Geometric_Segment_15"  
+#> [208] "disease2B_DKD_glomerulus_Geometric_Segment_16"  
+#> [209] "disease2B_DKD_glomerulus_Geometric_Segment_17"  
+#> [210] "disease2B_DKD_glomerulus_Geometric_Segment_18"  
+#> [211] "disease2B_DKD_glomerulus_Geometric_Segment_19"  
+#> [212] "disease2B_DKD_glomerulus_Geometric_Segment_20"  
+#> [213] "disease2B_DKD_glomerulus_Geometric_Segment_21"  
+#> [214] "disease2B_DKD_glomerulus_Geometric_Segment_22"  
+#> [215] "disease2B_DKD_glomerulus_Geometric_Segment_23"  
+#> [216] "No_Template_Control_NA_NA_NA_NA_3"              
+#> [217] "normal2B_normal_glomerulus_WT1_1"               
+#> [218] "normal2B_normal_glomerulus_neg_1"               
+#> [219] "normal2B_normal_glomerulus_WT1_2"               
+#> [220] "normal2B_normal_glomerulus_neg_2"               
+#> [221] "normal2B_normal_glomerulus_WT1_3"               
+#> [222] "normal2B_normal_glomerulus_neg_3"               
+#> [223] "normal2B_normal_glomerulus_WT1_4"               
+#> [224] "normal2B_normal_glomerulus_neg_4"               
+#> [225] "normal2B_normal_glomerulus_WT1_5"               
+#> [226] "normal2B_normal_glomerulus_neg_5"               
+#> [227] "normal2B_normal_glomerulus_WT1_6"               
+#> [228] "normal2B_normal_glomerulus_PanCK_6"             
+#> [229] "normal2B_normal_glomerulus_neg_6"               
+#> [230] "normal2B_normal_tubule_PanCK_7"                 
+#> [231] "normal2B_normal_tubule_neg_7"                   
+#> [232] "normal2B_normal_tubule_PanCK_8"                 
+#> [233] "normal2B_normal_tubule_neg_8"                   
+#> [234] "normal2B_normal_tubule_PanCK_9"                 
+#> [235] "normal2B_normal_tubule_neg_9"                   
+#> [236] "normal2B_normal_tubule_PanCK_10"                
+#> [237] "normal2B_normal_tubule_neg_10"                  
+#> [238] "normal2B_normal_tubule_PanCK_11"                
+#> [239] "normal2B_normal_tubule_neg_11"                  
+#> [240] "normal2B_normal_tubule_PanCK_12"                
+#> [241] "normal2B_normal_tubule_neg_12"                  
+#> [242] "normal2B_normal_glomerulus_Geometric_Segment_13"
+#> [243] "normal2B_normal_glomerulus_Geometric_Segment_14"
+#> [244] "normal2B_normal_glomerulus_Geometric_Segment_15"
+#> [245] "normal2B_normal_glomerulus_Geometric_Segment_16"
+#> [246] "normal2B_normal_glomerulus_Geometric_Segment_17"
+#> [247] "normal2B_normal_glomerulus_Geometric_Segment_18"
+#> [248] "normal2B_normal_glomerulus_Geometric_Segment_19"
+#> [249] "normal2B_normal_glomerulus_Geometric_Segment_20"
+#> [250] "normal2B_normal_glomerulus_Geometric_Segment_21"
+#> [251] "normal2B_normal_glomerulus_Geometric_Segment_22"
+#> [252] "disease1B_DKD_glomerulus_WT1_1"                 
+#> [253] "disease1B_DKD_glomerulus_neg_1"                 
+#> [254] "disease1B_DKD_glomerulus_WT1_2"                 
+#> [255] "disease1B_DKD_glomerulus_neg_2"                 
+#> [256] "disease1B_DKD_glomerulus_WT1_3"                 
+#> [257] "disease1B_DKD_glomerulus_neg_3"                 
+#> [258] "disease1B_DKD_glomerulus_WT1_4"                 
+#> [259] "disease1B_DKD_glomerulus_PanCK_4"               
+#> [260] "disease1B_DKD_glomerulus_neg_4"                 
+#> [261] "disease1B_DKD_glomerulus_WT1_5"                 
+#> [262] "disease1B_DKD_glomerulus_neg_5"                 
+#> [263] "disease1B_DKD_glomerulus_WT1_6"                 
+#> [264] "disease1B_DKD_glomerulus_neg_6"                 
+#> [265] "disease1B_DKD_tubule_WT1_7"                     
+#> [266] "disease1B_DKD_tubule_PanCK_7"                   
+#> [267] "disease1B_DKD_tubule_neg_7"                     
+#> [268] "disease1B_DKD_tubule_PanCK_8"                   
+#> [269] "disease1B_DKD_tubule_neg_8"                     
+#> [270] "disease1B_DKD_tubule_WT1_9"                     
+#> [271] "disease1B_DKD_tubule_PanCK_9"                   
+#> [272] "disease1B_DKD_tubule_neg_9"                     
+#> [273] "disease1B_DKD_tubule_PanCK_10"                  
+#> [274] "disease1B_DKD_tubule_neg_10"                    
+#> [275] "disease1B_DKD_tubule_PanCK_11"                  
+#> [276] "disease1B_DKD_tubule_neg_11"                    
+#> [277] "disease1B_DKD_tubule_PanCK_12"                  
+#> [278] "disease1B_DKD_tubule_neg_12"                    
+#> [279] "disease1B_DKD_glomerulus_Geometric_Segment_13"  
+#> [280] "disease1B_DKD_glomerulus_Geometric_Segment_14"
+"disease3_DKD_glomerulus_Geometric.Segment" == "disease3_DKD_glomerulus_Geometric.Segment"
+#> [1] TRUE
 
 all(colnames(copy_df_Expr) == rownames(coldata_2)) #check if the order of the data column names == order of metadata rownames
 #> [1] TRUE
@@ -517,13 +845,5643 @@ library(tidyverse)
 #> ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
 
 coldata2 <- as.data.frame((coldata_2))
-comp <- paste0(coldata2$age, coldata2$region, coldata2$segment)
+comp <- paste0(coldata2$segment, coldata2$region, coldata2$class, coldata2$slide_name)
+comp <- gsub(" ", "_", comp)
 design <- model.matrix(~0 + comp)
 
+print(design)
+#>     compGeometric_SegmentglomerulusDKDdisease1B
+#> 1                                             0
+#> 2                                             0
+#> 3                                             0
+#> 4                                             0
+#> 5                                             0
+#> 6                                             0
+#> 7                                             0
+#> 8                                             0
+#> 9                                             0
+#> 10                                            0
+#> 11                                            0
+#> 12                                            0
+#> 13                                            0
+#> 14                                            0
+#> 15                                            0
+#> 16                                            0
+#> 17                                            0
+#> 18                                            0
+#> 19                                            0
+#> 20                                            0
+#> 21                                            0
+#> 22                                            0
+#> 23                                            0
+#> 24                                            0
+#> 25                                            0
+#> 26                                            0
+#> 27                                            0
+#> 28                                            0
+#> 29                                            0
+#> 30                                            0
+#> 31                                            0
+#> 32                                            0
+#> 33                                            0
+#> 34                                            0
+#> 35                                            0
+#> 36                                            0
+#> 37                                            0
+#> 38                                            0
+#> 39                                            0
+#> 40                                            0
+#> 41                                            0
+#> 42                                            0
+#> 43                                            0
+#> 44                                            0
+#> 45                                            0
+#> 46                                            0
+#> 47                                            0
+#> 48                                            0
+#> 49                                            0
+#> 50                                            0
+#> 51                                            0
+#> 52                                            0
+#> 53                                            0
+#> 54                                            0
+#> 55                                            0
+#> 56                                            0
+#> 57                                            0
+#> 58                                            0
+#> 59                                            0
+#> 60                                            0
+#> 61                                            0
+#> 62                                            0
+#> 63                                            0
+#> 64                                            0
+#> 65                                            0
+#> 66                                            0
+#> 67                                            0
+#> 68                                            0
+#> 69                                            0
+#> 70                                            0
+#> 71                                            0
+#> 72                                            0
+#> 73                                            0
+#> 74                                            0
+#> 75                                            0
+#> 76                                            0
+#> 77                                            0
+#> 78                                            0
+#> 79                                            0
+#> 80                                            0
+#> 81                                            0
+#> 82                                            0
+#> 83                                            0
+#> 84                                            0
+#> 85                                            0
+#> 86                                            0
+#> 87                                            0
+#> 88                                            0
+#> 89                                            0
+#> 90                                            0
+#> 91                                            0
+#> 92                                            0
+#> 93                                            0
+#> 94                                            0
+#> 95                                            0
+#> 96                                            0
+#> 97                                            0
+#> 98                                            0
+#> 99                                            0
+#> 100                                           0
+#> 101                                           0
+#> 102                                           0
+#> 103                                           0
+#> 104                                           0
+#> 105                                           0
+#> 106                                           0
+#> 107                                           0
+#> 108                                           0
+#> 109                                           0
+#> 110                                           0
+#> 111                                           0
+#> 112                                           0
+#> 113                                           0
+#> 114                                           0
+#> 115                                           0
+#> 116                                           0
+#> 117                                           0
+#> 118                                           0
+#> 119                                           0
+#> 120                                           0
+#> 121                                           0
+#> 122                                           0
+#> 123                                           0
+#> 124                                           0
+#> 125                                           0
+#> 126                                           0
+#> 127                                           0
+#> 128                                           0
+#> 129                                           0
+#> 130                                           0
+#> 131                                           0
+#> 132                                           0
+#> 133                                           0
+#> 134                                           0
+#> 135                                           0
+#> 136                                           0
+#> 137                                           0
+#> 138                                           0
+#> 139                                           0
+#> 140                                           0
+#> 141                                           0
+#> 142                                           0
+#> 143                                           0
+#> 144                                           0
+#> 145                                           0
+#> 146                                           0
+#> 147                                           0
+#> 148                                           0
+#> 149                                           0
+#> 150                                           0
+#> 151                                           0
+#> 152                                           0
+#> 153                                           0
+#> 154                                           0
+#> 155                                           0
+#> 156                                           0
+#> 157                                           0
+#> 158                                           0
+#> 159                                           0
+#> 160                                           0
+#> 161                                           0
+#> 162                                           0
+#> 163                                           0
+#> 164                                           0
+#> 165                                           0
+#> 166                                           0
+#> 167                                           0
+#> 168                                           0
+#> 169                                           1
+#> 170                                           1
+#> 171                                           1
+#> 172                                           1
+#> 173                                           1
+#> 174                                           1
+#> 175                                           1
+#> 176                                           1
+#> 177                                           1
+#> 178                                           1
+#> 179                                           0
+#> 180                                           0
+#> 181                                           0
+#> 182                                           0
+#> 183                                           0
+#> 184                                           0
+#> 185                                           0
+#> 186                                           0
+#> 187                                           0
+#> 188                                           0
+#> 189                                           0
+#> 190                                           0
+#> 191                                           0
+#> 192                                           0
+#> 193                                           0
+#> 194                                           0
+#> 195                                           0
+#> 196                                           0
+#> 197                                           0
+#> 198                                           0
+#> 199                                           0
+#> 200                                           0
+#> 201                                           0
+#> 202                                           0
+#> 203                                           0
+#> 204                                           0
+#> 205                                           0
+#> 206                                           0
+#> 207                                           0
+#> 208                                           0
+#> 209                                           0
+#> 210                                           0
+#> 211                                           0
+#> 212                                           0
+#> 213                                           0
+#> 214                                           0
+#> 215                                           0
+#> 216                                           0
+#> 217                                           0
+#> 218                                           0
+#> 219                                           0
+#> 220                                           0
+#> 221                                           0
+#> 222                                           0
+#> 223                                           0
+#> 224                                           0
+#> 225                                           0
+#> 226                                           0
+#> 227                                           0
+#> 228                                           0
+#> 229                                           0
+#> 230                                           0
+#> 231                                           0
+#> 232                                           0
+#> 233                                           0
+#> 234                                           0
+#> 235                                           0
+#> 236                                           0
+#> 237                                           0
+#> 238                                           0
+#> 239                                           0
+#> 240                                           0
+#> 241                                           0
+#> 242                                           0
+#> 243                                           0
+#> 244                                           0
+#> 245                                           0
+#> 246                                           0
+#> 247                                           0
+#> 248                                           0
+#> 249                                           0
+#> 250                                           0
+#> 251                                           0
+#> 252                                           0
+#> 253                                           0
+#> 254                                           0
+#> 255                                           0
+#> 256                                           0
+#> 257                                           0
+#> 258                                           0
+#> 259                                           0
+#> 260                                           0
+#> 261                                           0
+#> 262                                           0
+#> 263                                           0
+#> 264                                           0
+#> 265                                           0
+#> 266                                           0
+#> 267                                           0
+#> 268                                           0
+#> 269                                           0
+#> 270                                           0
+#> 271                                           0
+#> 272                                           0
+#> 273                                           0
+#> 274                                           0
+#> 275                                           0
+#> 276                                           0
+#> 277                                           0
+#> 278                                           0
+#> 279                                           1
+#> 280                                           1
+#>     compGeometric_SegmentglomerulusDKDdisease2B
+#> 1                                             0
+#> 2                                             0
+#> 3                                             0
+#> 4                                             0
+#> 5                                             0
+#> 6                                             0
+#> 7                                             0
+#> 8                                             0
+#> 9                                             0
+#> 10                                            0
+#> 11                                            0
+#> 12                                            0
+#> 13                                            0
+#> 14                                            0
+#> 15                                            0
+#> 16                                            0
+#> 17                                            0
+#> 18                                            0
+#> 19                                            0
+#> 20                                            0
+#> 21                                            0
+#> 22                                            0
+#> 23                                            0
+#> 24                                            0
+#> 25                                            0
+#> 26                                            0
+#> 27                                            0
+#> 28                                            0
+#> 29                                            0
+#> 30                                            0
+#> 31                                            0
+#> 32                                            0
+#> 33                                            0
+#> 34                                            0
+#> 35                                            0
+#> 36                                            0
+#> 37                                            0
+#> 38                                            0
+#> 39                                            0
+#> 40                                            0
+#> 41                                            0
+#> 42                                            0
+#> 43                                            0
+#> 44                                            0
+#> 45                                            0
+#> 46                                            0
+#> 47                                            0
+#> 48                                            0
+#> 49                                            0
+#> 50                                            0
+#> 51                                            0
+#> 52                                            0
+#> 53                                            0
+#> 54                                            0
+#> 55                                            0
+#> 56                                            0
+#> 57                                            0
+#> 58                                            0
+#> 59                                            0
+#> 60                                            0
+#> 61                                            0
+#> 62                                            0
+#> 63                                            0
+#> 64                                            0
+#> 65                                            0
+#> 66                                            0
+#> 67                                            0
+#> 68                                            0
+#> 69                                            0
+#> 70                                            0
+#> 71                                            0
+#> 72                                            0
+#> 73                                            0
+#> 74                                            0
+#> 75                                            0
+#> 76                                            0
+#> 77                                            0
+#> 78                                            0
+#> 79                                            0
+#> 80                                            0
+#> 81                                            0
+#> 82                                            0
+#> 83                                            0
+#> 84                                            0
+#> 85                                            0
+#> 86                                            0
+#> 87                                            0
+#> 88                                            0
+#> 89                                            0
+#> 90                                            0
+#> 91                                            0
+#> 92                                            0
+#> 93                                            0
+#> 94                                            0
+#> 95                                            0
+#> 96                                            0
+#> 97                                            0
+#> 98                                            0
+#> 99                                            0
+#> 100                                           0
+#> 101                                           0
+#> 102                                           0
+#> 103                                           0
+#> 104                                           0
+#> 105                                           0
+#> 106                                           0
+#> 107                                           0
+#> 108                                           0
+#> 109                                           0
+#> 110                                           0
+#> 111                                           0
+#> 112                                           0
+#> 113                                           0
+#> 114                                           0
+#> 115                                           0
+#> 116                                           0
+#> 117                                           0
+#> 118                                           0
+#> 119                                           0
+#> 120                                           0
+#> 121                                           0
+#> 122                                           0
+#> 123                                           0
+#> 124                                           0
+#> 125                                           0
+#> 126                                           0
+#> 127                                           0
+#> 128                                           0
+#> 129                                           0
+#> 130                                           0
+#> 131                                           0
+#> 132                                           0
+#> 133                                           0
+#> 134                                           0
+#> 135                                           0
+#> 136                                           0
+#> 137                                           0
+#> 138                                           0
+#> 139                                           0
+#> 140                                           0
+#> 141                                           0
+#> 142                                           0
+#> 143                                           0
+#> 144                                           0
+#> 145                                           0
+#> 146                                           0
+#> 147                                           0
+#> 148                                           0
+#> 149                                           0
+#> 150                                           0
+#> 151                                           0
+#> 152                                           0
+#> 153                                           0
+#> 154                                           0
+#> 155                                           0
+#> 156                                           0
+#> 157                                           0
+#> 158                                           0
+#> 159                                           0
+#> 160                                           0
+#> 161                                           0
+#> 162                                           0
+#> 163                                           0
+#> 164                                           0
+#> 165                                           0
+#> 166                                           0
+#> 167                                           0
+#> 168                                           0
+#> 169                                           0
+#> 170                                           0
+#> 171                                           0
+#> 172                                           0
+#> 173                                           0
+#> 174                                           0
+#> 175                                           0
+#> 176                                           0
+#> 177                                           0
+#> 178                                           0
+#> 179                                           0
+#> 180                                           0
+#> 181                                           0
+#> 182                                           0
+#> 183                                           0
+#> 184                                           0
+#> 185                                           0
+#> 186                                           0
+#> 187                                           0
+#> 188                                           0
+#> 189                                           0
+#> 190                                           0
+#> 191                                           0
+#> 192                                           0
+#> 193                                           0
+#> 194                                           0
+#> 195                                           0
+#> 196                                           0
+#> 197                                           0
+#> 198                                           0
+#> 199                                           0
+#> 200                                           0
+#> 201                                           0
+#> 202                                           0
+#> 203                                           0
+#> 204                                           1
+#> 205                                           1
+#> 206                                           1
+#> 207                                           1
+#> 208                                           1
+#> 209                                           1
+#> 210                                           1
+#> 211                                           1
+#> 212                                           1
+#> 213                                           1
+#> 214                                           1
+#> 215                                           1
+#> 216                                           0
+#> 217                                           0
+#> 218                                           0
+#> 219                                           0
+#> 220                                           0
+#> 221                                           0
+#> 222                                           0
+#> 223                                           0
+#> 224                                           0
+#> 225                                           0
+#> 226                                           0
+#> 227                                           0
+#> 228                                           0
+#> 229                                           0
+#> 230                                           0
+#> 231                                           0
+#> 232                                           0
+#> 233                                           0
+#> 234                                           0
+#> 235                                           0
+#> 236                                           0
+#> 237                                           0
+#> 238                                           0
+#> 239                                           0
+#> 240                                           0
+#> 241                                           0
+#> 242                                           0
+#> 243                                           0
+#> 244                                           0
+#> 245                                           0
+#> 246                                           0
+#> 247                                           0
+#> 248                                           0
+#> 249                                           0
+#> 250                                           0
+#> 251                                           0
+#> 252                                           0
+#> 253                                           0
+#> 254                                           0
+#> 255                                           0
+#> 256                                           0
+#> 257                                           0
+#> 258                                           0
+#> 259                                           0
+#> 260                                           0
+#> 261                                           0
+#> 262                                           0
+#> 263                                           0
+#> 264                                           0
+#> 265                                           0
+#> 266                                           0
+#> 267                                           0
+#> 268                                           0
+#> 269                                           0
+#> 270                                           0
+#> 271                                           0
+#> 272                                           0
+#> 273                                           0
+#> 274                                           0
+#> 275                                           0
+#> 276                                           0
+#> 277                                           0
+#> 278                                           0
+#> 279                                           0
+#> 280                                           0
+#>     compGeometric_SegmentglomerulusDKDdisease3
+#> 1                                            0
+#> 2                                            1
+#> 3                                            1
+#> 4                                            1
+#> 5                                            1
+#> 6                                            1
+#> 7                                            1
+#> 8                                            1
+#> 9                                            1
+#> 10                                           1
+#> 11                                           1
+#> 12                                           1
+#> 13                                           1
+#> 14                                           1
+#> 15                                           1
+#> 16                                           1
+#> 17                                           1
+#> 18                                           1
+#> 19                                           1
+#> 20                                           1
+#> 21                                           1
+#> 22                                           1
+#> 23                                           1
+#> 24                                           1
+#> 25                                           1
+#> 26                                           1
+#> 27                                           1
+#> 28                                           1
+#> 29                                           1
+#> 30                                           1
+#> 31                                           1
+#> 32                                           1
+#> 33                                           1
+#> 34                                           1
+#> 35                                           1
+#> 36                                           1
+#> 37                                           1
+#> 38                                           1
+#> 39                                           1
+#> 40                                           1
+#> 41                                           1
+#> 42                                           1
+#> 43                                           1
+#> 44                                           1
+#> 45                                           1
+#> 46                                           1
+#> 47                                           1
+#> 48                                           1
+#> 49                                           0
+#> 50                                           0
+#> 51                                           0
+#> 52                                           0
+#> 53                                           0
+#> 54                                           0
+#> 55                                           0
+#> 56                                           0
+#> 57                                           0
+#> 58                                           0
+#> 59                                           0
+#> 60                                           0
+#> 61                                           0
+#> 62                                           0
+#> 63                                           0
+#> 64                                           0
+#> 65                                           0
+#> 66                                           0
+#> 67                                           0
+#> 68                                           0
+#> 69                                           0
+#> 70                                           0
+#> 71                                           0
+#> 72                                           0
+#> 73                                           0
+#> 74                                           0
+#> 75                                           0
+#> 76                                           0
+#> 77                                           0
+#> 78                                           0
+#> 79                                           0
+#> 80                                           0
+#> 81                                           0
+#> 82                                           0
+#> 83                                           0
+#> 84                                           0
+#> 85                                           0
+#> 86                                           0
+#> 87                                           0
+#> 88                                           0
+#> 89                                           0
+#> 90                                           0
+#> 91                                           0
+#> 92                                           0
+#> 93                                           0
+#> 94                                           0
+#> 95                                           0
+#> 96                                           0
+#> 97                                           0
+#> 98                                           0
+#> 99                                           0
+#> 100                                          0
+#> 101                                          0
+#> 102                                          0
+#> 103                                          0
+#> 104                                          0
+#> 105                                          0
+#> 106                                          0
+#> 107                                          0
+#> 108                                          0
+#> 109                                          0
+#> 110                                          0
+#> 111                                          0
+#> 112                                          0
+#> 113                                          0
+#> 114                                          0
+#> 115                                          0
+#> 116                                          0
+#> 117                                          0
+#> 118                                          0
+#> 119                                          0
+#> 120                                          0
+#> 121                                          0
+#> 122                                          0
+#> 123                                          0
+#> 124                                          0
+#> 125                                          0
+#> 126                                          0
+#> 127                                          0
+#> 128                                          0
+#> 129                                          0
+#> 130                                          0
+#> 131                                          0
+#> 132                                          0
+#> 133                                          0
+#> 134                                          0
+#> 135                                          0
+#> 136                                          0
+#> 137                                          0
+#> 138                                          0
+#> 139                                          0
+#> 140                                          0
+#> 141                                          0
+#> 142                                          0
+#> 143                                          0
+#> 144                                          0
+#> 145                                          0
+#> 146                                          0
+#> 147                                          0
+#> 148                                          0
+#> 149                                          0
+#> 150                                          0
+#> 151                                          0
+#> 152                                          0
+#> 153                                          0
+#> 154                                          0
+#> 155                                          0
+#> 156                                          0
+#> 157                                          0
+#> 158                                          0
+#> 159                                          0
+#> 160                                          0
+#> 161                                          0
+#> 162                                          0
+#> 163                                          0
+#> 164                                          0
+#> 165                                          0
+#> 166                                          0
+#> 167                                          0
+#> 168                                          0
+#> 169                                          0
+#> 170                                          0
+#> 171                                          0
+#> 172                                          0
+#> 173                                          0
+#> 174                                          0
+#> 175                                          0
+#> 176                                          0
+#> 177                                          0
+#> 178                                          0
+#> 179                                          0
+#> 180                                          0
+#> 181                                          0
+#> 182                                          0
+#> 183                                          0
+#> 184                                          0
+#> 185                                          0
+#> 186                                          0
+#> 187                                          0
+#> 188                                          0
+#> 189                                          0
+#> 190                                          0
+#> 191                                          0
+#> 192                                          0
+#> 193                                          0
+#> 194                                          0
+#> 195                                          0
+#> 196                                          0
+#> 197                                          0
+#> 198                                          0
+#> 199                                          0
+#> 200                                          0
+#> 201                                          0
+#> 202                                          0
+#> 203                                          0
+#> 204                                          0
+#> 205                                          0
+#> 206                                          0
+#> 207                                          0
+#> 208                                          0
+#> 209                                          0
+#> 210                                          0
+#> 211                                          0
+#> 212                                          0
+#> 213                                          0
+#> 214                                          0
+#> 215                                          0
+#> 216                                          0
+#> 217                                          0
+#> 218                                          0
+#> 219                                          0
+#> 220                                          0
+#> 221                                          0
+#> 222                                          0
+#> 223                                          0
+#> 224                                          0
+#> 225                                          0
+#> 226                                          0
+#> 227                                          0
+#> 228                                          0
+#> 229                                          0
+#> 230                                          0
+#> 231                                          0
+#> 232                                          0
+#> 233                                          0
+#> 234                                          0
+#> 235                                          0
+#> 236                                          0
+#> 237                                          0
+#> 238                                          0
+#> 239                                          0
+#> 240                                          0
+#> 241                                          0
+#> 242                                          0
+#> 243                                          0
+#> 244                                          0
+#> 245                                          0
+#> 246                                          0
+#> 247                                          0
+#> 248                                          0
+#> 249                                          0
+#> 250                                          0
+#> 251                                          0
+#> 252                                          0
+#> 253                                          0
+#> 254                                          0
+#> 255                                          0
+#> 256                                          0
+#> 257                                          0
+#> 258                                          0
+#> 259                                          0
+#> 260                                          0
+#> 261                                          0
+#> 262                                          0
+#> 263                                          0
+#> 264                                          0
+#> 265                                          0
+#> 266                                          0
+#> 267                                          0
+#> 268                                          0
+#> 269                                          0
+#> 270                                          0
+#> 271                                          0
+#> 272                                          0
+#> 273                                          0
+#> 274                                          0
+#> 275                                          0
+#> 276                                          0
+#> 277                                          0
+#> 278                                          0
+#> 279                                          0
+#> 280                                          0
+#>     compGeometric_SegmentglomerulusDKDdisease4
+#> 1                                            0
+#> 2                                            0
+#> 3                                            0
+#> 4                                            0
+#> 5                                            0
+#> 6                                            0
+#> 7                                            0
+#> 8                                            0
+#> 9                                            0
+#> 10                                           0
+#> 11                                           0
+#> 12                                           0
+#> 13                                           0
+#> 14                                           0
+#> 15                                           0
+#> 16                                           0
+#> 17                                           0
+#> 18                                           0
+#> 19                                           0
+#> 20                                           0
+#> 21                                           0
+#> 22                                           0
+#> 23                                           0
+#> 24                                           0
+#> 25                                           0
+#> 26                                           0
+#> 27                                           0
+#> 28                                           0
+#> 29                                           0
+#> 30                                           0
+#> 31                                           0
+#> 32                                           0
+#> 33                                           0
+#> 34                                           0
+#> 35                                           0
+#> 36                                           0
+#> 37                                           0
+#> 38                                           0
+#> 39                                           0
+#> 40                                           0
+#> 41                                           0
+#> 42                                           0
+#> 43                                           0
+#> 44                                           0
+#> 45                                           0
+#> 46                                           0
+#> 47                                           0
+#> 48                                           0
+#> 49                                           0
+#> 50                                           0
+#> 51                                           0
+#> 52                                           0
+#> 53                                           0
+#> 54                                           0
+#> 55                                           0
+#> 56                                           0
+#> 57                                           0
+#> 58                                           0
+#> 59                                           0
+#> 60                                           0
+#> 61                                           1
+#> 62                                           1
+#> 63                                           1
+#> 64                                           1
+#> 65                                           1
+#> 66                                           1
+#> 67                                           1
+#> 68                                           1
+#> 69                                           1
+#> 70                                           1
+#> 71                                           1
+#> 72                                           1
+#> 73                                           0
+#> 74                                           0
+#> 75                                           0
+#> 76                                           0
+#> 77                                           0
+#> 78                                           0
+#> 79                                           0
+#> 80                                           0
+#> 81                                           0
+#> 82                                           0
+#> 83                                           0
+#> 84                                           0
+#> 85                                           0
+#> 86                                           0
+#> 87                                           0
+#> 88                                           0
+#> 89                                           0
+#> 90                                           0
+#> 91                                           0
+#> 92                                           0
+#> 93                                           0
+#> 94                                           0
+#> 95                                           0
+#> 96                                           0
+#> 97                                           0
+#> 98                                           0
+#> 99                                           0
+#> 100                                          0
+#> 101                                          0
+#> 102                                          0
+#> 103                                          0
+#> 104                                          0
+#> 105                                          0
+#> 106                                          0
+#> 107                                          0
+#> 108                                          0
+#> 109                                          0
+#> 110                                          0
+#> 111                                          0
+#> 112                                          0
+#> 113                                          0
+#> 114                                          0
+#> 115                                          0
+#> 116                                          0
+#> 117                                          0
+#> 118                                          0
+#> 119                                          0
+#> 120                                          0
+#> 121                                          0
+#> 122                                          0
+#> 123                                          0
+#> 124                                          0
+#> 125                                          0
+#> 126                                          0
+#> 127                                          0
+#> 128                                          0
+#> 129                                          0
+#> 130                                          0
+#> 131                                          0
+#> 132                                          0
+#> 133                                          0
+#> 134                                          0
+#> 135                                          0
+#> 136                                          0
+#> 137                                          0
+#> 138                                          0
+#> 139                                          0
+#> 140                                          0
+#> 141                                          0
+#> 142                                          0
+#> 143                                          0
+#> 144                                          0
+#> 145                                          0
+#> 146                                          0
+#> 147                                          0
+#> 148                                          0
+#> 149                                          0
+#> 150                                          0
+#> 151                                          0
+#> 152                                          0
+#> 153                                          0
+#> 154                                          0
+#> 155                                          0
+#> 156                                          0
+#> 157                                          0
+#> 158                                          0
+#> 159                                          0
+#> 160                                          0
+#> 161                                          0
+#> 162                                          0
+#> 163                                          0
+#> 164                                          0
+#> 165                                          0
+#> 166                                          0
+#> 167                                          0
+#> 168                                          0
+#> 169                                          0
+#> 170                                          0
+#> 171                                          0
+#> 172                                          0
+#> 173                                          0
+#> 174                                          0
+#> 175                                          0
+#> 176                                          0
+#> 177                                          0
+#> 178                                          0
+#> 179                                          0
+#> 180                                          0
+#> 181                                          0
+#> 182                                          0
+#> 183                                          0
+#> 184                                          0
+#> 185                                          0
+#> 186                                          0
+#> 187                                          0
+#> 188                                          0
+#> 189                                          0
+#> 190                                          0
+#> 191                                          0
+#> 192                                          0
+#> 193                                          0
+#> 194                                          0
+#> 195                                          0
+#> 196                                          0
+#> 197                                          0
+#> 198                                          0
+#> 199                                          0
+#> 200                                          0
+#> 201                                          0
+#> 202                                          0
+#> 203                                          0
+#> 204                                          0
+#> 205                                          0
+#> 206                                          0
+#> 207                                          0
+#> 208                                          0
+#> 209                                          0
+#> 210                                          0
+#> 211                                          0
+#> 212                                          0
+#> 213                                          0
+#> 214                                          0
+#> 215                                          0
+#> 216                                          0
+#> 217                                          0
+#> 218                                          0
+#> 219                                          0
+#> 220                                          0
+#> 221                                          0
+#> 222                                          0
+#> 223                                          0
+#> 224                                          0
+#> 225                                          0
+#> 226                                          0
+#> 227                                          0
+#> 228                                          0
+#> 229                                          0
+#> 230                                          0
+#> 231                                          0
+#> 232                                          0
+#> 233                                          0
+#> 234                                          0
+#> 235                                          0
+#> 236                                          0
+#> 237                                          0
+#> 238                                          0
+#> 239                                          0
+#> 240                                          0
+#> 241                                          0
+#> 242                                          0
+#> 243                                          0
+#> 244                                          0
+#> 245                                          0
+#> 246                                          0
+#> 247                                          0
+#> 248                                          0
+#> 249                                          0
+#> 250                                          0
+#> 251                                          0
+#> 252                                          0
+#> 253                                          0
+#> 254                                          0
+#> 255                                          0
+#> 256                                          0
+#> 257                                          0
+#> 258                                          0
+#> 259                                          0
+#> 260                                          0
+#> 261                                          0
+#> 262                                          0
+#> 263                                          0
+#> 264                                          0
+#> 265                                          0
+#> 266                                          0
+#> 267                                          0
+#> 268                                          0
+#> 269                                          0
+#> 270                                          0
+#> 271                                          0
+#> 272                                          0
+#> 273                                          0
+#> 274                                          0
+#> 275                                          0
+#> 276                                          0
+#> 277                                          0
+#> 278                                          0
+#> 279                                          0
+#> 280                                          0
+#>     compGeometric_Segmentglomerulusnormalnormal2B
+#> 1                                               0
+#> 2                                               0
+#> 3                                               0
+#> 4                                               0
+#> 5                                               0
+#> 6                                               0
+#> 7                                               0
+#> 8                                               0
+#> 9                                               0
+#> 10                                              0
+#> 11                                              0
+#> 12                                              0
+#> 13                                              0
+#> 14                                              0
+#> 15                                              0
+#> 16                                              0
+#> 17                                              0
+#> 18                                              0
+#> 19                                              0
+#> 20                                              0
+#> 21                                              0
+#> 22                                              0
+#> 23                                              0
+#> 24                                              0
+#> 25                                              0
+#> 26                                              0
+#> 27                                              0
+#> 28                                              0
+#> 29                                              0
+#> 30                                              0
+#> 31                                              0
+#> 32                                              0
+#> 33                                              0
+#> 34                                              0
+#> 35                                              0
+#> 36                                              0
+#> 37                                              0
+#> 38                                              0
+#> 39                                              0
+#> 40                                              0
+#> 41                                              0
+#> 42                                              0
+#> 43                                              0
+#> 44                                              0
+#> 45                                              0
+#> 46                                              0
+#> 47                                              0
+#> 48                                              0
+#> 49                                              0
+#> 50                                              0
+#> 51                                              0
+#> 52                                              0
+#> 53                                              0
+#> 54                                              0
+#> 55                                              0
+#> 56                                              0
+#> 57                                              0
+#> 58                                              0
+#> 59                                              0
+#> 60                                              0
+#> 61                                              0
+#> 62                                              0
+#> 63                                              0
+#> 64                                              0
+#> 65                                              0
+#> 66                                              0
+#> 67                                              0
+#> 68                                              0
+#> 69                                              0
+#> 70                                              0
+#> 71                                              0
+#> 72                                              0
+#> 73                                              0
+#> 74                                              0
+#> 75                                              0
+#> 76                                              0
+#> 77                                              0
+#> 78                                              0
+#> 79                                              0
+#> 80                                              0
+#> 81                                              0
+#> 82                                              0
+#> 83                                              0
+#> 84                                              0
+#> 85                                              0
+#> 86                                              0
+#> 87                                              0
+#> 88                                              0
+#> 89                                              0
+#> 90                                              0
+#> 91                                              0
+#> 92                                              0
+#> 93                                              0
+#> 94                                              0
+#> 95                                              0
+#> 96                                              0
+#> 97                                              0
+#> 98                                              0
+#> 99                                              0
+#> 100                                             0
+#> 101                                             0
+#> 102                                             0
+#> 103                                             0
+#> 104                                             0
+#> 105                                             0
+#> 106                                             0
+#> 107                                             0
+#> 108                                             0
+#> 109                                             0
+#> 110                                             0
+#> 111                                             0
+#> 112                                             0
+#> 113                                             0
+#> 114                                             0
+#> 115                                             0
+#> 116                                             0
+#> 117                                             0
+#> 118                                             0
+#> 119                                             0
+#> 120                                             0
+#> 121                                             0
+#> 122                                             0
+#> 123                                             0
+#> 124                                             0
+#> 125                                             0
+#> 126                                             0
+#> 127                                             0
+#> 128                                             0
+#> 129                                             0
+#> 130                                             0
+#> 131                                             0
+#> 132                                             0
+#> 133                                             0
+#> 134                                             0
+#> 135                                             0
+#> 136                                             0
+#> 137                                             0
+#> 138                                             0
+#> 139                                             0
+#> 140                                             0
+#> 141                                             0
+#> 142                                             0
+#> 143                                             0
+#> 144                                             0
+#> 145                                             0
+#> 146                                             0
+#> 147                                             0
+#> 148                                             0
+#> 149                                             0
+#> 150                                             0
+#> 151                                             0
+#> 152                                             0
+#> 153                                             0
+#> 154                                             0
+#> 155                                             0
+#> 156                                             0
+#> 157                                             0
+#> 158                                             0
+#> 159                                             0
+#> 160                                             0
+#> 161                                             0
+#> 162                                             0
+#> 163                                             0
+#> 164                                             0
+#> 165                                             0
+#> 166                                             0
+#> 167                                             0
+#> 168                                             0
+#> 169                                             0
+#> 170                                             0
+#> 171                                             0
+#> 172                                             0
+#> 173                                             0
+#> 174                                             0
+#> 175                                             0
+#> 176                                             0
+#> 177                                             0
+#> 178                                             0
+#> 179                                             0
+#> 180                                             0
+#> 181                                             0
+#> 182                                             0
+#> 183                                             0
+#> 184                                             0
+#> 185                                             0
+#> 186                                             0
+#> 187                                             0
+#> 188                                             0
+#> 189                                             0
+#> 190                                             0
+#> 191                                             0
+#> 192                                             0
+#> 193                                             0
+#> 194                                             0
+#> 195                                             0
+#> 196                                             0
+#> 197                                             0
+#> 198                                             0
+#> 199                                             0
+#> 200                                             0
+#> 201                                             0
+#> 202                                             0
+#> 203                                             0
+#> 204                                             0
+#> 205                                             0
+#> 206                                             0
+#> 207                                             0
+#> 208                                             0
+#> 209                                             0
+#> 210                                             0
+#> 211                                             0
+#> 212                                             0
+#> 213                                             0
+#> 214                                             0
+#> 215                                             0
+#> 216                                             0
+#> 217                                             0
+#> 218                                             0
+#> 219                                             0
+#> 220                                             0
+#> 221                                             0
+#> 222                                             0
+#> 223                                             0
+#> 224                                             0
+#> 225                                             0
+#> 226                                             0
+#> 227                                             0
+#> 228                                             0
+#> 229                                             0
+#> 230                                             0
+#> 231                                             0
+#> 232                                             0
+#> 233                                             0
+#> 234                                             0
+#> 235                                             0
+#> 236                                             0
+#> 237                                             0
+#> 238                                             0
+#> 239                                             0
+#> 240                                             0
+#> 241                                             0
+#> 242                                             1
+#> 243                                             1
+#> 244                                             1
+#> 245                                             1
+#> 246                                             1
+#> 247                                             1
+#> 248                                             1
+#> 249                                             1
+#> 250                                             1
+#> 251                                             1
+#> 252                                             0
+#> 253                                             0
+#> 254                                             0
+#> 255                                             0
+#> 256                                             0
+#> 257                                             0
+#> 258                                             0
+#> 259                                             0
+#> 260                                             0
+#> 261                                             0
+#> 262                                             0
+#> 263                                             0
+#> 264                                             0
+#> 265                                             0
+#> 266                                             0
+#> 267                                             0
+#> 268                                             0
+#> 269                                             0
+#> 270                                             0
+#> 271                                             0
+#> 272                                             0
+#> 273                                             0
+#> 274                                             0
+#> 275                                             0
+#> 276                                             0
+#> 277                                             0
+#> 278                                             0
+#> 279                                             0
+#> 280                                             0
+#>     compGeometric_Segmentglomerulusnormalnormal3
+#> 1                                              0
+#> 2                                              0
+#> 3                                              0
+#> 4                                              0
+#> 5                                              0
+#> 6                                              0
+#> 7                                              0
+#> 8                                              0
+#> 9                                              0
+#> 10                                             0
+#> 11                                             0
+#> 12                                             0
+#> 13                                             0
+#> 14                                             0
+#> 15                                             0
+#> 16                                             0
+#> 17                                             0
+#> 18                                             0
+#> 19                                             0
+#> 20                                             0
+#> 21                                             0
+#> 22                                             0
+#> 23                                             0
+#> 24                                             0
+#> 25                                             0
+#> 26                                             0
+#> 27                                             0
+#> 28                                             0
+#> 29                                             0
+#> 30                                             0
+#> 31                                             0
+#> 32                                             0
+#> 33                                             0
+#> 34                                             0
+#> 35                                             0
+#> 36                                             0
+#> 37                                             0
+#> 38                                             0
+#> 39                                             0
+#> 40                                             0
+#> 41                                             0
+#> 42                                             0
+#> 43                                             0
+#> 44                                             0
+#> 45                                             0
+#> 46                                             0
+#> 47                                             0
+#> 48                                             0
+#> 49                                             0
+#> 50                                             0
+#> 51                                             0
+#> 52                                             0
+#> 53                                             0
+#> 54                                             0
+#> 55                                             0
+#> 56                                             0
+#> 57                                             0
+#> 58                                             0
+#> 59                                             0
+#> 60                                             0
+#> 61                                             0
+#> 62                                             0
+#> 63                                             0
+#> 64                                             0
+#> 65                                             0
+#> 66                                             0
+#> 67                                             0
+#> 68                                             0
+#> 69                                             0
+#> 70                                             0
+#> 71                                             0
+#> 72                                             0
+#> 73                                             0
+#> 74                                             0
+#> 75                                             0
+#> 76                                             0
+#> 77                                             0
+#> 78                                             0
+#> 79                                             0
+#> 80                                             0
+#> 81                                             0
+#> 82                                             0
+#> 83                                             0
+#> 84                                             0
+#> 85                                             0
+#> 86                                             1
+#> 87                                             1
+#> 88                                             1
+#> 89                                             1
+#> 90                                             1
+#> 91                                             1
+#> 92                                             1
+#> 93                                             1
+#> 94                                             1
+#> 95                                             1
+#> 96                                             1
+#> 97                                             1
+#> 98                                             1
+#> 99                                             1
+#> 100                                            1
+#> 101                                            1
+#> 102                                            1
+#> 103                                            1
+#> 104                                            1
+#> 105                                            1
+#> 106                                            1
+#> 107                                            1
+#> 108                                            1
+#> 109                                            1
+#> 110                                            1
+#> 111                                            1
+#> 112                                            1
+#> 113                                            1
+#> 114                                            1
+#> 115                                            1
+#> 116                                            1
+#> 117                                            1
+#> 118                                            1
+#> 119                                            1
+#> 120                                            1
+#> 121                                            1
+#> 122                                            1
+#> 123                                            1
+#> 124                                            1
+#> 125                                            1
+#> 126                                            1
+#> 127                                            1
+#> 128                                            1
+#> 129                                            1
+#> 130                                            1
+#> 131                                            1
+#> 132                                            1
+#> 133                                            0
+#> 134                                            0
+#> 135                                            0
+#> 136                                            0
+#> 137                                            0
+#> 138                                            0
+#> 139                                            0
+#> 140                                            0
+#> 141                                            0
+#> 142                                            0
+#> 143                                            0
+#> 144                                            0
+#> 145                                            0
+#> 146                                            0
+#> 147                                            0
+#> 148                                            0
+#> 149                                            0
+#> 150                                            0
+#> 151                                            0
+#> 152                                            0
+#> 153                                            0
+#> 154                                            0
+#> 155                                            0
+#> 156                                            0
+#> 157                                            0
+#> 158                                            0
+#> 159                                            0
+#> 160                                            0
+#> 161                                            0
+#> 162                                            0
+#> 163                                            0
+#> 164                                            0
+#> 165                                            0
+#> 166                                            0
+#> 167                                            0
+#> 168                                            0
+#> 169                                            0
+#> 170                                            0
+#> 171                                            0
+#> 172                                            0
+#> 173                                            0
+#> 174                                            0
+#> 175                                            0
+#> 176                                            0
+#> 177                                            0
+#> 178                                            0
+#> 179                                            0
+#> 180                                            0
+#> 181                                            0
+#> 182                                            0
+#> 183                                            0
+#> 184                                            0
+#> 185                                            0
+#> 186                                            0
+#> 187                                            0
+#> 188                                            0
+#> 189                                            0
+#> 190                                            0
+#> 191                                            0
+#> 192                                            0
+#> 193                                            0
+#> 194                                            0
+#> 195                                            0
+#> 196                                            0
+#> 197                                            0
+#> 198                                            0
+#> 199                                            0
+#> 200                                            0
+#> 201                                            0
+#> 202                                            0
+#> 203                                            0
+#> 204                                            0
+#> 205                                            0
+#> 206                                            0
+#> 207                                            0
+#> 208                                            0
+#> 209                                            0
+#> 210                                            0
+#> 211                                            0
+#> 212                                            0
+#> 213                                            0
+#> 214                                            0
+#> 215                                            0
+#> 216                                            0
+#> 217                                            0
+#> 218                                            0
+#> 219                                            0
+#> 220                                            0
+#> 221                                            0
+#> 222                                            0
+#> 223                                            0
+#> 224                                            0
+#> 225                                            0
+#> 226                                            0
+#> 227                                            0
+#> 228                                            0
+#> 229                                            0
+#> 230                                            0
+#> 231                                            0
+#> 232                                            0
+#> 233                                            0
+#> 234                                            0
+#> 235                                            0
+#> 236                                            0
+#> 237                                            0
+#> 238                                            0
+#> 239                                            0
+#> 240                                            0
+#> 241                                            0
+#> 242                                            0
+#> 243                                            0
+#> 244                                            0
+#> 245                                            0
+#> 246                                            0
+#> 247                                            0
+#> 248                                            0
+#> 249                                            0
+#> 250                                            0
+#> 251                                            0
+#> 252                                            0
+#> 253                                            0
+#> 254                                            0
+#> 255                                            0
+#> 256                                            0
+#> 257                                            0
+#> 258                                            0
+#> 259                                            0
+#> 260                                            0
+#> 261                                            0
+#> 262                                            0
+#> 263                                            0
+#> 264                                            0
+#> 265                                            0
+#> 266                                            0
+#> 267                                            0
+#> 268                                            0
+#> 269                                            0
+#> 270                                            0
+#> 271                                            0
+#> 272                                            0
+#> 273                                            0
+#> 274                                            0
+#> 275                                            0
+#> 276                                            0
+#> 277                                            0
+#> 278                                            0
+#> 279                                            0
+#> 280                                            0
+#>     compGeometric_Segmentglomerulusnormalnormal4 compNANANANo_Template_Control
+#> 1                                              0                             1
+#> 2                                              0                             0
+#> 3                                              0                             0
+#> 4                                              0                             0
+#> 5                                              0                             0
+#> 6                                              0                             0
+#> 7                                              0                             0
+#> 8                                              0                             0
+#> 9                                              0                             0
+#> 10                                             0                             0
+#> 11                                             0                             0
+#> 12                                             0                             0
+#> 13                                             0                             0
+#> 14                                             0                             0
+#> 15                                             0                             0
+#> 16                                             0                             0
+#> 17                                             0                             0
+#> 18                                             0                             0
+#> 19                                             0                             0
+#> 20                                             0                             0
+#> 21                                             0                             0
+#> 22                                             0                             0
+#> 23                                             0                             0
+#> 24                                             0                             0
+#> 25                                             0                             0
+#> 26                                             0                             0
+#> 27                                             0                             0
+#> 28                                             0                             0
+#> 29                                             0                             0
+#> 30                                             0                             0
+#> 31                                             0                             0
+#> 32                                             0                             0
+#> 33                                             0                             0
+#> 34                                             0                             0
+#> 35                                             0                             0
+#> 36                                             0                             0
+#> 37                                             0                             0
+#> 38                                             0                             0
+#> 39                                             0                             0
+#> 40                                             0                             0
+#> 41                                             0                             0
+#> 42                                             0                             0
+#> 43                                             0                             0
+#> 44                                             0                             0
+#> 45                                             0                             0
+#> 46                                             0                             0
+#> 47                                             0                             0
+#> 48                                             0                             0
+#> 49                                             0                             0
+#> 50                                             0                             0
+#> 51                                             0                             0
+#> 52                                             0                             0
+#> 53                                             0                             0
+#> 54                                             0                             0
+#> 55                                             0                             0
+#> 56                                             0                             0
+#> 57                                             0                             0
+#> 58                                             0                             0
+#> 59                                             0                             0
+#> 60                                             0                             0
+#> 61                                             0                             0
+#> 62                                             0                             0
+#> 63                                             0                             0
+#> 64                                             0                             0
+#> 65                                             0                             0
+#> 66                                             0                             0
+#> 67                                             0                             0
+#> 68                                             0                             0
+#> 69                                             0                             0
+#> 70                                             0                             0
+#> 71                                             0                             0
+#> 72                                             0                             0
+#> 73                                             0                             1
+#> 74                                             0                             0
+#> 75                                             0                             0
+#> 76                                             0                             0
+#> 77                                             0                             0
+#> 78                                             0                             0
+#> 79                                             0                             0
+#> 80                                             0                             0
+#> 81                                             0                             0
+#> 82                                             0                             0
+#> 83                                             0                             0
+#> 84                                             0                             0
+#> 85                                             0                             0
+#> 86                                             0                             0
+#> 87                                             0                             0
+#> 88                                             0                             0
+#> 89                                             0                             0
+#> 90                                             0                             0
+#> 91                                             0                             0
+#> 92                                             0                             0
+#> 93                                             0                             0
+#> 94                                             0                             0
+#> 95                                             0                             0
+#> 96                                             0                             0
+#> 97                                             0                             0
+#> 98                                             0                             0
+#> 99                                             0                             0
+#> 100                                            0                             0
+#> 101                                            0                             0
+#> 102                                            0                             0
+#> 103                                            0                             0
+#> 104                                            0                             0
+#> 105                                            0                             0
+#> 106                                            0                             0
+#> 107                                            0                             0
+#> 108                                            0                             0
+#> 109                                            0                             0
+#> 110                                            0                             0
+#> 111                                            0                             0
+#> 112                                            0                             0
+#> 113                                            0                             0
+#> 114                                            0                             0
+#> 115                                            0                             0
+#> 116                                            0                             0
+#> 117                                            0                             0
+#> 118                                            0                             0
+#> 119                                            0                             0
+#> 120                                            0                             0
+#> 121                                            0                             0
+#> 122                                            0                             0
+#> 123                                            0                             0
+#> 124                                            0                             0
+#> 125                                            0                             0
+#> 126                                            0                             0
+#> 127                                            0                             0
+#> 128                                            0                             0
+#> 129                                            0                             0
+#> 130                                            0                             0
+#> 131                                            0                             0
+#> 132                                            0                             0
+#> 133                                            0                             0
+#> 134                                            0                             0
+#> 135                                            0                             0
+#> 136                                            0                             0
+#> 137                                            0                             0
+#> 138                                            0                             0
+#> 139                                            0                             0
+#> 140                                            0                             0
+#> 141                                            0                             0
+#> 142                                            0                             0
+#> 143                                            0                             0
+#> 144                                            0                             0
+#> 145                                            1                             0
+#> 146                                            1                             0
+#> 147                                            1                             0
+#> 148                                            1                             0
+#> 149                                            1                             0
+#> 150                                            1                             0
+#> 151                                            1                             0
+#> 152                                            1                             0
+#> 153                                            1                             0
+#> 154                                            1                             0
+#> 155                                            1                             0
+#> 156                                            0                             0
+#> 157                                            0                             0
+#> 158                                            0                             0
+#> 159                                            0                             0
+#> 160                                            0                             0
+#> 161                                            0                             0
+#> 162                                            0                             0
+#> 163                                            0                             0
+#> 164                                            0                             0
+#> 165                                            0                             0
+#> 166                                            0                             0
+#> 167                                            0                             0
+#> 168                                            0                             1
+#> 169                                            0                             0
+#> 170                                            0                             0
+#> 171                                            0                             0
+#> 172                                            0                             0
+#> 173                                            0                             0
+#> 174                                            0                             0
+#> 175                                            0                             0
+#> 176                                            0                             0
+#> 177                                            0                             0
+#> 178                                            0                             0
+#> 179                                            0                             0
+#> 180                                            0                             0
+#> 181                                            0                             0
+#> 182                                            0                             0
+#> 183                                            0                             0
+#> 184                                            0                             0
+#> 185                                            0                             0
+#> 186                                            0                             0
+#> 187                                            0                             0
+#> 188                                            0                             0
+#> 189                                            0                             0
+#> 190                                            0                             0
+#> 191                                            0                             0
+#> 192                                            0                             0
+#> 193                                            0                             0
+#> 194                                            0                             0
+#> 195                                            0                             0
+#> 196                                            0                             0
+#> 197                                            0                             0
+#> 198                                            0                             0
+#> 199                                            0                             0
+#> 200                                            0                             0
+#> 201                                            0                             0
+#> 202                                            0                             0
+#> 203                                            0                             0
+#> 204                                            0                             0
+#> 205                                            0                             0
+#> 206                                            0                             0
+#> 207                                            0                             0
+#> 208                                            0                             0
+#> 209                                            0                             0
+#> 210                                            0                             0
+#> 211                                            0                             0
+#> 212                                            0                             0
+#> 213                                            0                             0
+#> 214                                            0                             0
+#> 215                                            0                             0
+#> 216                                            0                             1
+#> 217                                            0                             0
+#> 218                                            0                             0
+#> 219                                            0                             0
+#> 220                                            0                             0
+#> 221                                            0                             0
+#> 222                                            0                             0
+#> 223                                            0                             0
+#> 224                                            0                             0
+#> 225                                            0                             0
+#> 226                                            0                             0
+#> 227                                            0                             0
+#> 228                                            0                             0
+#> 229                                            0                             0
+#> 230                                            0                             0
+#> 231                                            0                             0
+#> 232                                            0                             0
+#> 233                                            0                             0
+#> 234                                            0                             0
+#> 235                                            0                             0
+#> 236                                            0                             0
+#> 237                                            0                             0
+#> 238                                            0                             0
+#> 239                                            0                             0
+#> 240                                            0                             0
+#> 241                                            0                             0
+#> 242                                            0                             0
+#> 243                                            0                             0
+#> 244                                            0                             0
+#> 245                                            0                             0
+#> 246                                            0                             0
+#> 247                                            0                             0
+#> 248                                            0                             0
+#> 249                                            0                             0
+#> 250                                            0                             0
+#> 251                                            0                             0
+#> 252                                            0                             0
+#> 253                                            0                             0
+#> 254                                            0                             0
+#> 255                                            0                             0
+#> 256                                            0                             0
+#> 257                                            0                             0
+#> 258                                            0                             0
+#> 259                                            0                             0
+#> 260                                            0                             0
+#> 261                                            0                             0
+#> 262                                            0                             0
+#> 263                                            0                             0
+#> 264                                            0                             0
+#> 265                                            0                             0
+#> 266                                            0                             0
+#> 267                                            0                             0
+#> 268                                            0                             0
+#> 269                                            0                             0
+#> 270                                            0                             0
+#> 271                                            0                             0
+#> 272                                            0                             0
+#> 273                                            0                             0
+#> 274                                            0                             0
+#> 275                                            0                             0
+#> 276                                            0                             0
+#> 277                                            0                             0
+#> 278                                            0                             0
+#> 279                                            0                             0
+#> 280                                            0                             0
+#>     compnegglomerulusDKDdisease1B compnegglomerulusDKDdisease2B
+#> 1                               0                             0
+#> 2                               0                             0
+#> 3                               0                             0
+#> 4                               0                             0
+#> 5                               0                             0
+#> 6                               0                             0
+#> 7                               0                             0
+#> 8                               0                             0
+#> 9                               0                             0
+#> 10                              0                             0
+#> 11                              0                             0
+#> 12                              0                             0
+#> 13                              0                             0
+#> 14                              0                             0
+#> 15                              0                             0
+#> 16                              0                             0
+#> 17                              0                             0
+#> 18                              0                             0
+#> 19                              0                             0
+#> 20                              0                             0
+#> 21                              0                             0
+#> 22                              0                             0
+#> 23                              0                             0
+#> 24                              0                             0
+#> 25                              0                             0
+#> 26                              0                             0
+#> 27                              0                             0
+#> 28                              0                             0
+#> 29                              0                             0
+#> 30                              0                             0
+#> 31                              0                             0
+#> 32                              0                             0
+#> 33                              0                             0
+#> 34                              0                             0
+#> 35                              0                             0
+#> 36                              0                             0
+#> 37                              0                             0
+#> 38                              0                             0
+#> 39                              0                             0
+#> 40                              0                             0
+#> 41                              0                             0
+#> 42                              0                             0
+#> 43                              0                             0
+#> 44                              0                             0
+#> 45                              0                             0
+#> 46                              0                             0
+#> 47                              0                             0
+#> 48                              0                             0
+#> 49                              0                             0
+#> 50                              0                             0
+#> 51                              0                             0
+#> 52                              0                             0
+#> 53                              0                             0
+#> 54                              0                             0
+#> 55                              0                             0
+#> 56                              0                             0
+#> 57                              0                             0
+#> 58                              0                             0
+#> 59                              0                             0
+#> 60                              0                             0
+#> 61                              0                             0
+#> 62                              0                             0
+#> 63                              0                             0
+#> 64                              0                             0
+#> 65                              0                             0
+#> 66                              0                             0
+#> 67                              0                             0
+#> 68                              0                             0
+#> 69                              0                             0
+#> 70                              0                             0
+#> 71                              0                             0
+#> 72                              0                             0
+#> 73                              0                             0
+#> 74                              0                             0
+#> 75                              0                             0
+#> 76                              0                             0
+#> 77                              0                             0
+#> 78                              0                             0
+#> 79                              0                             0
+#> 80                              0                             0
+#> 81                              0                             0
+#> 82                              0                             0
+#> 83                              0                             0
+#> 84                              0                             0
+#> 85                              0                             0
+#> 86                              0                             0
+#> 87                              0                             0
+#> 88                              0                             0
+#> 89                              0                             0
+#> 90                              0                             0
+#> 91                              0                             0
+#> 92                              0                             0
+#> 93                              0                             0
+#> 94                              0                             0
+#> 95                              0                             0
+#> 96                              0                             0
+#> 97                              0                             0
+#> 98                              0                             0
+#> 99                              0                             0
+#> 100                             0                             0
+#> 101                             0                             0
+#> 102                             0                             0
+#> 103                             0                             0
+#> 104                             0                             0
+#> 105                             0                             0
+#> 106                             0                             0
+#> 107                             0                             0
+#> 108                             0                             0
+#> 109                             0                             0
+#> 110                             0                             0
+#> 111                             0                             0
+#> 112                             0                             0
+#> 113                             0                             0
+#> 114                             0                             0
+#> 115                             0                             0
+#> 116                             0                             0
+#> 117                             0                             0
+#> 118                             0                             0
+#> 119                             0                             0
+#> 120                             0                             0
+#> 121                             0                             0
+#> 122                             0                             0
+#> 123                             0                             0
+#> 124                             0                             0
+#> 125                             0                             0
+#> 126                             0                             0
+#> 127                             0                             0
+#> 128                             0                             0
+#> 129                             0                             0
+#> 130                             0                             0
+#> 131                             0                             0
+#> 132                             0                             0
+#> 133                             0                             0
+#> 134                             0                             0
+#> 135                             0                             0
+#> 136                             0                             0
+#> 137                             0                             0
+#> 138                             0                             0
+#> 139                             0                             0
+#> 140                             0                             0
+#> 141                             0                             0
+#> 142                             0                             0
+#> 143                             0                             0
+#> 144                             0                             0
+#> 145                             0                             0
+#> 146                             0                             0
+#> 147                             0                             0
+#> 148                             0                             0
+#> 149                             0                             0
+#> 150                             0                             0
+#> 151                             0                             0
+#> 152                             0                             0
+#> 153                             0                             0
+#> 154                             0                             0
+#> 155                             0                             0
+#> 156                             0                             0
+#> 157                             0                             0
+#> 158                             0                             0
+#> 159                             0                             0
+#> 160                             0                             0
+#> 161                             0                             0
+#> 162                             0                             0
+#> 163                             0                             0
+#> 164                             0                             0
+#> 165                             0                             0
+#> 166                             0                             0
+#> 167                             0                             0
+#> 168                             0                             0
+#> 169                             0                             0
+#> 170                             0                             0
+#> 171                             0                             0
+#> 172                             0                             0
+#> 173                             0                             0
+#> 174                             0                             0
+#> 175                             0                             0
+#> 176                             0                             0
+#> 177                             0                             0
+#> 178                             0                             0
+#> 179                             0                             0
+#> 180                             0                             1
+#> 181                             0                             0
+#> 182                             0                             0
+#> 183                             0                             1
+#> 184                             0                             0
+#> 185                             0                             1
+#> 186                             0                             0
+#> 187                             0                             1
+#> 188                             0                             0
+#> 189                             0                             0
+#> 190                             0                             1
+#> 191                             0                             0
+#> 192                             0                             0
+#> 193                             0                             0
+#> 194                             0                             0
+#> 195                             0                             0
+#> 196                             0                             0
+#> 197                             0                             0
+#> 198                             0                             0
+#> 199                             0                             0
+#> 200                             0                             0
+#> 201                             0                             0
+#> 202                             0                             0
+#> 203                             0                             0
+#> 204                             0                             0
+#> 205                             0                             0
+#> 206                             0                             0
+#> 207                             0                             0
+#> 208                             0                             0
+#> 209                             0                             0
+#> 210                             0                             0
+#> 211                             0                             0
+#> 212                             0                             0
+#> 213                             0                             0
+#> 214                             0                             0
+#> 215                             0                             0
+#> 216                             0                             0
+#> 217                             0                             0
+#> 218                             0                             0
+#> 219                             0                             0
+#> 220                             0                             0
+#> 221                             0                             0
+#> 222                             0                             0
+#> 223                             0                             0
+#> 224                             0                             0
+#> 225                             0                             0
+#> 226                             0                             0
+#> 227                             0                             0
+#> 228                             0                             0
+#> 229                             0                             0
+#> 230                             0                             0
+#> 231                             0                             0
+#> 232                             0                             0
+#> 233                             0                             0
+#> 234                             0                             0
+#> 235                             0                             0
+#> 236                             0                             0
+#> 237                             0                             0
+#> 238                             0                             0
+#> 239                             0                             0
+#> 240                             0                             0
+#> 241                             0                             0
+#> 242                             0                             0
+#> 243                             0                             0
+#> 244                             0                             0
+#> 245                             0                             0
+#> 246                             0                             0
+#> 247                             0                             0
+#> 248                             0                             0
+#> 249                             0                             0
+#> 250                             0                             0
+#> 251                             0                             0
+#> 252                             0                             0
+#> 253                             1                             0
+#> 254                             0                             0
+#> 255                             1                             0
+#> 256                             0                             0
+#> 257                             1                             0
+#> 258                             0                             0
+#> 259                             0                             0
+#> 260                             1                             0
+#> 261                             0                             0
+#> 262                             1                             0
+#> 263                             0                             0
+#> 264                             1                             0
+#> 265                             0                             0
+#> 266                             0                             0
+#> 267                             0                             0
+#> 268                             0                             0
+#> 269                             0                             0
+#> 270                             0                             0
+#> 271                             0                             0
+#> 272                             0                             0
+#> 273                             0                             0
+#> 274                             0                             0
+#> 275                             0                             0
+#> 276                             0                             0
+#> 277                             0                             0
+#> 278                             0                             0
+#> 279                             0                             0
+#> 280                             0                             0
+#>     compnegglomerulusnormalnormal2B compnegtubuleDKDdisease1B
+#> 1                                 0                         0
+#> 2                                 0                         0
+#> 3                                 0                         0
+#> 4                                 0                         0
+#> 5                                 0                         0
+#> 6                                 0                         0
+#> 7                                 0                         0
+#> 8                                 0                         0
+#> 9                                 0                         0
+#> 10                                0                         0
+#> 11                                0                         0
+#> 12                                0                         0
+#> 13                                0                         0
+#> 14                                0                         0
+#> 15                                0                         0
+#> 16                                0                         0
+#> 17                                0                         0
+#> 18                                0                         0
+#> 19                                0                         0
+#> 20                                0                         0
+#> 21                                0                         0
+#> 22                                0                         0
+#> 23                                0                         0
+#> 24                                0                         0
+#> 25                                0                         0
+#> 26                                0                         0
+#> 27                                0                         0
+#> 28                                0                         0
+#> 29                                0                         0
+#> 30                                0                         0
+#> 31                                0                         0
+#> 32                                0                         0
+#> 33                                0                         0
+#> 34                                0                         0
+#> 35                                0                         0
+#> 36                                0                         0
+#> 37                                0                         0
+#> 38                                0                         0
+#> 39                                0                         0
+#> 40                                0                         0
+#> 41                                0                         0
+#> 42                                0                         0
+#> 43                                0                         0
+#> 44                                0                         0
+#> 45                                0                         0
+#> 46                                0                         0
+#> 47                                0                         0
+#> 48                                0                         0
+#> 49                                0                         0
+#> 50                                0                         0
+#> 51                                0                         0
+#> 52                                0                         0
+#> 53                                0                         0
+#> 54                                0                         0
+#> 55                                0                         0
+#> 56                                0                         0
+#> 57                                0                         0
+#> 58                                0                         0
+#> 59                                0                         0
+#> 60                                0                         0
+#> 61                                0                         0
+#> 62                                0                         0
+#> 63                                0                         0
+#> 64                                0                         0
+#> 65                                0                         0
+#> 66                                0                         0
+#> 67                                0                         0
+#> 68                                0                         0
+#> 69                                0                         0
+#> 70                                0                         0
+#> 71                                0                         0
+#> 72                                0                         0
+#> 73                                0                         0
+#> 74                                0                         0
+#> 75                                0                         0
+#> 76                                0                         0
+#> 77                                0                         0
+#> 78                                0                         0
+#> 79                                0                         0
+#> 80                                0                         0
+#> 81                                0                         0
+#> 82                                0                         0
+#> 83                                0                         0
+#> 84                                0                         0
+#> 85                                0                         0
+#> 86                                0                         0
+#> 87                                0                         0
+#> 88                                0                         0
+#> 89                                0                         0
+#> 90                                0                         0
+#> 91                                0                         0
+#> 92                                0                         0
+#> 93                                0                         0
+#> 94                                0                         0
+#> 95                                0                         0
+#> 96                                0                         0
+#> 97                                0                         0
+#> 98                                0                         0
+#> 99                                0                         0
+#> 100                               0                         0
+#> 101                               0                         0
+#> 102                               0                         0
+#> 103                               0                         0
+#> 104                               0                         0
+#> 105                               0                         0
+#> 106                               0                         0
+#> 107                               0                         0
+#> 108                               0                         0
+#> 109                               0                         0
+#> 110                               0                         0
+#> 111                               0                         0
+#> 112                               0                         0
+#> 113                               0                         0
+#> 114                               0                         0
+#> 115                               0                         0
+#> 116                               0                         0
+#> 117                               0                         0
+#> 118                               0                         0
+#> 119                               0                         0
+#> 120                               0                         0
+#> 121                               0                         0
+#> 122                               0                         0
+#> 123                               0                         0
+#> 124                               0                         0
+#> 125                               0                         0
+#> 126                               0                         0
+#> 127                               0                         0
+#> 128                               0                         0
+#> 129                               0                         0
+#> 130                               0                         0
+#> 131                               0                         0
+#> 132                               0                         0
+#> 133                               0                         0
+#> 134                               0                         0
+#> 135                               0                         0
+#> 136                               0                         0
+#> 137                               0                         0
+#> 138                               0                         0
+#> 139                               0                         0
+#> 140                               0                         0
+#> 141                               0                         0
+#> 142                               0                         0
+#> 143                               0                         0
+#> 144                               0                         0
+#> 145                               0                         0
+#> 146                               0                         0
+#> 147                               0                         0
+#> 148                               0                         0
+#> 149                               0                         0
+#> 150                               0                         0
+#> 151                               0                         0
+#> 152                               0                         0
+#> 153                               0                         0
+#> 154                               0                         0
+#> 155                               0                         0
+#> 156                               0                         0
+#> 157                               0                         0
+#> 158                               0                         0
+#> 159                               0                         0
+#> 160                               0                         0
+#> 161                               0                         0
+#> 162                               0                         0
+#> 163                               0                         0
+#> 164                               0                         0
+#> 165                               0                         0
+#> 166                               0                         0
+#> 167                               0                         0
+#> 168                               0                         0
+#> 169                               0                         0
+#> 170                               0                         0
+#> 171                               0                         0
+#> 172                               0                         0
+#> 173                               0                         0
+#> 174                               0                         0
+#> 175                               0                         0
+#> 176                               0                         0
+#> 177                               0                         0
+#> 178                               0                         0
+#> 179                               0                         0
+#> 180                               0                         0
+#> 181                               0                         0
+#> 182                               0                         0
+#> 183                               0                         0
+#> 184                               0                         0
+#> 185                               0                         0
+#> 186                               0                         0
+#> 187                               0                         0
+#> 188                               0                         0
+#> 189                               0                         0
+#> 190                               0                         0
+#> 191                               0                         0
+#> 192                               0                         0
+#> 193                               0                         0
+#> 194                               0                         0
+#> 195                               0                         0
+#> 196                               0                         0
+#> 197                               0                         0
+#> 198                               0                         0
+#> 199                               0                         0
+#> 200                               0                         0
+#> 201                               0                         0
+#> 202                               0                         0
+#> 203                               0                         0
+#> 204                               0                         0
+#> 205                               0                         0
+#> 206                               0                         0
+#> 207                               0                         0
+#> 208                               0                         0
+#> 209                               0                         0
+#> 210                               0                         0
+#> 211                               0                         0
+#> 212                               0                         0
+#> 213                               0                         0
+#> 214                               0                         0
+#> 215                               0                         0
+#> 216                               0                         0
+#> 217                               0                         0
+#> 218                               1                         0
+#> 219                               0                         0
+#> 220                               1                         0
+#> 221                               0                         0
+#> 222                               1                         0
+#> 223                               0                         0
+#> 224                               1                         0
+#> 225                               0                         0
+#> 226                               1                         0
+#> 227                               0                         0
+#> 228                               0                         0
+#> 229                               1                         0
+#> 230                               0                         0
+#> 231                               0                         0
+#> 232                               0                         0
+#> 233                               0                         0
+#> 234                               0                         0
+#> 235                               0                         0
+#> 236                               0                         0
+#> 237                               0                         0
+#> 238                               0                         0
+#> 239                               0                         0
+#> 240                               0                         0
+#> 241                               0                         0
+#> 242                               0                         0
+#> 243                               0                         0
+#> 244                               0                         0
+#> 245                               0                         0
+#> 246                               0                         0
+#> 247                               0                         0
+#> 248                               0                         0
+#> 249                               0                         0
+#> 250                               0                         0
+#> 251                               0                         0
+#> 252                               0                         0
+#> 253                               0                         0
+#> 254                               0                         0
+#> 255                               0                         0
+#> 256                               0                         0
+#> 257                               0                         0
+#> 258                               0                         0
+#> 259                               0                         0
+#> 260                               0                         0
+#> 261                               0                         0
+#> 262                               0                         0
+#> 263                               0                         0
+#> 264                               0                         0
+#> 265                               0                         0
+#> 266                               0                         0
+#> 267                               0                         1
+#> 268                               0                         0
+#> 269                               0                         1
+#> 270                               0                         0
+#> 271                               0                         0
+#> 272                               0                         1
+#> 273                               0                         0
+#> 274                               0                         1
+#> 275                               0                         0
+#> 276                               0                         1
+#> 277                               0                         0
+#> 278                               0                         1
+#> 279                               0                         0
+#> 280                               0                         0
+#>     compnegtubuleDKDdisease2B compnegtubuleDKDdisease3 compnegtubuleDKDdisease4
+#> 1                           0                        0                        0
+#> 2                           0                        0                        0
+#> 3                           0                        0                        0
+#> 4                           0                        0                        0
+#> 5                           0                        0                        0
+#> 6                           0                        0                        0
+#> 7                           0                        0                        0
+#> 8                           0                        0                        0
+#> 9                           0                        0                        0
+#> 10                          0                        0                        0
+#> 11                          0                        0                        0
+#> 12                          0                        0                        0
+#> 13                          0                        0                        0
+#> 14                          0                        0                        0
+#> 15                          0                        0                        0
+#> 16                          0                        0                        0
+#> 17                          0                        0                        0
+#> 18                          0                        0                        0
+#> 19                          0                        0                        0
+#> 20                          0                        0                        0
+#> 21                          0                        0                        0
+#> 22                          0                        0                        0
+#> 23                          0                        0                        0
+#> 24                          0                        0                        0
+#> 25                          0                        0                        0
+#> 26                          0                        0                        0
+#> 27                          0                        0                        0
+#> 28                          0                        0                        0
+#> 29                          0                        0                        0
+#> 30                          0                        0                        0
+#> 31                          0                        0                        0
+#> 32                          0                        0                        0
+#> 33                          0                        0                        0
+#> 34                          0                        0                        0
+#> 35                          0                        0                        0
+#> 36                          0                        0                        0
+#> 37                          0                        0                        0
+#> 38                          0                        0                        0
+#> 39                          0                        0                        0
+#> 40                          0                        0                        0
+#> 41                          0                        0                        0
+#> 42                          0                        0                        0
+#> 43                          0                        0                        0
+#> 44                          0                        0                        0
+#> 45                          0                        0                        0
+#> 46                          0                        0                        0
+#> 47                          0                        0                        0
+#> 48                          0                        0                        0
+#> 49                          0                        0                        0
+#> 50                          0                        0                        1
+#> 51                          0                        0                        0
+#> 52                          0                        0                        1
+#> 53                          0                        0                        0
+#> 54                          0                        0                        1
+#> 55                          0                        0                        0
+#> 56                          0                        0                        1
+#> 57                          0                        0                        0
+#> 58                          0                        0                        1
+#> 59                          0                        0                        0
+#> 60                          0                        0                        1
+#> 61                          0                        0                        0
+#> 62                          0                        0                        0
+#> 63                          0                        0                        0
+#> 64                          0                        0                        0
+#> 65                          0                        0                        0
+#> 66                          0                        0                        0
+#> 67                          0                        0                        0
+#> 68                          0                        0                        0
+#> 69                          0                        0                        0
+#> 70                          0                        0                        0
+#> 71                          0                        0                        0
+#> 72                          0                        0                        0
+#> 73                          0                        0                        0
+#> 74                          0                        0                        0
+#> 75                          0                        0                        0
+#> 76                          0                        0                        0
+#> 77                          0                        0                        0
+#> 78                          0                        0                        0
+#> 79                          0                        0                        0
+#> 80                          0                        0                        0
+#> 81                          0                        0                        0
+#> 82                          0                        0                        0
+#> 83                          0                        0                        0
+#> 84                          0                        0                        0
+#> 85                          0                        0                        0
+#> 86                          0                        0                        0
+#> 87                          0                        0                        0
+#> 88                          0                        0                        0
+#> 89                          0                        0                        0
+#> 90                          0                        0                        0
+#> 91                          0                        0                        0
+#> 92                          0                        0                        0
+#> 93                          0                        0                        0
+#> 94                          0                        0                        0
+#> 95                          0                        0                        0
+#> 96                          0                        0                        0
+#> 97                          0                        0                        0
+#> 98                          0                        0                        0
+#> 99                          0                        0                        0
+#> 100                         0                        0                        0
+#> 101                         0                        0                        0
+#> 102                         0                        0                        0
+#> 103                         0                        0                        0
+#> 104                         0                        0                        0
+#> 105                         0                        0                        0
+#> 106                         0                        0                        0
+#> 107                         0                        0                        0
+#> 108                         0                        0                        0
+#> 109                         0                        0                        0
+#> 110                         0                        0                        0
+#> 111                         0                        0                        0
+#> 112                         0                        0                        0
+#> 113                         0                        0                        0
+#> 114                         0                        0                        0
+#> 115                         0                        0                        0
+#> 116                         0                        0                        0
+#> 117                         0                        0                        0
+#> 118                         0                        0                        0
+#> 119                         0                        0                        0
+#> 120                         0                        0                        0
+#> 121                         0                        0                        0
+#> 122                         0                        0                        0
+#> 123                         0                        0                        0
+#> 124                         0                        0                        0
+#> 125                         0                        0                        0
+#> 126                         0                        0                        0
+#> 127                         0                        0                        0
+#> 128                         0                        0                        0
+#> 129                         0                        0                        0
+#> 130                         0                        0                        0
+#> 131                         0                        0                        0
+#> 132                         0                        0                        0
+#> 133                         0                        0                        0
+#> 134                         0                        0                        0
+#> 135                         0                        0                        0
+#> 136                         0                        0                        0
+#> 137                         0                        0                        0
+#> 138                         0                        0                        0
+#> 139                         0                        0                        0
+#> 140                         0                        0                        0
+#> 141                         0                        0                        0
+#> 142                         0                        0                        0
+#> 143                         0                        0                        0
+#> 144                         0                        0                        0
+#> 145                         0                        0                        0
+#> 146                         0                        0                        0
+#> 147                         0                        0                        0
+#> 148                         0                        0                        0
+#> 149                         0                        0                        0
+#> 150                         0                        0                        0
+#> 151                         0                        0                        0
+#> 152                         0                        0                        0
+#> 153                         0                        0                        0
+#> 154                         0                        0                        0
+#> 155                         0                        0                        0
+#> 156                         0                        0                        0
+#> 157                         0                        1                        0
+#> 158                         0                        0                        0
+#> 159                         0                        1                        0
+#> 160                         0                        0                        0
+#> 161                         0                        1                        0
+#> 162                         0                        0                        0
+#> 163                         0                        1                        0
+#> 164                         0                        0                        0
+#> 165                         0                        1                        0
+#> 166                         0                        0                        0
+#> 167                         0                        1                        0
+#> 168                         0                        0                        0
+#> 169                         0                        0                        0
+#> 170                         0                        0                        0
+#> 171                         0                        0                        0
+#> 172                         0                        0                        0
+#> 173                         0                        0                        0
+#> 174                         0                        0                        0
+#> 175                         0                        0                        0
+#> 176                         0                        0                        0
+#> 177                         0                        0                        0
+#> 178                         0                        0                        0
+#> 179                         0                        0                        0
+#> 180                         0                        0                        0
+#> 181                         0                        0                        0
+#> 182                         0                        0                        0
+#> 183                         0                        0                        0
+#> 184                         0                        0                        0
+#> 185                         0                        0                        0
+#> 186                         0                        0                        0
+#> 187                         0                        0                        0
+#> 188                         0                        0                        0
+#> 189                         0                        0                        0
+#> 190                         0                        0                        0
+#> 191                         0                        0                        0
+#> 192                         0                        0                        0
+#> 193                         1                        0                        0
+#> 194                         0                        0                        0
+#> 195                         1                        0                        0
+#> 196                         0                        0                        0
+#> 197                         1                        0                        0
+#> 198                         0                        0                        0
+#> 199                         1                        0                        0
+#> 200                         0                        0                        0
+#> 201                         1                        0                        0
+#> 202                         0                        0                        0
+#> 203                         1                        0                        0
+#> 204                         0                        0                        0
+#> 205                         0                        0                        0
+#> 206                         0                        0                        0
+#> 207                         0                        0                        0
+#> 208                         0                        0                        0
+#> 209                         0                        0                        0
+#> 210                         0                        0                        0
+#> 211                         0                        0                        0
+#> 212                         0                        0                        0
+#> 213                         0                        0                        0
+#> 214                         0                        0                        0
+#> 215                         0                        0                        0
+#> 216                         0                        0                        0
+#> 217                         0                        0                        0
+#> 218                         0                        0                        0
+#> 219                         0                        0                        0
+#> 220                         0                        0                        0
+#> 221                         0                        0                        0
+#> 222                         0                        0                        0
+#> 223                         0                        0                        0
+#> 224                         0                        0                        0
+#> 225                         0                        0                        0
+#> 226                         0                        0                        0
+#> 227                         0                        0                        0
+#> 228                         0                        0                        0
+#> 229                         0                        0                        0
+#> 230                         0                        0                        0
+#> 231                         0                        0                        0
+#> 232                         0                        0                        0
+#> 233                         0                        0                        0
+#> 234                         0                        0                        0
+#> 235                         0                        0                        0
+#> 236                         0                        0                        0
+#> 237                         0                        0                        0
+#> 238                         0                        0                        0
+#> 239                         0                        0                        0
+#> 240                         0                        0                        0
+#> 241                         0                        0                        0
+#> 242                         0                        0                        0
+#> 243                         0                        0                        0
+#> 244                         0                        0                        0
+#> 245                         0                        0                        0
+#> 246                         0                        0                        0
+#> 247                         0                        0                        0
+#> 248                         0                        0                        0
+#> 249                         0                        0                        0
+#> 250                         0                        0                        0
+#> 251                         0                        0                        0
+#> 252                         0                        0                        0
+#> 253                         0                        0                        0
+#> 254                         0                        0                        0
+#> 255                         0                        0                        0
+#> 256                         0                        0                        0
+#> 257                         0                        0                        0
+#> 258                         0                        0                        0
+#> 259                         0                        0                        0
+#> 260                         0                        0                        0
+#> 261                         0                        0                        0
+#> 262                         0                        0                        0
+#> 263                         0                        0                        0
+#> 264                         0                        0                        0
+#> 265                         0                        0                        0
+#> 266                         0                        0                        0
+#> 267                         0                        0                        0
+#> 268                         0                        0                        0
+#> 269                         0                        0                        0
+#> 270                         0                        0                        0
+#> 271                         0                        0                        0
+#> 272                         0                        0                        0
+#> 273                         0                        0                        0
+#> 274                         0                        0                        0
+#> 275                         0                        0                        0
+#> 276                         0                        0                        0
+#> 277                         0                        0                        0
+#> 278                         0                        0                        0
+#> 279                         0                        0                        0
+#> 280                         0                        0                        0
+#>     compnegtubulenormalnormal2B compnegtubulenormalnormal3
+#> 1                             0                          0
+#> 2                             0                          0
+#> 3                             0                          0
+#> 4                             0                          0
+#> 5                             0                          0
+#> 6                             0                          0
+#> 7                             0                          0
+#> 8                             0                          0
+#> 9                             0                          0
+#> 10                            0                          0
+#> 11                            0                          0
+#> 12                            0                          0
+#> 13                            0                          0
+#> 14                            0                          0
+#> 15                            0                          0
+#> 16                            0                          0
+#> 17                            0                          0
+#> 18                            0                          0
+#> 19                            0                          0
+#> 20                            0                          0
+#> 21                            0                          0
+#> 22                            0                          0
+#> 23                            0                          0
+#> 24                            0                          0
+#> 25                            0                          0
+#> 26                            0                          0
+#> 27                            0                          0
+#> 28                            0                          0
+#> 29                            0                          0
+#> 30                            0                          0
+#> 31                            0                          0
+#> 32                            0                          0
+#> 33                            0                          0
+#> 34                            0                          0
+#> 35                            0                          0
+#> 36                            0                          0
+#> 37                            0                          0
+#> 38                            0                          0
+#> 39                            0                          0
+#> 40                            0                          0
+#> 41                            0                          0
+#> 42                            0                          0
+#> 43                            0                          0
+#> 44                            0                          0
+#> 45                            0                          0
+#> 46                            0                          0
+#> 47                            0                          0
+#> 48                            0                          0
+#> 49                            0                          0
+#> 50                            0                          0
+#> 51                            0                          0
+#> 52                            0                          0
+#> 53                            0                          0
+#> 54                            0                          0
+#> 55                            0                          0
+#> 56                            0                          0
+#> 57                            0                          0
+#> 58                            0                          0
+#> 59                            0                          0
+#> 60                            0                          0
+#> 61                            0                          0
+#> 62                            0                          0
+#> 63                            0                          0
+#> 64                            0                          0
+#> 65                            0                          0
+#> 66                            0                          0
+#> 67                            0                          0
+#> 68                            0                          0
+#> 69                            0                          0
+#> 70                            0                          0
+#> 71                            0                          0
+#> 72                            0                          0
+#> 73                            0                          0
+#> 74                            0                          0
+#> 75                            0                          1
+#> 76                            0                          0
+#> 77                            0                          1
+#> 78                            0                          0
+#> 79                            0                          1
+#> 80                            0                          0
+#> 81                            0                          1
+#> 82                            0                          0
+#> 83                            0                          1
+#> 84                            0                          0
+#> 85                            0                          1
+#> 86                            0                          0
+#> 87                            0                          0
+#> 88                            0                          0
+#> 89                            0                          0
+#> 90                            0                          0
+#> 91                            0                          0
+#> 92                            0                          0
+#> 93                            0                          0
+#> 94                            0                          0
+#> 95                            0                          0
+#> 96                            0                          0
+#> 97                            0                          0
+#> 98                            0                          0
+#> 99                            0                          0
+#> 100                           0                          0
+#> 101                           0                          0
+#> 102                           0                          0
+#> 103                           0                          0
+#> 104                           0                          0
+#> 105                           0                          0
+#> 106                           0                          0
+#> 107                           0                          0
+#> 108                           0                          0
+#> 109                           0                          0
+#> 110                           0                          0
+#> 111                           0                          0
+#> 112                           0                          0
+#> 113                           0                          0
+#> 114                           0                          0
+#> 115                           0                          0
+#> 116                           0                          0
+#> 117                           0                          0
+#> 118                           0                          0
+#> 119                           0                          0
+#> 120                           0                          0
+#> 121                           0                          0
+#> 122                           0                          0
+#> 123                           0                          0
+#> 124                           0                          0
+#> 125                           0                          0
+#> 126                           0                          0
+#> 127                           0                          0
+#> 128                           0                          0
+#> 129                           0                          0
+#> 130                           0                          0
+#> 131                           0                          0
+#> 132                           0                          0
+#> 133                           0                          0
+#> 134                           0                          0
+#> 135                           0                          0
+#> 136                           0                          0
+#> 137                           0                          0
+#> 138                           0                          0
+#> 139                           0                          0
+#> 140                           0                          0
+#> 141                           0                          0
+#> 142                           0                          0
+#> 143                           0                          0
+#> 144                           0                          0
+#> 145                           0                          0
+#> 146                           0                          0
+#> 147                           0                          0
+#> 148                           0                          0
+#> 149                           0                          0
+#> 150                           0                          0
+#> 151                           0                          0
+#> 152                           0                          0
+#> 153                           0                          0
+#> 154                           0                          0
+#> 155                           0                          0
+#> 156                           0                          0
+#> 157                           0                          0
+#> 158                           0                          0
+#> 159                           0                          0
+#> 160                           0                          0
+#> 161                           0                          0
+#> 162                           0                          0
+#> 163                           0                          0
+#> 164                           0                          0
+#> 165                           0                          0
+#> 166                           0                          0
+#> 167                           0                          0
+#> 168                           0                          0
+#> 169                           0                          0
+#> 170                           0                          0
+#> 171                           0                          0
+#> 172                           0                          0
+#> 173                           0                          0
+#> 174                           0                          0
+#> 175                           0                          0
+#> 176                           0                          0
+#> 177                           0                          0
+#> 178                           0                          0
+#> 179                           0                          0
+#> 180                           0                          0
+#> 181                           0                          0
+#> 182                           0                          0
+#> 183                           0                          0
+#> 184                           0                          0
+#> 185                           0                          0
+#> 186                           0                          0
+#> 187                           0                          0
+#> 188                           0                          0
+#> 189                           0                          0
+#> 190                           0                          0
+#> 191                           0                          0
+#> 192                           0                          0
+#> 193                           0                          0
+#> 194                           0                          0
+#> 195                           0                          0
+#> 196                           0                          0
+#> 197                           0                          0
+#> 198                           0                          0
+#> 199                           0                          0
+#> 200                           0                          0
+#> 201                           0                          0
+#> 202                           0                          0
+#> 203                           0                          0
+#> 204                           0                          0
+#> 205                           0                          0
+#> 206                           0                          0
+#> 207                           0                          0
+#> 208                           0                          0
+#> 209                           0                          0
+#> 210                           0                          0
+#> 211                           0                          0
+#> 212                           0                          0
+#> 213                           0                          0
+#> 214                           0                          0
+#> 215                           0                          0
+#> 216                           0                          0
+#> 217                           0                          0
+#> 218                           0                          0
+#> 219                           0                          0
+#> 220                           0                          0
+#> 221                           0                          0
+#> 222                           0                          0
+#> 223                           0                          0
+#> 224                           0                          0
+#> 225                           0                          0
+#> 226                           0                          0
+#> 227                           0                          0
+#> 228                           0                          0
+#> 229                           0                          0
+#> 230                           0                          0
+#> 231                           1                          0
+#> 232                           0                          0
+#> 233                           1                          0
+#> 234                           0                          0
+#> 235                           1                          0
+#> 236                           0                          0
+#> 237                           1                          0
+#> 238                           0                          0
+#> 239                           1                          0
+#> 240                           0                          0
+#> 241                           1                          0
+#> 242                           0                          0
+#> 243                           0                          0
+#> 244                           0                          0
+#> 245                           0                          0
+#> 246                           0                          0
+#> 247                           0                          0
+#> 248                           0                          0
+#> 249                           0                          0
+#> 250                           0                          0
+#> 251                           0                          0
+#> 252                           0                          0
+#> 253                           0                          0
+#> 254                           0                          0
+#> 255                           0                          0
+#> 256                           0                          0
+#> 257                           0                          0
+#> 258                           0                          0
+#> 259                           0                          0
+#> 260                           0                          0
+#> 261                           0                          0
+#> 262                           0                          0
+#> 263                           0                          0
+#> 264                           0                          0
+#> 265                           0                          0
+#> 266                           0                          0
+#> 267                           0                          0
+#> 268                           0                          0
+#> 269                           0                          0
+#> 270                           0                          0
+#> 271                           0                          0
+#> 272                           0                          0
+#> 273                           0                          0
+#> 274                           0                          0
+#> 275                           0                          0
+#> 276                           0                          0
+#> 277                           0                          0
+#> 278                           0                          0
+#> 279                           0                          0
+#> 280                           0                          0
+#>     compnegtubulenormalnormal4 compPanCKglomerulusDKDdisease1B
+#> 1                            0                               0
+#> 2                            0                               0
+#> 3                            0                               0
+#> 4                            0                               0
+#> 5                            0                               0
+#> 6                            0                               0
+#> 7                            0                               0
+#> 8                            0                               0
+#> 9                            0                               0
+#> 10                           0                               0
+#> 11                           0                               0
+#> 12                           0                               0
+#> 13                           0                               0
+#> 14                           0                               0
+#> 15                           0                               0
+#> 16                           0                               0
+#> 17                           0                               0
+#> 18                           0                               0
+#> 19                           0                               0
+#> 20                           0                               0
+#> 21                           0                               0
+#> 22                           0                               0
+#> 23                           0                               0
+#> 24                           0                               0
+#> 25                           0                               0
+#> 26                           0                               0
+#> 27                           0                               0
+#> 28                           0                               0
+#> 29                           0                               0
+#> 30                           0                               0
+#> 31                           0                               0
+#> 32                           0                               0
+#> 33                           0                               0
+#> 34                           0                               0
+#> 35                           0                               0
+#> 36                           0                               0
+#> 37                           0                               0
+#> 38                           0                               0
+#> 39                           0                               0
+#> 40                           0                               0
+#> 41                           0                               0
+#> 42                           0                               0
+#> 43                           0                               0
+#> 44                           0                               0
+#> 45                           0                               0
+#> 46                           0                               0
+#> 47                           0                               0
+#> 48                           0                               0
+#> 49                           0                               0
+#> 50                           0                               0
+#> 51                           0                               0
+#> 52                           0                               0
+#> 53                           0                               0
+#> 54                           0                               0
+#> 55                           0                               0
+#> 56                           0                               0
+#> 57                           0                               0
+#> 58                           0                               0
+#> 59                           0                               0
+#> 60                           0                               0
+#> 61                           0                               0
+#> 62                           0                               0
+#> 63                           0                               0
+#> 64                           0                               0
+#> 65                           0                               0
+#> 66                           0                               0
+#> 67                           0                               0
+#> 68                           0                               0
+#> 69                           0                               0
+#> 70                           0                               0
+#> 71                           0                               0
+#> 72                           0                               0
+#> 73                           0                               0
+#> 74                           0                               0
+#> 75                           0                               0
+#> 76                           0                               0
+#> 77                           0                               0
+#> 78                           0                               0
+#> 79                           0                               0
+#> 80                           0                               0
+#> 81                           0                               0
+#> 82                           0                               0
+#> 83                           0                               0
+#> 84                           0                               0
+#> 85                           0                               0
+#> 86                           0                               0
+#> 87                           0                               0
+#> 88                           0                               0
+#> 89                           0                               0
+#> 90                           0                               0
+#> 91                           0                               0
+#> 92                           0                               0
+#> 93                           0                               0
+#> 94                           0                               0
+#> 95                           0                               0
+#> 96                           0                               0
+#> 97                           0                               0
+#> 98                           0                               0
+#> 99                           0                               0
+#> 100                          0                               0
+#> 101                          0                               0
+#> 102                          0                               0
+#> 103                          0                               0
+#> 104                          0                               0
+#> 105                          0                               0
+#> 106                          0                               0
+#> 107                          0                               0
+#> 108                          0                               0
+#> 109                          0                               0
+#> 110                          0                               0
+#> 111                          0                               0
+#> 112                          0                               0
+#> 113                          0                               0
+#> 114                          0                               0
+#> 115                          0                               0
+#> 116                          0                               0
+#> 117                          0                               0
+#> 118                          0                               0
+#> 119                          0                               0
+#> 120                          0                               0
+#> 121                          0                               0
+#> 122                          0                               0
+#> 123                          0                               0
+#> 124                          0                               0
+#> 125                          0                               0
+#> 126                          0                               0
+#> 127                          0                               0
+#> 128                          0                               0
+#> 129                          0                               0
+#> 130                          0                               0
+#> 131                          0                               0
+#> 132                          0                               0
+#> 133                          0                               0
+#> 134                          1                               0
+#> 135                          0                               0
+#> 136                          1                               0
+#> 137                          0                               0
+#> 138                          1                               0
+#> 139                          0                               0
+#> 140                          1                               0
+#> 141                          0                               0
+#> 142                          1                               0
+#> 143                          0                               0
+#> 144                          1                               0
+#> 145                          0                               0
+#> 146                          0                               0
+#> 147                          0                               0
+#> 148                          0                               0
+#> 149                          0                               0
+#> 150                          0                               0
+#> 151                          0                               0
+#> 152                          0                               0
+#> 153                          0                               0
+#> 154                          0                               0
+#> 155                          0                               0
+#> 156                          0                               0
+#> 157                          0                               0
+#> 158                          0                               0
+#> 159                          0                               0
+#> 160                          0                               0
+#> 161                          0                               0
+#> 162                          0                               0
+#> 163                          0                               0
+#> 164                          0                               0
+#> 165                          0                               0
+#> 166                          0                               0
+#> 167                          0                               0
+#> 168                          0                               0
+#> 169                          0                               0
+#> 170                          0                               0
+#> 171                          0                               0
+#> 172                          0                               0
+#> 173                          0                               0
+#> 174                          0                               0
+#> 175                          0                               0
+#> 176                          0                               0
+#> 177                          0                               0
+#> 178                          0                               0
+#> 179                          0                               0
+#> 180                          0                               0
+#> 181                          0                               0
+#> 182                          0                               0
+#> 183                          0                               0
+#> 184                          0                               0
+#> 185                          0                               0
+#> 186                          0                               0
+#> 187                          0                               0
+#> 188                          0                               0
+#> 189                          0                               0
+#> 190                          0                               0
+#> 191                          0                               0
+#> 192                          0                               0
+#> 193                          0                               0
+#> 194                          0                               0
+#> 195                          0                               0
+#> 196                          0                               0
+#> 197                          0                               0
+#> 198                          0                               0
+#> 199                          0                               0
+#> 200                          0                               0
+#> 201                          0                               0
+#> 202                          0                               0
+#> 203                          0                               0
+#> 204                          0                               0
+#> 205                          0                               0
+#> 206                          0                               0
+#> 207                          0                               0
+#> 208                          0                               0
+#> 209                          0                               0
+#> 210                          0                               0
+#> 211                          0                               0
+#> 212                          0                               0
+#> 213                          0                               0
+#> 214                          0                               0
+#> 215                          0                               0
+#> 216                          0                               0
+#> 217                          0                               0
+#> 218                          0                               0
+#> 219                          0                               0
+#> 220                          0                               0
+#> 221                          0                               0
+#> 222                          0                               0
+#> 223                          0                               0
+#> 224                          0                               0
+#> 225                          0                               0
+#> 226                          0                               0
+#> 227                          0                               0
+#> 228                          0                               0
+#> 229                          0                               0
+#> 230                          0                               0
+#> 231                          0                               0
+#> 232                          0                               0
+#> 233                          0                               0
+#> 234                          0                               0
+#> 235                          0                               0
+#> 236                          0                               0
+#> 237                          0                               0
+#> 238                          0                               0
+#> 239                          0                               0
+#> 240                          0                               0
+#> 241                          0                               0
+#> 242                          0                               0
+#> 243                          0                               0
+#> 244                          0                               0
+#> 245                          0                               0
+#> 246                          0                               0
+#> 247                          0                               0
+#> 248                          0                               0
+#> 249                          0                               0
+#> 250                          0                               0
+#> 251                          0                               0
+#> 252                          0                               0
+#> 253                          0                               0
+#> 254                          0                               0
+#> 255                          0                               0
+#> 256                          0                               0
+#> 257                          0                               0
+#> 258                          0                               0
+#> 259                          0                               1
+#> 260                          0                               0
+#> 261                          0                               0
+#> 262                          0                               0
+#> 263                          0                               0
+#> 264                          0                               0
+#> 265                          0                               0
+#> 266                          0                               0
+#> 267                          0                               0
+#> 268                          0                               0
+#> 269                          0                               0
+#> 270                          0                               0
+#> 271                          0                               0
+#> 272                          0                               0
+#> 273                          0                               0
+#> 274                          0                               0
+#> 275                          0                               0
+#> 276                          0                               0
+#> 277                          0                               0
+#> 278                          0                               0
+#> 279                          0                               0
+#> 280                          0                               0
+#>     compPanCKglomerulusDKDdisease2B compPanCKglomerulusnormalnormal2B
+#> 1                                 0                                 0
+#> 2                                 0                                 0
+#> 3                                 0                                 0
+#> 4                                 0                                 0
+#> 5                                 0                                 0
+#> 6                                 0                                 0
+#> 7                                 0                                 0
+#> 8                                 0                                 0
+#> 9                                 0                                 0
+#> 10                                0                                 0
+#> 11                                0                                 0
+#> 12                                0                                 0
+#> 13                                0                                 0
+#> 14                                0                                 0
+#> 15                                0                                 0
+#> 16                                0                                 0
+#> 17                                0                                 0
+#> 18                                0                                 0
+#> 19                                0                                 0
+#> 20                                0                                 0
+#> 21                                0                                 0
+#> 22                                0                                 0
+#> 23                                0                                 0
+#> 24                                0                                 0
+#> 25                                0                                 0
+#> 26                                0                                 0
+#> 27                                0                                 0
+#> 28                                0                                 0
+#> 29                                0                                 0
+#> 30                                0                                 0
+#> 31                                0                                 0
+#> 32                                0                                 0
+#> 33                                0                                 0
+#> 34                                0                                 0
+#> 35                                0                                 0
+#> 36                                0                                 0
+#> 37                                0                                 0
+#> 38                                0                                 0
+#> 39                                0                                 0
+#> 40                                0                                 0
+#> 41                                0                                 0
+#> 42                                0                                 0
+#> 43                                0                                 0
+#> 44                                0                                 0
+#> 45                                0                                 0
+#> 46                                0                                 0
+#> 47                                0                                 0
+#> 48                                0                                 0
+#> 49                                0                                 0
+#> 50                                0                                 0
+#> 51                                0                                 0
+#> 52                                0                                 0
+#> 53                                0                                 0
+#> 54                                0                                 0
+#> 55                                0                                 0
+#> 56                                0                                 0
+#> 57                                0                                 0
+#> 58                                0                                 0
+#> 59                                0                                 0
+#> 60                                0                                 0
+#> 61                                0                                 0
+#> 62                                0                                 0
+#> 63                                0                                 0
+#> 64                                0                                 0
+#> 65                                0                                 0
+#> 66                                0                                 0
+#> 67                                0                                 0
+#> 68                                0                                 0
+#> 69                                0                                 0
+#> 70                                0                                 0
+#> 71                                0                                 0
+#> 72                                0                                 0
+#> 73                                0                                 0
+#> 74                                0                                 0
+#> 75                                0                                 0
+#> 76                                0                                 0
+#> 77                                0                                 0
+#> 78                                0                                 0
+#> 79                                0                                 0
+#> 80                                0                                 0
+#> 81                                0                                 0
+#> 82                                0                                 0
+#> 83                                0                                 0
+#> 84                                0                                 0
+#> 85                                0                                 0
+#> 86                                0                                 0
+#> 87                                0                                 0
+#> 88                                0                                 0
+#> 89                                0                                 0
+#> 90                                0                                 0
+#> 91                                0                                 0
+#> 92                                0                                 0
+#> 93                                0                                 0
+#> 94                                0                                 0
+#> 95                                0                                 0
+#> 96                                0                                 0
+#> 97                                0                                 0
+#> 98                                0                                 0
+#> 99                                0                                 0
+#> 100                               0                                 0
+#> 101                               0                                 0
+#> 102                               0                                 0
+#> 103                               0                                 0
+#> 104                               0                                 0
+#> 105                               0                                 0
+#> 106                               0                                 0
+#> 107                               0                                 0
+#> 108                               0                                 0
+#> 109                               0                                 0
+#> 110                               0                                 0
+#> 111                               0                                 0
+#> 112                               0                                 0
+#> 113                               0                                 0
+#> 114                               0                                 0
+#> 115                               0                                 0
+#> 116                               0                                 0
+#> 117                               0                                 0
+#> 118                               0                                 0
+#> 119                               0                                 0
+#> 120                               0                                 0
+#> 121                               0                                 0
+#> 122                               0                                 0
+#> 123                               0                                 0
+#> 124                               0                                 0
+#> 125                               0                                 0
+#> 126                               0                                 0
+#> 127                               0                                 0
+#> 128                               0                                 0
+#> 129                               0                                 0
+#> 130                               0                                 0
+#> 131                               0                                 0
+#> 132                               0                                 0
+#> 133                               0                                 0
+#> 134                               0                                 0
+#> 135                               0                                 0
+#> 136                               0                                 0
+#> 137                               0                                 0
+#> 138                               0                                 0
+#> 139                               0                                 0
+#> 140                               0                                 0
+#> 141                               0                                 0
+#> 142                               0                                 0
+#> 143                               0                                 0
+#> 144                               0                                 0
+#> 145                               0                                 0
+#> 146                               0                                 0
+#> 147                               0                                 0
+#> 148                               0                                 0
+#> 149                               0                                 0
+#> 150                               0                                 0
+#> 151                               0                                 0
+#> 152                               0                                 0
+#> 153                               0                                 0
+#> 154                               0                                 0
+#> 155                               0                                 0
+#> 156                               0                                 0
+#> 157                               0                                 0
+#> 158                               0                                 0
+#> 159                               0                                 0
+#> 160                               0                                 0
+#> 161                               0                                 0
+#> 162                               0                                 0
+#> 163                               0                                 0
+#> 164                               0                                 0
+#> 165                               0                                 0
+#> 166                               0                                 0
+#> 167                               0                                 0
+#> 168                               0                                 0
+#> 169                               0                                 0
+#> 170                               0                                 0
+#> 171                               0                                 0
+#> 172                               0                                 0
+#> 173                               0                                 0
+#> 174                               0                                 0
+#> 175                               0                                 0
+#> 176                               0                                 0
+#> 177                               0                                 0
+#> 178                               0                                 0
+#> 179                               0                                 0
+#> 180                               0                                 0
+#> 181                               0                                 0
+#> 182                               1                                 0
+#> 183                               0                                 0
+#> 184                               0                                 0
+#> 185                               0                                 0
+#> 186                               0                                 0
+#> 187                               0                                 0
+#> 188                               0                                 0
+#> 189                               1                                 0
+#> 190                               0                                 0
+#> 191                               0                                 0
+#> 192                               0                                 0
+#> 193                               0                                 0
+#> 194                               0                                 0
+#> 195                               0                                 0
+#> 196                               0                                 0
+#> 197                               0                                 0
+#> 198                               0                                 0
+#> 199                               0                                 0
+#> 200                               0                                 0
+#> 201                               0                                 0
+#> 202                               0                                 0
+#> 203                               0                                 0
+#> 204                               0                                 0
+#> 205                               0                                 0
+#> 206                               0                                 0
+#> 207                               0                                 0
+#> 208                               0                                 0
+#> 209                               0                                 0
+#> 210                               0                                 0
+#> 211                               0                                 0
+#> 212                               0                                 0
+#> 213                               0                                 0
+#> 214                               0                                 0
+#> 215                               0                                 0
+#> 216                               0                                 0
+#> 217                               0                                 0
+#> 218                               0                                 0
+#> 219                               0                                 0
+#> 220                               0                                 0
+#> 221                               0                                 0
+#> 222                               0                                 0
+#> 223                               0                                 0
+#> 224                               0                                 0
+#> 225                               0                                 0
+#> 226                               0                                 0
+#> 227                               0                                 0
+#> 228                               0                                 1
+#> 229                               0                                 0
+#> 230                               0                                 0
+#> 231                               0                                 0
+#> 232                               0                                 0
+#> 233                               0                                 0
+#> 234                               0                                 0
+#> 235                               0                                 0
+#> 236                               0                                 0
+#> 237                               0                                 0
+#> 238                               0                                 0
+#> 239                               0                                 0
+#> 240                               0                                 0
+#> 241                               0                                 0
+#> 242                               0                                 0
+#> 243                               0                                 0
+#> 244                               0                                 0
+#> 245                               0                                 0
+#> 246                               0                                 0
+#> 247                               0                                 0
+#> 248                               0                                 0
+#> 249                               0                                 0
+#> 250                               0                                 0
+#> 251                               0                                 0
+#> 252                               0                                 0
+#> 253                               0                                 0
+#> 254                               0                                 0
+#> 255                               0                                 0
+#> 256                               0                                 0
+#> 257                               0                                 0
+#> 258                               0                                 0
+#> 259                               0                                 0
+#> 260                               0                                 0
+#> 261                               0                                 0
+#> 262                               0                                 0
+#> 263                               0                                 0
+#> 264                               0                                 0
+#> 265                               0                                 0
+#> 266                               0                                 0
+#> 267                               0                                 0
+#> 268                               0                                 0
+#> 269                               0                                 0
+#> 270                               0                                 0
+#> 271                               0                                 0
+#> 272                               0                                 0
+#> 273                               0                                 0
+#> 274                               0                                 0
+#> 275                               0                                 0
+#> 276                               0                                 0
+#> 277                               0                                 0
+#> 278                               0                                 0
+#> 279                               0                                 0
+#> 280                               0                                 0
+#>     compPanCKtubuleDKDdisease1B compPanCKtubuleDKDdisease2B
+#> 1                             0                           0
+#> 2                             0                           0
+#> 3                             0                           0
+#> 4                             0                           0
+#> 5                             0                           0
+#> 6                             0                           0
+#> 7                             0                           0
+#> 8                             0                           0
+#> 9                             0                           0
+#> 10                            0                           0
+#> 11                            0                           0
+#> 12                            0                           0
+#> 13                            0                           0
+#> 14                            0                           0
+#> 15                            0                           0
+#> 16                            0                           0
+#> 17                            0                           0
+#> 18                            0                           0
+#> 19                            0                           0
+#> 20                            0                           0
+#> 21                            0                           0
+#> 22                            0                           0
+#> 23                            0                           0
+#> 24                            0                           0
+#> 25                            0                           0
+#> 26                            0                           0
+#> 27                            0                           0
+#> 28                            0                           0
+#> 29                            0                           0
+#> 30                            0                           0
+#> 31                            0                           0
+#> 32                            0                           0
+#> 33                            0                           0
+#> 34                            0                           0
+#> 35                            0                           0
+#> 36                            0                           0
+#> 37                            0                           0
+#> 38                            0                           0
+#> 39                            0                           0
+#> 40                            0                           0
+#> 41                            0                           0
+#> 42                            0                           0
+#> 43                            0                           0
+#> 44                            0                           0
+#> 45                            0                           0
+#> 46                            0                           0
+#> 47                            0                           0
+#> 48                            0                           0
+#> 49                            0                           0
+#> 50                            0                           0
+#> 51                            0                           0
+#> 52                            0                           0
+#> 53                            0                           0
+#> 54                            0                           0
+#> 55                            0                           0
+#> 56                            0                           0
+#> 57                            0                           0
+#> 58                            0                           0
+#> 59                            0                           0
+#> 60                            0                           0
+#> 61                            0                           0
+#> 62                            0                           0
+#> 63                            0                           0
+#> 64                            0                           0
+#> 65                            0                           0
+#> 66                            0                           0
+#> 67                            0                           0
+#> 68                            0                           0
+#> 69                            0                           0
+#> 70                            0                           0
+#> 71                            0                           0
+#> 72                            0                           0
+#> 73                            0                           0
+#> 74                            0                           0
+#> 75                            0                           0
+#> 76                            0                           0
+#> 77                            0                           0
+#> 78                            0                           0
+#> 79                            0                           0
+#> 80                            0                           0
+#> 81                            0                           0
+#> 82                            0                           0
+#> 83                            0                           0
+#> 84                            0                           0
+#> 85                            0                           0
+#> 86                            0                           0
+#> 87                            0                           0
+#> 88                            0                           0
+#> 89                            0                           0
+#> 90                            0                           0
+#> 91                            0                           0
+#> 92                            0                           0
+#> 93                            0                           0
+#> 94                            0                           0
+#> 95                            0                           0
+#> 96                            0                           0
+#> 97                            0                           0
+#> 98                            0                           0
+#> 99                            0                           0
+#> 100                           0                           0
+#> 101                           0                           0
+#> 102                           0                           0
+#> 103                           0                           0
+#> 104                           0                           0
+#> 105                           0                           0
+#> 106                           0                           0
+#> 107                           0                           0
+#> 108                           0                           0
+#> 109                           0                           0
+#> 110                           0                           0
+#> 111                           0                           0
+#> 112                           0                           0
+#> 113                           0                           0
+#> 114                           0                           0
+#> 115                           0                           0
+#> 116                           0                           0
+#> 117                           0                           0
+#> 118                           0                           0
+#> 119                           0                           0
+#> 120                           0                           0
+#> 121                           0                           0
+#> 122                           0                           0
+#> 123                           0                           0
+#> 124                           0                           0
+#> 125                           0                           0
+#> 126                           0                           0
+#> 127                           0                           0
+#> 128                           0                           0
+#> 129                           0                           0
+#> 130                           0                           0
+#> 131                           0                           0
+#> 132                           0                           0
+#> 133                           0                           0
+#> 134                           0                           0
+#> 135                           0                           0
+#> 136                           0                           0
+#> 137                           0                           0
+#> 138                           0                           0
+#> 139                           0                           0
+#> 140                           0                           0
+#> 141                           0                           0
+#> 142                           0                           0
+#> 143                           0                           0
+#> 144                           0                           0
+#> 145                           0                           0
+#> 146                           0                           0
+#> 147                           0                           0
+#> 148                           0                           0
+#> 149                           0                           0
+#> 150                           0                           0
+#> 151                           0                           0
+#> 152                           0                           0
+#> 153                           0                           0
+#> 154                           0                           0
+#> 155                           0                           0
+#> 156                           0                           0
+#> 157                           0                           0
+#> 158                           0                           0
+#> 159                           0                           0
+#> 160                           0                           0
+#> 161                           0                           0
+#> 162                           0                           0
+#> 163                           0                           0
+#> 164                           0                           0
+#> 165                           0                           0
+#> 166                           0                           0
+#> 167                           0                           0
+#> 168                           0                           0
+#> 169                           0                           0
+#> 170                           0                           0
+#> 171                           0                           0
+#> 172                           0                           0
+#> 173                           0                           0
+#> 174                           0                           0
+#> 175                           0                           0
+#> 176                           0                           0
+#> 177                           0                           0
+#> 178                           0                           0
+#> 179                           0                           0
+#> 180                           0                           0
+#> 181                           0                           0
+#> 182                           0                           0
+#> 183                           0                           0
+#> 184                           0                           0
+#> 185                           0                           0
+#> 186                           0                           0
+#> 187                           0                           0
+#> 188                           0                           0
+#> 189                           0                           0
+#> 190                           0                           0
+#> 191                           0                           0
+#> 192                           0                           1
+#> 193                           0                           0
+#> 194                           0                           1
+#> 195                           0                           0
+#> 196                           0                           1
+#> 197                           0                           0
+#> 198                           0                           1
+#> 199                           0                           0
+#> 200                           0                           1
+#> 201                           0                           0
+#> 202                           0                           1
+#> 203                           0                           0
+#> 204                           0                           0
+#> 205                           0                           0
+#> 206                           0                           0
+#> 207                           0                           0
+#> 208                           0                           0
+#> 209                           0                           0
+#> 210                           0                           0
+#> 211                           0                           0
+#> 212                           0                           0
+#> 213                           0                           0
+#> 214                           0                           0
+#> 215                           0                           0
+#> 216                           0                           0
+#> 217                           0                           0
+#> 218                           0                           0
+#> 219                           0                           0
+#> 220                           0                           0
+#> 221                           0                           0
+#> 222                           0                           0
+#> 223                           0                           0
+#> 224                           0                           0
+#> 225                           0                           0
+#> 226                           0                           0
+#> 227                           0                           0
+#> 228                           0                           0
+#> 229                           0                           0
+#> 230                           0                           0
+#> 231                           0                           0
+#> 232                           0                           0
+#> 233                           0                           0
+#> 234                           0                           0
+#> 235                           0                           0
+#> 236                           0                           0
+#> 237                           0                           0
+#> 238                           0                           0
+#> 239                           0                           0
+#> 240                           0                           0
+#> 241                           0                           0
+#> 242                           0                           0
+#> 243                           0                           0
+#> 244                           0                           0
+#> 245                           0                           0
+#> 246                           0                           0
+#> 247                           0                           0
+#> 248                           0                           0
+#> 249                           0                           0
+#> 250                           0                           0
+#> 251                           0                           0
+#> 252                           0                           0
+#> 253                           0                           0
+#> 254                           0                           0
+#> 255                           0                           0
+#> 256                           0                           0
+#> 257                           0                           0
+#> 258                           0                           0
+#> 259                           0                           0
+#> 260                           0                           0
+#> 261                           0                           0
+#> 262                           0                           0
+#> 263                           0                           0
+#> 264                           0                           0
+#> 265                           0                           0
+#> 266                           1                           0
+#> 267                           0                           0
+#> 268                           1                           0
+#> 269                           0                           0
+#> 270                           0                           0
+#> 271                           1                           0
+#> 272                           0                           0
+#> 273                           1                           0
+#> 274                           0                           0
+#> 275                           1                           0
+#> 276                           0                           0
+#> 277                           1                           0
+#> 278                           0                           0
+#> 279                           0                           0
+#> 280                           0                           0
+#>     compPanCKtubuleDKDdisease3 compPanCKtubuleDKDdisease4
+#> 1                            0                          0
+#> 2                            0                          0
+#> 3                            0                          0
+#> 4                            0                          0
+#> 5                            0                          0
+#> 6                            0                          0
+#> 7                            0                          0
+#> 8                            0                          0
+#> 9                            0                          0
+#> 10                           0                          0
+#> 11                           0                          0
+#> 12                           0                          0
+#> 13                           0                          0
+#> 14                           0                          0
+#> 15                           0                          0
+#> 16                           0                          0
+#> 17                           0                          0
+#> 18                           0                          0
+#> 19                           0                          0
+#> 20                           0                          0
+#> 21                           0                          0
+#> 22                           0                          0
+#> 23                           0                          0
+#> 24                           0                          0
+#> 25                           0                          0
+#> 26                           0                          0
+#> 27                           0                          0
+#> 28                           0                          0
+#> 29                           0                          0
+#> 30                           0                          0
+#> 31                           0                          0
+#> 32                           0                          0
+#> 33                           0                          0
+#> 34                           0                          0
+#> 35                           0                          0
+#> 36                           0                          0
+#> 37                           0                          0
+#> 38                           0                          0
+#> 39                           0                          0
+#> 40                           0                          0
+#> 41                           0                          0
+#> 42                           0                          0
+#> 43                           0                          0
+#> 44                           0                          0
+#> 45                           0                          0
+#> 46                           0                          0
+#> 47                           0                          0
+#> 48                           0                          0
+#> 49                           0                          1
+#> 50                           0                          0
+#> 51                           0                          1
+#> 52                           0                          0
+#> 53                           0                          1
+#> 54                           0                          0
+#> 55                           0                          1
+#> 56                           0                          0
+#> 57                           0                          1
+#> 58                           0                          0
+#> 59                           0                          1
+#> 60                           0                          0
+#> 61                           0                          0
+#> 62                           0                          0
+#> 63                           0                          0
+#> 64                           0                          0
+#> 65                           0                          0
+#> 66                           0                          0
+#> 67                           0                          0
+#> 68                           0                          0
+#> 69                           0                          0
+#> 70                           0                          0
+#> 71                           0                          0
+#> 72                           0                          0
+#> 73                           0                          0
+#> 74                           0                          0
+#> 75                           0                          0
+#> 76                           0                          0
+#> 77                           0                          0
+#> 78                           0                          0
+#> 79                           0                          0
+#> 80                           0                          0
+#> 81                           0                          0
+#> 82                           0                          0
+#> 83                           0                          0
+#> 84                           0                          0
+#> 85                           0                          0
+#> 86                           0                          0
+#> 87                           0                          0
+#> 88                           0                          0
+#> 89                           0                          0
+#> 90                           0                          0
+#> 91                           0                          0
+#> 92                           0                          0
+#> 93                           0                          0
+#> 94                           0                          0
+#> 95                           0                          0
+#> 96                           0                          0
+#> 97                           0                          0
+#> 98                           0                          0
+#> 99                           0                          0
+#> 100                          0                          0
+#> 101                          0                          0
+#> 102                          0                          0
+#> 103                          0                          0
+#> 104                          0                          0
+#> 105                          0                          0
+#> 106                          0                          0
+#> 107                          0                          0
+#> 108                          0                          0
+#> 109                          0                          0
+#> 110                          0                          0
+#> 111                          0                          0
+#> 112                          0                          0
+#> 113                          0                          0
+#> 114                          0                          0
+#> 115                          0                          0
+#> 116                          0                          0
+#> 117                          0                          0
+#> 118                          0                          0
+#> 119                          0                          0
+#> 120                          0                          0
+#> 121                          0                          0
+#> 122                          0                          0
+#> 123                          0                          0
+#> 124                          0                          0
+#> 125                          0                          0
+#> 126                          0                          0
+#> 127                          0                          0
+#> 128                          0                          0
+#> 129                          0                          0
+#> 130                          0                          0
+#> 131                          0                          0
+#> 132                          0                          0
+#> 133                          0                          0
+#> 134                          0                          0
+#> 135                          0                          0
+#> 136                          0                          0
+#> 137                          0                          0
+#> 138                          0                          0
+#> 139                          0                          0
+#> 140                          0                          0
+#> 141                          0                          0
+#> 142                          0                          0
+#> 143                          0                          0
+#> 144                          0                          0
+#> 145                          0                          0
+#> 146                          0                          0
+#> 147                          0                          0
+#> 148                          0                          0
+#> 149                          0                          0
+#> 150                          0                          0
+#> 151                          0                          0
+#> 152                          0                          0
+#> 153                          0                          0
+#> 154                          0                          0
+#> 155                          0                          0
+#> 156                          1                          0
+#> 157                          0                          0
+#> 158                          1                          0
+#> 159                          0                          0
+#> 160                          1                          0
+#> 161                          0                          0
+#> 162                          1                          0
+#> 163                          0                          0
+#> 164                          1                          0
+#> 165                          0                          0
+#> 166                          1                          0
+#> 167                          0                          0
+#> 168                          0                          0
+#> 169                          0                          0
+#> 170                          0                          0
+#> 171                          0                          0
+#> 172                          0                          0
+#> 173                          0                          0
+#> 174                          0                          0
+#> 175                          0                          0
+#> 176                          0                          0
+#> 177                          0                          0
+#> 178                          0                          0
+#> 179                          0                          0
+#> 180                          0                          0
+#> 181                          0                          0
+#> 182                          0                          0
+#> 183                          0                          0
+#> 184                          0                          0
+#> 185                          0                          0
+#> 186                          0                          0
+#> 187                          0                          0
+#> 188                          0                          0
+#> 189                          0                          0
+#> 190                          0                          0
+#> 191                          0                          0
+#> 192                          0                          0
+#> 193                          0                          0
+#> 194                          0                          0
+#> 195                          0                          0
+#> 196                          0                          0
+#> 197                          0                          0
+#> 198                          0                          0
+#> 199                          0                          0
+#> 200                          0                          0
+#> 201                          0                          0
+#> 202                          0                          0
+#> 203                          0                          0
+#> 204                          0                          0
+#> 205                          0                          0
+#> 206                          0                          0
+#> 207                          0                          0
+#> 208                          0                          0
+#> 209                          0                          0
+#> 210                          0                          0
+#> 211                          0                          0
+#> 212                          0                          0
+#> 213                          0                          0
+#> 214                          0                          0
+#> 215                          0                          0
+#> 216                          0                          0
+#> 217                          0                          0
+#> 218                          0                          0
+#> 219                          0                          0
+#> 220                          0                          0
+#> 221                          0                          0
+#> 222                          0                          0
+#> 223                          0                          0
+#> 224                          0                          0
+#> 225                          0                          0
+#> 226                          0                          0
+#> 227                          0                          0
+#> 228                          0                          0
+#> 229                          0                          0
+#> 230                          0                          0
+#> 231                          0                          0
+#> 232                          0                          0
+#> 233                          0                          0
+#> 234                          0                          0
+#> 235                          0                          0
+#> 236                          0                          0
+#> 237                          0                          0
+#> 238                          0                          0
+#> 239                          0                          0
+#> 240                          0                          0
+#> 241                          0                          0
+#> 242                          0                          0
+#> 243                          0                          0
+#> 244                          0                          0
+#> 245                          0                          0
+#> 246                          0                          0
+#> 247                          0                          0
+#> 248                          0                          0
+#> 249                          0                          0
+#> 250                          0                          0
+#> 251                          0                          0
+#> 252                          0                          0
+#> 253                          0                          0
+#> 254                          0                          0
+#> 255                          0                          0
+#> 256                          0                          0
+#> 257                          0                          0
+#> 258                          0                          0
+#> 259                          0                          0
+#> 260                          0                          0
+#> 261                          0                          0
+#> 262                          0                          0
+#> 263                          0                          0
+#> 264                          0                          0
+#> 265                          0                          0
+#> 266                          0                          0
+#> 267                          0                          0
+#> 268                          0                          0
+#> 269                          0                          0
+#> 270                          0                          0
+#> 271                          0                          0
+#> 272                          0                          0
+#> 273                          0                          0
+#> 274                          0                          0
+#> 275                          0                          0
+#> 276                          0                          0
+#> 277                          0                          0
+#> 278                          0                          0
+#> 279                          0                          0
+#> 280                          0                          0
+#>     compPanCKtubulenormalnormal2B compPanCKtubulenormalnormal3
+#> 1                               0                            0
+#> 2                               0                            0
+#> 3                               0                            0
+#> 4                               0                            0
+#> 5                               0                            0
+#> 6                               0                            0
+#> 7                               0                            0
+#> 8                               0                            0
+#> 9                               0                            0
+#> 10                              0                            0
+#> 11                              0                            0
+#> 12                              0                            0
+#> 13                              0                            0
+#> 14                              0                            0
+#> 15                              0                            0
+#> 16                              0                            0
+#> 17                              0                            0
+#> 18                              0                            0
+#> 19                              0                            0
+#> 20                              0                            0
+#> 21                              0                            0
+#> 22                              0                            0
+#> 23                              0                            0
+#> 24                              0                            0
+#> 25                              0                            0
+#> 26                              0                            0
+#> 27                              0                            0
+#> 28                              0                            0
+#> 29                              0                            0
+#> 30                              0                            0
+#> 31                              0                            0
+#> 32                              0                            0
+#> 33                              0                            0
+#> 34                              0                            0
+#> 35                              0                            0
+#> 36                              0                            0
+#> 37                              0                            0
+#> 38                              0                            0
+#> 39                              0                            0
+#> 40                              0                            0
+#> 41                              0                            0
+#> 42                              0                            0
+#> 43                              0                            0
+#> 44                              0                            0
+#> 45                              0                            0
+#> 46                              0                            0
+#> 47                              0                            0
+#> 48                              0                            0
+#> 49                              0                            0
+#> 50                              0                            0
+#> 51                              0                            0
+#> 52                              0                            0
+#> 53                              0                            0
+#> 54                              0                            0
+#> 55                              0                            0
+#> 56                              0                            0
+#> 57                              0                            0
+#> 58                              0                            0
+#> 59                              0                            0
+#> 60                              0                            0
+#> 61                              0                            0
+#> 62                              0                            0
+#> 63                              0                            0
+#> 64                              0                            0
+#> 65                              0                            0
+#> 66                              0                            0
+#> 67                              0                            0
+#> 68                              0                            0
+#> 69                              0                            0
+#> 70                              0                            0
+#> 71                              0                            0
+#> 72                              0                            0
+#> 73                              0                            0
+#> 74                              0                            1
+#> 75                              0                            0
+#> 76                              0                            1
+#> 77                              0                            0
+#> 78                              0                            1
+#> 79                              0                            0
+#> 80                              0                            1
+#> 81                              0                            0
+#> 82                              0                            1
+#> 83                              0                            0
+#> 84                              0                            1
+#> 85                              0                            0
+#> 86                              0                            0
+#> 87                              0                            0
+#> 88                              0                            0
+#> 89                              0                            0
+#> 90                              0                            0
+#> 91                              0                            0
+#> 92                              0                            0
+#> 93                              0                            0
+#> 94                              0                            0
+#> 95                              0                            0
+#> 96                              0                            0
+#> 97                              0                            0
+#> 98                              0                            0
+#> 99                              0                            0
+#> 100                             0                            0
+#> 101                             0                            0
+#> 102                             0                            0
+#> 103                             0                            0
+#> 104                             0                            0
+#> 105                             0                            0
+#> 106                             0                            0
+#> 107                             0                            0
+#> 108                             0                            0
+#> 109                             0                            0
+#> 110                             0                            0
+#> 111                             0                            0
+#> 112                             0                            0
+#> 113                             0                            0
+#> 114                             0                            0
+#> 115                             0                            0
+#> 116                             0                            0
+#> 117                             0                            0
+#> 118                             0                            0
+#> 119                             0                            0
+#> 120                             0                            0
+#> 121                             0                            0
+#> 122                             0                            0
+#> 123                             0                            0
+#> 124                             0                            0
+#> 125                             0                            0
+#> 126                             0                            0
+#> 127                             0                            0
+#> 128                             0                            0
+#> 129                             0                            0
+#> 130                             0                            0
+#> 131                             0                            0
+#> 132                             0                            0
+#> 133                             0                            0
+#> 134                             0                            0
+#> 135                             0                            0
+#> 136                             0                            0
+#> 137                             0                            0
+#> 138                             0                            0
+#> 139                             0                            0
+#> 140                             0                            0
+#> 141                             0                            0
+#> 142                             0                            0
+#> 143                             0                            0
+#> 144                             0                            0
+#> 145                             0                            0
+#> 146                             0                            0
+#> 147                             0                            0
+#> 148                             0                            0
+#> 149                             0                            0
+#> 150                             0                            0
+#> 151                             0                            0
+#> 152                             0                            0
+#> 153                             0                            0
+#> 154                             0                            0
+#> 155                             0                            0
+#> 156                             0                            0
+#> 157                             0                            0
+#> 158                             0                            0
+#> 159                             0                            0
+#> 160                             0                            0
+#> 161                             0                            0
+#> 162                             0                            0
+#> 163                             0                            0
+#> 164                             0                            0
+#> 165                             0                            0
+#> 166                             0                            0
+#> 167                             0                            0
+#> 168                             0                            0
+#> 169                             0                            0
+#> 170                             0                            0
+#> 171                             0                            0
+#> 172                             0                            0
+#> 173                             0                            0
+#> 174                             0                            0
+#> 175                             0                            0
+#> 176                             0                            0
+#> 177                             0                            0
+#> 178                             0                            0
+#> 179                             0                            0
+#> 180                             0                            0
+#> 181                             0                            0
+#> 182                             0                            0
+#> 183                             0                            0
+#> 184                             0                            0
+#> 185                             0                            0
+#> 186                             0                            0
+#> 187                             0                            0
+#> 188                             0                            0
+#> 189                             0                            0
+#> 190                             0                            0
+#> 191                             0                            0
+#> 192                             0                            0
+#> 193                             0                            0
+#> 194                             0                            0
+#> 195                             0                            0
+#> 196                             0                            0
+#> 197                             0                            0
+#> 198                             0                            0
+#> 199                             0                            0
+#> 200                             0                            0
+#> 201                             0                            0
+#> 202                             0                            0
+#> 203                             0                            0
+#> 204                             0                            0
+#> 205                             0                            0
+#> 206                             0                            0
+#> 207                             0                            0
+#> 208                             0                            0
+#> 209                             0                            0
+#> 210                             0                            0
+#> 211                             0                            0
+#> 212                             0                            0
+#> 213                             0                            0
+#> 214                             0                            0
+#> 215                             0                            0
+#> 216                             0                            0
+#> 217                             0                            0
+#> 218                             0                            0
+#> 219                             0                            0
+#> 220                             0                            0
+#> 221                             0                            0
+#> 222                             0                            0
+#> 223                             0                            0
+#> 224                             0                            0
+#> 225                             0                            0
+#> 226                             0                            0
+#> 227                             0                            0
+#> 228                             0                            0
+#> 229                             0                            0
+#> 230                             1                            0
+#> 231                             0                            0
+#> 232                             1                            0
+#> 233                             0                            0
+#> 234                             1                            0
+#> 235                             0                            0
+#> 236                             1                            0
+#> 237                             0                            0
+#> 238                             1                            0
+#> 239                             0                            0
+#> 240                             1                            0
+#> 241                             0                            0
+#> 242                             0                            0
+#> 243                             0                            0
+#> 244                             0                            0
+#> 245                             0                            0
+#> 246                             0                            0
+#> 247                             0                            0
+#> 248                             0                            0
+#> 249                             0                            0
+#> 250                             0                            0
+#> 251                             0                            0
+#> 252                             0                            0
+#> 253                             0                            0
+#> 254                             0                            0
+#> 255                             0                            0
+#> 256                             0                            0
+#> 257                             0                            0
+#> 258                             0                            0
+#> 259                             0                            0
+#> 260                             0                            0
+#> 261                             0                            0
+#> 262                             0                            0
+#> 263                             0                            0
+#> 264                             0                            0
+#> 265                             0                            0
+#> 266                             0                            0
+#> 267                             0                            0
+#> 268                             0                            0
+#> 269                             0                            0
+#> 270                             0                            0
+#> 271                             0                            0
+#> 272                             0                            0
+#> 273                             0                            0
+#> 274                             0                            0
+#> 275                             0                            0
+#> 276                             0                            0
+#> 277                             0                            0
+#> 278                             0                            0
+#> 279                             0                            0
+#> 280                             0                            0
+#>     compPanCKtubulenormalnormal4 compWT1glomerulusDKDdisease1B
+#> 1                              0                             0
+#> 2                              0                             0
+#> 3                              0                             0
+#> 4                              0                             0
+#> 5                              0                             0
+#> 6                              0                             0
+#> 7                              0                             0
+#> 8                              0                             0
+#> 9                              0                             0
+#> 10                             0                             0
+#> 11                             0                             0
+#> 12                             0                             0
+#> 13                             0                             0
+#> 14                             0                             0
+#> 15                             0                             0
+#> 16                             0                             0
+#> 17                             0                             0
+#> 18                             0                             0
+#> 19                             0                             0
+#> 20                             0                             0
+#> 21                             0                             0
+#> 22                             0                             0
+#> 23                             0                             0
+#> 24                             0                             0
+#> 25                             0                             0
+#> 26                             0                             0
+#> 27                             0                             0
+#> 28                             0                             0
+#> 29                             0                             0
+#> 30                             0                             0
+#> 31                             0                             0
+#> 32                             0                             0
+#> 33                             0                             0
+#> 34                             0                             0
+#> 35                             0                             0
+#> 36                             0                             0
+#> 37                             0                             0
+#> 38                             0                             0
+#> 39                             0                             0
+#> 40                             0                             0
+#> 41                             0                             0
+#> 42                             0                             0
+#> 43                             0                             0
+#> 44                             0                             0
+#> 45                             0                             0
+#> 46                             0                             0
+#> 47                             0                             0
+#> 48                             0                             0
+#> 49                             0                             0
+#> 50                             0                             0
+#> 51                             0                             0
+#> 52                             0                             0
+#> 53                             0                             0
+#> 54                             0                             0
+#> 55                             0                             0
+#> 56                             0                             0
+#> 57                             0                             0
+#> 58                             0                             0
+#> 59                             0                             0
+#> 60                             0                             0
+#> 61                             0                             0
+#> 62                             0                             0
+#> 63                             0                             0
+#> 64                             0                             0
+#> 65                             0                             0
+#> 66                             0                             0
+#> 67                             0                             0
+#> 68                             0                             0
+#> 69                             0                             0
+#> 70                             0                             0
+#> 71                             0                             0
+#> 72                             0                             0
+#> 73                             0                             0
+#> 74                             0                             0
+#> 75                             0                             0
+#> 76                             0                             0
+#> 77                             0                             0
+#> 78                             0                             0
+#> 79                             0                             0
+#> 80                             0                             0
+#> 81                             0                             0
+#> 82                             0                             0
+#> 83                             0                             0
+#> 84                             0                             0
+#> 85                             0                             0
+#> 86                             0                             0
+#> 87                             0                             0
+#> 88                             0                             0
+#> 89                             0                             0
+#> 90                             0                             0
+#> 91                             0                             0
+#> 92                             0                             0
+#> 93                             0                             0
+#> 94                             0                             0
+#> 95                             0                             0
+#> 96                             0                             0
+#> 97                             0                             0
+#> 98                             0                             0
+#> 99                             0                             0
+#> 100                            0                             0
+#> 101                            0                             0
+#> 102                            0                             0
+#> 103                            0                             0
+#> 104                            0                             0
+#> 105                            0                             0
+#> 106                            0                             0
+#> 107                            0                             0
+#> 108                            0                             0
+#> 109                            0                             0
+#> 110                            0                             0
+#> 111                            0                             0
+#> 112                            0                             0
+#> 113                            0                             0
+#> 114                            0                             0
+#> 115                            0                             0
+#> 116                            0                             0
+#> 117                            0                             0
+#> 118                            0                             0
+#> 119                            0                             0
+#> 120                            0                             0
+#> 121                            0                             0
+#> 122                            0                             0
+#> 123                            0                             0
+#> 124                            0                             0
+#> 125                            0                             0
+#> 126                            0                             0
+#> 127                            0                             0
+#> 128                            0                             0
+#> 129                            0                             0
+#> 130                            0                             0
+#> 131                            0                             0
+#> 132                            0                             0
+#> 133                            1                             0
+#> 134                            0                             0
+#> 135                            1                             0
+#> 136                            0                             0
+#> 137                            1                             0
+#> 138                            0                             0
+#> 139                            1                             0
+#> 140                            0                             0
+#> 141                            1                             0
+#> 142                            0                             0
+#> 143                            1                             0
+#> 144                            0                             0
+#> 145                            0                             0
+#> 146                            0                             0
+#> 147                            0                             0
+#> 148                            0                             0
+#> 149                            0                             0
+#> 150                            0                             0
+#> 151                            0                             0
+#> 152                            0                             0
+#> 153                            0                             0
+#> 154                            0                             0
+#> 155                            0                             0
+#> 156                            0                             0
+#> 157                            0                             0
+#> 158                            0                             0
+#> 159                            0                             0
+#> 160                            0                             0
+#> 161                            0                             0
+#> 162                            0                             0
+#> 163                            0                             0
+#> 164                            0                             0
+#> 165                            0                             0
+#> 166                            0                             0
+#> 167                            0                             0
+#> 168                            0                             0
+#> 169                            0                             0
+#> 170                            0                             0
+#> 171                            0                             0
+#> 172                            0                             0
+#> 173                            0                             0
+#> 174                            0                             0
+#> 175                            0                             0
+#> 176                            0                             0
+#> 177                            0                             0
+#> 178                            0                             0
+#> 179                            0                             0
+#> 180                            0                             0
+#> 181                            0                             0
+#> 182                            0                             0
+#> 183                            0                             0
+#> 184                            0                             0
+#> 185                            0                             0
+#> 186                            0                             0
+#> 187                            0                             0
+#> 188                            0                             0
+#> 189                            0                             0
+#> 190                            0                             0
+#> 191                            0                             0
+#> 192                            0                             0
+#> 193                            0                             0
+#> 194                            0                             0
+#> 195                            0                             0
+#> 196                            0                             0
+#> 197                            0                             0
+#> 198                            0                             0
+#> 199                            0                             0
+#> 200                            0                             0
+#> 201                            0                             0
+#> 202                            0                             0
+#> 203                            0                             0
+#> 204                            0                             0
+#> 205                            0                             0
+#> 206                            0                             0
+#> 207                            0                             0
+#> 208                            0                             0
+#> 209                            0                             0
+#> 210                            0                             0
+#> 211                            0                             0
+#> 212                            0                             0
+#> 213                            0                             0
+#> 214                            0                             0
+#> 215                            0                             0
+#> 216                            0                             0
+#> 217                            0                             0
+#> 218                            0                             0
+#> 219                            0                             0
+#> 220                            0                             0
+#> 221                            0                             0
+#> 222                            0                             0
+#> 223                            0                             0
+#> 224                            0                             0
+#> 225                            0                             0
+#> 226                            0                             0
+#> 227                            0                             0
+#> 228                            0                             0
+#> 229                            0                             0
+#> 230                            0                             0
+#> 231                            0                             0
+#> 232                            0                             0
+#> 233                            0                             0
+#> 234                            0                             0
+#> 235                            0                             0
+#> 236                            0                             0
+#> 237                            0                             0
+#> 238                            0                             0
+#> 239                            0                             0
+#> 240                            0                             0
+#> 241                            0                             0
+#> 242                            0                             0
+#> 243                            0                             0
+#> 244                            0                             0
+#> 245                            0                             0
+#> 246                            0                             0
+#> 247                            0                             0
+#> 248                            0                             0
+#> 249                            0                             0
+#> 250                            0                             0
+#> 251                            0                             0
+#> 252                            0                             1
+#> 253                            0                             0
+#> 254                            0                             1
+#> 255                            0                             0
+#> 256                            0                             1
+#> 257                            0                             0
+#> 258                            0                             1
+#> 259                            0                             0
+#> 260                            0                             0
+#> 261                            0                             1
+#> 262                            0                             0
+#> 263                            0                             1
+#> 264                            0                             0
+#> 265                            0                             0
+#> 266                            0                             0
+#> 267                            0                             0
+#> 268                            0                             0
+#> 269                            0                             0
+#> 270                            0                             0
+#> 271                            0                             0
+#> 272                            0                             0
+#> 273                            0                             0
+#> 274                            0                             0
+#> 275                            0                             0
+#> 276                            0                             0
+#> 277                            0                             0
+#> 278                            0                             0
+#> 279                            0                             0
+#> 280                            0                             0
+#>     compWT1glomerulusDKDdisease2B compWT1glomerulusnormalnormal2B
+#> 1                               0                               0
+#> 2                               0                               0
+#> 3                               0                               0
+#> 4                               0                               0
+#> 5                               0                               0
+#> 6                               0                               0
+#> 7                               0                               0
+#> 8                               0                               0
+#> 9                               0                               0
+#> 10                              0                               0
+#> 11                              0                               0
+#> 12                              0                               0
+#> 13                              0                               0
+#> 14                              0                               0
+#> 15                              0                               0
+#> 16                              0                               0
+#> 17                              0                               0
+#> 18                              0                               0
+#> 19                              0                               0
+#> 20                              0                               0
+#> 21                              0                               0
+#> 22                              0                               0
+#> 23                              0                               0
+#> 24                              0                               0
+#> 25                              0                               0
+#> 26                              0                               0
+#> 27                              0                               0
+#> 28                              0                               0
+#> 29                              0                               0
+#> 30                              0                               0
+#> 31                              0                               0
+#> 32                              0                               0
+#> 33                              0                               0
+#> 34                              0                               0
+#> 35                              0                               0
+#> 36                              0                               0
+#> 37                              0                               0
+#> 38                              0                               0
+#> 39                              0                               0
+#> 40                              0                               0
+#> 41                              0                               0
+#> 42                              0                               0
+#> 43                              0                               0
+#> 44                              0                               0
+#> 45                              0                               0
+#> 46                              0                               0
+#> 47                              0                               0
+#> 48                              0                               0
+#> 49                              0                               0
+#> 50                              0                               0
+#> 51                              0                               0
+#> 52                              0                               0
+#> 53                              0                               0
+#> 54                              0                               0
+#> 55                              0                               0
+#> 56                              0                               0
+#> 57                              0                               0
+#> 58                              0                               0
+#> 59                              0                               0
+#> 60                              0                               0
+#> 61                              0                               0
+#> 62                              0                               0
+#> 63                              0                               0
+#> 64                              0                               0
+#> 65                              0                               0
+#> 66                              0                               0
+#> 67                              0                               0
+#> 68                              0                               0
+#> 69                              0                               0
+#> 70                              0                               0
+#> 71                              0                               0
+#> 72                              0                               0
+#> 73                              0                               0
+#> 74                              0                               0
+#> 75                              0                               0
+#> 76                              0                               0
+#> 77                              0                               0
+#> 78                              0                               0
+#> 79                              0                               0
+#> 80                              0                               0
+#> 81                              0                               0
+#> 82                              0                               0
+#> 83                              0                               0
+#> 84                              0                               0
+#> 85                              0                               0
+#> 86                              0                               0
+#> 87                              0                               0
+#> 88                              0                               0
+#> 89                              0                               0
+#> 90                              0                               0
+#> 91                              0                               0
+#> 92                              0                               0
+#> 93                              0                               0
+#> 94                              0                               0
+#> 95                              0                               0
+#> 96                              0                               0
+#> 97                              0                               0
+#> 98                              0                               0
+#> 99                              0                               0
+#> 100                             0                               0
+#> 101                             0                               0
+#> 102                             0                               0
+#> 103                             0                               0
+#> 104                             0                               0
+#> 105                             0                               0
+#> 106                             0                               0
+#> 107                             0                               0
+#> 108                             0                               0
+#> 109                             0                               0
+#> 110                             0                               0
+#> 111                             0                               0
+#> 112                             0                               0
+#> 113                             0                               0
+#> 114                             0                               0
+#> 115                             0                               0
+#> 116                             0                               0
+#> 117                             0                               0
+#> 118                             0                               0
+#> 119                             0                               0
+#> 120                             0                               0
+#> 121                             0                               0
+#> 122                             0                               0
+#> 123                             0                               0
+#> 124                             0                               0
+#> 125                             0                               0
+#> 126                             0                               0
+#> 127                             0                               0
+#> 128                             0                               0
+#> 129                             0                               0
+#> 130                             0                               0
+#> 131                             0                               0
+#> 132                             0                               0
+#> 133                             0                               0
+#> 134                             0                               0
+#> 135                             0                               0
+#> 136                             0                               0
+#> 137                             0                               0
+#> 138                             0                               0
+#> 139                             0                               0
+#> 140                             0                               0
+#> 141                             0                               0
+#> 142                             0                               0
+#> 143                             0                               0
+#> 144                             0                               0
+#> 145                             0                               0
+#> 146                             0                               0
+#> 147                             0                               0
+#> 148                             0                               0
+#> 149                             0                               0
+#> 150                             0                               0
+#> 151                             0                               0
+#> 152                             0                               0
+#> 153                             0                               0
+#> 154                             0                               0
+#> 155                             0                               0
+#> 156                             0                               0
+#> 157                             0                               0
+#> 158                             0                               0
+#> 159                             0                               0
+#> 160                             0                               0
+#> 161                             0                               0
+#> 162                             0                               0
+#> 163                             0                               0
+#> 164                             0                               0
+#> 165                             0                               0
+#> 166                             0                               0
+#> 167                             0                               0
+#> 168                             0                               0
+#> 169                             0                               0
+#> 170                             0                               0
+#> 171                             0                               0
+#> 172                             0                               0
+#> 173                             0                               0
+#> 174                             0                               0
+#> 175                             0                               0
+#> 176                             0                               0
+#> 177                             0                               0
+#> 178                             0                               0
+#> 179                             1                               0
+#> 180                             0                               0
+#> 181                             1                               0
+#> 182                             0                               0
+#> 183                             0                               0
+#> 184                             1                               0
+#> 185                             0                               0
+#> 186                             1                               0
+#> 187                             0                               0
+#> 188                             1                               0
+#> 189                             0                               0
+#> 190                             0                               0
+#> 191                             1                               0
+#> 192                             0                               0
+#> 193                             0                               0
+#> 194                             0                               0
+#> 195                             0                               0
+#> 196                             0                               0
+#> 197                             0                               0
+#> 198                             0                               0
+#> 199                             0                               0
+#> 200                             0                               0
+#> 201                             0                               0
+#> 202                             0                               0
+#> 203                             0                               0
+#> 204                             0                               0
+#> 205                             0                               0
+#> 206                             0                               0
+#> 207                             0                               0
+#> 208                             0                               0
+#> 209                             0                               0
+#> 210                             0                               0
+#> 211                             0                               0
+#> 212                             0                               0
+#> 213                             0                               0
+#> 214                             0                               0
+#> 215                             0                               0
+#> 216                             0                               0
+#> 217                             0                               1
+#> 218                             0                               0
+#> 219                             0                               1
+#> 220                             0                               0
+#> 221                             0                               1
+#> 222                             0                               0
+#> 223                             0                               1
+#> 224                             0                               0
+#> 225                             0                               1
+#> 226                             0                               0
+#> 227                             0                               1
+#> 228                             0                               0
+#> 229                             0                               0
+#> 230                             0                               0
+#> 231                             0                               0
+#> 232                             0                               0
+#> 233                             0                               0
+#> 234                             0                               0
+#> 235                             0                               0
+#> 236                             0                               0
+#> 237                             0                               0
+#> 238                             0                               0
+#> 239                             0                               0
+#> 240                             0                               0
+#> 241                             0                               0
+#> 242                             0                               0
+#> 243                             0                               0
+#> 244                             0                               0
+#> 245                             0                               0
+#> 246                             0                               0
+#> 247                             0                               0
+#> 248                             0                               0
+#> 249                             0                               0
+#> 250                             0                               0
+#> 251                             0                               0
+#> 252                             0                               0
+#> 253                             0                               0
+#> 254                             0                               0
+#> 255                             0                               0
+#> 256                             0                               0
+#> 257                             0                               0
+#> 258                             0                               0
+#> 259                             0                               0
+#> 260                             0                               0
+#> 261                             0                               0
+#> 262                             0                               0
+#> 263                             0                               0
+#> 264                             0                               0
+#> 265                             0                               0
+#> 266                             0                               0
+#> 267                             0                               0
+#> 268                             0                               0
+#> 269                             0                               0
+#> 270                             0                               0
+#> 271                             0                               0
+#> 272                             0                               0
+#> 273                             0                               0
+#> 274                             0                               0
+#> 275                             0                               0
+#> 276                             0                               0
+#> 277                             0                               0
+#> 278                             0                               0
+#> 279                             0                               0
+#> 280                             0                               0
+#>     compWT1tubuleDKDdisease1B
+#> 1                           0
+#> 2                           0
+#> 3                           0
+#> 4                           0
+#> 5                           0
+#> 6                           0
+#> 7                           0
+#> 8                           0
+#> 9                           0
+#> 10                          0
+#> 11                          0
+#> 12                          0
+#> 13                          0
+#> 14                          0
+#> 15                          0
+#> 16                          0
+#> 17                          0
+#> 18                          0
+#> 19                          0
+#> 20                          0
+#> 21                          0
+#> 22                          0
+#> 23                          0
+#> 24                          0
+#> 25                          0
+#> 26                          0
+#> 27                          0
+#> 28                          0
+#> 29                          0
+#> 30                          0
+#> 31                          0
+#> 32                          0
+#> 33                          0
+#> 34                          0
+#> 35                          0
+#> 36                          0
+#> 37                          0
+#> 38                          0
+#> 39                          0
+#> 40                          0
+#> 41                          0
+#> 42                          0
+#> 43                          0
+#> 44                          0
+#> 45                          0
+#> 46                          0
+#> 47                          0
+#> 48                          0
+#> 49                          0
+#> 50                          0
+#> 51                          0
+#> 52                          0
+#> 53                          0
+#> 54                          0
+#> 55                          0
+#> 56                          0
+#> 57                          0
+#> 58                          0
+#> 59                          0
+#> 60                          0
+#> 61                          0
+#> 62                          0
+#> 63                          0
+#> 64                          0
+#> 65                          0
+#> 66                          0
+#> 67                          0
+#> 68                          0
+#> 69                          0
+#> 70                          0
+#> 71                          0
+#> 72                          0
+#> 73                          0
+#> 74                          0
+#> 75                          0
+#> 76                          0
+#> 77                          0
+#> 78                          0
+#> 79                          0
+#> 80                          0
+#> 81                          0
+#> 82                          0
+#> 83                          0
+#> 84                          0
+#> 85                          0
+#> 86                          0
+#> 87                          0
+#> 88                          0
+#> 89                          0
+#> 90                          0
+#> 91                          0
+#> 92                          0
+#> 93                          0
+#> 94                          0
+#> 95                          0
+#> 96                          0
+#> 97                          0
+#> 98                          0
+#> 99                          0
+#> 100                         0
+#> 101                         0
+#> 102                         0
+#> 103                         0
+#> 104                         0
+#> 105                         0
+#> 106                         0
+#> 107                         0
+#> 108                         0
+#> 109                         0
+#> 110                         0
+#> 111                         0
+#> 112                         0
+#> 113                         0
+#> 114                         0
+#> 115                         0
+#> 116                         0
+#> 117                         0
+#> 118                         0
+#> 119                         0
+#> 120                         0
+#> 121                         0
+#> 122                         0
+#> 123                         0
+#> 124                         0
+#> 125                         0
+#> 126                         0
+#> 127                         0
+#> 128                         0
+#> 129                         0
+#> 130                         0
+#> 131                         0
+#> 132                         0
+#> 133                         0
+#> 134                         0
+#> 135                         0
+#> 136                         0
+#> 137                         0
+#> 138                         0
+#> 139                         0
+#> 140                         0
+#> 141                         0
+#> 142                         0
+#> 143                         0
+#> 144                         0
+#> 145                         0
+#> 146                         0
+#> 147                         0
+#> 148                         0
+#> 149                         0
+#> 150                         0
+#> 151                         0
+#> 152                         0
+#> 153                         0
+#> 154                         0
+#> 155                         0
+#> 156                         0
+#> 157                         0
+#> 158                         0
+#> 159                         0
+#> 160                         0
+#> 161                         0
+#> 162                         0
+#> 163                         0
+#> 164                         0
+#> 165                         0
+#> 166                         0
+#> 167                         0
+#> 168                         0
+#> 169                         0
+#> 170                         0
+#> 171                         0
+#> 172                         0
+#> 173                         0
+#> 174                         0
+#> 175                         0
+#> 176                         0
+#> 177                         0
+#> 178                         0
+#> 179                         0
+#> 180                         0
+#> 181                         0
+#> 182                         0
+#> 183                         0
+#> 184                         0
+#> 185                         0
+#> 186                         0
+#> 187                         0
+#> 188                         0
+#> 189                         0
+#> 190                         0
+#> 191                         0
+#> 192                         0
+#> 193                         0
+#> 194                         0
+#> 195                         0
+#> 196                         0
+#> 197                         0
+#> 198                         0
+#> 199                         0
+#> 200                         0
+#> 201                         0
+#> 202                         0
+#> 203                         0
+#> 204                         0
+#> 205                         0
+#> 206                         0
+#> 207                         0
+#> 208                         0
+#> 209                         0
+#> 210                         0
+#> 211                         0
+#> 212                         0
+#> 213                         0
+#> 214                         0
+#> 215                         0
+#> 216                         0
+#> 217                         0
+#> 218                         0
+#> 219                         0
+#> 220                         0
+#> 221                         0
+#> 222                         0
+#> 223                         0
+#> 224                         0
+#> 225                         0
+#> 226                         0
+#> 227                         0
+#> 228                         0
+#> 229                         0
+#> 230                         0
+#> 231                         0
+#> 232                         0
+#> 233                         0
+#> 234                         0
+#> 235                         0
+#> 236                         0
+#> 237                         0
+#> 238                         0
+#> 239                         0
+#> 240                         0
+#> 241                         0
+#> 242                         0
+#> 243                         0
+#> 244                         0
+#> 245                         0
+#> 246                         0
+#> 247                         0
+#> 248                         0
+#> 249                         0
+#> 250                         0
+#> 251                         0
+#> 252                         0
+#> 253                         0
+#> 254                         0
+#> 255                         0
+#> 256                         0
+#> 257                         0
+#> 258                         0
+#> 259                         0
+#> 260                         0
+#> 261                         0
+#> 262                         0
+#> 263                         0
+#> 264                         0
+#> 265                         1
+#> 266                         0
+#> 267                         0
+#> 268                         0
+#> 269                         0
+#> 270                         1
+#> 271                         0
+#> 272                         0
+#> 273                         0
+#> 274                         0
+#> 275                         0
+#> 276                         0
+#> 277                         0
+#> 278                         0
+#> 279                         0
+#> 280                         0
+#> attr(,"assign")
+#>  [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+#> attr(,"contrasts")
+#> attr(,"contrasts")$comp
+#> [1] "contr.treatment"
 
-contrasts <- makeContrasts(P0_Iba1_neg_cortex_vs_cc = compP0cortexIba1_neg - compP0ccIba1_neg,
-                           P0_Iba1_neg_cortex_vs_hippo = compP0cortexIba1_neg - compP0hippoIba1_neg,
-                           P0_Iba1_neg_cc_vs_hippo = compP0ccIba1_neg - compP0hippoIba1_neg,
+coldata2$comp <- gsub(" ", "_", coldata2$comp)
+
+print(comp)
+#>   [1] "NANANANo_Template_Control"                
+#>   [2] "Geometric_SegmentglomerulusDKDdisease3"   
+#>   [3] "Geometric_SegmentglomerulusDKDdisease3"   
+#>   [4] "Geometric_SegmentglomerulusDKDdisease3"   
+#>   [5] "Geometric_SegmentglomerulusDKDdisease3"   
+#>   [6] "Geometric_SegmentglomerulusDKDdisease3"   
+#>   [7] "Geometric_SegmentglomerulusDKDdisease3"   
+#>   [8] "Geometric_SegmentglomerulusDKDdisease3"   
+#>   [9] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [10] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [11] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [12] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [13] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [14] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [15] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [16] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [17] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [18] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [19] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [20] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [21] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [22] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [23] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [24] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [25] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [26] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [27] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [28] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [29] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [30] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [31] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [32] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [33] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [34] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [35] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [36] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [37] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [38] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [39] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [40] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [41] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [42] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [43] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [44] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [45] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [46] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [47] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [48] "Geometric_SegmentglomerulusDKDdisease3"   
+#>  [49] "PanCKtubuleDKDdisease4"                   
+#>  [50] "negtubuleDKDdisease4"                     
+#>  [51] "PanCKtubuleDKDdisease4"                   
+#>  [52] "negtubuleDKDdisease4"                     
+#>  [53] "PanCKtubuleDKDdisease4"                   
+#>  [54] "negtubuleDKDdisease4"                     
+#>  [55] "PanCKtubuleDKDdisease4"                   
+#>  [56] "negtubuleDKDdisease4"                     
+#>  [57] "PanCKtubuleDKDdisease4"                   
+#>  [58] "negtubuleDKDdisease4"                     
+#>  [59] "PanCKtubuleDKDdisease4"                   
+#>  [60] "negtubuleDKDdisease4"                     
+#>  [61] "Geometric_SegmentglomerulusDKDdisease4"   
+#>  [62] "Geometric_SegmentglomerulusDKDdisease4"   
+#>  [63] "Geometric_SegmentglomerulusDKDdisease4"   
+#>  [64] "Geometric_SegmentglomerulusDKDdisease4"   
+#>  [65] "Geometric_SegmentglomerulusDKDdisease4"   
+#>  [66] "Geometric_SegmentglomerulusDKDdisease4"   
+#>  [67] "Geometric_SegmentglomerulusDKDdisease4"   
+#>  [68] "Geometric_SegmentglomerulusDKDdisease4"   
+#>  [69] "Geometric_SegmentglomerulusDKDdisease4"   
+#>  [70] "Geometric_SegmentglomerulusDKDdisease4"   
+#>  [71] "Geometric_SegmentglomerulusDKDdisease4"   
+#>  [72] "Geometric_SegmentglomerulusDKDdisease4"   
+#>  [73] "NANANANo_Template_Control"                
+#>  [74] "PanCKtubulenormalnormal3"                 
+#>  [75] "negtubulenormalnormal3"                   
+#>  [76] "PanCKtubulenormalnormal3"                 
+#>  [77] "negtubulenormalnormal3"                   
+#>  [78] "PanCKtubulenormalnormal3"                 
+#>  [79] "negtubulenormalnormal3"                   
+#>  [80] "PanCKtubulenormalnormal3"                 
+#>  [81] "negtubulenormalnormal3"                   
+#>  [82] "PanCKtubulenormalnormal3"                 
+#>  [83] "negtubulenormalnormal3"                   
+#>  [84] "PanCKtubulenormalnormal3"                 
+#>  [85] "negtubulenormalnormal3"                   
+#>  [86] "Geometric_Segmentglomerulusnormalnormal3" 
+#>  [87] "Geometric_Segmentglomerulusnormalnormal3" 
+#>  [88] "Geometric_Segmentglomerulusnormalnormal3" 
+#>  [89] "Geometric_Segmentglomerulusnormalnormal3" 
+#>  [90] "Geometric_Segmentglomerulusnormalnormal3" 
+#>  [91] "Geometric_Segmentglomerulusnormalnormal3" 
+#>  [92] "Geometric_Segmentglomerulusnormalnormal3" 
+#>  [93] "Geometric_Segmentglomerulusnormalnormal3" 
+#>  [94] "Geometric_Segmentglomerulusnormalnormal3" 
+#>  [95] "Geometric_Segmentglomerulusnormalnormal3" 
+#>  [96] "Geometric_Segmentglomerulusnormalnormal3" 
+#>  [97] "Geometric_Segmentglomerulusnormalnormal3" 
+#>  [98] "Geometric_Segmentglomerulusnormalnormal3" 
+#>  [99] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [100] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [101] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [102] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [103] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [104] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [105] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [106] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [107] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [108] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [109] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [110] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [111] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [112] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [113] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [114] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [115] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [116] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [117] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [118] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [119] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [120] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [121] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [122] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [123] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [124] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [125] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [126] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [127] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [128] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [129] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [130] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [131] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [132] "Geometric_Segmentglomerulusnormalnormal3" 
+#> [133] "PanCKtubulenormalnormal4"                 
+#> [134] "negtubulenormalnormal4"                   
+#> [135] "PanCKtubulenormalnormal4"                 
+#> [136] "negtubulenormalnormal4"                   
+#> [137] "PanCKtubulenormalnormal4"                 
+#> [138] "negtubulenormalnormal4"                   
+#> [139] "PanCKtubulenormalnormal4"                 
+#> [140] "negtubulenormalnormal4"                   
+#> [141] "PanCKtubulenormalnormal4"                 
+#> [142] "negtubulenormalnormal4"                   
+#> [143] "PanCKtubulenormalnormal4"                 
+#> [144] "negtubulenormalnormal4"                   
+#> [145] "Geometric_Segmentglomerulusnormalnormal4" 
+#> [146] "Geometric_Segmentglomerulusnormalnormal4" 
+#> [147] "Geometric_Segmentglomerulusnormalnormal4" 
+#> [148] "Geometric_Segmentglomerulusnormalnormal4" 
+#> [149] "Geometric_Segmentglomerulusnormalnormal4" 
+#> [150] "Geometric_Segmentglomerulusnormalnormal4" 
+#> [151] "Geometric_Segmentglomerulusnormalnormal4" 
+#> [152] "Geometric_Segmentglomerulusnormalnormal4" 
+#> [153] "Geometric_Segmentglomerulusnormalnormal4" 
+#> [154] "Geometric_Segmentglomerulusnormalnormal4" 
+#> [155] "Geometric_Segmentglomerulusnormalnormal4" 
+#> [156] "PanCKtubuleDKDdisease3"                   
+#> [157] "negtubuleDKDdisease3"                     
+#> [158] "PanCKtubuleDKDdisease3"                   
+#> [159] "negtubuleDKDdisease3"                     
+#> [160] "PanCKtubuleDKDdisease3"                   
+#> [161] "negtubuleDKDdisease3"                     
+#> [162] "PanCKtubuleDKDdisease3"                   
+#> [163] "negtubuleDKDdisease3"                     
+#> [164] "PanCKtubuleDKDdisease3"                   
+#> [165] "negtubuleDKDdisease3"                     
+#> [166] "PanCKtubuleDKDdisease3"                   
+#> [167] "negtubuleDKDdisease3"                     
+#> [168] "NANANANo_Template_Control"                
+#> [169] "Geometric_SegmentglomerulusDKDdisease1B"  
+#> [170] "Geometric_SegmentglomerulusDKDdisease1B"  
+#> [171] "Geometric_SegmentglomerulusDKDdisease1B"  
+#> [172] "Geometric_SegmentglomerulusDKDdisease1B"  
+#> [173] "Geometric_SegmentglomerulusDKDdisease1B"  
+#> [174] "Geometric_SegmentglomerulusDKDdisease1B"  
+#> [175] "Geometric_SegmentglomerulusDKDdisease1B"  
+#> [176] "Geometric_SegmentglomerulusDKDdisease1B"  
+#> [177] "Geometric_SegmentglomerulusDKDdisease1B"  
+#> [178] "Geometric_SegmentglomerulusDKDdisease1B"  
+#> [179] "WT1glomerulusDKDdisease2B"                
+#> [180] "negglomerulusDKDdisease2B"                
+#> [181] "WT1glomerulusDKDdisease2B"                
+#> [182] "PanCKglomerulusDKDdisease2B"              
+#> [183] "negglomerulusDKDdisease2B"                
+#> [184] "WT1glomerulusDKDdisease2B"                
+#> [185] "negglomerulusDKDdisease2B"                
+#> [186] "WT1glomerulusDKDdisease2B"                
+#> [187] "negglomerulusDKDdisease2B"                
+#> [188] "WT1glomerulusDKDdisease2B"                
+#> [189] "PanCKglomerulusDKDdisease2B"              
+#> [190] "negglomerulusDKDdisease2B"                
+#> [191] "WT1glomerulusDKDdisease2B"                
+#> [192] "PanCKtubuleDKDdisease2B"                  
+#> [193] "negtubuleDKDdisease2B"                    
+#> [194] "PanCKtubuleDKDdisease2B"                  
+#> [195] "negtubuleDKDdisease2B"                    
+#> [196] "PanCKtubuleDKDdisease2B"                  
+#> [197] "negtubuleDKDdisease2B"                    
+#> [198] "PanCKtubuleDKDdisease2B"                  
+#> [199] "negtubuleDKDdisease2B"                    
+#> [200] "PanCKtubuleDKDdisease2B"                  
+#> [201] "negtubuleDKDdisease2B"                    
+#> [202] "PanCKtubuleDKDdisease2B"                  
+#> [203] "negtubuleDKDdisease2B"                    
+#> [204] "Geometric_SegmentglomerulusDKDdisease2B"  
+#> [205] "Geometric_SegmentglomerulusDKDdisease2B"  
+#> [206] "Geometric_SegmentglomerulusDKDdisease2B"  
+#> [207] "Geometric_SegmentglomerulusDKDdisease2B"  
+#> [208] "Geometric_SegmentglomerulusDKDdisease2B"  
+#> [209] "Geometric_SegmentglomerulusDKDdisease2B"  
+#> [210] "Geometric_SegmentglomerulusDKDdisease2B"  
+#> [211] "Geometric_SegmentglomerulusDKDdisease2B"  
+#> [212] "Geometric_SegmentglomerulusDKDdisease2B"  
+#> [213] "Geometric_SegmentglomerulusDKDdisease2B"  
+#> [214] "Geometric_SegmentglomerulusDKDdisease2B"  
+#> [215] "Geometric_SegmentglomerulusDKDdisease2B"  
+#> [216] "NANANANo_Template_Control"                
+#> [217] "WT1glomerulusnormalnormal2B"              
+#> [218] "negglomerulusnormalnormal2B"              
+#> [219] "WT1glomerulusnormalnormal2B"              
+#> [220] "negglomerulusnormalnormal2B"              
+#> [221] "WT1glomerulusnormalnormal2B"              
+#> [222] "negglomerulusnormalnormal2B"              
+#> [223] "WT1glomerulusnormalnormal2B"              
+#> [224] "negglomerulusnormalnormal2B"              
+#> [225] "WT1glomerulusnormalnormal2B"              
+#> [226] "negglomerulusnormalnormal2B"              
+#> [227] "WT1glomerulusnormalnormal2B"              
+#> [228] "PanCKglomerulusnormalnormal2B"            
+#> [229] "negglomerulusnormalnormal2B"              
+#> [230] "PanCKtubulenormalnormal2B"                
+#> [231] "negtubulenormalnormal2B"                  
+#> [232] "PanCKtubulenormalnormal2B"                
+#> [233] "negtubulenormalnormal2B"                  
+#> [234] "PanCKtubulenormalnormal2B"                
+#> [235] "negtubulenormalnormal2B"                  
+#> [236] "PanCKtubulenormalnormal2B"                
+#> [237] "negtubulenormalnormal2B"                  
+#> [238] "PanCKtubulenormalnormal2B"                
+#> [239] "negtubulenormalnormal2B"                  
+#> [240] "PanCKtubulenormalnormal2B"                
+#> [241] "negtubulenormalnormal2B"                  
+#> [242] "Geometric_Segmentglomerulusnormalnormal2B"
+#> [243] "Geometric_Segmentglomerulusnormalnormal2B"
+#> [244] "Geometric_Segmentglomerulusnormalnormal2B"
+#> [245] "Geometric_Segmentglomerulusnormalnormal2B"
+#> [246] "Geometric_Segmentglomerulusnormalnormal2B"
+#> [247] "Geometric_Segmentglomerulusnormalnormal2B"
+#> [248] "Geometric_Segmentglomerulusnormalnormal2B"
+#> [249] "Geometric_Segmentglomerulusnormalnormal2B"
+#> [250] "Geometric_Segmentglomerulusnormalnormal2B"
+#> [251] "Geometric_Segmentglomerulusnormalnormal2B"
+#> [252] "WT1glomerulusDKDdisease1B"                
+#> [253] "negglomerulusDKDdisease1B"                
+#> [254] "WT1glomerulusDKDdisease1B"                
+#> [255] "negglomerulusDKDdisease1B"                
+#> [256] "WT1glomerulusDKDdisease1B"                
+#> [257] "negglomerulusDKDdisease1B"                
+#> [258] "WT1glomerulusDKDdisease1B"                
+#> [259] "PanCKglomerulusDKDdisease1B"              
+#> [260] "negglomerulusDKDdisease1B"                
+#> [261] "WT1glomerulusDKDdisease1B"                
+#> [262] "negglomerulusDKDdisease1B"                
+#> [263] "WT1glomerulusDKDdisease1B"                
+#> [264] "negglomerulusDKDdisease1B"                
+#> [265] "WT1tubuleDKDdisease1B"                    
+#> [266] "PanCKtubuleDKDdisease1B"                  
+#> [267] "negtubuleDKDdisease1B"                    
+#> [268] "PanCKtubuleDKDdisease1B"                  
+#> [269] "negtubuleDKDdisease1B"                    
+#> [270] "WT1tubuleDKDdisease1B"                    
+#> [271] "PanCKtubuleDKDdisease1B"                  
+#> [272] "negtubuleDKDdisease1B"                    
+#> [273] "PanCKtubuleDKDdisease1B"                  
+#> [274] "negtubuleDKDdisease1B"                    
+#> [275] "PanCKtubuleDKDdisease1B"                  
+#> [276] "negtubuleDKDdisease1B"                    
+#> [277] "PanCKtubuleDKDdisease1B"                  
+#> [278] "negtubuleDKDdisease1B"                    
+#> [279] "Geometric_SegmentglomerulusDKDdisease1B"  
+#> [280] "Geometric_SegmentglomerulusDKDdisease1B"
+
+contrasts <- makeContrasts(GeometricSegment_glomerulus_Dkd_disease1b_vs_disease2B = compGeometric_SegmentglomerulusDKDdisease1B - compGeometric_SegmentglomerulusDKDdisease2B,
+                           GeometricSegmentglomerulus_DKD_disease1B_vs_disease3 = compGeometric_SegmentglomerulusDKDdisease1B - compGeometric_SegmentglomerulusDKDdisease3,
+                           GeometricSegmentglomerulus_DKD_disease2B_vs_disease3 = compGeometric_SegmentglomerulusDKDdisease2B - compGeometric_SegmentglomerulusDKDdisease3,
                            levels = design)
 
 y = DGEList(counts = copy_df_Expr)
@@ -536,16 +6494,20 @@ fit2 <- eBayes(fit2)
 
 results_all_DEG <- decideTests(fit2)
 summary(results_all_DEG)
-#>        P0_Iba1_neg_cortex_vs_cc P0_Iba1_neg_cortex_vs_hippo
-#> Down                        167                          25
-#> NotSig                    19295                       19890
-#> Up                          501                          48
-#>        P0_Iba1_neg_cc_vs_hippo
-#> Down                       235
-#> NotSig                   19622
-#> Up                         106
+#>        GeometricSegment_glomerulus_Dkd_disease1b_vs_disease2B
+#> Down                                                     2455
+#> NotSig                                                  15425
+#> Up                                                        624
+#>        GeometricSegmentglomerulus_DKD_disease1B_vs_disease3
+#> Down                                                   2965
+#> NotSig                                                14821
+#> Up                                                      718
+#>        GeometricSegmentglomerulus_DKD_disease2B_vs_disease3
+#> Down                                                   1225
+#> NotSig                                                15748
+#> Up                                                     1531
 
-result1 = topTable(fit2, coef= "P0_Iba1_neg_cc_vs_hippo", number = Inf, adjust.method = "fdr") %>%
+result1 = topTable(fit2, coef= "GeometricSegment_glomerulus_Dkd_disease1b_vs_disease2B", number = Inf, adjust.method = "fdr") %>%
   as.data.frame() # differnetially expressed genes are obtained by topTreat() function
 # filter results to get significantly differentially expressed genes
 
@@ -561,31 +6523,23 @@ class(topUp)
 NamesUpReg <- row.names(topUp)
 NamesDownReg <- row.names(topDown)
 print(NamesDownReg)
-#>   [1] "Shisa6"        "Reln"          "Ndnf"          "Kctd12"       
-#>   [5] "Sertm1"        "Bhlhe22"       "Bex1"          "Gria1"        
-#>   [9] "Maf"           "Crym"          "Vstm2l"        "Lonrf2"       
-#>  [13] "Vstm2a"        "Camk2b"        "Cxcl14"        "Epha6"        
-#>  [17] "Tbc1d16"       "Snca"          "Nts"           "Mafb"         
-#>  [21] "Trim67"        "Rac3"          "Jph4"          "Nr3c2"        
-#>  [25] "Npas1"         "Ppp2r2c"       "Psd"           "Cxcl12"       
-#>  [29] "Calb2"         "Xkr4"          "Lhx6"          "Mapt"         
-#>  [33] "Rims4"         "Cnr1"          "Gpr27"         "Reep1"        
-#>  [37] "Nr4a3"         "Shank1"        "Rcan2"         "Rell2"        
-#>  [41] "Nr2f2"         "Selenom"       "Dner"          "Serp2"        
-#>  [45] "Pcdh19"        "Ablim3"        "Tceal5"        "Tmem130"      
-#>  [49] "Hecw1"         "NegProbe-WTX"  "Tub"           "Ccdc184"      
-#>  [53] "Ina"           "Ly6h"          "Camk2n2"       "Clec2l"       
-#>  [57] "Ripor2"        "Mlip"          "Homer2"        "Jph3"         
-#>  [61] "Ids"           "Chl1"          "Gap43"         "Nxph1"        
-#>  [65] "Clstn2"        "Cdh11"         "Pak6"          "9330159F19Rik"
-#>  [69] "Syt4"          "Lrp11"         "Nhlh2"         "Kcnq2"        
-#>  [73] "Zfp998"        "Gabra5"        "C1qtnf4"       "Stk32b"       
-#>  [77] "Map6"          "Atp1a3"        "Camk2a"        "Vmn2r86"      
-#>  [81] "Cd200"         "Grm5"          "Mmp24"         "Chrm3"        
-#>  [85] "Amph"          "Ren2"          "Syt1"          "Rasl10b"      
-#>  [89] "Adap1"         "Fgf13"         "Scn3b"         "Lrfn5"        
-#>  [93] "Olfm2"         "Grin2b"        "Dpf1"          "Spock2"       
-#>  [97] "Nexmif"        "Gng2"          "Cck"           "Dnajc6"
+#>   [1] "PLIN2"    "IL1RL1"   "C1R"      "CHI3L1"   "PIGT"     "F2RL3"   
+#>   [7] "S100A8"   "TMEM150C" "DDIT4"    "S100A12"  "S100A9"   "SH3BP5"  
+#>  [13] "CCL14"    "LYVE1"    "APOD"     "SYNPO"    "TRPC6"    "PHACTR4" 
+#>  [19] "RBM3"     "LILRA5"   "KANK1"    "RAMP3"    "PAK1"     "ZDHHC6"  
+#>  [25] "WDR41"    "TMEM248"  "VTI1A"    "LGALS8"   "CRYAB"    "NPHS1"   
+#>  [31] "CLIC5"    "GCA"      "AGFG2"    "AKR1C1"   "ALS2CL"   "ARL6IP5" 
+#>  [37] "BAMBI"    "FCER1G"   "STAB1"    "MMP9"     "PLCE1"    "SMCHD1"  
+#>  [43] "FTH1"     "FBXL17"   "FCN2"     "ALOX5AP"  "NTNG1"    "TNNT2"   
+#>  [49] "FBXL5"    "SNRK"     "IGFBP2"   "PTPRQ"    "CAVIN2"   "MXI1"    
+#>  [55] "SCFD1"    "DAB2"     "F3"       "LEPROT"   "TGFBR3"   "MTFR1"   
+#>  [61] "TMEM178A" "PDE2A"    "NFASC"    "FGR"      "UBR1"     "CNN2"    
+#>  [67] "PRKAR2B"  "CTDSPL"   "NDN"      "HYAL2"    "SPOCK1"   "TTC14"   
+#>  [73] "TYRO3"    "ARHGEF3"  "CCN2"     "DDX3X"    "NPHS2"    "CTNND1"  
+#>  [79] "FGF1"     "ABI1"     "SLC2A3"   "ZNF280D"  "S100A11"  "H2AC6"   
+#>  [85] "RASSF8"   "CRIM1"    "GJA1"     "MAFB"     "TFG"      "TLN1"    
+#>  [91] "STX11"    "ALDH1A1"  "FLT1"     "PDZK1IP1" "COL4A3"   "GSTK1"   
+#>  [97] "CNN3"     "IKBKB"    "BLCAP"    "FPR1"
 
 result1 <- result1 %>%
   dplyr::mutate(isSignificant = case_when(
