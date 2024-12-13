@@ -377,12 +377,6 @@ The process of performing a differential gene expression analysis starts by chec
 ```{r EqualOrder, echo=TRUE, warning=FALSE}
 all(colnames(copy_df_Expr) %in% rownames(coldata_2)) #check if all column names of data are in rownames of metadata #check if TRUE
 class(coldata_2)
-setdiff(colnames(copy_df_Expr), rownames(coldata_2))
-
-index_row_col <- match(colnames(copy_df_Expr), rownames(coldata_2))
-print(index_row_col)
-print(colnames(copy_df_Expr))
-"disease3_DKD_glomerulus_Geometric.Segment" == "disease3_DKD_glomerulus_Geometric.Segment"
 
 all(colnames(copy_df_Expr) == rownames(coldata_2)) #check if the order of the data column names == order of metadata rownames
 
