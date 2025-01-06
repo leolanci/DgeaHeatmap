@@ -43,7 +43,14 @@ generated annotation, or specifically chosen annotation.</figcaption>
 ### Building Heatmaps
 
 **This is a basic example that shows you how to solve a common
-problem:**
+problem:** The data used in this sample is available through the
+NanoString Website and is based on a GeoMx kidney dataset:
+<http://nanostring-public-share.s3-website-us-west-2.amazonaws.com/GeoScriptHub/Kidney_Dataset_for_GeomxTools.zip>.
+
+Reeves J, Divakar P, Ortogero N, Griswold M, Yang Z, Zimmerman S,
+Vitancol R, Henderson D (2021) Analyzing GeoMx-NGS RNA Expression Data
+with GeomxTools. Available from:
+<http://bioconductor.riken.jp/packages/3.15/workflows/vignettes/GeoMxWorkflows/inst/doc/GeomxTools_RNA-NGS_Analysis.html>.
 
 ``` r
 library(DgeaHeatmap)
@@ -3752,3 +3759,5 @@ highly-customizable Venn and Euler diagrams in R. BMC Bioinformatics 12,
     #> ACVRL1                                     125.45892
     #> [1] "matrix" "array"
     #> [1] "data.frame"
+
+### Bibliography

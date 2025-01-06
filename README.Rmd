@@ -37,6 +37,9 @@ pak::pak("leolanci/Dgea_Heatmap_Package")
 ### Building Heatmaps
 
 **This is a basic example that shows you how to solve a common problem:**
+The data used in this sample is available through the NanoString Website and is based on a GeoMx kidney dataset: http://nanostring-public-share.s3-website-us-west-2.amazonaws.com/GeoScriptHub/Kidney_Dataset_for_GeomxTools.zip.
+
+Reeves J, Divakar P, Ortogero N, Griswold M, Yang Z, Zimmerman S, Vitancol R, Henderson D (2021) Analyzing GeoMx-NGS RNA Expression Data with GeomxTools. Available from: http://bioconductor.riken.jp/packages/3.15/workflows/vignettes/GeoMxWorkflows/inst/doc/GeomxTools_RNA-NGS_Analysis.html.
 
 ```{r input normalizedReadCountsExample, echo=FALSE, results='hide'}
 library(testthat)
@@ -479,4 +482,5 @@ class(df_normCounts)
 write.csv(df_normCounts, "/Users/llancell/Documents/gitLab_SpittauLab/Dgea_Heatmap_Package/tests/testthat/NormCounts_ExampleDataNanostring.csv", row.names = FALSE)
 
 ```
+### Bibliography
 
