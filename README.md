@@ -3759,5 +3759,3 @@ highly-customizable Venn and Euler diagrams in R. BMC Bioinformatics 12,
     #> ACVRL1                                     125.45892
     #> [1] "matrix" "array"
     #> [1] "data.frame"
-
-### Bibliography
