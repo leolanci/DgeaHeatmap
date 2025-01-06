@@ -40,9 +40,10 @@ pak::pak("leolanci/Dgea_Heatmap_Package")
 
 ```{r input normalizedReadCountsExample, echo=FALSE, results='hide'}
 library(testthat)
-input_data <- read.csv(test_path("1_Counts_All_Regions_All_Ages_Pos_Neg.csv"))
-del_layer6 <- grep("layer", colnames(input_data))
-input_data <- input_data[, -del_layer6]
+#input_data <- read.csv(test_path("1_Counts_All_Regions_All_Ages_Pos_Neg.csv"))
+#del_layer6 <- grep("layer", colnames(input_data))
+#input_data <- input_data[, -del_layer6]
+input_data <- df_normCounts
 ```
 
 
@@ -56,8 +57,8 @@ matrixCounts <- build_matrix(input_data, x)
 knitr::kable(head(matrixCounts[, 1:4]),"pipe")
 ```
 ```{r exampleIndividualMatrix, echo=TRUE}
-parameter1 = "cortex"
-parameter2 = "pos"
+parameter1 = "DKD"
+parameter2 = "glomerulus"
 factors_for_individual_matrix = list(parameter1, parameter2)
 indiMatrix <- individual_matrix(factors_for_individual_matrix, matrixCounts)
 ```
@@ -92,7 +93,8 @@ elbow_plot(seed, scaled_counts)
 ```
 As desired, the samples can further be summarized as biological replicates to help generate more clearly arranged heatmaps and to give a better overview.
 ```{r exampleSummariseBioReplicates, echo=TRUE, results='hide'}
-probes <- list("P0_cortex_Iba1_pos", "P5_cortex_Iba1_pos", "P15_cortex_Iba1_pos")
+#print(colnames(scaled_counts))
+probes <- list("disease3_DKD_glomerulus_Geometric_Segment", "disease4_DKD_glomerulus_Geometric_Segment", "disease2B_DKD_glomerulus_Geometric_Segment")
 sumBioRepsMatrix <- summarise_bio_replicates(scaled_counts, probes)
 ```
 ```{r showSummedBioReplicates, echo=FALSE}
@@ -101,8 +103,8 @@ knitr::kable(head(sumBioRepsMatrix[, 1:3]),"pipe")
 **Generating K-means for clustering in the heatmap:**
 
 ```{r exampleKmeanGeneration, echo=TRUE}
-seed <- 1 #set a seed for reproducibility, but try different seeds first
-k_clusters <- 2
+seed <- 10 #set a seed for reproducibility, but try different seeds first
+k_clusters <- 4
 K_meanTable <- Kmean_generation(sumBioRepsMatrix, seed, k_clusters)
 ```
 ```{r showGeneratedKmeans, echo=FALSE}
@@ -112,7 +114,7 @@ knitr::kable(head(K_meanTable[, 1:4]),"pipe")
 The most variable genes of each cluster are selected using the following function. A new object is created to save the most variable genes for each cluster, while the matrix that includes clusters for each gene is divided into individual cluster matrices. These matrices are then sorted by their variance. 
 ```{r exampleMostVariableGenes, echo=TRUE}
 number_of_annotations_per_cluster <- 5
-k_clusters <- 2
+k_clusters <- 4
 mostVarGeneslist <- most_variable_genes(K_meanTable, number_of_annotations_per_cluster, k_clusters)
 print(mostVarGeneslist)
 ```
@@ -138,7 +140,7 @@ color_setting(colorPalette)
 
 ```{r}
 seed <- 1
-title <- "Heatmap Cortex Iba1 positive"
+title <- "Heatmap DKD glomerulus segment"
 fontsize_columnNames <-6
 fontsize_rowNames <-4
 title_heatmap_legend <- "Expression"
@@ -150,7 +152,7 @@ hm <- print_heatmap(seed, sumBioRepsMatrix, title, split_heatmap_clusters, annot
 ```
 With "function_complexHeatmap_var", a heatmap can be created with automatic annotation of the x most variable genes from each cluster. As input, a matrix with the scaled counts of the most variable genes from a dataset can be used. The function is able to summarize biological replicates.
 ```{r exampleFunctionComplexHeatmapVar, echo=TRUE}
-title <- "Heatmap Cortex Iba1 positive"
+title <- "Heatmap DKD glomerulus segment"
 fontsize_columnNames <-6
 fontsize_rowNames <-4
 title_heatmap_legend <- "Expression"
@@ -165,14 +167,14 @@ hm <- function_complexHeatmap_var(scaled_counts, probes, number_of_annotations_p
 **A heatmap can further be generated with annotation of specific genes, as in this example:**
 
 ```{r exampleHeatmapSpecificAnnotation}
-probes <- list("P0_cortex_Iba1_pos", "P5_cortex_Iba1_pos", "P15_cortex_Iba1_pos")
+probes <- list("disease3_DKD_glomerulus_Geometric_Segment", "disease4_DKD_glomerulus_Geometric_Segment", "disease2B_DKD_glomerulus_Geometric_Segment")
 sumBioRepsMatrix <- summarise_bio_replicates(scaled_counts, probes)
 
 seed <- 1
-k_clusters <- 2
+k_clusters <- 4
 K_meanTable <- Kmean_generation(sumBioRepsMatrix, seed, k_clusters)
 
-anno_specific_genes <- list("Stmn1", "Sox4", "Cldn5", "Mapt", "Camk2a", "Gapdh", "Plp1", "Apoe")
+anno_specific_genes <- list("CALM2", "SAT1", "NPHS2", "ALDOB", "HBB", "SPOCK2", "CD81", "LAMP1")
 annotation_for_heatmap <- set_annotation(sumBioRepsMatrix, anno_specific_genes)
 split_heatmap_clusters <- performing_kMeans(sumBioRepsMatrix, k_clusters)
 
@@ -416,7 +418,7 @@ results_all_DEG <- decideTests(fit2)
 summary(results_all_DEG)
 
 result1 = topTable(fit2, coef= "GeometricSegment_glomerulus_Dkd_disease1b_vs_disease2B", number = Inf, adjust.method = "fdr") %>%
-  as.data.frame() # differnetially expressed genes are obtained by topTreat() function
+  as.data.frame() # differentially expressed genes are obtained by topTreat() function
 # filter results to get significantly differentially expressed genes
 
 
@@ -463,4 +465,16 @@ venn.plot <- vennDiagram(results_all_DEG,
               circle.col = c("red", "blue", "green3"))
 ```
 Chen, H., Boutros, P.C. VennDiagram: a package for the generation of highly-customizable Venn and Euler diagrams in R. BMC Bioinformatics 12, 35 (2011). https://doi.org/10.1186/1471-2105-12-35
+
+```{r extractionNormalizedCounts, echo=FALSE}
+library(data.table)
+class(y)
+head(y)
+CPM <- cpm(y)
+head(CPM)
+class(CPM)
+
+df_normCounts <-data.frame("genes" = row.names(CPM), CPM)
+
+```
 
