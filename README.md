@@ -51,30 +51,30 @@ x <- 1
 matrixCounts <- build_matrix(input_data, x)
 ```
 
-|               | P0_cortex_Iba1_pos_1 | P0_cortex_Iba1_pos_2 | P0_cortex_Iba1_pos_3 | P0_cortex_Iba1_neg_1 |
-|:--------------|---------------------:|---------------------:|---------------------:|---------------------:|
-| Casp6         |                 10.5 |                 7.00 |                  2.8 |                 8.10 |
-| Atl3          |                  7.0 |                13.99 |                  8.4 |                12.23 |
-| C030006K11Rik |                 10.5 |                 7.00 |                  8.4 |                10.16 |
-| Cflar         |                 10.5 |                17.49 |                  5.6 |                 7.22 |
-| Aftph         |                  7.0 |                10.50 |                  8.4 |                11.78 |
-| Tmem41b       |                  3.5 |                 7.00 |                  8.4 |                 6.63 |
+|        | No_Template_Control_NA_NA_NA_NA | disease3_DKD_glomerulus_Geometric_Segment_7 | disease3_DKD_glomerulus_Geometric_Segment_8 | disease3_DKD_glomerulus_Geometric_Segment_9 |
+|:-------|--------------------------------:|--------------------------------------------:|--------------------------------------------:|--------------------------------------------:|
+| A2M    |                               0 |                                  1183.26647 |                                   983.54729 |                                   998.63466 |
+| NAT2   |                               0 |                                    36.59587 |                                    67.57195 |                                    22.19188 |
+| ACADM  |                               0 |                                    75.63146 |                                    56.30996 |                                    66.57564 |
+| ACADS  |                               0 |                                    65.87257 |                                    63.81795 |                                   106.52103 |
+| ACAT1  |                               0 |                                    70.75202 |                                    90.09594 |                                    93.20590 |
+| ACVRL1 |                               0 |                                   126.86568 |                                    82.58794 |                                   106.52103 |
 
 ``` r
-parameter1 = "cortex"
-parameter2 = "pos"
+parameter1 = "DKD"
+parameter2 = "glomerulus"
 factors_for_individual_matrix = list(parameter1, parameter2)
 indiMatrix <- individual_matrix(factors_for_individual_matrix, matrixCounts)
 ```
 
-|               | P0_cortex_Iba1_pos_1 | P0_cortex_Iba1_pos_2 | P0_cortex_Iba1_pos_3 | P5_cortex_Iba1_pos_1 | P5_cortex_Iba1_pos_2 | P5_cortex_Iba1_pos_3 | P15_cortex_Iba1_pos_1 | P15_cortex_Iba1_pos_2 | P15_cortex_Iba1_pos_3 |
-|:--------------|---------------------:|---------------------:|---------------------:|---------------------:|---------------------:|---------------------:|----------------------:|----------------------:|----------------------:|
-| Casp6         |                 10.5 |                 7.00 |                  2.8 |                11.20 |                 4.66 |                16.79 |                  4.87 |                  9.80 |                 10.38 |
-| Atl3          |                  7.0 |                13.99 |                  8.4 |                13.99 |                 9.33 |                 5.60 |                  8.92 |                 12.60 |                  7.67 |
-| C030006K11Rik |                 10.5 |                 7.00 |                  8.4 |                13.99 |                 4.66 |                11.20 |                 10.55 |                 15.39 |                  7.67 |
-| Cflar         |                 10.5 |                17.49 |                  5.6 |                13.99 |                18.66 |                 8.40 |                  9.74 |                 11.20 |                  9.03 |
-| Aftph         |                  7.0 |                10.50 |                  8.4 |                 2.80 |                 4.66 |                 5.60 |                 16.23 |                  9.80 |                  9.03 |
-| Tmem41b       |                  3.5 |                 7.00 |                  8.4 |                 5.60 |                 4.66 |                 5.60 |                  8.92 |                 16.79 |                  4.97 |
+|        | disease3_DKD_glomerulus_Geometric_Segment_7 | disease3_DKD_glomerulus_Geometric_Segment_8 | disease3_DKD_glomerulus_Geometric_Segment_9 | disease3_DKD_glomerulus_Geometric_Segment_10 | disease3_DKD_glomerulus_Geometric_Segment_11 | disease3_DKD_glomerulus_Geometric_Segment_12 | disease3_DKD_glomerulus_Geometric_Segment_13 | disease3_DKD_glomerulus_Geometric_Segment_14 | disease3_DKD_glomerulus_Geometric_Segment_15 |
+|:-------|--------------------------------------------:|--------------------------------------------:|--------------------------------------------:|---------------------------------------------:|---------------------------------------------:|---------------------------------------------:|---------------------------------------------:|---------------------------------------------:|---------------------------------------------:|
+| A2M    |                                  1183.26647 |                                   983.54729 |                                   998.63466 |                                   1028.69264 |                                   1224.92442 |                                   1063.33917 |                                   1028.05127 |                                    837.26290 |                                   1175.80633 |
+| NAT2   |                                    36.59587 |                                    67.57195 |                                    22.19188 |                                     62.64474 |                                     56.56845 |                                     44.71987 |                                     42.83547 |                                     61.84328 |                                     34.95640 |
+| ACADM  |                                    75.63146 |                                    56.30996 |                                    66.57564 |                                     82.42729 |                                     67.44699 |                                     89.43974 |                                     76.15195 |                                     66.60046 |                                     63.55710 |
+| ACADS  |                                    65.87257 |                                    63.81795 |                                   106.52103 |                                     62.64474 |                                     93.55551 |                                     74.53312 |                                     61.87346 |                                     61.84328 |                                     98.51350 |
+| ACAT1  |                                    70.75202 |                                    90.09594 |                                    93.20590 |                                     56.05056 |                                    100.08263 |                                     59.62650 |                                     76.15195 |                                     95.14351 |                                     50.84568 |
+| ACVRL1 |                                   126.86568 |                                    82.58794 |                                   106.52103 |                                     85.72439 |                                    110.96118 |                                     89.43974 |                                    104.70893 |                                     71.35763 |                                     76.26852 |
 
 **Filtering the matrix for only an x amount of most variably expressed
 genes:**
@@ -112,35 +112,36 @@ to help generate more clearly arranged heatmaps and to give a better
 overview.
 
 ``` r
-probes <- list("P0_cortex_Iba1_pos", "P5_cortex_Iba1_pos", "P15_cortex_Iba1_pos")
+#print(colnames(scaled_counts))
+probes <- list("disease3_DKD_glomerulus_Geometric_Segment", "disease4_DKD_glomerulus_Geometric_Segment", "disease2B_DKD_glomerulus_Geometric_Segment")
 sumBioRepsMatrix <- summarise_bio_replicates(scaled_counts, probes)
 ```
 
-|         | P0_cortex_Iba1_pos | P5_cortex_Iba1_pos | P15_cortex_Iba1_pos |
-|:--------|-------------------:|-------------------:|--------------------:|
-| Hba-a1  |          0.2388201 |          0.6255464 |          -0.8643665 |
-| Hbb-b1  |          0.1717879 |          0.7083344 |          -0.8801224 |
-| Nrgn    |         -0.8124253 |         -0.3790624 |           1.1914877 |
-| Gm52800 |          1.0355657 |          0.1047927 |          -1.1403584 |
-| Lrr1    |          0.8561965 |         -0.0353765 |          -0.8208200 |
-| Tuba1a  |          0.8549090 |          0.1379734 |          -0.9928824 |
+|        | disease3_DKD_glomerulus_Geometric_Segment | disease4_DKD_glomerulus_Geometric_Segment | disease2B_DKD_glomerulus_Geometric_Segment |
+|:-------|------------------------------------------:|------------------------------------------:|-------------------------------------------:|
+| PTBP1  |                                 0.1658914 |                                 1.3262507 |                                 -0.3451329 |
+| HBA2   |                                -0.3215282 |                                 2.5176004 |                                 -0.0355711 |
+| REN    |                                -0.1254242 |                                -0.2322258 |                                  1.0018659 |
+| HSPA1A |                                -0.2666545 |                                 1.9438170 |                                 -0.1998299 |
+| TIMP3  |                                -0.1399782 |                                -0.8917626 |                                  1.2280850 |
+| CCN2   |                                -0.0166328 |                                -0.0896967 |                                  1.4178946 |
 
 **Generating K-means for clustering in the heatmap:**
 
 ``` r
-seed <- 1 #set a seed for reproducibility, but try different seeds first
-k_clusters <- 2
+seed <- 10 #set a seed for reproducibility, but try different seeds first
+k_clusters <- 4
 K_meanTable <- Kmean_generation(sumBioRepsMatrix, seed, k_clusters)
 ```
 
-|         | P0_cortex_Iba1_pos | P5_cortex_Iba1_pos | P15_cortex_Iba1_pos |     |
-|:--------|-------------------:|-------------------:|--------------------:|----:|
-| Hba-a1  |          0.2388201 |          0.6255464 |          -0.8643665 |   1 |
-| Hbb-b1  |          0.1717879 |          0.7083344 |          -0.8801224 |   1 |
-| Gm52800 |          1.0355657 |          0.1047927 |          -1.1403584 |   1 |
-| Lrr1    |          0.8561965 |         -0.0353765 |          -0.8208200 |   1 |
-| Tuba1a  |          0.8549090 |          0.1379734 |          -0.9928824 |   1 |
-| Gm52416 |          0.8877816 |          0.1610086 |          -1.0487902 |   1 |
+|          | disease3_DKD_glomerulus_Geometric_Segment | disease4_DKD_glomerulus_Geometric_Segment | disease2B_DKD_glomerulus_Geometric_Segment |     |
+|:---------|------------------------------------------:|------------------------------------------:|-------------------------------------------:|----:|
+| PTBP1    |                                 0.1658914 |                                  1.326251 |                                 -0.3451329 |   1 |
+| HBA2     |                                -0.3215282 |                                  2.517600 |                                 -0.0355711 |   1 |
+| HSPA1A   |                                -0.2666545 |                                  1.943817 |                                 -0.1998299 |   1 |
+| HSP90AA1 |                                -0.2396252 |                                  2.111296 |                                 -0.1852615 |   1 |
+| HSPA1B   |                                -0.2427051 |                                  1.857943 |                                 -0.2052410 |   1 |
+| HBB      |                                -0.3113832 |                                  2.153545 |                                  0.1469509 |   1 |
 
 The most variable genes of each cluster are selected using the following
 function. A new object is created to save the most variable genes for
@@ -150,38 +151,68 @@ by their variance.
 
 ``` r
 number_of_annotations_per_cluster <- 5
-k_clusters <- 2
+k_clusters <- 4
 mostVarGeneslist <- most_variable_genes(K_meanTable, number_of_annotations_per_cluster, k_clusters)
 print(mostVarGeneslist)
 #> [[1]]
-#> [1] "Gm40862"
+#> [1] "HBA2"
 #> 
 #> [[2]]
-#> [1] "Rps17"
+#> [1] "HSPB1"
 #> 
 #> [[3]]
-#> [1] "Fabp7"
+#> [1] "ADAM15"
 #> 
 #> [[4]]
-#> [1] "Gm52432"
+#> [1] "HSP90AA1"
 #> 
 #> [[5]]
-#> [1] "Ptma"
+#> [1] "HBB"
 #> 
 #> [[6]]
-#> [1] "Pacsin1"
+#> [1] "ADIRF"
 #> 
 #> [[7]]
-#> [1] "Clu"
+#> [1] "GSN"
 #> 
 #> [[8]]
-#> [1] "Zfp365"
+#> [1] "HLA-DRA"
 #> 
 #> [[9]]
-#> [1] "Diras2"
+#> [1] "S100A6"
 #> 
 #> [[10]]
-#> [1] "Purb"
+#> [1] "SLCO2A1"
+#> 
+#> [[11]]
+#> [1] "FTH1"
+#> 
+#> [[12]]
+#> [1] "F2RL3"
+#> 
+#> [[13]]
+#> [1] "CYP26B1"
+#> 
+#> [[14]]
+#> [1] "PLIN2"
+#> 
+#> [[15]]
+#> [1] "CIRBP"
+#> 
+#> [[16]]
+#> [1] "DUX4"
+#> 
+#> [[17]]
+#> [1] "FAM90A1"
+#> 
+#> [[18]]
+#> [1] "SLC9A3R2"
+#> 
+#> [[19]]
+#> [1] "ELOA3D"
+#> 
+#> [[20]]
+#> [1] "PLPP3"
 ```
 
 **To set the annotation for a heatmap the following function can be
@@ -219,7 +250,7 @@ example:**
 
 ``` r
 seed <- 1
-title <- "Heatmap Cortex Iba1 positive"
+title <- "Heatmap DKD glomerulus segment"
 fontsize_columnNames <-6
 fontsize_rowNames <-4
 title_heatmap_legend <- "Expression"
@@ -237,7 +268,7 @@ matrix with the scaled counts of the most variable genes from a dataset
 can be used. The function is able to summarize biological replicates.
 
 ``` r
-title <- "Heatmap Cortex Iba1 positive"
+title <- "Heatmap DKD glomerulus segment"
 fontsize_columnNames <-6
 fontsize_rowNames <-4
 title_heatmap_legend <- "Expression"
@@ -255,14 +286,14 @@ hm <- function_complexHeatmap_var(scaled_counts, probes, number_of_annotations_p
 as in this example:**
 
 ``` r
-probes <- list("P0_cortex_Iba1_pos", "P5_cortex_Iba1_pos", "P15_cortex_Iba1_pos")
+probes <- list("disease3_DKD_glomerulus_Geometric_Segment", "disease4_DKD_glomerulus_Geometric_Segment", "disease2B_DKD_glomerulus_Geometric_Segment")
 sumBioRepsMatrix <- summarise_bio_replicates(scaled_counts, probes)
 
 seed <- 1
-k_clusters <- 2
+k_clusters <- 4
 K_meanTable <- Kmean_generation(sumBioRepsMatrix, seed, k_clusters)
 
-anno_specific_genes <- list("Stmn1", "Sox4", "Cldn5", "Mapt", "Camk2a", "Gapdh", "Plp1", "Apoe")
+anno_specific_genes <- list("CALM2", "SAT1", "NPHS2", "ALDOB", "HBB", "SPOCK2", "CD81", "LAMP1")
 annotation_for_heatmap <- set_annotation(sumBioRepsMatrix, anno_specific_genes)
 split_heatmap_clusters <- performing_kMeans(sumBioRepsMatrix, k_clusters)
 
@@ -576,7 +607,7 @@ summary(results_all_DEG)
 #> Up                                                     1531
 
 result1 = topTable(fit2, coef= "GeometricSegment_glomerulus_Dkd_disease1b_vs_disease2B", number = Inf, adjust.method = "fdr") %>%
-  as.data.frame() # differnetially expressed genes are obtained by topTreat() function
+  as.data.frame() # differentially expressed genes are obtained by topTreat() function
 # filter results to get significantly differentially expressed genes
 
 
@@ -651,3 +682,3073 @@ venn.plot <- vennDiagram(results_all_DEG,
 H., Boutros, P.C. VennDiagram: a package for the generation of
 highly-customizable Venn and Euler diagrams in R. BMC Bioinformatics 12,
 35 (2011). <https://doi.org/10.1186/1471-2105-12-35>
+
+    #> 
+    #> Attaching package: 'data.table'
+    #> The following objects are masked from 'package:lubridate':
+    #> 
+    #>     hour, isoweek, mday, minute, month, quarter, second, wday, week,
+    #>     yday, year
+    #> The following object is masked from 'package:purrr':
+    #> 
+    #>     transpose
+    #> The following objects are masked from 'package:dplyr':
+    #> 
+    #>     between, first, last
+    #> The following objects are masked from 'package:S4Vectors':
+    #> 
+    #>     first, second
+    #> [1] "DGEList"
+    #> attr(,"package")
+    #> [1] "edgeR"
+    #> An object of class "DGEList"
+    #> $counts
+    #>        No_Template_Control_NA_NA_NA_NA
+    #> A2M                                  0
+    #> NAT2                                 0
+    #> ACADM                                0
+    #> ACADS                                0
+    #> ACAT1                                0
+    #> ACVRL1                               0
+    #>        disease3_DKD_glomerulus_Geometric_Segment_7
+    #> A2M                                            485
+    #> NAT2                                            15
+    #> ACADM                                           31
+    #> ACADS                                           27
+    #> ACAT1                                           29
+    #> ACVRL1                                          52
+    #>        disease3_DKD_glomerulus_Geometric_Segment_8
+    #> A2M                                            262
+    #> NAT2                                            18
+    #> ACADM                                           15
+    #> ACADS                                           17
+    #> ACAT1                                           24
+    #> ACVRL1                                          22
+    #>        disease3_DKD_glomerulus_Geometric_Segment_9
+    #> A2M                                            225
+    #> NAT2                                             5
+    #> ACADM                                           15
+    #> ACADS                                           24
+    #> ACAT1                                           21
+    #> ACVRL1                                          24
+    #>        disease3_DKD_glomerulus_Geometric_Segment_10
+    #> A2M                                             312
+    #> NAT2                                             19
+    #> ACADM                                            25
+    #> ACADS                                            19
+    #> ACAT1                                            17
+    #> ACVRL1                                           26
+    #>        disease3_DKD_glomerulus_Geometric_Segment_11
+    #> A2M                                             563
+    #> NAT2                                             26
+    #> ACADM                                            31
+    #> ACADS                                            43
+    #> ACAT1                                            46
+    #> ACVRL1                                           51
+    #>        disease3_DKD_glomerulus_Geometric_Segment_12
+    #> A2M                                             214
+    #> NAT2                                              9
+    #> ACADM                                            18
+    #> ACADS                                            15
+    #> ACAT1                                            12
+    #> ACVRL1                                           18
+    #>        disease3_DKD_glomerulus_Geometric_Segment_13
+    #> A2M                                             432
+    #> NAT2                                             18
+    #> ACADM                                            32
+    #> ACADS                                            26
+    #> ACAT1                                            32
+    #> ACVRL1                                           44
+    #>        disease3_DKD_glomerulus_Geometric_Segment_14
+    #> A2M                                             176
+    #> NAT2                                             13
+    #> ACADM                                            14
+    #> ACADS                                            13
+    #> ACAT1                                            20
+    #> ACVRL1                                           15
+    #>        disease3_DKD_glomerulus_Geometric_Segment_15
+    #> A2M                                             370
+    #> NAT2                                             11
+    #> ACADM                                            20
+    #> ACADS                                            31
+    #> ACAT1                                            16
+    #> ACVRL1                                           24
+    #>        disease3_DKD_glomerulus_Geometric_Segment_16
+    #> A2M                                             364
+    #> NAT2                                             19
+    #> ACADM                                            22
+    #> ACADS                                            34
+    #> ACAT1                                            24
+    #> ACVRL1                                           32
+    #>        disease3_DKD_glomerulus_Geometric_Segment_17
+    #> A2M                                             299
+    #> NAT2                                             12
+    #> ACADM                                            20
+    #> ACADS                                            24
+    #> ACAT1                                            20
+    #> ACVRL1                                           23
+    #>        disease3_DKD_glomerulus_Geometric_Segment_18
+    #> A2M                                             231
+    #> NAT2                                             13
+    #> ACADM                                            12
+    #> ACADS                                            18
+    #> ACAT1                                            18
+    #> ACVRL1                                           30
+    #>        disease3_DKD_glomerulus_Geometric_Segment_19
+    #> A2M                                             204
+    #> NAT2                                             12
+    #> ACADM                                            14
+    #> ACADS                                            21
+    #> ACAT1                                            17
+    #> ACVRL1                                           20
+    #>        disease3_DKD_glomerulus_Geometric_Segment_20
+    #> A2M                                             155
+    #> NAT2                                              9
+    #> ACADM                                            11
+    #> ACADS                                            22
+    #> ACAT1                                            14
+    #> ACVRL1                                           21
+    #>        disease3_DKD_glomerulus_Geometric_Segment_21
+    #> A2M                                             191
+    #> NAT2                                             11
+    #> ACADM                                            11
+    #> ACADS                                            25
+    #> ACAT1                                            18
+    #> ACVRL1                                           29
+    #>        disease3_DKD_glomerulus_Geometric_Segment_22
+    #> A2M                                             180
+    #> NAT2                                              9
+    #> ACADM                                            19
+    #> ACADS                                            18
+    #> ACAT1                                            12
+    #> ACVRL1                                           26
+    #>        disease3_DKD_glomerulus_Geometric_Segment_23
+    #> A2M                                             184
+    #> NAT2                                             11
+    #> ACADM                                            16
+    #> ACADS                                            16
+    #> ACAT1                                            16
+    #> ACVRL1                                           25
+    #>        disease3_DKD_glomerulus_Geometric_Segment_24
+    #> A2M                                             185
+    #> NAT2                                             10
+    #> ACADM                                            10
+    #> ACADS                                            21
+    #> ACAT1                                            13
+    #> ACVRL1                                           22
+    #>        disease3_DKD_glomerulus_Geometric_Segment_25
+    #> A2M                                             184
+    #> NAT2                                             12
+    #> ACADM                                            12
+    #> ACADS                                            13
+    #> ACAT1                                            17
+    #> ACVRL1                                           20
+    #>        disease3_DKD_glomerulus_Geometric_Segment_26
+    #> A2M                                             190
+    #> NAT2                                              8
+    #> ACADM                                            12
+    #> ACADS                                            31
+    #> ACAT1                                            19
+    #> ACVRL1                                           18
+    #>        disease3_DKD_glomerulus_Geometric_Segment_27
+    #> A2M                                             206
+    #> NAT2                                              8
+    #> ACADM                                            24
+    #> ACADS                                            18
+    #> ACAT1                                            17
+    #> ACVRL1                                           34
+    #>        disease3_DKD_glomerulus_Geometric_Segment_28
+    #> A2M                                             208
+    #> NAT2                                             23
+    #> ACADM                                            27
+    #> ACADS                                            24
+    #> ACAT1                                            24
+    #> ACVRL1                                           26
+    #>        disease3_DKD_glomerulus_Geometric_Segment_29
+    #> A2M                                             164
+    #> NAT2                                             12
+    #> ACADM                                             7
+    #> ACADS                                            12
+    #> ACAT1                                             5
+    #> ACVRL1                                           16
+    #>        disease3_DKD_glomerulus_Geometric_Segment_30
+    #> A2M                                             286
+    #> NAT2                                             20
+    #> ACADM                                            24
+    #> ACADS                                            24
+    #> ACAT1                                            25
+    #> ACVRL1                                           21
+    #>        disease3_DKD_glomerulus_Geometric_Segment_31
+    #> A2M                                             243
+    #> NAT2                                              9
+    #> ACADM                                             9
+    #> ACADS                                            16
+    #> ACAT1                                             9
+    #> ACVRL1                                           24
+    #>        disease3_DKD_glomerulus_Geometric_Segment_32
+    #> A2M                                             310
+    #> NAT2                                             15
+    #> ACADM                                            36
+    #> ACADS                                            25
+    #> ACAT1                                            21
+    #> ACVRL1                                           39
+    #>        disease3_DKD_glomerulus_Geometric_Segment_33
+    #> A2M                                             150
+    #> NAT2                                              9
+    #> ACADM                                            15
+    #> ACADS                                            17
+    #> ACAT1                                            10
+    #> ACVRL1                                            9
+    #>        disease3_DKD_glomerulus_Geometric_Segment_34
+    #> A2M                                             172
+    #> NAT2                                              4
+    #> ACADM                                            14
+    #> ACADS                                            13
+    #> ACAT1                                             9
+    #> ACVRL1                                           18
+    #>        disease3_DKD_glomerulus_Geometric_Segment_35
+    #> A2M                                             195
+    #> NAT2                                              7
+    #> ACADM                                            15
+    #> ACADS                                            15
+    #> ACAT1                                            16
+    #> ACVRL1                                           22
+    #>        disease3_DKD_glomerulus_Geometric_Segment_36
+    #> A2M                                             158
+    #> NAT2                                              5
+    #> ACADM                                            11
+    #> ACADS                                            21
+    #> ACAT1                                             8
+    #> ACVRL1                                           20
+    #>        disease3_DKD_glomerulus_Geometric_Segment_37
+    #> A2M                                             148
+    #> NAT2                                             18
+    #> ACADM                                            19
+    #> ACADS                                            19
+    #> ACAT1                                            10
+    #> ACVRL1                                           14
+    #>        disease3_DKD_glomerulus_Geometric_Segment_38
+    #> A2M                                             105
+    #> NAT2                                              6
+    #> ACADM                                             8
+    #> ACADS                                            20
+    #> ACAT1                                             9
+    #> ACVRL1                                           12
+    #>        disease3_DKD_glomerulus_Geometric_Segment_39
+    #> A2M                                              74
+    #> NAT2                                              5
+    #> ACADM                                             6
+    #> ACADS                                             4
+    #> ACAT1                                             7
+    #> ACVRL1                                           11
+    #>        disease3_DKD_glomerulus_Geometric_Segment_40
+    #> A2M                                             137
+    #> NAT2                                             10
+    #> ACADM                                            15
+    #> ACADS                                            17
+    #> ACAT1                                            20
+    #> ACVRL1                                           25
+    #>        disease3_DKD_glomerulus_Geometric_Segment_41
+    #> A2M                                              88
+    #> NAT2                                              5
+    #> ACADM                                             7
+    #> ACADS                                             7
+    #> ACAT1                                             9
+    #> ACVRL1                                           10
+    #>        disease3_DKD_glomerulus_Geometric_Segment_42
+    #> A2M                                              67
+    #> NAT2                                              3
+    #> ACADM                                             8
+    #> ACADS                                             8
+    #> ACAT1                                             7
+    #> ACVRL1                                            8
+    #>        disease3_DKD_glomerulus_Geometric_Segment_43
+    #> A2M                                              52
+    #> NAT2                                              4
+    #> ACADM                                             6
+    #> ACADS                                             6
+    #> ACAT1                                             7
+    #> ACVRL1                                            7
+    #>        disease3_DKD_glomerulus_Geometric_Segment_44
+    #> A2M                                             172
+    #> NAT2                                             12
+    #> ACADM                                            21
+    #> ACADS                                            25
+    #> ACAT1                                            15
+    #> ACVRL1                                           16
+    #>        disease3_DKD_glomerulus_Geometric_Segment_45
+    #> A2M                                             282
+    #> NAT2                                             11
+    #> ACADM                                            12
+    #> ACADS                                            21
+    #> ACAT1                                            26
+    #> ACVRL1                                           28
+    #>        disease3_DKD_glomerulus_Geometric_Segment_46
+    #> A2M                                             216
+    #> NAT2                                              9
+    #> ACADM                                            12
+    #> ACADS                                            19
+    #> ACAT1                                             9
+    #> ACVRL1                                           15
+    #>        disease3_DKD_glomerulus_Geometric_Segment_47
+    #> A2M                                             229
+    #> NAT2                                              5
+    #> ACADM                                            16
+    #> ACADS                                            12
+    #> ACAT1                                            15
+    #> ACVRL1                                           23
+    #>        disease3_DKD_glomerulus_Geometric_Segment_48
+    #> A2M                                             294
+    #> NAT2                                             13
+    #> ACADM                                            21
+    #> ACADS                                            16
+    #> ACAT1                                            21
+    #> ACVRL1                                           32
+    #>        disease3_DKD_glomerulus_Geometric_Segment_49
+    #> A2M                                             172
+    #> NAT2                                              7
+    #> ACADM                                            13
+    #> ACADS                                            10
+    #> ACAT1                                            15
+    #> ACVRL1                                           29
+    #>        disease3_DKD_glomerulus_Geometric_Segment_50
+    #> A2M                                             144
+    #> NAT2                                              6
+    #> ACADM                                            17
+    #> ACADS                                            14
+    #> ACAT1                                            14
+    #> ACVRL1                                           22
+    #>        disease3_DKD_glomerulus_Geometric_Segment_51
+    #> A2M                                             234
+    #> NAT2                                              6
+    #> ACADM                                            15
+    #> ACADS                                            18
+    #> ACAT1                                            22
+    #> ACVRL1                                           33
+    #>        disease3_DKD_glomerulus_Geometric_Segment_52
+    #> A2M                                             238
+    #> NAT2                                             11
+    #> ACADM                                            20
+    #> ACADS                                            23
+    #> ACAT1                                            19
+    #> ACVRL1                                           19
+    #>        disease3_DKD_glomerulus_Geometric_Segment_53 disease4_DKD_tubule_PanCK_1
+    #> A2M                                             166                          19
+    #> NAT2                                              9                          16
+    #> ACADM                                            15                          20
+    #> ACADS                                            16                          23
+    #> ACAT1                                            18                          51
+    #> ACVRL1                                           23                          14
+    #>        disease4_DKD_tubule_neg_1 disease4_DKD_tubule_PanCK_2
+    #> A2M                          367                          28
+    #> NAT2                          59                           9
+    #> ACADM                         99                          17
+    #> ACADS                        127                          24
+    #> ACAT1                        272                          58
+    #> ACVRL1                        65                           8
+    #>        disease4_DKD_tubule_neg_2 disease4_DKD_tubule_PanCK_3
+    #> A2M                          283                          27
+    #> NAT2                          43                          12
+    #> ACADM                         67                          27
+    #> ACADS                         64                          14
+    #> ACAT1                        152                          27
+    #> ACVRL1                        40                          18
+    #>        disease4_DKD_tubule_neg_3 disease4_DKD_tubule_PanCK_4
+    #> A2M                          538                          31
+    #> NAT2                          52                          10
+    #> ACADM                         98                           5
+    #> ACADS                        104                          18
+    #> ACAT1                        260                          29
+    #> ACVRL1                        48                           9
+    #>        disease4_DKD_tubule_neg_4 disease4_DKD_tubule_PanCK_5
+    #> A2M                          334                          17
+    #> NAT2                          49                           2
+    #> ACADM                         57                           7
+    #> ACADS                         65                          11
+    #> ACAT1                         98                          13
+    #> ACVRL1                        45                           7
+    #>        disease4_DKD_tubule_neg_5 disease4_DKD_tubule_PanCK_6
+    #> A2M                          400                          49
+    #> NAT2                          31                          15
+    #> ACADM                         38                          23
+    #> ACADS                         38                          34
+    #> ACAT1                         68                          54
+    #> ACVRL1                        28                          15
+    #>        disease4_DKD_tubule_neg_6 disease4_DKD_glomerulus_Geometric_Segment_7
+    #> A2M                          310                                         118
+    #> NAT2                          24                                          27
+    #> ACADM                         31                                          28
+    #> ACADS                         28                                          23
+    #> ACAT1                         45                                          56
+    #> ACVRL1                        25                                          39
+    #>        disease4_DKD_glomerulus_Geometric_Segment_8
+    #> A2M                                            108
+    #> NAT2                                            18
+    #> ACADM                                           19
+    #> ACADS                                           24
+    #> ACAT1                                           30
+    #> ACVRL1                                          48
+    #>        disease4_DKD_glomerulus_Geometric_Segment_9
+    #> A2M                                            185
+    #> NAT2                                            20
+    #> ACADM                                           21
+    #> ACADS                                           32
+    #> ACAT1                                           27
+    #> ACVRL1                                          46
+    #>        disease4_DKD_glomerulus_Geometric_Segment_10
+    #> A2M                                              48
+    #> NAT2                                             14
+    #> ACADM                                            12
+    #> ACADS                                            15
+    #> ACAT1                                            14
+    #> ACVRL1                                           19
+    #>        disease4_DKD_glomerulus_Geometric_Segment_11
+    #> A2M                                             105
+    #> NAT2                                             28
+    #> ACADM                                            33
+    #> ACADS                                            41
+    #> ACAT1                                            44
+    #> ACVRL1                                           29
+    #>        disease4_DKD_glomerulus_Geometric_Segment_12
+    #> A2M                                             229
+    #> NAT2                                             21
+    #> ACADM                                            22
+    #> ACADS                                            29
+    #> ACAT1                                            29
+    #> ACVRL1                                           53
+    #>        disease4_DKD_glomerulus_Geometric_Segment_13
+    #> A2M                                             249
+    #> NAT2                                             24
+    #> ACADM                                            42
+    #> ACADS                                            33
+    #> ACAT1                                            39
+    #> ACVRL1                                           33
+    #>        disease4_DKD_glomerulus_Geometric_Segment_14
+    #> A2M                                              62
+    #> NAT2                                             10
+    #> ACADM                                             5
+    #> ACADS                                            10
+    #> ACAT1                                            13
+    #> ACVRL1                                           23
+    #>        disease4_DKD_glomerulus_Geometric_Segment_15
+    #> A2M                                             110
+    #> NAT2                                             21
+    #> ACADM                                            25
+    #> ACADS                                            30
+    #> ACAT1                                            37
+    #> ACVRL1                                           23
+    #>        disease4_DKD_glomerulus_Geometric_Segment_16
+    #> A2M                                              75
+    #> NAT2                                              7
+    #> ACADM                                             7
+    #> ACADS                                             8
+    #> ACAT1                                            14
+    #> ACVRL1                                           18
+    #>        disease4_DKD_glomerulus_Geometric_Segment_17
+    #> A2M                                              92
+    #> NAT2                                             18
+    #> ACADM                                            21
+    #> ACADS                                            26
+    #> ACAT1                                            20
+    #> ACVRL1                                           17
+    #>        disease4_DKD_glomerulus_Geometric_Segment_18
+    #> A2M                                              81
+    #> NAT2                                              6
+    #> ACADM                                             6
+    #> ACADS                                             8
+    #> ACAT1                                             8
+    #> ACVRL1                                           16
+    #>        No_Template_Control_NA_NA_NA_NA_1 normal3_normal_tubule_PanCK_1
+    #> A2M                                    1                            26
+    #> NAT2                                   1                             8
+    #> ACADM                                  1                            61
+    #> ACADS                                  1                            30
+    #> ACAT1                                  0                           136
+    #> ACVRL1                                 0                            14
+    #>        normal3_normal_tubule_neg_1 normal3_normal_tubule_PanCK_2
+    #> A2M                            174                            17
+    #> NAT2                            35                             9
+    #> ACADM                          142                            36
+    #> ACADS                           64                            30
+    #> ACAT1                          224                            52
+    #> ACVRL1                          33                             9
+    #>        normal3_normal_tubule_neg_2 normal3_normal_tubule_PanCK_3
+    #> A2M                            235                            23
+    #> NAT2                            32                             6
+    #> ACADM                          195                            42
+    #> ACADS                           98                            24
+    #> ACAT1                          392                            62
+    #> ACVRL1                          51                            10
+    #>        normal3_normal_tubule_neg_3 normal3_normal_tubule_PanCK_4
+    #> A2M                            264                            16
+    #> NAT2                            35                             8
+    #> ACADM                          165                            39
+    #> ACADS                           80                            26
+    #> ACAT1                          273                           112
+    #> ACVRL1                          39                             8
+    #>        normal3_normal_tubule_neg_4 normal3_normal_tubule_PanCK_5
+    #> A2M                            166                            13
+    #> NAT2                            23                             9
+    #> ACADM                          178                            45
+    #> ACADS                           61                            41
+    #> ACAT1                          233                           119
+    #> ACVRL1                          34                            21
+    #>        normal3_normal_tubule_neg_5 normal3_normal_tubule_PanCK_6
+    #> A2M                              0                             0
+    #> NAT2                             0                             0
+    #> ACADM                            0                             0
+    #> ACADS                            0                             0
+    #> ACAT1                            0                             0
+    #> ACVRL1                           0                             0
+    #>        normal3_normal_tubule_neg_6
+    #> A2M                            129
+    #> NAT2                            25
+    #> ACADM                          142
+    #> ACADS                           40
+    #> ACAT1                          275
+    #> ACVRL1                          19
+    #>        normal3_normal_glomerulus_Geometric_Segment_7
+    #> A2M                                              348
+    #> NAT2                                              19
+    #> ACADM                                             29
+    #> ACADS                                             27
+    #> ACAT1                                             26
+    #> ACVRL1                                            47
+    #>        normal3_normal_glomerulus_Geometric_Segment_8
+    #> A2M                                              204
+    #> NAT2                                               6
+    #> ACADM                                             24
+    #> ACADS                                              9
+    #> ACAT1                                             21
+    #> ACVRL1                                            23
+    #>        normal3_normal_glomerulus_Geometric_Segment_9
+    #> A2M                                              128
+    #> NAT2                                               5
+    #> ACADM                                              7
+    #> ACADS                                             10
+    #> ACAT1                                             22
+    #> ACVRL1                                            11
+    #>        normal3_normal_glomerulus_Geometric_Segment_10
+    #> A2M                                               193
+    #> NAT2                                                8
+    #> ACADM                                              18
+    #> ACADS                                              18
+    #> ACAT1                                              29
+    #> ACVRL1                                             24
+    #>        normal3_normal_glomerulus_Geometric_Segment_11
+    #> A2M                                               196
+    #> NAT2                                                5
+    #> ACADM                                              17
+    #> ACADS                                              11
+    #> ACAT1                                              21
+    #> ACVRL1                                             26
+    #>        normal3_normal_glomerulus_Geometric_Segment_12
+    #> A2M                                               225
+    #> NAT2                                                8
+    #> ACADM                                              13
+    #> ACADS                                              15
+    #> ACAT1                                              22
+    #> ACVRL1                                             27
+    #>        normal3_normal_glomerulus_Geometric_Segment_13
+    #> A2M                                               197
+    #> NAT2                                                5
+    #> ACADM                                              11
+    #> ACADS                                              10
+    #> ACAT1                                              18
+    #> ACVRL1                                             18
+    #>        normal3_normal_glomerulus_Geometric_Segment_14
+    #> A2M                                               246
+    #> NAT2                                                7
+    #> ACADM                                              13
+    #> ACADS                                              20
+    #> ACAT1                                              19
+    #> ACVRL1                                             39
+    #>        normal3_normal_glomerulus_Geometric_Segment_15
+    #> A2M                                               240
+    #> NAT2                                                9
+    #> ACADM                                              11
+    #> ACADS                                              19
+    #> ACAT1                                              15
+    #> ACVRL1                                             28
+    #>        normal3_normal_glomerulus_Geometric_Segment_16
+    #> A2M                                               338
+    #> NAT2                                                5
+    #> ACADM                                              13
+    #> ACADS                                              10
+    #> ACAT1                                              25
+    #> ACVRL1                                             41
+    #>        normal3_normal_glomerulus_Geometric_Segment_17
+    #> A2M                                               346
+    #> NAT2                                                7
+    #> ACADM                                              23
+    #> ACADS                                              12
+    #> ACAT1                                              17
+    #> ACVRL1                                             39
+    #>        normal3_normal_glomerulus_Geometric_Segment_18
+    #> A2M                                               180
+    #> NAT2                                               10
+    #> ACADM                                              13
+    #> ACADS                                              18
+    #> ACAT1                                              28
+    #> ACVRL1                                             31
+    #>        normal3_normal_glomerulus_Geometric_Segment_19
+    #> A2M                                               189
+    #> NAT2                                               11
+    #> ACADM                                              19
+    #> ACADS                                              17
+    #> ACAT1                                              23
+    #> ACVRL1                                             35
+    #>        normal3_normal_glomerulus_Geometric_Segment_20
+    #> A2M                                               212
+    #> NAT2                                               14
+    #> ACADM                                              19
+    #> ACADS                                              17
+    #> ACAT1                                              28
+    #> ACVRL1                                             31
+    #>        normal3_normal_glomerulus_Geometric_Segment_21
+    #> A2M                                               323
+    #> NAT2                                               14
+    #> ACADM                                              29
+    #> ACADS                                              16
+    #> ACAT1                                              36
+    #> ACVRL1                                             39
+    #>        normal3_normal_glomerulus_Geometric_Segment_22
+    #> A2M                                               289
+    #> NAT2                                               17
+    #> ACADM                                              13
+    #> ACADS                                              17
+    #> ACAT1                                              23
+    #> ACVRL1                                             37
+    #>        normal3_normal_glomerulus_Geometric_Segment_23
+    #> A2M                                               198
+    #> NAT2                                                5
+    #> ACADM                                               6
+    #> ACADS                                              18
+    #> ACAT1                                              23
+    #> ACVRL1                                             17
+    #>        normal3_normal_glomerulus_Geometric_Segment_24
+    #> A2M                                               272
+    #> NAT2                                                3
+    #> ACADM                                              20
+    #> ACADS                                              17
+    #> ACAT1                                              26
+    #> ACVRL1                                             30
+    #>        normal3_normal_glomerulus_Geometric_Segment_25
+    #> A2M                                               240
+    #> NAT2                                                6
+    #> ACADM                                              20
+    #> ACADS                                              16
+    #> ACAT1                                              23
+    #> ACVRL1                                             31
+    #>        normal3_normal_glomerulus_Geometric_Segment_26
+    #> A2M                                                 0
+    #> NAT2                                                0
+    #> ACADM                                               0
+    #> ACADS                                               0
+    #> ACAT1                                               0
+    #> ACVRL1                                              0
+    #>        normal3_normal_glomerulus_Geometric_Segment_28
+    #> A2M                                                 0
+    #> NAT2                                                0
+    #> ACADM                                               0
+    #> ACADS                                               0
+    #> ACAT1                                               0
+    #> ACVRL1                                              0
+    #>        normal3_normal_glomerulus_Geometric_Segment_29
+    #> A2M                                               181
+    #> NAT2                                                8
+    #> ACADM                                              12
+    #> ACADS                                               5
+    #> ACAT1                                               9
+    #> ACVRL1                                             18
+    #>        normal3_normal_glomerulus_Geometric_Segment_30
+    #> A2M                                               258
+    #> NAT2                                               10
+    #> ACADM                                              12
+    #> ACADS                                              19
+    #> ACAT1                                              24
+    #> ACVRL1                                             19
+    #>        normal3_normal_glomerulus_Geometric_Segment_31
+    #> A2M                                               549
+    #> NAT2                                               15
+    #> ACADM                                              25
+    #> ACADS                                              31
+    #> ACAT1                                              44
+    #> ACVRL1                                             49
+    #>        normal3_normal_glomerulus_Geometric_Segment_32
+    #> A2M                                               516
+    #> NAT2                                               11
+    #> ACADM                                              14
+    #> ACADS                                              21
+    #> ACAT1                                              35
+    #> ACVRL1                                             33
+    #>        normal3_normal_glomerulus_Geometric_Segment_33
+    #> A2M                                               260
+    #> NAT2                                               11
+    #> ACADM                                              20
+    #> ACADS                                              10
+    #> ACAT1                                              16
+    #> ACVRL1                                             23
+    #>        normal3_normal_glomerulus_Geometric_Segment_34
+    #> A2M                                               136
+    #> NAT2                                                9
+    #> ACADM                                              20
+    #> ACADS                                              15
+    #> ACAT1                                              15
+    #> ACVRL1                                             18
+    #>        normal3_normal_glomerulus_Geometric_Segment_35
+    #> A2M                                               166
+    #> NAT2                                                5
+    #> ACADM                                              19
+    #> ACADS                                              10
+    #> ACAT1                                              14
+    #> ACVRL1                                             35
+    #>        normal3_normal_glomerulus_Geometric_Segment_36
+    #> A2M                                               336
+    #> NAT2                                               11
+    #> ACADM                                               9
+    #> ACADS                                               6
+    #> ACAT1                                              21
+    #> ACVRL1                                             30
+    #>        normal3_normal_glomerulus_Geometric_Segment_37
+    #> A2M                                               362
+    #> NAT2                                               23
+    #> ACADM                                              31
+    #> ACADS                                              15
+    #> ACAT1                                              29
+    #> ACVRL1                                             43
+    #>        normal3_normal_glomerulus_Geometric_Segment_38
+    #> A2M                                               329
+    #> NAT2                                               10
+    #> ACADM                                              15
+    #> ACADS                                              17
+    #> ACAT1                                              12
+    #> ACVRL1                                             32
+    #>        normal3_normal_glomerulus_Geometric_Segment_39
+    #> A2M                                               158
+    #> NAT2                                               11
+    #> ACADM                                              13
+    #> ACADS                                               5
+    #> ACAT1                                              11
+    #> ACVRL1                                             26
+    #>        normal3_normal_glomerulus_Geometric_Segment_40
+    #> A2M                                               169
+    #> NAT2                                                5
+    #> ACADM                                              13
+    #> ACADS                                               7
+    #> ACAT1                                               4
+    #> ACVRL1                                             14
+    #>        normal3_normal_glomerulus_Geometric_Segment_41
+    #> A2M                                               248
+    #> NAT2                                               11
+    #> ACADM                                              13
+    #> ACADS                                              11
+    #> ACAT1                                              22
+    #> ACVRL1                                             32
+    #>        normal3_normal_glomerulus_Geometric_Segment_42
+    #> A2M                                               460
+    #> NAT2                                               11
+    #> ACADM                                              20
+    #> ACADS                                              14
+    #> ACAT1                                              23
+    #> ACVRL1                                             35
+    #>        normal3_normal_glomerulus_Geometric_Segment_43
+    #> A2M                                               216
+    #> NAT2                                                7
+    #> ACADM                                              12
+    #> ACADS                                              13
+    #> ACAT1                                              22
+    #> ACVRL1                                             22
+    #>        normal3_normal_glomerulus_Geometric_Segment_44
+    #> A2M                                               219
+    #> NAT2                                                3
+    #> ACADM                                              22
+    #> ACADS                                              11
+    #> ACAT1                                              22
+    #> ACVRL1                                             16
+    #>        normal3_normal_glomerulus_Geometric_Segment_45
+    #> A2M                                               101
+    #> NAT2                                                6
+    #> ACADM                                               7
+    #> ACADS                                              11
+    #> ACAT1                                              15
+    #> ACVRL1                                             19
+    #>        normal3_normal_glomerulus_Geometric_Segment_46
+    #> A2M                                               150
+    #> NAT2                                                6
+    #> ACADM                                              11
+    #> ACADS                                              15
+    #> ACAT1                                              15
+    #> ACVRL1                                             17
+    #>        normal3_normal_glomerulus_Geometric_Segment_47
+    #> A2M                                               327
+    #> NAT2                                               16
+    #> ACADM                                              25
+    #> ACADS                                              20
+    #> ACAT1                                              27
+    #> ACVRL1                                             49
+    #>        normal3_normal_glomerulus_Geometric_Segment_48
+    #> A2M                                               356
+    #> NAT2                                               10
+    #> ACADM                                              23
+    #> ACADS                                              14
+    #> ACAT1                                              28
+    #> ACVRL1                                             42
+    #>        normal3_normal_glomerulus_Geometric_Segment_49
+    #> A2M                                               337
+    #> NAT2                                                9
+    #> ACADM                                              24
+    #> ACADS                                              18
+    #> ACAT1                                              11
+    #> ACVRL1                                             33
+    #>        normal3_normal_glomerulus_Geometric_Segment_50
+    #> A2M                                               184
+    #> NAT2                                                7
+    #> ACADM                                              15
+    #> ACADS                                              13
+    #> ACAT1                                              14
+    #> ACVRL1                                             31
+    #>        normal3_normal_glomerulus_Geometric_Segment_51
+    #> A2M                                               210
+    #> NAT2                                                2
+    #> ACADM                                              16
+    #> ACADS                                              10
+    #> ACAT1                                              16
+    #> ACVRL1                                             27
+    #>        normal3_normal_glomerulus_Geometric_Segment_52
+    #> A2M                                               183
+    #> NAT2                                                2
+    #> ACADM                                              10
+    #> ACADS                                              10
+    #> ACAT1                                              21
+    #> ACVRL1                                             18
+    #>        normal3_normal_glomerulus_Geometric_Segment_53
+    #> A2M                                               235
+    #> NAT2                                                5
+    #> ACADM                                              20
+    #> ACADS                                              12
+    #> ACAT1                                              23
+    #> ACVRL1                                             26
+    #>        normal3_normal_glomerulus_Geometric_Segment_54
+    #> A2M                                               373
+    #> NAT2                                               14
+    #> ACADM                                              29
+    #> ACADS                                              17
+    #> ACAT1                                              25
+    #> ACVRL1                                             46
+    #>        normal4_normal_tubule_PanCK_1 normal4_normal_tubule_neg_1
+    #> A2M                               27                         410
+    #> NAT2                              11                          79
+    #> ACADM                             52                         313
+    #> ACADS                             35                         184
+    #> ACAT1                            113                         679
+    #> ACVRL1                            21                          75
+    #>        normal4_normal_tubule_PanCK_2 normal4_normal_tubule_neg_2
+    #> A2M                               62                         100
+    #> NAT2                              29                          31
+    #> ACADM                             97                          93
+    #> ACADS                             48                          50
+    #> ACAT1                            197                         145
+    #> ACVRL1                            30                          35
+    #>        normal4_normal_tubule_PanCK_3 normal4_normal_tubule_neg_3
+    #> A2M                               27                         164
+    #> NAT2                              16                          19
+    #> ACADM                             87                          81
+    #> ACADS                             33                          60
+    #> ACAT1                            115                         154
+    #> ACVRL1                            19                          16
+    #>        normal4_normal_tubule_PanCK_4 normal4_normal_tubule_neg_4
+    #> A2M                               24                         144
+    #> NAT2                               9                          29
+    #> ACADM                             64                         107
+    #> ACADS                             21                          51
+    #> ACAT1                            108                         147
+    #> ACVRL1                             9                          32
+    #>        normal4_normal_tubule_PanCK_5 normal4_normal_tubule_neg_5
+    #> A2M                               50                         469
+    #> NAT2                               8                          59
+    #> ACADM                             75                         204
+    #> ACADS                             31                          84
+    #> ACAT1                            108                         347
+    #> ACVRL1                             7                          37
+    #>        normal4_normal_tubule_PanCK_6 normal4_normal_tubule_neg_6
+    #> A2M                               21                         161
+    #> NAT2                               6                          21
+    #> ACADM                             65                         115
+    #> ACADS                             26                          76
+    #> ACAT1                            122                         184
+    #> ACVRL1                            12                          38
+    #>        normal4_normal_glomerulus_Geometric_Segment_7
+    #> A2M                                              132
+    #> NAT2                                              13
+    #> ACADM                                             14
+    #> ACADS                                             12
+    #> ACAT1                                             19
+    #> ACVRL1                                            17
+    #>        normal4_normal_glomerulus_Geometric_Segment_8
+    #> A2M                                              347
+    #> NAT2                                              13
+    #> ACADM                                             29
+    #> ACADS                                             26
+    #> ACAT1                                             30
+    #> ACVRL1                                            50
+    #>        normal4_normal_glomerulus_Geometric_Segment_9
+    #> A2M                                              399
+    #> NAT2                                               9
+    #> ACADM                                             27
+    #> ACADS                                             17
+    #> ACAT1                                             34
+    #> ACVRL1                                            46
+    #>        normal4_normal_glomerulus_Geometric_Segment_10
+    #> A2M                                               652
+    #> NAT2                                               31
+    #> ACADM                                              52
+    #> ACADS                                              56
+    #> ACAT1                                              49
+    #> ACVRL1                                             95
+    #>        normal4_normal_glomerulus_Geometric_Segment_11
+    #> A2M                                               154
+    #> NAT2                                                9
+    #> ACADM                                              15
+    #> ACADS                                              11
+    #> ACAT1                                              15
+    #> ACVRL1                                             23
+    #>        normal4_normal_glomerulus_Geometric_Segment_12
+    #> A2M                                               419
+    #> NAT2                                                9
+    #> ACADM                                              26
+    #> ACADS                                              23
+    #> ACAT1                                              33
+    #> ACVRL1                                             33
+    #>        normal4_normal_glomerulus_Geometric_Segment_13
+    #> A2M                                               428
+    #> NAT2                                               11
+    #> ACADM                                              33
+    #> ACADS                                              19
+    #> ACAT1                                              39
+    #> ACVRL1                                             45
+    #>        normal4_normal_glomerulus_Geometric_Segment_14
+    #> A2M                                               230
+    #> NAT2                                               13
+    #> ACADM                                              24
+    #> ACADS                                              25
+    #> ACAT1                                              27
+    #> ACVRL1                                             33
+    #>        normal4_normal_glomerulus_Geometric_Segment_15
+    #> A2M                                               216
+    #> NAT2                                                7
+    #> ACADM                                              20
+    #> ACADS                                              23
+    #> ACAT1                                              16
+    #> ACVRL1                                             27
+    #>        normal4_normal_glomerulus_Geometric_Segment_16
+    #> A2M                                               174
+    #> NAT2                                                6
+    #> ACADM                                              12
+    #> ACADS                                              14
+    #> ACAT1                                              16
+    #> ACVRL1                                             18
+    #>        normal4_normal_glomerulus_Geometric_Segment_17
+    #> A2M                                               113
+    #> NAT2                                                6
+    #> ACADM                                               5
+    #> ACADS                                               4
+    #> ACAT1                                               8
+    #> ACVRL1                                             10
+    #>        disease3_DKD_tubule_PanCK_1 disease3_DKD_tubule_neg_1
+    #> A2M                             82                       306
+    #> NAT2                            33                        51
+    #> ACADM                           51                       103
+    #> ACADS                           61                        95
+    #> ACAT1                           87                       122
+    #> ACVRL1                          30                        53
+    #>        disease3_DKD_tubule_PanCK_2 disease3_DKD_tubule_neg_2
+    #> A2M                            112                       462
+    #> NAT2                            33                        81
+    #> ACADM                           78                       141
+    #> ACADS                           78                       120
+    #> ACAT1                           88                       140
+    #> ACVRL1                          35                        74
+    #>        disease3_DKD_tubule_PanCK_3 disease3_DKD_tubule_neg_3
+    #> A2M                             56                       276
+    #> NAT2                            14                        39
+    #> ACADM                           27                        79
+    #> ACADS                           34                        62
+    #> ACAT1                           60                       122
+    #> ACVRL1                          25                        58
+    #>        disease3_DKD_tubule_PanCK_4 disease3_DKD_tubule_neg_4
+    #> A2M                            194                       766
+    #> NAT2                            36                        59
+    #> ACADM                           93                        80
+    #> ACADS                          105                        83
+    #> ACAT1                          128                       111
+    #> ACVRL1                          56                        91
+    #>        disease3_DKD_tubule_PanCK_5 disease3_DKD_tubule_neg_5
+    #> A2M                            124                       661
+    #> NAT2                            34                        41
+    #> ACADM                           59                        68
+    #> ACADS                           57                        73
+    #> ACAT1                           80                       114
+    #> ACVRL1                          40                        69
+    #>        disease3_DKD_tubule_PanCK_6 disease3_DKD_tubule_neg_6
+    #> A2M                             33                       131
+    #> NAT2                             9                        17
+    #> ACADM                           18                        45
+    #> ACADS                           20                        28
+    #> ACAT1                           21                        46
+    #> ACVRL1                          12                        17
+    #>        No_Template_Control_NA_NA_NA_NA_2
+    #> A2M                                    0
+    #> NAT2                                   0
+    #> ACADM                                  0
+    #> ACADS                                  0
+    #> ACAT1                                  0
+    #> ACVRL1                                 0
+    #>        disease1B_DKD_glomerulus_Geometric_Segment_15
+    #> A2M                                               28
+    #> NAT2                                               1
+    #> ACADM                                              0
+    #> ACADS                                              3
+    #> ACAT1                                              2
+    #> ACVRL1                                             3
+    #>        disease1B_DKD_glomerulus_Geometric_Segment_16
+    #> A2M                                               20
+    #> NAT2                                               1
+    #> ACADM                                              1
+    #> ACADS                                              6
+    #> ACAT1                                              4
+    #> ACVRL1                                             4
+    #>        disease1B_DKD_glomerulus_Geometric_Segment_17
+    #> A2M                                               11
+    #> NAT2                                               0
+    #> ACADM                                              4
+    #> ACADS                                              6
+    #> ACAT1                                              6
+    #> ACVRL1                                             4
+    #>        disease1B_DKD_glomerulus_Geometric_Segment_18
+    #> A2M                                               13
+    #> NAT2                                               3
+    #> ACADM                                              2
+    #> ACADS                                              6
+    #> ACAT1                                              2
+    #> ACVRL1                                             6
+    #>        disease1B_DKD_glomerulus_Geometric_Segment_19
+    #> A2M                                               13
+    #> NAT2                                               0
+    #> ACADM                                              1
+    #> ACADS                                              2
+    #> ACAT1                                              1
+    #> ACVRL1                                             0
+    #>        disease1B_DKD_glomerulus_Geometric_Segment_20
+    #> A2M                                               24
+    #> NAT2                                               3
+    #> ACADM                                              3
+    #> ACADS                                              3
+    #> ACAT1                                              2
+    #> ACVRL1                                             1
+    #>        disease1B_DKD_glomerulus_Geometric_Segment_21
+    #> A2M                                               36
+    #> NAT2                                               0
+    #> ACADM                                              1
+    #> ACADS                                              5
+    #> ACAT1                                              2
+    #> ACVRL1                                             3
+    #>        disease1B_DKD_glomerulus_Geometric_Segment_22
+    #> A2M                                               29
+    #> NAT2                                               2
+    #> ACADM                                              0
+    #> ACADS                                              3
+    #> ACAT1                                              0
+    #> ACVRL1                                             3
+    #>        disease1B_DKD_glomerulus_Geometric_Segment_23
+    #> A2M                                               17
+    #> NAT2                                               1
+    #> ACADM                                              0
+    #> ACADS                                              1
+    #> ACAT1                                              0
+    #> ACVRL1                                             0
+    #>        disease1B_DKD_glomerulus_Geometric_Segment_24
+    #> A2M                                               13
+    #> NAT2                                               0
+    #> ACADM                                              2
+    #> ACADS                                              1
+    #> ACAT1                                              1
+    #> ACVRL1                                             0
+    #>        disease2B_DKD_glomerulus_WT1_1 disease2B_DKD_glomerulus_neg_1
+    #> A2M                                 2                             34
+    #> NAT2                                0                              0
+    #> ACADM                               0                              5
+    #> ACADS                               0                              2
+    #> ACAT1                               0                              1
+    #> ACVRL1                              3                              3
+    #>        disease2B_DKD_glomerulus_WT1_2 disease2B_DKD_glomerulus_PanCK_2
+    #> A2M                                 0                                0
+    #> NAT2                                0                                0
+    #> ACADM                               0                                0
+    #> ACADS                               1                                0
+    #> ACAT1                               1                                0
+    #> ACVRL1                              1                                0
+    #>        disease2B_DKD_glomerulus_neg_2 disease2B_DKD_glomerulus_WT1_3
+    #> A2M                                65                              3
+    #> NAT2                                3                              0
+    #> ACADM                               1                              0
+    #> ACADS                               0                              0
+    #> ACAT1                               6                              0
+    #> ACVRL1                              8                              1
+    #>        disease2B_DKD_glomerulus_neg_3 disease2B_DKD_glomerulus_WT1_4
+    #> A2M                                42                              3
+    #> NAT2                                6                              0
+    #> ACADM                               2                              0
+    #> ACADS                               5                              1
+    #> ACAT1                               4                              0
+    #> ACVRL1                             13                              0
+    #>        disease2B_DKD_glomerulus_neg_4 disease2B_DKD_glomerulus_WT1_5
+    #> A2M                                17                              1
+    #> NAT2                                0                              1
+    #> ACADM                               2                              0
+    #> ACADS                               2                              0
+    #> ACAT1                               3                              0
+    #> ACVRL1                              4                              0
+    #>        disease2B_DKD_glomerulus_PanCK_5 disease2B_DKD_glomerulus_neg_5
+    #> A2M                                   0                             52
+    #> NAT2                                  0                              3
+    #> ACADM                                 0                              5
+    #> ACADS                                 0                              3
+    #> ACAT1                                 0                              3
+    #> ACVRL1                                0                              3
+    #>        disease2B_DKD_glomerulus_WT1_6 disease2B_DKD_tubule_PanCK_6
+    #> A2M                                 0                           10
+    #> NAT2                                0                            0
+    #> ACADM                               0                            4
+    #> ACADS                               0                            2
+    #> ACAT1                               0                           13
+    #> ACVRL1                              0                            1
+    #>        disease2B_DKD_tubule_neg_6 disease2B_DKD_tubule_PanCK_7
+    #> A2M                            78                            8
+    #> NAT2                            7                            3
+    #> ACADM                          43                           17
+    #> ACADS                          25                           15
+    #> ACAT1                          71                           18
+    #> ACVRL1                         12                            7
+    #>        disease2B_DKD_tubule_neg_7 disease2B_DKD_tubule_PanCK_8
+    #> A2M                            55                            7
+    #> NAT2                            6                            4
+    #> ACADM                          62                           10
+    #> ACADS                          27                            3
+    #> ACAT1                          98                            9
+    #> ACVRL1                         12                            2
+    #>        disease2B_DKD_tubule_neg_8 disease2B_DKD_tubule_PanCK_9
+    #> A2M                            83                            7
+    #> NAT2                           16                            3
+    #> ACADM                          98                           10
+    #> ACADS                          49                            4
+    #> ACAT1                         189                           11
+    #> ACVRL1                         10                            1
+    #>        disease2B_DKD_tubule_neg_9 disease2B_DKD_tubule_PanCK_10
+    #> A2M                            47                            11
+    #> NAT2                           12                             3
+    #> ACADM                          99                            13
+    #> ACADS                          36                            11
+    #> ACAT1                         151                            17
+    #> ACVRL1                          8                             2
+    #>        disease2B_DKD_tubule_neg_10 disease2B_DKD_tubule_PanCK_11
+    #> A2M                            111                            11
+    #> NAT2                            20                             0
+    #> ACADM                          113                            13
+    #> ACADS                           58                            10
+    #> ACAT1                          222                            19
+    #> ACVRL1                          15                             1
+    #>        disease2B_DKD_tubule_neg_11
+    #> A2M                             90
+    #> NAT2                             6
+    #> ACADM                           44
+    #> ACADS                           31
+    #> ACAT1                           82
+    #> ACVRL1                          17
+    #>        disease2B_DKD_glomerulus_Geometric_Segment_12
+    #> A2M                                               58
+    #> NAT2                                               3
+    #> ACADM                                              0
+    #> ACADS                                              6
+    #> ACAT1                                              5
+    #> ACVRL1                                             5
+    #>        disease2B_DKD_glomerulus_Geometric_Segment_13
+    #> A2M                                               80
+    #> NAT2                                               3
+    #> ACADM                                              9
+    #> ACADS                                              9
+    #> ACAT1                                             11
+    #> ACVRL1                                            15
+    #>        disease2B_DKD_glomerulus_Geometric_Segment_14
+    #> A2M                                               51
+    #> NAT2                                               5
+    #> ACADM                                             11
+    #> ACADS                                              6
+    #> ACAT1                                              9
+    #> ACVRL1                                             1
+    #>        disease2B_DKD_glomerulus_Geometric_Segment_15
+    #> A2M                                               88
+    #> NAT2                                               3
+    #> ACADM                                              8
+    #> ACADS                                             10
+    #> ACAT1                                             10
+    #> ACVRL1                                            12
+    #>        disease2B_DKD_glomerulus_Geometric_Segment_16
+    #> A2M                                               19
+    #> NAT2                                               1
+    #> ACADM                                              8
+    #> ACADS                                              5
+    #> ACAT1                                              4
+    #> ACVRL1                                             5
+    #>        disease2B_DKD_glomerulus_Geometric_Segment_17
+    #> A2M                                               56
+    #> NAT2                                               3
+    #> ACADM                                              5
+    #> ACADS                                              4
+    #> ACAT1                                              6
+    #> ACVRL1                                             6
+    #>        disease2B_DKD_glomerulus_Geometric_Segment_18
+    #> A2M                                              111
+    #> NAT2                                               2
+    #> ACADM                                              8
+    #> ACADS                                             10
+    #> ACAT1                                             10
+    #> ACVRL1                                            18
+    #>        disease2B_DKD_glomerulus_Geometric_Segment_19
+    #> A2M                                              139
+    #> NAT2                                              11
+    #> ACADM                                              7
+    #> ACADS                                             18
+    #> ACAT1                                             20
+    #> ACVRL1                                            14
+    #>        disease2B_DKD_glomerulus_Geometric_Segment_20
+    #> A2M                                               66
+    #> NAT2                                              10
+    #> ACADM                                              7
+    #> ACADS                                              9
+    #> ACAT1                                              8
+    #> ACVRL1                                            16
+    #>        disease2B_DKD_glomerulus_Geometric_Segment_21
+    #> A2M                                               82
+    #> NAT2                                               3
+    #> ACADM                                             12
+    #> ACADS                                              6
+    #> ACAT1                                              4
+    #> ACVRL1                                            10
+    #>        disease2B_DKD_glomerulus_Geometric_Segment_22
+    #> A2M                                              102
+    #> NAT2                                               2
+    #> ACADM                                             10
+    #> ACADS                                              6
+    #> ACAT1                                             13
+    #> ACVRL1                                            10
+    #>        disease2B_DKD_glomerulus_Geometric_Segment_23
+    #> A2M                                              136
+    #> NAT2                                               8
+    #> ACADM                                             11
+    #> ACADS                                              7
+    #> ACAT1                                             10
+    #> ACVRL1                                            14
+    #>        No_Template_Control_NA_NA_NA_NA_3 normal2B_normal_glomerulus_WT1_1
+    #> A2M                                    0                               26
+    #> NAT2                                   0                               19
+    #> ACADM                                  0                               12
+    #> ACADS                                  0                               18
+    #> ACAT1                                  0                               24
+    #> ACVRL1                                 0                               22
+    #>        normal2B_normal_glomerulus_neg_1 normal2B_normal_glomerulus_WT1_2
+    #> A2M                                  46                               28
+    #> NAT2                                 38                               21
+    #> ACADM                                23                               17
+    #> ACADS                                23                               17
+    #> ACAT1                                41                               21
+    #> ACVRL1                               39                               19
+    #>        normal2B_normal_glomerulus_neg_2 normal2B_normal_glomerulus_WT1_3
+    #> A2M                                  47                               14
+    #> NAT2                                 34                               13
+    #> ACADM                                17                               14
+    #> ACADS                                24                                4
+    #> ACAT1                                27                                9
+    #> ACVRL1                               25                                7
+    #>        normal2B_normal_glomerulus_neg_3 normal2B_normal_glomerulus_WT1_4
+    #> A2M                                  36                               17
+    #> NAT2                                 15                               15
+    #> ACADM                                 4                               13
+    #> ACADS                                15                               16
+    #> ACAT1                                20                               15
+    #> ACVRL1                               23                               11
+    #>        normal2B_normal_glomerulus_neg_4 normal2B_normal_glomerulus_WT1_5
+    #> A2M                                  43                               22
+    #> NAT2                                 21                                9
+    #> ACADM                                13                                5
+    #> ACADS                                17                               10
+    #> ACAT1                                16                                6
+    #> ACVRL1                               14                               12
+    #>        normal2B_normal_glomerulus_neg_5 normal2B_normal_glomerulus_WT1_6
+    #> A2M                                  40                               23
+    #> NAT2                                 23                               10
+    #> ACADM                                11                               14
+    #> ACADS                                21                               14
+    #> ACAT1                                20                               13
+    #> ACVRL1                               20                               17
+    #>        normal2B_normal_glomerulus_PanCK_6 normal2B_normal_glomerulus_neg_6
+    #> A2M                                    11                               73
+    #> NAT2                                    9                               20
+    #> ACADM                                   8                               16
+    #> ACADS                                  12                               19
+    #> ACAT1                                  13                               21
+    #> ACVRL1                                 10                               18
+    #>        normal2B_normal_tubule_PanCK_7 normal2B_normal_tubule_neg_7
+    #> A2M                                33                          218
+    #> NAT2                               14                           37
+    #> ACADM                              37                          116
+    #> ACADS                              30                           87
+    #> ACAT1                              53                          404
+    #> ACVRL1                             15                           31
+    #>        normal2B_normal_tubule_PanCK_8 normal2B_normal_tubule_neg_8
+    #> A2M                                10                          189
+    #> NAT2                               20                           22
+    #> ACADM                               9                           61
+    #> ACADS                              14                           48
+    #> ACAT1                              17                          268
+    #> ACVRL1                             15                           18
+    #>        normal2B_normal_tubule_PanCK_9 normal2B_normal_tubule_neg_9
+    #> A2M                                41                          411
+    #> NAT2                               16                           33
+    #> ACADM                              59                          113
+    #> ACADS                              42                           97
+    #> ACAT1                             118                          371
+    #> ACVRL1                             15                           30
+    #>        normal2B_normal_tubule_PanCK_10 normal2B_normal_tubule_neg_10
+    #> A2M                                 31                           228
+    #> NAT2                                 4                            29
+    #> ACADM                               27                           108
+    #> ACADS                               17                            60
+    #> ACAT1                               37                           446
+    #> ACVRL1                               6                            39
+    #>        normal2B_normal_tubule_PanCK_11 normal2B_normal_tubule_neg_11
+    #> A2M                                 13                           329
+    #> NAT2                                 3                            42
+    #> ACADM                               27                           148
+    #> ACADS                               16                           116
+    #> ACAT1                               50                           592
+    #> ACVRL1                               8                            57
+    #>        normal2B_normal_tubule_PanCK_12 normal2B_normal_tubule_neg_12
+    #> A2M                                 31                           486
+    #> NAT2                                 6                            46
+    #> ACADM                               24                           166
+    #> ACADS                               21                            96
+    #> ACAT1                               65                           577
+    #> ACVRL1                               7                            52
+    #>        normal2B_normal_glomerulus_Geometric_Segment_13
+    #> A2M                                                 58
+    #> NAT2                                                14
+    #> ACADM                                               21
+    #> ACADS                                               16
+    #> ACAT1                                               26
+    #> ACVRL1                                              15
+    #>        normal2B_normal_glomerulus_Geometric_Segment_14
+    #> A2M                                                 80
+    #> NAT2                                                 9
+    #> ACADM                                               25
+    #> ACADS                                               11
+    #> ACAT1                                               26
+    #> ACVRL1                                              16
+    #>        normal2B_normal_glomerulus_Geometric_Segment_15
+    #> A2M                                                 64
+    #> NAT2                                                 7
+    #> ACADM                                                8
+    #> ACADS                                                9
+    #> ACAT1                                               23
+    #> ACVRL1                                              12
+    #>        normal2B_normal_glomerulus_Geometric_Segment_16
+    #> A2M                                                 74
+    #> NAT2                                                13
+    #> ACADM                                               23
+    #> ACADS                                               11
+    #> ACAT1                                               21
+    #> ACVRL1                                              33
+    #>        normal2B_normal_glomerulus_Geometric_Segment_17
+    #> A2M                                                 79
+    #> NAT2                                                 6
+    #> ACADM                                               19
+    #> ACADS                                               16
+    #> ACAT1                                               15
+    #> ACVRL1                                              25
+    #>        normal2B_normal_glomerulus_Geometric_Segment_18
+    #> A2M                                                 69
+    #> NAT2                                                12
+    #> ACADM                                               10
+    #> ACADS                                               13
+    #> ACAT1                                               18
+    #> ACVRL1                                              25
+    #>        normal2B_normal_glomerulus_Geometric_Segment_19
+    #> A2M                                                 66
+    #> NAT2                                                11
+    #> ACADM                                               10
+    #> ACADS                                                9
+    #> ACAT1                                               20
+    #> ACVRL1                                              30
+    #>        normal2B_normal_glomerulus_Geometric_Segment_20
+    #> A2M                                                 48
+    #> NAT2                                                10
+    #> ACADM                                                8
+    #> ACADS                                               12
+    #> ACAT1                                               22
+    #> ACVRL1                                              16
+    #>        normal2B_normal_glomerulus_Geometric_Segment_21
+    #> A2M                                                 35
+    #> NAT2                                                 2
+    #> ACADM                                                6
+    #> ACADS                                                2
+    #> ACAT1                                               14
+    #> ACVRL1                                               8
+    #>        normal2B_normal_glomerulus_Geometric_Segment_22
+    #> A2M                                                 64
+    #> NAT2                                                 7
+    #> ACADM                                               14
+    #> ACADS                                               11
+    #> ACAT1                                                9
+    #> ACVRL1                                               7
+    #>        disease1B_DKD_glomerulus_WT1_1 disease1B_DKD_glomerulus_neg_1
+    #> A2M                                11                             88
+    #> NAT2                                3                              6
+    #> ACADM                               3                              3
+    #> ACADS                               3                              8
+    #> ACAT1                               4                              8
+    #> ACVRL1                              2                              5
+    #>        disease1B_DKD_glomerulus_WT1_2 disease1B_DKD_glomerulus_neg_2
+    #> A2M                                 4                             56
+    #> NAT2                                3                              3
+    #> ACADM                               3                              2
+    #> ACADS                               0                              3
+    #> ACAT1                               2                              4
+    #> ACVRL1                              1                              5
+    #>        disease1B_DKD_glomerulus_WT1_3 disease1B_DKD_glomerulus_neg_3
+    #> A2M                                 6                             54
+    #> NAT2                                1                              2
+    #> ACADM                               1                              9
+    #> ACADS                               3                              5
+    #> ACAT1                               4                              8
+    #> ACVRL1                              4                              9
+    #>        disease1B_DKD_glomerulus_WT1_4 disease1B_DKD_glomerulus_PanCK_4
+    #> A2M                                13                                0
+    #> NAT2                                7                                0
+    #> ACADM                               1                                0
+    #> ACADS                               5                                0
+    #> ACAT1                               4                                0
+    #> ACVRL1                              2                                0
+    #>        disease1B_DKD_glomerulus_neg_4 disease1B_DKD_glomerulus_WT1_5
+    #> A2M                                10                              0
+    #> NAT2                                0                              0
+    #> ACADM                               1                              0
+    #> ACADS                               0                              0
+    #> ACAT1                               3                              0
+    #> ACVRL1                              2                              0
+    #>        disease1B_DKD_glomerulus_neg_5 disease1B_DKD_glomerulus_WT1_6
+    #> A2M                                26                             17
+    #> NAT2                                2                              1
+    #> ACADM                               1                              2
+    #> ACADS                               6                              3
+    #> ACAT1                               3                              1
+    #> ACVRL1                              4                              7
+    #>        disease1B_DKD_glomerulus_neg_6 disease1B_DKD_tubule_WT1_7
+    #> A2M                                35                          0
+    #> NAT2                                4                          1
+    #> ACADM                               3                          0
+    #> ACADS                               3                          1
+    #> ACAT1                               3                          0
+    #> ACVRL1                              6                          0
+    #>        disease1B_DKD_tubule_PanCK_7 disease1B_DKD_tubule_neg_7
+    #> A2M                              18                        104
+    #> NAT2                              9                         15
+    #> ACADM                            17                         43
+    #> ACADS                            28                         40
+    #> ACAT1                            15                         85
+    #> ACVRL1                           16                         18
+    #>        disease1B_DKD_tubule_PanCK_8 disease1B_DKD_tubule_neg_8
+    #> A2M                              17                         67
+    #> NAT2                              4                         17
+    #> ACADM                             8                         51
+    #> ACADS                             6                         24
+    #> ACAT1                            18                         60
+    #> ACVRL1                            3                         11
+    #>        disease1B_DKD_tubule_WT1_9 disease1B_DKD_tubule_PanCK_9
+    #> A2M                             4                           31
+    #> NAT2                            3                            8
+    #> ACADM                           1                           24
+    #> ACADS                           3                           25
+    #> ACAT1                           0                           23
+    #> ACVRL1                          3                           19
+    #>        disease1B_DKD_tubule_neg_9 disease1B_DKD_tubule_PanCK_10
+    #> A2M                           195                            29
+    #> NAT2                           33                             9
+    #> ACADM                          73                            22
+    #> ACADS                          88                            24
+    #> ACAT1                         175                            22
+    #> ACVRL1                         22                            13
+    #>        disease1B_DKD_tubule_neg_10 disease1B_DKD_tubule_PanCK_11
+    #> A2M                            337                            11
+    #> NAT2                            34                             5
+    #> ACADM                           88                             2
+    #> ACADS                           82                             6
+    #> ACAT1                          181                            11
+    #> ACVRL1                          50                             5
+    #>        disease1B_DKD_tubule_neg_11 disease1B_DKD_tubule_PanCK_12
+    #> A2M                            129                            10
+    #> NAT2                            16                             8
+    #> ACADM                           26                            15
+    #> ACADS                           36                             2
+    #> ACAT1                           35                            13
+    #> ACVRL1                          20                             6
+    #>        disease1B_DKD_tubule_neg_12
+    #> A2M                             51
+    #> NAT2                            23
+    #> ACADM                           39
+    #> ACADS                           47
+    #> ACAT1                           76
+    #> ACVRL1                          31
+    #>        disease1B_DKD_glomerulus_Geometric_Segment_13
+    #> A2M                                               64
+    #> NAT2                                               7
+    #> ACADM                                              3
+    #> ACADS                                              6
+    #> ACAT1                                              9
+    #> ACVRL1                                             5
+    #>        disease1B_DKD_glomerulus_Geometric_Segment_14
+    #> A2M                                               60
+    #> NAT2                                               6
+    #> ACADM                                              3
+    #> ACADS                                              8
+    #> ACAT1                                              6
+    #> ACVRL1                                            11
+    #> 
+    #> $samples
+    #>                                              group   lib.size norm.factors
+    #> No_Template_Control_NA_NA_NA_NA                  1    112.504  176.7114945
+    #> disease3_DKD_glomerulus_Geometric_Segment_7      1 518138.238    0.7910675
+    #> disease3_DKD_glomerulus_Geometric_Segment_8      1 341723.378    0.7795273
+    #> disease3_DKD_glomerulus_Geometric_Segment_9      1 299025.920    0.7534719
+    #> disease3_DKD_glomerulus_Geometric_Segment_10     1 391388.771    0.7749267
+    #> 275 more rows ...
+    #>        No_Template_Control_NA_NA_NA_NA
+    #> A2M                                  0
+    #> NAT2                                 0
+    #> ACADM                                0
+    #> ACADS                                0
+    #> ACAT1                                0
+    #> ACVRL1                               0
+    #>        disease3_DKD_glomerulus_Geometric_Segment_7
+    #> A2M                                     1183.26647
+    #> NAT2                                      36.59587
+    #> ACADM                                     75.63146
+    #> ACADS                                     65.87257
+    #> ACAT1                                     70.75202
+    #> ACVRL1                                   126.86568
+    #>        disease3_DKD_glomerulus_Geometric_Segment_8
+    #> A2M                                      983.54729
+    #> NAT2                                      67.57195
+    #> ACADM                                     56.30996
+    #> ACADS                                     63.81795
+    #> ACAT1                                     90.09594
+    #> ACVRL1                                    82.58794
+    #>        disease3_DKD_glomerulus_Geometric_Segment_9
+    #> A2M                                      998.63466
+    #> NAT2                                      22.19188
+    #> ACADM                                     66.57564
+    #> ACADS                                    106.52103
+    #> ACAT1                                     93.20590
+    #> ACVRL1                                   106.52103
+    #>        disease3_DKD_glomerulus_Geometric_Segment_10
+    #> A2M                                      1028.69264
+    #> NAT2                                       62.64474
+    #> ACADM                                      82.42729
+    #> ACADS                                      62.64474
+    #> ACAT1                                      56.05056
+    #> ACVRL1                                     85.72439
+    #>        disease3_DKD_glomerulus_Geometric_Segment_11
+    #> A2M                                      1224.92442
+    #> NAT2                                       56.56845
+    #> ACADM                                      67.44699
+    #> ACADS                                      93.55551
+    #> ACAT1                                     100.08263
+    #> ACVRL1                                    110.96118
+    #>        disease3_DKD_glomerulus_Geometric_Segment_12
+    #> A2M                                      1063.33917
+    #> NAT2                                       44.71987
+    #> ACADM                                      89.43974
+    #> ACADS                                      74.53312
+    #> ACAT1                                      59.62650
+    #> ACVRL1                                     89.43974
+    #>        disease3_DKD_glomerulus_Geometric_Segment_13
+    #> A2M                                      1028.05127
+    #> NAT2                                       42.83547
+    #> ACADM                                      76.15195
+    #> ACADS                                      61.87346
+    #> ACAT1                                      76.15195
+    #> ACVRL1                                    104.70893
+    #>        disease3_DKD_glomerulus_Geometric_Segment_14
+    #> A2M                                       837.26290
+    #> NAT2                                       61.84328
+    #> ACADM                                      66.60046
+    #> ACADS                                      61.84328
+    #> ACAT1                                      95.14351
+    #> ACVRL1                                     71.35763
+    #>        disease3_DKD_glomerulus_Geometric_Segment_15
+    #> A2M                                      1175.80633
+    #> NAT2                                       34.95640
+    #> ACADM                                      63.55710
+    #> ACADS                                      98.51350
+    #> ACAT1                                      50.84568
+    #> ACVRL1                                     76.26852
+    #>        disease3_DKD_glomerulus_Geometric_Segment_16
+    #> A2M                                       898.45057
+    #> NAT2                                       46.89715
+    #> ACADM                                      54.30196
+    #> ACADS                                      83.92121
+    #> ACAT1                                      59.23850
+    #> ACVRL1                                     78.98467
+    #>        disease3_DKD_glomerulus_Geometric_Segment_17
+    #> A2M                                      1365.01512
+    #> NAT2                                       54.78322
+    #> ACADM                                      91.30536
+    #> ACADS                                     109.56643
+    #> ACAT1                                      91.30536
+    #> ACVRL1                                    105.00116
+    #>        disease3_DKD_glomerulus_Geometric_Segment_18
+    #> A2M                                       945.71201
+    #> NAT2                                       53.22189
+    #> ACADM                                      49.12790
+    #> ACADS                                      73.69185
+    #> ACAT1                                      73.69185
+    #> ACVRL1                                    122.81974
+    #>        disease3_DKD_glomerulus_Geometric_Segment_19
+    #> A2M                                       936.50462
+    #> NAT2                                       55.08851
+    #> ACADM                                      64.26992
+    #> ACADS                                      96.40489
+    #> ACAT1                                      78.04205
+    #> ACVRL1                                     91.81418
+    #>        disease3_DKD_glomerulus_Geometric_Segment_20
+    #> A2M                                       767.22113
+    #> NAT2                                       44.54832
+    #> ACADM                                      54.44795
+    #> ACADS                                     108.89590
+    #> ACAT1                                      69.29739
+    #> ACVRL1                                    103.94609
+    #>        disease3_DKD_glomerulus_Geometric_Segment_21
+    #> A2M                                       697.69864
+    #> NAT2                                       40.18160
+    #> ACADM                                      40.18160
+    #> ACADS                                      91.32181
+    #> ACAT1                                      65.75170
+    #> ACVRL1                                    105.93330
+    #>        disease3_DKD_glomerulus_Geometric_Segment_22
+    #> A2M                                       773.83191
+    #> NAT2                                       38.69160
+    #> ACADM                                      81.68226
+    #> ACADS                                      77.38319
+    #> ACAT1                                      51.58879
+    #> ACVRL1                                    111.77572
+    #>        disease3_DKD_glomerulus_Geometric_Segment_23
+    #> A2M                                       807.32730
+    #> NAT2                                       48.26413
+    #> ACADM                                      70.20237
+    #> ACADS                                      70.20237
+    #> ACAT1                                      70.20237
+    #> ACVRL1                                    109.69121
+    #>        disease3_DKD_glomerulus_Geometric_Segment_24
+    #> A2M                                       960.39704
+    #> NAT2                                       51.91335
+    #> ACADM                                      51.91335
+    #> ACADS                                     109.01804
+    #> ACAT1                                      67.48736
+    #> ACVRL1                                    114.20938
+    #>        disease3_DKD_glomerulus_Geometric_Segment_25
+    #> A2M                                       839.87259
+    #> NAT2                                       54.77430
+    #> ACADM                                      54.77430
+    #> ACADS                                      59.33882
+    #> ACAT1                                      77.59692
+    #> ACVRL1                                     91.29050
+    #>        disease3_DKD_glomerulus_Geometric_Segment_26
+    #> A2M                                       746.85502
+    #> NAT2                                       31.44653
+    #> ACADM                                      47.16979
+    #> ACADS                                     121.85529
+    #> ACAT1                                      74.68550
+    #> ACVRL1                                     70.75469
+    #>        disease3_DKD_glomerulus_Geometric_Segment_27
+    #> A2M                                       836.71400
+    #> NAT2                                       32.49375
+    #> ACADM                                      97.48124
+    #> ACADS                                      73.11093
+    #> ACAT1                                      69.04921
+    #> ACVRL1                                    138.09843
+    #>        disease3_DKD_glomerulus_Geometric_Segment_28
+    #> A2M                                       771.11850
+    #> NAT2                                       85.26791
+    #> ACADM                                     100.09711
+    #> ACADS                                      88.97521
+    #> ACAT1                                      88.97521
+    #> ACVRL1                                     96.38981
+    #>        disease3_DKD_glomerulus_Geometric_Segment_29
+    #> A2M                                       993.44806
+    #> NAT2                                       72.69132
+    #> ACADM                                      42.40327
+    #> ACADS                                      72.69132
+    #> ACAT1                                      30.28805
+    #> ACVRL1                                     96.92176
+    #>        disease3_DKD_glomerulus_Geometric_Segment_30
+    #> A2M                                       921.71436
+    #> NAT2                                       64.45555
+    #> ACADM                                      77.34666
+    #> ACADS                                      77.34666
+    #> ACAT1                                      80.56944
+    #> ACVRL1                                     67.67833
+    #>        disease3_DKD_glomerulus_Geometric_Segment_31
+    #> A2M                                      1229.91746
+    #> NAT2                                       45.55250
+    #> ACADM                                      45.55250
+    #> ACADS                                      80.98222
+    #> ACAT1                                      45.55250
+    #> ACVRL1                                    121.47333
+    #>        disease3_DKD_glomerulus_Geometric_Segment_32
+    #> A2M                                       851.49881
+    #> NAT2                                       41.20156
+    #> ACADM                                      98.88373
+    #> ACADS                                      68.66926
+    #> ACAT1                                      57.68218
+    #> ACVRL1                                    107.12404
+    #>        disease3_DKD_glomerulus_Geometric_Segment_33
+    #> A2M                                       798.82000
+    #> NAT2                                       47.92920
+    #> ACADM                                      79.88200
+    #> ACADS                                      90.53293
+    #> ACAT1                                      53.25467
+    #> ACVRL1                                     47.92920
+    #>        disease3_DKD_glomerulus_Geometric_Segment_34
+    #> A2M                                       950.17389
+    #> NAT2                                       22.09707
+    #> ACADM                                      77.33974
+    #> ACADS                                      71.81547
+    #> ACAT1                                      49.71840
+    #> ACVRL1                                     99.43680
+    #>        disease3_DKD_glomerulus_Geometric_Segment_35
+    #> A2M                                       953.14651
+    #> NAT2                                       34.21552
+    #> ACADM                                      73.31896
+    #> ACADS                                      73.31896
+    #> ACAT1                                      78.20689
+    #> ACVRL1                                    107.53448
+    #>        disease3_DKD_glomerulus_Geometric_Segment_36
+    #> A2M                                       890.80044
+    #> NAT2                                       28.18989
+    #> ACADM                                      62.01775
+    #> ACADS                                     118.39753
+    #> ACAT1                                      45.10382
+    #> ACVRL1                                    112.75955
+    #>        disease3_DKD_glomerulus_Geometric_Segment_37
+    #> A2M                                       642.85968
+    #> NAT2                                       78.18564
+    #> ACADM                                      82.52928
+    #> ACADS                                      82.52928
+    #> ACAT1                                      43.43647
+    #> ACVRL1                                     60.81105
+    #>        disease3_DKD_glomerulus_Geometric_Segment_38
+    #> A2M                                       754.61787
+    #> NAT2                                       43.12102
+    #> ACADM                                      57.49469
+    #> ACADS                                     143.73674
+    #> ACAT1                                      64.68153
+    #> ACVRL1                                     86.24204
+    #>        disease3_DKD_glomerulus_Geometric_Segment_39
+    #> A2M                                       624.43952
+    #> NAT2                                       42.19186
+    #> ACADM                                      50.63023
+    #> ACADS                                      33.75349
+    #> ACAT1                                      59.06860
+    #> ACVRL1                                     92.82209
+    #>        disease3_DKD_glomerulus_Geometric_Segment_40
+    #> A2M                                       753.10795
+    #> NAT2                                       54.97138
+    #> ACADM                                      82.45707
+    #> ACADS                                      93.45135
+    #> ACAT1                                     109.94277
+    #> ACVRL1                                    137.42846
+    #>        disease3_DKD_glomerulus_Geometric_Segment_41
+    #> A2M                                       894.12885
+    #> NAT2                                       50.80278
+    #> ACADM                                      71.12389
+    #> ACADS                                      71.12389
+    #> ACAT1                                      91.44500
+    #> ACVRL1                                    101.60555
+    #>        disease3_DKD_glomerulus_Geometric_Segment_42
+    #> A2M                                       742.19267
+    #> NAT2                                       33.23251
+    #> ACADM                                      88.62002
+    #> ACADS                                      88.62002
+    #> ACAT1                                      77.54252
+    #> ACVRL1                                     88.62002
+    #>        disease3_DKD_glomerulus_Geometric_Segment_43
+    #> A2M                                        626.0436
+    #> NAT2                                        48.1572
+    #> ACADM                                       72.2358
+    #> ACADS                                       72.2358
+    #> ACAT1                                       84.2751
+    #> ACVRL1                                      84.2751
+    #>        disease3_DKD_glomerulus_Geometric_Segment_44
+    #> A2M                                       693.39247
+    #> NAT2                                       48.37622
+    #> ACADM                                      84.65838
+    #> ACADS                                     100.78379
+    #> ACAT1                                      60.47027
+    #> ACVRL1                                     64.50162
+    #>        disease3_DKD_glomerulus_Geometric_Segment_45
+    #> A2M                                      1202.36307
+    #> NAT2                                       46.90069
+    #> ACADM                                      51.16439
+    #> ACADS                                      89.53768
+    #> ACAT1                                     110.85617
+    #> ACVRL1                                    119.38357
+    #>        disease3_DKD_glomerulus_Geometric_Segment_46
+    #> A2M                                      1264.65046
+    #> NAT2                                       52.69377
+    #> ACADM                                      70.25836
+    #> ACADS                                     111.24240
+    #> ACAT1                                      52.69377
+    #> ACVRL1                                     87.82295
+    #>        disease3_DKD_glomerulus_Geometric_Segment_47
+    #> A2M                                      1112.08588
+    #> NAT2                                       24.28135
+    #> ACADM                                      77.70032
+    #> ACADS                                      58.27524
+    #> ACAT1                                      72.84405
+    #> ACVRL1                                    111.69421
+    #>        disease3_DKD_glomerulus_Geometric_Segment_48
+    #> A2M                                      1040.26674
+    #> NAT2                                       45.99819
+    #> ACADM                                      74.30477
+    #> ACADS                                      56.61316
+    #> ACAT1                                      74.30477
+    #> ACVRL1                                    113.22631
+    #>        disease3_DKD_glomerulus_Geometric_Segment_49
+    #> A2M                                       847.51311
+    #> NAT2                                       34.49181
+    #> ACADM                                      64.05622
+    #> ACADS                                      49.27402
+    #> ACAT1                                      73.91103
+    #> ACVRL1                                    142.89465
+    #>        disease3_DKD_glomerulus_Geometric_Segment_50
+    #> A2M                                       697.74771
+    #> NAT2                                       29.07282
+    #> ACADM                                      82.37299
+    #> ACADS                                      67.83658
+    #> ACAT1                                      67.83658
+    #> ACVRL1                                    106.60034
+    #>        disease3_DKD_glomerulus_Geometric_Segment_51
+    #> A2M                                       907.31242
+    #> NAT2                                       23.26442
+    #> ACADM                                      58.16105
+    #> ACADS                                      69.79326
+    #> ACAT1                                      85.30288
+    #> ACVRL1                                    127.95432
+    #>        disease3_DKD_glomerulus_Geometric_Segment_52
+    #> A2M                                       868.30364
+    #> NAT2                                       40.13168
+    #> ACADM                                      72.96669
+    #> ACADS                                      83.91170
+    #> ACAT1                                      69.31836
+    #> ACVRL1                                     69.31836
+    #>        disease3_DKD_glomerulus_Geometric_Segment_53 disease4_DKD_tubule_PanCK_1
+    #> A2M                                       770.50186                    87.92538
+    #> NAT2                                       41.77420                    74.04243
+    #> ACADM                                      69.62366                    92.55303
+    #> ACADS                                      74.26524                   106.43599
+    #> ACAT1                                      83.54839                   236.01024
+    #> ACVRL1                                    106.75628                    64.78712
+    #>        disease4_DKD_tubule_neg_1 disease4_DKD_tubule_PanCK_2
+    #> A2M                    351.47778                   140.18688
+    #> NAT2                    56.50460                    45.06007
+    #> ACADM                   94.81281                    85.11346
+    #> ACADS                  121.62855                   120.16018
+    #> ACAT1                  260.49579                   290.38710
+    #> ACVRL1                  62.25083                    40.05339
+    #>        disease4_DKD_tubule_neg_2 disease4_DKD_tubule_PanCK_3
+    #> A2M                    381.53380                   105.41751
+    #> NAT2                    57.97157                    46.85222
+    #> ACADM                   90.32779                   105.41751
+    #> ACADS                   86.28326                    54.66093
+    #> ACAT1                  204.92275                   105.41751
+    #> ACVRL1                  53.92704                    70.27834
+    #>        disease4_DKD_tubule_neg_3 disease4_DKD_tubule_PanCK_4
+    #> A2M                    564.75816                   168.09254
+    #> NAT2                    54.58629                    54.22340
+    #> ACADM                  102.87416                    27.11170
+    #> ACADS                  109.17258                    97.60212
+    #> ACAT1                  272.93146                   157.24786
+    #> ACVRL1                  50.38735                    48.80106
+    #>        disease4_DKD_tubule_neg_4 disease4_DKD_tubule_PanCK_5
+    #> A2M                    440.43369                   186.13484
+    #> NAT2                    64.61452                    21.89822
+    #> ACADM                   75.16383                    76.64376
+    #> ACADS                   85.71314                   120.44019
+    #> ACAT1                  129.22905                   142.33840
+    #> ACVRL1                  59.33987                    76.64376
+    #>        disease4_DKD_tubule_neg_5 disease4_DKD_tubule_PanCK_6
+    #> A2M                    958.63012                   156.47720
+    #> NAT2                    74.29383                    47.90118
+    #> ACADM                   91.06986                    73.44848
+    #> ACADS                   91.06986                   108.57602
+    #> ACAT1                  162.96712                   172.44426
+    #> ACVRL1                  67.10411                    47.90118
+    #>        disease4_DKD_tubule_neg_6 disease4_DKD_glomerulus_Geometric_Segment_7
+    #> A2M                    676.09638                                   253.47470
+    #> NAT2                    52.34295                                    57.99845
+    #> ACADM                   67.60964                                    60.14654
+    #> ACADS                   61.06677                                    49.40609
+    #> ACAT1                   98.14302                                   120.29308
+    #> ACVRL1                  54.52390                                    83.77554
+    #>        disease4_DKD_glomerulus_Geometric_Segment_8
+    #> A2M                                      277.68152
+    #> NAT2                                      46.28025
+    #> ACADM                                     48.85138
+    #> ACADS                                     61.70700
+    #> ACAT1                                     77.13376
+    #> ACVRL1                                   123.41401
+    #>        disease4_DKD_glomerulus_Geometric_Segment_9
+    #> A2M                                      438.36619
+    #> NAT2                                      47.39094
+    #> ACADM                                     49.76049
+    #> ACADS                                     75.82550
+    #> ACAT1                                     63.97777
+    #> ACVRL1                                   108.99916
+    #>        disease4_DKD_glomerulus_Geometric_Segment_10
+    #> A2M                                       225.26289
+    #> NAT2                                       65.70168
+    #> ACADM                                      56.31572
+    #> ACADS                                      70.39465
+    #> ACAT1                                      65.70168
+    #> ACVRL1                                     89.16656
+    #>        disease4_DKD_glomerulus_Geometric_Segment_11
+    #> A2M                                       243.08167
+    #> NAT2                                       64.82178
+    #> ACADM                                      76.39710
+    #> ACADS                                      94.91761
+    #> ACAT1                                     101.86280
+    #> ACVRL1                                     67.13684
+    #>        disease4_DKD_glomerulus_Geometric_Segment_12
+    #> A2M                                       615.68718
+    #> NAT2                                       56.46040
+    #> ACADM                                      59.14899
+    #> ACADS                                      77.96912
+    #> ACAT1                                      77.96912
+    #> ACVRL1                                    142.49529
+    #>        disease4_DKD_glomerulus_Geometric_Segment_13
+    #> A2M                                       536.09176
+    #> NAT2                                       51.67149
+    #> ACADM                                      90.42512
+    #> ACADS                                      71.04831
+    #> ACAT1                                      83.96618
+    #> ACVRL1                                     71.04831
+    #>        disease4_DKD_glomerulus_Geometric_Segment_14
+    #> A2M                                       471.98405
+    #> NAT2                                       76.12646
+    #> ACADM                                      38.06323
+    #> ACADS                                      76.12646
+    #> ACAT1                                      98.96440
+    #> ACVRL1                                    175.09086
+    #>        disease4_DKD_glomerulus_Geometric_Segment_15
+    #> A2M                                       282.62102
+    #> NAT2                                       53.95492
+    #> ACADM                                      64.23205
+    #> ACADS                                      77.07846
+    #> ACAT1                                      95.06343
+    #> ACVRL1                                     59.09349
+    #>        disease4_DKD_glomerulus_Geometric_Segment_16
+    #> A2M                                       559.43091
+    #> NAT2                                       52.21355
+    #> ACADM                                      52.21355
+    #> ACADS                                      59.67263
+    #> ACAT1                                     104.42710
+    #> ACVRL1                                    134.26342
+    #>        disease4_DKD_glomerulus_Geometric_Segment_17
+    #> A2M                                       337.39245
+    #> NAT2                                       66.01157
+    #> ACADM                                      77.01349
+    #> ACADS                                      95.35004
+    #> ACAT1                                      73.34618
+    #> ACVRL1                                     62.34426
+    #>        disease4_DKD_glomerulus_Geometric_Segment_18
+    #> A2M                                       739.10516
+    #> NAT2                                       54.74853
+    #> ACADM                                      54.74853
+    #> ACADS                                      72.99804
+    #> ACAT1                                      72.99804
+    #> ACVRL1                                    145.99608
+    #>        No_Template_Control_NA_NA_NA_NA_1 normal3_normal_tubule_PanCK_1
+    #> A2M                             44.90457                      91.19645
+    #> NAT2                            44.90457                      28.06045
+    #> ACADM                           44.90457                     213.96090
+    #> ACADS                           44.90457                     105.22667
+    #> ACAT1                            0.00000                     477.02758
+    #> ACVRL1                           0.00000                      49.10578
+    #>        normal3_normal_tubule_neg_1 normal3_normal_tubule_PanCK_2
+    #> A2M                      295.81431                     102.88458
+    #> NAT2                      59.50288                      54.46831
+    #> ACADM                    241.41167                     217.87322
+    #> ACADS                    108.80526                     181.56102
+    #> ACAT1                    380.81842                     314.70576
+    #> ACVRL1                    56.10271                      54.46831
+    #>        normal3_normal_tubule_neg_2 normal3_normal_tubule_PanCK_3
+    #> A2M                      310.32388                     108.93280
+    #> NAT2                      42.25687                      28.41725
+    #> ACADM                    257.50280                     198.92076
+    #> ACADS                    129.41166                     113.66901
+    #> ACAT1                    517.64665                     293.64494
+    #> ACVRL1                    67.34689                      47.36209
+    #>        normal3_normal_tubule_neg_3 normal3_normal_tubule_PanCK_4
+    #> A2M                      429.44861                      77.87376
+    #> NAT2                      56.93447                      38.93688
+    #> ACADM                    268.40538                     189.81729
+    #> ACADS                    130.13594                     126.54486
+    #> ACAT1                    444.08890                     545.11632
+    #> ACVRL1                    63.44127                      38.93688
+    #>        normal3_normal_tubule_neg_4 normal3_normal_tubule_PanCK_5
+    #> A2M                      259.32148                      50.67129
+    #> NAT2                      35.93008                      35.08012
+    #> ACADM                    278.06761                     175.40061
+    #> ACADS                     95.29283                     159.80945
+    #> ACAT1                    363.98738                     463.83718
+    #> ACVRL1                    53.11404                      81.85362
+    #>        normal3_normal_tubule_neg_5 normal3_normal_tubule_PanCK_6
+    #> A2M                              0                             0
+    #> NAT2                             0                             0
+    #> ACADM                            0                             0
+    #> ACADS                            0                             0
+    #> ACAT1                            0                             0
+    #> ACVRL1                           0                             0
+    #>        normal3_normal_tubule_neg_6
+    #> A2M                      299.45256
+    #> NAT2                      58.03344
+    #> ACADM                    329.62995
+    #> ACADS                     92.85351
+    #> ACAT1                    638.36787
+    #> ACVRL1                    44.10542
+    #>        normal3_normal_glomerulus_Geometric_Segment_7
+    #> A2M                                       1405.56679
+    #> NAT2                                        76.74072
+    #> ACADM                                      117.13057
+    #> ACADS                                      109.05260
+    #> ACAT1                                      105.01361
+    #> ACVRL1                                     189.83230
+    #>        normal3_normal_glomerulus_Geometric_Segment_8
+    #> A2M                                       1248.28436
+    #> NAT2                                        36.71425
+    #> ACADM                                      146.85698
+    #> ACADS                                       55.07137
+    #> ACAT1                                      128.49986
+    #> ACVRL1                                     140.73794
+    #>        normal3_normal_glomerulus_Geometric_Segment_9
+    #> A2M                                       1247.09387
+    #> NAT2                                        48.71460
+    #> ACADM                                       68.20045
+    #> ACADS                                       97.42921
+    #> ACAT1                                      214.34426
+    #> ACVRL1                                     107.17213
+    #>        normal3_normal_glomerulus_Geometric_Segment_10
+    #> A2M                                        1063.77484
+    #> NAT2                                         44.09429
+    #> ACADM                                        99.21216
+    #> ACADS                                        99.21216
+    #> ACAT1                                       159.84181
+    #> ACVRL1                                      132.28288
+    #>        normal3_normal_glomerulus_Geometric_Segment_11
+    #> A2M                                         1079.4700
+    #> NAT2                                          27.5375
+    #> ACADM                                         93.6275
+    #> ACADS                                         60.5825
+    #> ACAT1                                        115.6575
+    #> ACVRL1                                       143.1950
+    #>        normal3_normal_glomerulus_Geometric_Segment_12
+    #> A2M                                        1335.08917
+    #> NAT2                                         47.46984
+    #> ACADM                                        77.13849
+    #> ACADS                                        89.00594
+    #> ACAT1                                       130.54205
+    #> ACVRL1                                      160.21070
+    #>        normal3_normal_glomerulus_Geometric_Segment_13
+    #> A2M                                        1286.86676
+    #> NAT2                                         32.66159
+    #> ACADM                                        71.85550
+    #> ACADS                                        65.32319
+    #> ACAT1                                       117.58173
+    #> ACVRL1                                      117.58173
+    #>        normal3_normal_glomerulus_Geometric_Segment_14
+    #> A2M                                        1354.52858
+    #> NAT2                                         38.54350
+    #> ACADM                                        71.58078
+    #> ACADS                                       110.12427
+    #> ACAT1                                       104.61806
+    #> ACVRL1                                      214.74234
+    #>        normal3_normal_glomerulus_Geometric_Segment_15
+    #> A2M                                        1146.24213
+    #> NAT2                                         42.98408
+    #> ACADM                                        52.53610
+    #> ACADS                                        90.74417
+    #> ACAT1                                        71.64013
+    #> ACVRL1                                      133.72825
+    #>        normal3_normal_glomerulus_Geometric_Segment_16
+    #> A2M                                        1601.33593
+    #> NAT2                                         23.68840
+    #> ACADM                                        61.58984
+    #> ACADS                                        47.37680
+    #> ACAT1                                       118.44201
+    #> ACVRL1                                      194.24489
+    #>        normal3_normal_glomerulus_Geometric_Segment_17
+    #> A2M                                        1840.97154
+    #> NAT2                                         37.24509
+    #> ACADM                                       122.37672
+    #> ACADS                                        63.84872
+    #> ACAT1                                        90.45236
+    #> ACVRL1                                      207.50835
+    #>        normal3_normal_glomerulus_Geometric_Segment_18
+    #> A2M                                         846.33011
+    #> NAT2                                         47.01834
+    #> ACADM                                        61.12384
+    #> ACADS                                        84.63301
+    #> ACAT1                                       131.65135
+    #> ACVRL1                                      145.75685
+    #>        normal3_normal_glomerulus_Geometric_Segment_19
+    #> A2M                                        1001.35002
+    #> NAT2                                         58.27963
+    #> ACADM                                       100.66482
+    #> ACADS                                        90.06852
+    #> ACAT1                                       121.85741
+    #> ACVRL1                                      185.43519
+    #>        normal3_normal_glomerulus_Geometric_Segment_20
+    #> A2M                                         935.05889
+    #> NAT2                                         61.74917
+    #> ACADM                                        83.80245
+    #> ACADS                                        74.98114
+    #> ACAT1                                       123.49834
+    #> ACVRL1                                      136.73031
+    #>        normal3_normal_glomerulus_Geometric_Segment_21
+    #> A2M                                        1104.55749
+    #> NAT2                                         47.87556
+    #> ACADM                                        99.17080
+    #> ACADS                                        54.71492
+    #> ACAT1                                       123.10858
+    #> ACVRL1                                      133.36762
+    #>        normal3_normal_glomerulus_Geometric_Segment_22
+    #> A2M                                        1196.52830
+    #> NAT2                                         70.38402
+    #> ACADM                                        53.82307
+    #> ACADS                                        70.38402
+    #> ACAT1                                        95.22544
+    #> ACVRL1                                      153.18874
+    #>        normal3_normal_glomerulus_Geometric_Segment_23
+    #> A2M                                        1037.45008
+    #> NAT2                                         26.19823
+    #> ACADM                                        31.43788
+    #> ACADS                                        94.31364
+    #> ACAT1                                       120.51188
+    #> ACVRL1                                       89.07400
+    #>        normal3_normal_glomerulus_Geometric_Segment_24
+    #> A2M                                        1601.23868
+    #> NAT2                                         17.66072
+    #> ACADM                                       117.73814
+    #> ACADS                                       100.07742
+    #> ACAT1                                       153.05958
+    #> ACVRL1                                      176.60721
+    #>        normal3_normal_glomerulus_Geometric_Segment_25
+    #> A2M                                        1109.10524
+    #> NAT2                                         27.72763
+    #> ACADM                                        92.42544
+    #> ACADS                                        73.94035
+    #> ACAT1                                       106.28925
+    #> ACVRL1                                      143.25943
+    #>        normal3_normal_glomerulus_Geometric_Segment_26
+    #> A2M                                                 0
+    #> NAT2                                                0
+    #> ACADM                                               0
+    #> ACADS                                               0
+    #> ACAT1                                               0
+    #> ACVRL1                                              0
+    #>        normal3_normal_glomerulus_Geometric_Segment_28
+    #> A2M                                                 0
+    #> NAT2                                                0
+    #> ACADM                                               0
+    #> ACADS                                               0
+    #> ACAT1                                               0
+    #> ACVRL1                                              0
+    #>        normal3_normal_glomerulus_Geometric_Segment_29
+    #> A2M                                        1555.56388
+    #> NAT2                                         68.75420
+    #> ACADM                                       103.13131
+    #> ACADS                                        42.97138
+    #> ACAT1                                        77.34848
+    #> ACVRL1                                      154.69696
+    #>        normal3_normal_glomerulus_Geometric_Segment_30
+    #> A2M                                        1335.47555
+    #> NAT2                                         51.76262
+    #> ACADM                                        62.11514
+    #> ACADS                                        98.34897
+    #> ACAT1                                       124.23028
+    #> ACVRL1                                       98.34897
+    #>        normal3_normal_glomerulus_Geometric_Segment_31
+    #> A2M                                        1610.45335
+    #> NAT2                                         44.00146
+    #> ACADM                                        73.33576
+    #> ACADS                                        90.93635
+    #> ACAT1                                       129.07094
+    #> ACVRL1                                      143.73809
+    #>        normal3_normal_glomerulus_Geometric_Segment_32
+    #> A2M                                        1917.45989
+    #> NAT2                                         40.87608
+    #> ACADM                                        52.02411
+    #> ACADS                                        78.03616
+    #> ACAT1                                       130.06026
+    #> ACVRL1                                      122.62825
+    #>        normal3_normal_glomerulus_Geometric_Segment_33
+    #> A2M                                        1484.67164
+    #> NAT2                                         62.81303
+    #> ACADM                                       114.20551
+    #> ACADS                                        57.10276
+    #> ACAT1                                        91.36441
+    #> ACVRL1                                      131.33634
+    #>        normal3_normal_glomerulus_Geometric_Segment_34
+    #> A2M                                         903.92081
+    #> NAT2                                         59.81829
+    #> ACADM                                       132.92953
+    #> ACADS                                        99.69715
+    #> ACAT1                                        99.69715
+    #> ACVRL1                                      119.63658
+    #>        normal3_normal_glomerulus_Geometric_Segment_35
+    #> A2M                                         896.49236
+    #> NAT2                                         27.00278
+    #> ACADM                                       102.61057
+    #> ACADS                                        54.00556
+    #> ACAT1                                        75.60779
+    #> ACVRL1                                      189.01947
+    #>        normal3_normal_glomerulus_Geometric_Segment_36
+    #> A2M                                        1974.13653
+    #> NAT2                                         64.62947
+    #> ACADM                                        52.87866
+    #> ACADS                                        35.25244
+    #> ACAT1                                       123.38353
+    #> ACVRL1                                      176.26219
+    #>        normal3_normal_glomerulus_Geometric_Segment_37
+    #> A2M                                         1230.6914
+    #> NAT2                                          78.1931
+    #> ACADM                                        105.3907
+    #> ACADS                                         50.9955
+    #> ACAT1                                         98.5913
+    #> ACVRL1                                       146.1871
+    #>        normal3_normal_glomerulus_Geometric_Segment_38
+    #> A2M                                        1665.97126
+    #> NAT2                                         50.63742
+    #> ACADM                                        75.95614
+    #> ACADS                                        86.08362
+    #> ACAT1                                        60.76491
+    #> ACVRL1                                      162.03976
+    #>        normal3_normal_glomerulus_Geometric_Segment_39
+    #> A2M                                        1114.01487
+    #> NAT2                                         77.55800
+    #> ACADM                                        91.65945
+    #> ACADS                                        35.25364
+    #> ACAT1                                        77.55800
+    #> ACVRL1                                      183.31890
+    #>        normal3_normal_glomerulus_Geometric_Segment_40
+    #> A2M                                        1543.95717
+    #> NAT2                                         45.67921
+    #> ACADM                                       118.76594
+    #> ACADS                                        63.95089
+    #> ACAT1                                        36.54336
+    #> ACVRL1                                      127.90178
+    #>        normal3_normal_glomerulus_Geometric_Segment_41
+    #> A2M                                        1362.06436
+    #> NAT2                                         60.41414
+    #> ACADM                                        71.39853
+    #> ACADS                                        60.41414
+    #> ACAT1                                       120.82829
+    #> ACVRL1                                      175.75024
+    #>        normal3_normal_glomerulus_Geometric_Segment_42
+    #> A2M                                        2028.18945
+    #> NAT2                                         48.50018
+    #> ACADM                                        88.18215
+    #> ACADS                                        61.72751
+    #> ACAT1                                       101.40947
+    #> ACVRL1                                      154.31876
+    #>        normal3_normal_glomerulus_Geometric_Segment_43
+    #> A2M                                        1485.54372
+    #> NAT2                                         48.14262
+    #> ACADM                                        82.53021
+    #> ACADS                                        89.40772
+    #> ACAT1                                       151.30538
+    #> ACVRL1                                      151.30538
+    #>        normal3_normal_glomerulus_Geometric_Segment_44
+    #> A2M                                        1316.85768
+    #> NAT2                                         18.03915
+    #> ACADM                                       132.28707
+    #> ACADS                                        66.14354
+    #> ACAT1                                       132.28707
+    #> ACVRL1                                       96.20878
+    #>        normal3_normal_glomerulus_Geometric_Segment_45
+    #> A2M                                         979.78486
+    #> NAT2                                         58.20504
+    #> ACADM                                        67.90588
+    #> ACADS                                       106.70924
+    #> ACAT1                                       145.51260
+    #> ACVRL1                                      184.31596
+    #>        normal3_normal_glomerulus_Geometric_Segment_46
+    #> A2M                                        1171.38300
+    #> NAT2                                         46.85532
+    #> ACADM                                        85.90142
+    #> ACADS                                       117.13830
+    #> ACAT1                                       117.13830
+    #> ACVRL1                                      132.75674
+    #>        normal3_normal_glomerulus_Geometric_Segment_47
+    #> A2M                                        1117.30547
+    #> NAT2                                         54.66938
+    #> ACADM                                        85.42091
+    #> ACADS                                        68.33673
+    #> ACAT1                                        92.25458
+    #> ACVRL1                                      167.42498
+    #>        normal3_normal_glomerulus_Geometric_Segment_48
+    #> A2M                                        1404.64833
+    #> NAT2                                         39.45641
+    #> ACADM                                        90.74975
+    #> ACADS                                        55.23898
+    #> ACAT1                                       110.47796
+    #> ACVRL1                                      165.71694
+    #>        normal3_normal_glomerulus_Geometric_Segment_49
+    #> A2M                                        1459.24440
+    #> NAT2                                         38.97092
+    #> ACADM                                       103.92245
+    #> ACADS                                        77.94184
+    #> ACAT1                                        47.63112
+    #> ACVRL1                                      142.89337
+    #>        normal3_normal_glomerulus_Geometric_Segment_50
+    #> A2M                                        1120.00922
+    #> NAT2                                         42.60905
+    #> ACADM                                        91.30510
+    #> ACADS                                        79.13109
+    #> ACAT1                                        85.21809
+    #> ACVRL1                                      188.69720
+    #>        normal3_normal_glomerulus_Geometric_Segment_51
+    #> A2M                                        1343.88160
+    #> NAT2                                         12.79887
+    #> ACADM                                       102.39098
+    #> ACADS                                        63.99436
+    #> ACAT1                                       102.39098
+    #> ACVRL1                                      172.78478
+    #>        normal3_normal_glomerulus_Geometric_Segment_52
+    #> A2M                                        1549.39925
+    #> NAT2                                         16.93333
+    #> ACADM                                        84.66663
+    #> ACADS                                        84.66663
+    #> ACAT1                                       177.79991
+    #> ACVRL1                                      152.39993
+    #>        normal3_normal_glomerulus_Geometric_Segment_53
+    #> A2M                                        1556.12223
+    #> NAT2                                         33.10898
+    #> ACADM                                       132.43593
+    #> ACADS                                        79.46156
+    #> ACAT1                                       152.30132
+    #> ACVRL1                                      172.16671
+    #>        normal3_normal_glomerulus_Geometric_Segment_54
+    #> A2M                                        1518.06427
+    #> NAT2                                         56.97828
+    #> ACADM                                       118.02644
+    #> ACADS                                        69.18792
+    #> ACAT1                                       101.74693
+    #> ACVRL1                                      187.21436
+    #>        normal4_normal_tubule_PanCK_1 normal4_normal_tubule_neg_1
+    #> A2M                         91.40365                   288.06910
+    #> NAT2                        37.23852                    55.50600
+    #> ACADM                      176.03666                   219.91617
+    #> ACADS                      118.48621                   129.27979
+    #> ACAT1                      382.54120                   477.07054
+    #> ACVRL1                      71.09173                    52.69557
+    #>        normal4_normal_tubule_PanCK_2 normal4_normal_tubule_neg_2
+    #> A2M                        107.77676                   187.46538
+    #> NAT2                        50.41171                    58.11427
+    #> ACADM                      168.61848                   174.34281
+    #> ACADS                       83.44007                    93.73269
+    #> ACAT1                      342.45196                   271.82481
+    #> ACVRL1                      52.15005                    65.61288
+    #>        normal4_normal_tubule_PanCK_3 normal4_normal_tubule_neg_3
+    #> A2M                         77.52683                   306.76720
+    #> NAT2                        45.94183                    35.54010
+    #> ACADM                      249.80868                   151.51307
+    #> ACADS                       94.75502                   112.23190
+    #> ACAT1                      330.20687                   288.06188
+    #> ACVRL1                      54.55592                    29.92851
+    #>        normal4_normal_tubule_PanCK_4 normal4_normal_tubule_neg_4
+    #> A2M                         92.51361                   255.51137
+    #> NAT2                        34.69260                    51.45715
+    #> ACADM                      246.70295                   189.85915
+    #> ACADS                       80.94941                    90.49361
+    #> ACAT1                      416.31123                   260.83453
+    #> ACVRL1                      34.69260                    56.78031
+    #>        normal4_normal_tubule_PanCK_5 normal4_normal_tubule_neg_5
+    #> A2M                        170.29496                   473.96292
+    #> NAT2                        27.24719                    59.62433
+    #> ACADM                      255.44243                   206.15871
+    #> ACADS                      105.58287                    84.88888
+    #> ACAT1                      367.83711                   350.67193
+    #> ACVRL1                      23.84129                    37.39153
+    #>        normal4_normal_tubule_PanCK_6 normal4_normal_tubule_neg_6
+    #> A2M                         80.84929                   282.31300
+    #> NAT2                        23.09980                    36.82344
+    #> ACADM                      250.24780                   201.65215
+    #> ACADS                      100.09912                   133.26577
+    #> ACAT1                      469.69587                   322.64343
+    #> ACVRL1                      46.19959                    66.63288
+    #>        normal4_normal_glomerulus_Geometric_Segment_7
+    #> A2M                                        703.02215
+    #> NAT2                                        69.23703
+    #> ACADM                                       74.56296
+    #> ACADS                                       63.91110
+    #> ACAT1                                      101.19258
+    #> ACVRL1                                      90.54073
+    #>        normal4_normal_glomerulus_Geometric_Segment_8
+    #> A2M                                       1064.35647
+    #> NAT2                                        39.87503
+    #> ACADM                                       88.95198
+    #> ACADS                                       79.75005
+    #> ACAT1                                       92.01929
+    #> ACVRL1                                     153.36549
+    #>        normal4_normal_glomerulus_Geometric_Segment_9
+    #> A2M                                       1347.05379
+    #> NAT2                                        30.38467
+    #> ACADM                                       91.15402
+    #> ACADS                                       57.39327
+    #> ACAT1                                      114.78654
+    #> ACVRL1                                     155.29943
+    #>        normal4_normal_glomerulus_Geometric_Segment_10
+    #> A2M                                        1085.60879
+    #> NAT2                                         51.61637
+    #> ACADM                                        86.58230
+    #> ACADS                                        93.24247
+    #> ACAT1                                        81.58716
+    #> ACVRL1                                      158.17919
+    #>        normal4_normal_glomerulus_Geometric_Segment_11
+    #> A2M                                         931.14575
+    #> NAT2                                         54.41761
+    #> ACADM                                        90.69601
+    #> ACADS                                        66.51041
+    #> ACAT1                                        90.69601
+    #> ACVRL1                                      139.06722
+    #>        normal4_normal_glomerulus_Geometric_Segment_12
+    #> A2M                                        1378.96464
+    #> NAT2                                         29.61977
+    #> ACADM                                        85.56821
+    #> ACADS                                        75.69496
+    #> ACAT1                                       108.60581
+    #> ACVRL1                                      108.60581
+    #>        normal4_normal_glomerulus_Geometric_Segment_13
+    #> A2M                                        1223.55947
+    #> NAT2                                         31.44662
+    #> ACADM                                        94.33987
+    #> ACADS                                        54.31689
+    #> ACAT1                                       111.49257
+    #> ACVRL1                                      128.64527
+    #>        normal4_normal_glomerulus_Geometric_Segment_14
+    #> A2M                                         698.43027
+    #> NAT2                                         39.47649
+    #> ACADM                                        72.87968
+    #> ACADS                                        75.91633
+    #> ACAT1                                        81.98964
+    #> ACVRL1                                      100.20956
+    #>        normal4_normal_glomerulus_Geometric_Segment_15
+    #> A2M                                         844.20883
+    #> NAT2                                         27.35862
+    #> ACADM                                        78.16748
+    #> ACADS                                        89.89261
+    #> ACAT1                                        62.53399
+    #> ACVRL1                                      105.52610
+    #>        normal4_normal_glomerulus_Geometric_Segment_16
+    #> A2M                                        1040.91456
+    #> NAT2                                         35.89361
+    #> ACADM                                        71.78721
+    #> ACADS                                        83.75175
+    #> ACAT1                                        95.71628
+    #> ACVRL1                                      107.68082
+    #>        normal4_normal_glomerulus_Geometric_Segment_17
+    #> A2M                                        1275.99359
+    #> NAT2                                         67.75187
+    #> ACADM                                        56.45989
+    #> ACADS                                        45.16791
+    #> ACAT1                                        90.33583
+    #> ACVRL1                                      112.91979
+    #>        disease3_DKD_tubule_PanCK_1 disease3_DKD_tubule_neg_1
+    #> A2M                      134.21277                 289.60080
+    #> NAT2                      54.01246                  48.26680
+    #> ACADM                     83.47380                  97.48001
+    #> ACADS                     99.84121                  89.90874
+    #> ACAT1                    142.39647                 115.46176
+    #> ACVRL1                    49.10223                  50.15962
+    #>        disease3_DKD_tubule_PanCK_2 disease3_DKD_tubule_neg_2
+    #> A2M                      152.84914                 366.18516
+    #> NAT2                      45.03591                  64.20129
+    #> ACADM                    106.44851                 111.75781
+    #> ACADS                    106.44851                  95.11303
+    #> ACAT1                    120.09576                 110.96520
+    #> ACVRL1                    47.76536                  58.65303
+    #>        disease3_DKD_tubule_PanCK_3 disease3_DKD_tubule_neg_3
+    #> A2M                      142.66561                 368.29324
+    #> NAT2                      35.66640                  52.04144
+    #> ACADM                     68.78520                 105.41727
+    #> ACADS                     86.61841                  82.73254
+    #> ACAT1                    152.85601                 162.79629
+    #> ACVRL1                    63.69000                  77.39496
+    #>        disease3_DKD_tubule_PanCK_4 disease3_DKD_tubule_neg_4
+    #> A2M                      172.01818                  712.7630
+    #> NAT2                      31.92090                   54.8995
+    #> ACADM                     82.46232                   74.4400
+    #> ACADS                     93.10262                   77.2315
+    #> ACAT1                    113.49653                  103.2855
+    #> ACVRL1                    49.65473                   84.6755
+    #>        disease3_DKD_tubule_PanCK_5 disease3_DKD_tubule_neg_5
+    #> A2M                      215.35213                 768.42805
+    #> NAT2                      59.04816                  47.66346
+    #> ACADM                    102.46593                  79.05160
+    #> ACADS                     98.99251                  84.86422
+    #> ACAT1                    138.93686                 132.52768
+    #> ACVRL1                    69.46843                  80.21412
+    #>        disease3_DKD_tubule_PanCK_6 disease3_DKD_tubule_neg_6
+    #> A2M                      153.51594                 401.00955
+    #> NAT2                      41.86798                  52.03941
+    #> ACADM                     83.73597                 137.75137
+    #> ACADS                     93.03996                  85.71196
+    #> ACAT1                     97.69196                 140.81251
+    #> ACVRL1                    55.82398                  52.03941
+    #>        No_Template_Control_NA_NA_NA_NA_2
+    #> A2M                                    0
+    #> NAT2                                   0
+    #> ACADM                                  0
+    #> ACADS                                  0
+    #> ACAT1                                  0
+    #> ACVRL1                                 0
+    #>        disease1B_DKD_glomerulus_Geometric_Segment_15
+    #> A2M                                        788.77612
+    #> NAT2                                        28.17058
+    #> ACADM                                        0.00000
+    #> ACADS                                       84.51173
+    #> ACAT1                                       56.34115
+    #> ACVRL1                                      84.51173
+    #>        disease1B_DKD_glomerulus_Geometric_Segment_16
+    #> A2M                                        494.62072
+    #> NAT2                                        24.73104
+    #> ACADM                                       24.73104
+    #> ACADS                                      148.38621
+    #> ACAT1                                       98.92414
+    #> ACVRL1                                      98.92414
+    #>        disease1B_DKD_glomerulus_Geometric_Segment_17
+    #> A2M                                         289.7308
+    #> NAT2                                          0.0000
+    #> ACADM                                       105.3567
+    #> ACADS                                       158.0350
+    #> ACAT1                                       158.0350
+    #> ACVRL1                                      105.3567
+    #>        disease1B_DKD_glomerulus_Geometric_Segment_18
+    #> A2M                                        404.66520
+    #> NAT2                                        93.38428
+    #> ACADM                                       62.25618
+    #> ACADS                                      186.76855
+    #> ACAT1                                       62.25618
+    #> ACVRL1                                     186.76855
+    #>        disease1B_DKD_glomerulus_Geometric_Segment_19
+    #> A2M                                        500.50964
+    #> NAT2                                         0.00000
+    #> ACADM                                       38.50074
+    #> ACADS                                       77.00148
+    #> ACAT1                                       38.50074
+    #> ACVRL1                                       0.00000
+    #>        disease1B_DKD_glomerulus_Geometric_Segment_20
+    #> A2M                                        651.64479
+    #> NAT2                                        81.45560
+    #> ACADM                                       81.45560
+    #> ACADS                                       81.45560
+    #> ACAT1                                       54.30373
+    #> ACVRL1                                      27.15187
+    #>        disease1B_DKD_glomerulus_Geometric_Segment_21
+    #> A2M                                        836.93709
+    #> NAT2                                         0.00000
+    #> ACADM                                       23.24825
+    #> ACADS                                      116.24126
+    #> ACAT1                                       46.49650
+    #> ACVRL1                                      69.74476
+    #>        disease1B_DKD_glomerulus_Geometric_Segment_22
+    #> A2M                                       1074.70802
+    #> NAT2                                        74.11779
+    #> ACADM                                        0.00000
+    #> ACADS                                      111.17669
+    #> ACAT1                                        0.00000
+    #> ACVRL1                                     111.17669
+    #>        disease1B_DKD_glomerulus_Geometric_Segment_23
+    #> A2M                                          564.655
+    #> NAT2                                          33.215
+    #> ACADM                                          0.000
+    #> ACADS                                         33.215
+    #> ACAT1                                          0.000
+    #> ACVRL1                                         0.000
+    #>        disease1B_DKD_glomerulus_Geometric_Segment_24
+    #> A2M                                        506.67648
+    #> NAT2                                         0.00000
+    #> ACADM                                       77.95023
+    #> ACADS                                       38.97511
+    #> ACAT1                                       38.97511
+    #> ACVRL1                                       0.00000
+    #>        disease2B_DKD_glomerulus_WT1_1 disease2B_DKD_glomerulus_neg_1
+    #> A2M                          102.5730                     1299.30786
+    #> NAT2                           0.0000                        0.00000
+    #> ACADM                          0.0000                      191.07469
+    #> ACADS                          0.0000                       76.42987
+    #> ACAT1                          0.0000                       38.21494
+    #> ACVRL1                       153.8595                      114.64481
+    #>        disease2B_DKD_glomerulus_WT1_2 disease2B_DKD_glomerulus_PanCK_2
+    #> A2M                           0.00000                                0
+    #> NAT2                          0.00000                                0
+    #> ACADM                         0.00000                                0
+    #> ACADS                        61.07972                                0
+    #> ACAT1                        61.07972                                0
+    #> ACVRL1                       61.07972                                0
+    #>        disease2B_DKD_glomerulus_neg_2 disease2B_DKD_glomerulus_WT1_3
+    #> A2M                        1585.13136                      143.25951
+    #> NAT2                         73.15991                        0.00000
+    #> ACADM                        24.38664                        0.00000
+    #> ACADS                         0.00000                        0.00000
+    #> ACAT1                       146.31982                        0.00000
+    #> ACVRL1                      195.09309                       47.75317
+    #>        disease2B_DKD_glomerulus_neg_3 disease2B_DKD_glomerulus_WT1_4
+    #> A2M                         887.83631                      180.99742
+    #> NAT2                        126.83376                        0.00000
+    #> ACADM                        42.27792                        0.00000
+    #> ACADS                       105.69480                       60.33247
+    #> ACAT1                        84.55584                        0.00000
+    #> ACVRL1                      274.80648                        0.00000
+    #>        disease2B_DKD_glomerulus_neg_4 disease2B_DKD_glomerulus_WT1_5
+    #> A2M                         540.47877                       56.95008
+    #> NAT2                          0.00000                       56.95008
+    #> ACADM                        63.58574                        0.00000
+    #> ACADS                        63.58574                        0.00000
+    #> ACAT1                        95.37861                        0.00000
+    #> ACVRL1                      127.17148                        0.00000
+    #>        disease2B_DKD_glomerulus_PanCK_5 disease2B_DKD_glomerulus_neg_5
+    #> A2M                                   0                     1109.40755
+    #> NAT2                                  0                       64.00428
+    #> ACADM                                 0                      106.67380
+    #> ACADS                                 0                       64.00428
+    #> ACAT1                                 0                       64.00428
+    #> ACVRL1                                0                       64.00428
+    #>        disease2B_DKD_glomerulus_WT1_6 disease2B_DKD_tubule_PanCK_6
+    #> A2M                                 0                    172.52818
+    #> NAT2                                0                      0.00000
+    #> ACADM                               0                     69.01127
+    #> ACADS                               0                     34.50564
+    #> ACAT1                               0                    224.28664
+    #> ACVRL1                              0                     17.25282
+    #>        disease2B_DKD_tubule_neg_6 disease2B_DKD_tubule_PanCK_7
+    #> A2M                     458.79925                     91.34828
+    #> NAT2                     41.17429                     34.25560
+    #> ACADM                   252.92779                    194.11509
+    #> ACADS                   147.05104                    171.27802
+    #> ACAT1                   417.62496                    205.53363
+    #> ACVRL1                   70.58450                     79.92974
+    #>        disease2B_DKD_tubule_neg_7 disease2B_DKD_tubule_PanCK_8
+    #> A2M                     304.85050                    138.22143
+    #> NAT2                     33.25642                     78.98367
+    #> ACADM                   343.64965                    197.45918
+    #> ACADS                   149.65388                     59.23775
+    #> ACAT1                   543.18816                    177.71326
+    #> ACVRL1                   66.51284                     39.49184
+    #>        disease2B_DKD_tubule_neg_8 disease2B_DKD_tubule_PanCK_9
+    #> A2M                     293.56327                    146.69532
+    #> NAT2                     56.59051                     62.86942
+    #> ACADM                   346.61687                    209.56474
+    #> ACADS                   173.30843                     83.82590
+    #> ACAT1                   668.47539                    230.52121
+    #> ACVRL1                   35.36907                     20.95647
+    #>        disease2B_DKD_tubule_neg_9 disease2B_DKD_tubule_PanCK_10
+    #> A2M                     182.46570                     114.53398
+    #> NAT2                     46.58699                      31.23654
+    #> ACADM                   384.34265                     135.35834
+    #> ACADS                   139.76096                     114.53398
+    #> ACAT1                   586.21960                     177.00706
+    #> ACVRL1                   31.05799                      20.82436
+    #>        disease2B_DKD_tubule_neg_10 disease2B_DKD_tubule_PanCK_11
+    #> A2M                      297.70416                     156.35676
+    #> NAT2                      53.64039                       0.00000
+    #> ACADM                    303.06820                     184.78526
+    #> ACADS                    155.55713                     142.14251
+    #> ACAT1                    595.40832                     270.07077
+    #> ACVRL1                    40.23029                      14.21425
+    #>        disease2B_DKD_tubule_neg_11
+    #> A2M                      541.37939
+    #> NAT2                      36.09196
+    #> ACADM                    264.67437
+    #> ACADS                    186.47512
+    #> ACAT1                    493.25678
+    #> ACVRL1                   102.26055
+    #>        disease2B_DKD_glomerulus_Geometric_Segment_12
+    #> A2M                                        977.15899
+    #> NAT2                                        50.54271
+    #> ACADM                                        0.00000
+    #> ACADS                                      101.08541
+    #> ACAT1                                       84.23784
+    #> ACVRL1                                      84.23784
+    #>        disease2B_DKD_glomerulus_Geometric_Segment_13
+    #> A2M                                        796.42810
+    #> NAT2                                        29.86605
+    #> ACADM                                       89.59816
+    #> ACADS                                       89.59816
+    #> ACAT1                                      109.50886
+    #> ACVRL1                                     149.33027
+    #>        disease2B_DKD_glomerulus_Geometric_Segment_14
+    #> A2M                                        870.22978
+    #> NAT2                                        85.31664
+    #> ACADM                                      187.69662
+    #> ACADS                                      102.37997
+    #> ACAT1                                      153.56996
+    #> ACVRL1                                      17.06333
+    #>        disease2B_DKD_glomerulus_Geometric_Segment_15
+    #> A2M                                       1147.15419
+    #> NAT2                                        39.10753
+    #> ACADM                                      104.28674
+    #> ACADS                                      130.35843
+    #> ACAT1                                      130.35843
+    #> ACVRL1                                     156.43012
+    #>        disease2B_DKD_glomerulus_Geometric_Segment_16
+    #> A2M                                        321.46167
+    #> NAT2                                        16.91904
+    #> ACADM                                      135.35228
+    #> ACADS                                       84.59518
+    #> ACAT1                                       67.67614
+    #> ACVRL1                                      84.59518
+    #>        disease2B_DKD_glomerulus_Geometric_Segment_17
+    #> A2M                                        824.30272
+    #> NAT2                                        44.15907
+    #> ACADM                                       73.59846
+    #> ACADS                                       58.87877
+    #> ACAT1                                       88.31815
+    #> ACVRL1                                      88.31815
+    #>        disease2B_DKD_glomerulus_Geometric_Segment_18
+    #> A2M                                        990.73086
+    #> NAT2                                        17.85101
+    #> ACADM                                       71.40403
+    #> ACADS                                       89.25503
+    #> ACAT1                                       89.25503
+    #> ACVRL1                                     160.65906
+    #>        disease2B_DKD_glomerulus_Geometric_Segment_19
+    #> A2M                                        914.40148
+    #> NAT2                                        72.36271
+    #> ACADM                                       46.04900
+    #> ACADS                                      118.41170
+    #> ACAT1                                      131.56856
+    #> ACVRL1                                      92.09799
+    #>        disease2B_DKD_glomerulus_Geometric_Segment_20
+    #> A2M                                        591.42934
+    #> NAT2                                        89.61051
+    #> ACADM                                       62.72735
+    #> ACADS                                       80.64946
+    #> ACAT1                                       71.68841
+    #> ACVRL1                                     143.37681
+    #>        disease2B_DKD_glomerulus_Geometric_Segment_21
+    #> A2M                                       1196.21016
+    #> NAT2                                        43.76379
+    #> ACADM                                      175.05515
+    #> ACADS                                       87.52757
+    #> ACAT1                                       58.35172
+    #> ACVRL1                                     145.87929
+    #>        disease2B_DKD_glomerulus_Geometric_Segment_22
+    #> A2M                                       1177.27940
+    #> NAT2                                        23.08391
+    #> ACADM                                      115.41955
+    #> ACADS                                       69.25173
+    #> ACAT1                                      150.04541
+    #> ACVRL1                                     115.41955
+    #>        disease2B_DKD_glomerulus_Geometric_Segment_23
+    #> A2M                                       1103.84999
+    #> NAT2                                        64.93235
+    #> ACADM                                       89.28198
+    #> ACADS                                       56.81581
+    #> ACAT1                                       81.16544
+    #> ACVRL1                                     113.63162
+    #>        No_Template_Control_NA_NA_NA_NA_3 normal2B_normal_glomerulus_WT1_1
+    #> A2M                                    0                         82.79432
+    #> NAT2                                   0                         60.50354
+    #> ACADM                                  0                         38.21276
+    #> ACADS                                  0                         57.31914
+    #> ACAT1                                  0                         76.42553
+    #> ACVRL1                                 0                         70.05673
+    #>        normal2B_normal_glomerulus_neg_1 normal2B_normal_glomerulus_WT1_2
+    #> A2M                           123.12157                         85.20511
+    #> NAT2                          101.70912                         63.90384
+    #> ACADM                          61.56079                         51.73168
+    #> ACADS                          61.56079                         51.73168
+    #> ACAT1                         109.73879                         63.90384
+    #> ACVRL1                        104.38568                         57.81776
+    #>        normal2B_normal_glomerulus_neg_2 normal2B_normal_glomerulus_WT1_3
+    #> A2M                           128.99953                        106.75537
+    #> NAT2                           93.31881                         99.12998
+    #> ACADM                          46.65940                        106.75537
+    #> ACADS                          65.87210                         30.50153
+    #> ACAT1                          74.10611                         68.62845
+    #> ACVRL1                         68.61677                         53.37768
+    #>        normal2B_normal_glomerulus_neg_3 normal2B_normal_glomerulus_WT1_4
+    #> A2M                           146.84736                         72.15017
+    #> NAT2                           61.18640                         63.66192
+    #> ACADM                          16.31637                         55.17366
+    #> ACADS                          61.18640                         67.90605
+    #> ACAT1                          81.58187                         63.66192
+    #> ACVRL1                         93.81915                         46.68541
+    #>        normal2B_normal_glomerulus_neg_4 normal2B_normal_glomerulus_WT1_5
+    #> A2M                           181.70594                        135.86232
+    #> NAT2                           88.74011                         55.58004
+    #> ACADM                          54.93435                         30.87780
+    #> ACADS                          71.83723                         61.75560
+    #> ACAT1                          67.61151                         37.05336
+    #> ACVRL1                         59.16007                         74.10672
+    #>        normal2B_normal_glomerulus_neg_5 normal2B_normal_glomerulus_WT1_6
+    #> A2M                           169.53704                         99.62856
+    #> NAT2                           97.48380                         43.31677
+    #> ACADM                          46.62269                         60.64347
+    #> ACADS                          89.00695                         60.64347
+    #> ACAT1                          84.76852                         56.31180
+    #> ACVRL1                         84.76852                         73.63850
+    #>        normal2B_normal_glomerulus_PanCK_6 normal2B_normal_glomerulus_neg_6
+    #> A2M                              56.29993                        242.75706
+    #> NAT2                             46.06358                         66.50878
+    #> ACADM                            40.94541                         53.20703
+    #> ACADS                            61.41811                         63.18334
+    #> ACAT1                            66.53628                         69.83422
+    #> ACVRL1                           51.18176                         59.85791
+    #>        normal2B_normal_tubule_PanCK_7 normal2B_normal_tubule_neg_7
+    #> A2M                         104.97352                    296.21003
+    #> NAT2                         44.53422                     50.27418
+    #> ACADM                       117.69758                    157.61635
+    #> ACADS                        95.43047                    118.21226
+    #> ACAT1                       168.59383                    548.93969
+    #> ACVRL1                       47.71523                     42.12161
+    #>        normal2B_normal_tubule_PanCK_8 normal2B_normal_tubule_neg_8
+    #> A2M                          51.88408                    479.30792
+    #> NAT2                        103.76817                     55.79246
+    #> ACADM                        46.69568                    154.69727
+    #> ACADS                        72.63772                    121.72900
+    #> ACAT1                        88.20294                    679.65356
+    #> ACVRL1                       77.82613                     45.64837
+    #>        normal2B_normal_tubule_PanCK_9 normal2B_normal_tubule_neg_9
+    #> A2M                         131.58555                    544.41317
+    #> NAT2                         51.35046                     43.71201
+    #> ACADM                       189.35481                    149.68051
+    #> ACADS                       134.79495                    128.48681
+    #> ACAT1                       378.70962                    491.42892
+    #> ACVRL1                       48.14105                     39.73819
+    #>        normal2B_normal_tubule_PanCK_10 normal2B_normal_tubule_neg_10
+    #> A2M                          231.96049                     364.29551
+    #> NAT2                          29.93039                      46.33583
+    #> ACADM                        202.03010                     172.56103
+    #> ACADS                        127.20414                      95.86724
+    #> ACAT1                        276.85607                     712.61315
+    #> ACVRL1                        44.89558                      62.31371
+    #>        normal2B_normal_tubule_PanCK_11 normal2B_normal_tubule_neg_11
+    #> A2M                           91.68754                     376.19395
+    #> NAT2                          21.15866                      48.02476
+    #> ACADM                        190.42797                     169.23010
+    #> ACADS                        112.84621                     132.63981
+    #> ACAT1                        352.64440                     676.92042
+    #> ACVRL1                        56.42310                      65.17646
+    #>        normal2B_normal_tubule_PanCK_12 normal2B_normal_tubule_neg_12
+    #> A2M                          170.14389                     548.01422
+    #> NAT2                          32.93107                      51.86966
+    #> ACADM                        131.72430                     187.18181
+    #> ACADS                        115.25876                     108.24972
+    #> ACAT1                        356.75331                     650.62594
+    #> ACVRL1                        38.41959                      58.63527
+    #>        normal2B_normal_glomerulus_Geometric_Segment_13
+    #> A2M                                          332.25680
+    #> NAT2                                          80.19992
+    #> ACADM                                        120.29988
+    #> ACADS                                         91.65705
+    #> ACAT1                                        148.94271
+    #> ACVRL1                                        85.92848
+    #>        normal2B_normal_glomerulus_Geometric_Segment_14
+    #> A2M                                          435.26407
+    #> NAT2                                          48.96721
+    #> ACADM                                        136.02002
+    #> ACADS                                         59.84881
+    #> ACAT1                                        141.46082
+    #> ACVRL1                                        87.05281
+    #>        normal2B_normal_glomerulus_Geometric_Segment_15
+    #> A2M                                          418.03121
+    #> NAT2                                          45.72216
+    #> ACADM                                         52.25390
+    #> ACADS                                         58.78564
+    #> ACAT1                                        150.22997
+    #> ACVRL1                                        78.38085
+    #>        normal2B_normal_glomerulus_Geometric_Segment_16
+    #> A2M                                          373.54080
+    #> NAT2                                          65.62203
+    #> ACADM                                        116.10052
+    #> ACADS                                         55.52634
+    #> ACAT1                                        106.00482
+    #> ACVRL1                                       166.57901
+    #>        normal2B_normal_glomerulus_Geometric_Segment_17
+    #> A2M                                          388.43539
+    #> NAT2                                          29.50142
+    #> ACADM                                         93.42117
+    #> ACADS                                         78.67046
+    #> ACAT1                                         73.75356
+    #> ACVRL1                                       122.92259
+    #>        normal2B_normal_glomerulus_Geometric_Segment_18
+    #> A2M                                          353.15676
+    #> NAT2                                          61.41857
+    #> ACADM                                         51.18214
+    #> ACADS                                         66.53678
+    #> ACAT1                                         92.12785
+    #> ACVRL1                                       127.95535
+    #>        normal2B_normal_glomerulus_Geometric_Segment_19
+    #> A2M                                          357.91292
+    #> NAT2                                          59.65215
+    #> ACADM                                         54.22923
+    #> ACADS                                         48.80631
+    #> ACAT1                                        108.45846
+    #> ACVRL1                                       162.68769
+    #>        normal2B_normal_glomerulus_Geometric_Segment_20
+    #> A2M                                          325.79634
+    #> NAT2                                          67.87424
+    #> ACADM                                         54.29939
+    #> ACADS                                         81.44909
+    #> ACAT1                                        149.32332
+    #> ACVRL1                                       108.59878
+    #>        normal2B_normal_glomerulus_Geometric_Segment_21
+    #> A2M                                          460.60438
+    #> NAT2                                          26.32025
+    #> ACADM                                         78.96075
+    #> ACADS                                         26.32025
+    #> ACAT1                                        184.24175
+    #> ACVRL1                                       105.28100
+    #>        normal2B_normal_glomerulus_Geometric_Segment_22
+    #> A2M                                          581.69543
+    #> NAT2                                          63.62294
+    #> ACADM                                        127.24588
+    #> ACADS                                         99.97890
+    #> ACAT1                                         81.80092
+    #> ACVRL1                                        63.62294
+    #>        disease1B_DKD_glomerulus_WT1_1 disease1B_DKD_glomerulus_neg_1
+    #> A2M                         286.36294                      653.86063
+    #> NAT2                         78.09898                       44.58141
+    #> ACADM                        78.09898                       22.29070
+    #> ACADS                        78.09898                       59.44188
+    #> ACAT1                       104.13198                       59.44188
+    #> ACVRL1                       52.06599                       37.15117
+    #>        disease1B_DKD_glomerulus_WT1_2 disease1B_DKD_glomerulus_neg_2
+    #> A2M                         137.96446                     1121.11593
+    #> NAT2                        103.47334                       60.05978
+    #> ACADM                       103.47334                       40.03985
+    #> ACADS                         0.00000                       60.05978
+    #> ACAT1                        68.98223                       80.07971
+    #> ACVRL1                       34.49111                      100.09964
+    #>        disease1B_DKD_glomerulus_WT1_3 disease1B_DKD_glomerulus_neg_3
+    #> A2M                         190.94527                      615.41876
+    #> NAT2                         31.82421                       22.79329
+    #> ACADM                        31.82421                      102.56979
+    #> ACADS                        95.47264                       56.98322
+    #> ACAT1                       127.29685                       91.17315
+    #> ACVRL1                      127.29685                      102.56979
+    #>        disease1B_DKD_glomerulus_WT1_4 disease1B_DKD_glomerulus_PanCK_4
+    #> A2M                          390.2743                                0
+    #> NAT2                         210.1477                                0
+    #> ACADM                         30.0211                                0
+    #> ACADS                        150.1055                                0
+    #> ACAT1                        120.0844                                0
+    #> ACVRL1                        60.0422                                0
+    #>        disease1B_DKD_glomerulus_neg_4 disease1B_DKD_glomerulus_WT1_5
+    #> A2M                         354.30836                              0
+    #> NAT2                          0.00000                              0
+    #> ACADM                        35.43084                              0
+    #> ACADS                         0.00000                              0
+    #> ACAT1                       106.29251                              0
+    #> ACVRL1                       70.86167                              0
+    #>        disease1B_DKD_glomerulus_neg_5 disease1B_DKD_glomerulus_WT1_6
+    #> A2M                         586.83364                      481.94041
+    #> NAT2                         45.14105                       28.34944
+    #> ACADM                        22.57052                       56.69887
+    #> ACADS                       135.42315                       85.04831
+    #> ACAT1                        67.71157                       28.34944
+    #> ACVRL1                       90.28210                      198.44605
+    #>        disease1B_DKD_glomerulus_neg_6 disease1B_DKD_tubule_WT1_7
+    #> A2M                         792.42330                    0.00000
+    #> NAT2                         90.56266                   42.29575
+    #> ACADM                        67.92200                    0.00000
+    #> ACADS                        67.92200                   42.29575
+    #> ACAT1                        67.92200                    0.00000
+    #> ACVRL1                      135.84399                    0.00000
+    #>        disease1B_DKD_tubule_PanCK_7 disease1B_DKD_tubule_neg_7
+    #> A2M                        97.03653                  315.66432
+    #> NAT2                       48.51827                   45.52851
+    #> ACADM                      91.64561                  130.51506
+    #> ACADS                     150.94572                  121.40935
+    #> ACAT1                      80.86378                  257.99488
+    #> ACVRL1                     86.25470                   54.63421
+    #>        disease1B_DKD_tubule_PanCK_8 disease1B_DKD_tubule_neg_8
+    #> A2M                       148.78974                  268.36402
+    #> NAT2                       35.00935                   68.09236
+    #> ACADM                      70.01870                  204.27709
+    #> ACADS                      52.51402                   96.13040
+    #> ACAT1                     157.54207                  240.32599
+    #> ACVRL1                     26.25701                   44.05976
+    #>        disease1B_DKD_tubule_WT1_9 disease1B_DKD_tubule_PanCK_9
+    #> A2M                     140.58597                    145.49256
+    #> NAT2                    105.43947                     37.54647
+    #> ACADM                    35.14649                    112.63940
+    #> ACADS                   105.43947                    117.33271
+    #> ACAT1                     0.00000                    107.94609
+    #> ACVRL1                  105.43947                     89.17286
+    #>        disease1B_DKD_tubule_neg_9 disease1B_DKD_tubule_PanCK_10
+    #> A2M                     305.70642                     116.61279
+    #> NAT2                     51.73493                      36.19018
+    #> ACADM                   114.44394                      88.46488
+    #> ACADS                   137.95982                      96.50714
+    #> ACAT1                   274.35192                      88.46488
+    #> ACVRL1                   34.48996                      52.27470
+    #>        disease1B_DKD_tubule_neg_10 disease1B_DKD_tubule_PanCK_11
+    #> A2M                      413.83012                     121.88525
+    #> NAT2                      41.75141                      55.40239
+    #> ACADM                    108.06246                      22.16095
+    #> ACADS                    100.69457                      66.48286
+    #> ACAT1                    222.26484                     121.88525
+    #> ACVRL1                    61.39913                      55.40239
+    #>        disease1B_DKD_tubule_neg_11 disease1B_DKD_tubule_PanCK_12
+    #> A2M                      415.20816                      77.13076
+    #> NAT2                      51.49869                      61.70460
+    #> ACADM                     83.68537                     115.69613
+    #> ACADS                    115.87205                      15.42615
+    #> ACAT1                    112.65338                     100.26998
+    #> ACVRL1                    64.37336                      46.27845
+    #>        disease1B_DKD_tubule_neg_12
+    #> A2M                      123.75048
+    #> NAT2                      55.80904
+    #> ACADM                     94.63272
+    #> ACADS                    114.04456
+    #> ACAT1                    184.41248
+    #> ACVRL1                    75.22088
+    #>        disease1B_DKD_glomerulus_Geometric_Segment_13
+    #> A2M                                       1002.52390
+    #> NAT2                                       109.65105
+    #> ACADM                                       46.99331
+    #> ACADS                                       93.98662
+    #> ACAT1                                      140.97992
+    #> ACVRL1                                      78.32218
+    #>        disease1B_DKD_glomerulus_Geometric_Segment_14
+    #> A2M                                        684.32136
+    #> NAT2                                        68.43214
+    #> ACADM                                       34.21607
+    #> ACADS                                       91.24285
+    #> ACAT1                                       68.43214
+    #> ACVRL1                                     125.45892
+    #> [1] "matrix" "array"
+    #> [1] "data.frame"
