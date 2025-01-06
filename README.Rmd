@@ -482,5 +482,3 @@ class(df_normCounts)
 write.csv(df_normCounts, "/Users/llancell/Documents/gitLab_SpittauLab/Dgea_Heatmap_Package/tests/testthat/NormCounts_ExampleDataNanostring.csv", row.names = FALSE)
 
 ```
-### Bibliography
-
