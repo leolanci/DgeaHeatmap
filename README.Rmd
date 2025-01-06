@@ -43,7 +43,7 @@ library(testthat)
 #input_data <- read.csv(test_path("1_Counts_All_Regions_All_Ages_Pos_Neg.csv"))
 #del_layer6 <- grep("layer", colnames(input_data))
 #input_data <- input_data[, -del_layer6]
-input_data <- df_normCounts
+input_data <- read.csv("/Users/llancell/Documents/gitLab_SpittauLab/Dgea_Heatmap_Package/tests/testthat/NormCounts_ExampleDataNanostring.csv")
 ```
 
 
@@ -475,6 +475,8 @@ head(CPM)
 class(CPM)
 
 df_normCounts <-data.frame("genes" = row.names(CPM), CPM)
+class(df_normCounts)
+write.csv(df_normCounts, "/Users/llancell/Documents/gitLab_SpittauLab/Dgea_Heatmap_Package/tests/testthat/NormCounts_ExampleDataNanostring.csv", row.names = FALSE)
 
 ```
 
