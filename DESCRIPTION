@@ -30,4 +30,5 @@ Suggests:
     edgeR,
     ggiraph,
     ggsankey, 
-    utils
+    utils,
+    stringr
