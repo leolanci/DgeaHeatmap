@@ -46,7 +46,8 @@ library(testthat)
 #input_data <- read.csv(test_path("1_Counts_All_Regions_All_Ages_Pos_Neg.csv"))
 #del_layer6 <- grep("layer", colnames(input_data))
 #input_data <- input_data[, -del_layer6]
-input_data <- read.csv("/Users/llancell/Documents/Demo Data for R Package/NormCounts_ExampleDataNanostring.csv")
+#input_data <- read.csv("/Users/llancell/Documents/Demo Data for R Package/NormCounts_ExampleDataNanostring.csv")
+input_data <- read.csv(system.file())
 ```
 
 
