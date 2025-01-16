@@ -41,13 +41,12 @@ pak::pak("leolanci/Dgea_Heatmap_Package")
 ## Usage
 
 This is a basic example which shows you how to solve a common problem:
-```{r input normalizedReadCountsExample, echo=FALSE, results='hide'}
-library(testthat)
+```{r inputnormalizedReadCountsExample, echo=FALSE, results='hide'}
+#library(testthat)
 #input_data <- read.csv(test_path("1_Counts_All_Regions_All_Ages_Pos_Neg.csv"))
 #del_layer6 <- grep("layer", colnames(input_data))
 #input_data <- input_data[, -del_layer6]
-input_data <- read.csv(system.file("tests/testthat/testfile_counts.csv", package = "DgeaHeatmap"))
-
+input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
 ```
 
 
