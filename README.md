@@ -58,14 +58,14 @@ x <- 1
 matrixCounts <- build_matrix(input_data, x)
 ```
 
-|        | No_Template_Control_NA_NA_NA_NA | disease3_DKD_glomerulus_Geometric_Segment_7 | disease3_DKD_glomerulus_Geometric_Segment_8 | disease3_DKD_glomerulus_Geometric_Segment_9 |
-|:-------|--------------------------------:|--------------------------------------------:|--------------------------------------------:|--------------------------------------------:|
-| A2M    |                               0 |                                  1183.26647 |                                   983.54729 |                                   998.63466 |
-| NAT2   |                               0 |                                    36.59587 |                                    67.57195 |                                    22.19188 |
-| ACADM  |                               0 |                                    75.63146 |                                    56.30996 |                                    66.57564 |
-| ACADS  |                               0 |                                    65.87257 |                                    63.81795 |                                   106.52103 |
-| ACAT1  |                               0 |                                    70.75202 |                                    90.09594 |                                    93.20590 |
-| ACVRL1 |                               0 |                                   126.86568 |                                    82.58794 |                                   106.52103 |
+|        | No_Template_Control_NA_NA_NA_NA | disease3_DKD_glomerulus_Geometric_Segment_7 | disease3_DKD_glomerulus_Geometric_Segment_8 | disease4_DKD_tubule_PanCK_1 |
+|:-------|--------------------------------:|--------------------------------------------:|--------------------------------------------:|----------------------------:|
+| A2M    |                               0 |                                  1183.26647 |                                   983.54729 |                    87.92538 |
+| NAT2   |                               0 |                                    36.59587 |                                    67.57195 |                    74.04243 |
+| ACADM  |                               0 |                                    75.63146 |                                    56.30996 |                    92.55303 |
+| ACADS  |                               0 |                                    65.87257 |                                    63.81795 |                   106.43599 |
+| ACAT1  |                               0 |                                    70.75202 |                                    90.09594 |                   236.01024 |
+| ACVRL1 |                               0 |                                   126.86568 |                                    82.58794 |                    64.78712 |
 
 ``` r
 parameter1 = "DKD"
@@ -74,23 +74,23 @@ factors_for_individual_matrix = list(parameter1, parameter2)
 indiMatrix <- individual_matrix(factors_for_individual_matrix, matrixCounts)
 ```
 
-|        | disease3_DKD_glomerulus_Geometric_Segment_7 | disease3_DKD_glomerulus_Geometric_Segment_8 | disease3_DKD_glomerulus_Geometric_Segment_9 | disease3_DKD_glomerulus_Geometric_Segment_10 | disease3_DKD_glomerulus_Geometric_Segment_11 | disease3_DKD_glomerulus_Geometric_Segment_12 | disease3_DKD_glomerulus_Geometric_Segment_13 | disease3_DKD_glomerulus_Geometric_Segment_14 | disease3_DKD_glomerulus_Geometric_Segment_15 |
-|:-------|--------------------------------------------:|--------------------------------------------:|--------------------------------------------:|---------------------------------------------:|---------------------------------------------:|---------------------------------------------:|---------------------------------------------:|---------------------------------------------:|---------------------------------------------:|
-| A2M    |                                  1183.26647 |                                   983.54729 |                                   998.63466 |                                   1028.69264 |                                   1224.92442 |                                   1063.33917 |                                   1028.05127 |                                    837.26290 |                                   1175.80633 |
-| NAT2   |                                    36.59587 |                                    67.57195 |                                    22.19188 |                                     62.64474 |                                     56.56845 |                                     44.71987 |                                     42.83547 |                                     61.84328 |                                     34.95640 |
-| ACADM  |                                    75.63146 |                                    56.30996 |                                    66.57564 |                                     82.42729 |                                     67.44699 |                                     89.43974 |                                     76.15195 |                                     66.60046 |                                     63.55710 |
-| ACADS  |                                    65.87257 |                                    63.81795 |                                   106.52103 |                                     62.64474 |                                     93.55551 |                                     74.53312 |                                     61.87346 |                                     61.84328 |                                     98.51350 |
-| ACAT1  |                                    70.75202 |                                    90.09594 |                                    93.20590 |                                     56.05056 |                                    100.08263 |                                     59.62650 |                                     76.15195 |                                     95.14351 |                                     50.84568 |
-| ACVRL1 |                                   126.86568 |                                    82.58794 |                                   106.52103 |                                     85.72439 |                                    110.96118 |                                     89.43974 |                                    104.70893 |                                     71.35763 |                                     76.26852 |
+|        | disease3_DKD_glomerulus_Geometric_Segment_7 | disease3_DKD_glomerulus_Geometric_Segment_8 | disease1B_DKD_glomerulus_Geometric_Segment_14 | disease2B_DKD_glomerulus_WT1_1 |
+|:-------|--------------------------------------------:|--------------------------------------------:|----------------------------------------------:|-------------------------------:|
+| A2M    |                                  1183.26647 |                                   983.54729 |                                     684.32136 |                       102.5730 |
+| NAT2   |                                    36.59587 |                                    67.57195 |                                      68.43214 |                         0.0000 |
+| ACADM  |                                    75.63146 |                                    56.30996 |                                      34.21607 |                         0.0000 |
+| ACADS  |                                    65.87257 |                                    63.81795 |                                      91.24285 |                         0.0000 |
+| ACAT1  |                                    70.75202 |                                    90.09594 |                                      68.43214 |                         0.0000 |
+| ACVRL1 |                                   126.86568 |                                    82.58794 |                                     125.45892 |                       153.8595 |
 
 **Filtering the matrix for only an x amount of most variably expressed
 genes:**
 
 ``` r
-top_number_of_genes <- 500
+top_number_of_genes <- 20
 varGenesMatrix <- filtering_for_top_exprGenes(indiMatrix, top_number_of_genes)
 print(nrow(varGenesMatrix))
-#> [1] 500
+#> [1] 20
 ```
 
 **Using Z-score scaling to scale the values of the matrix:**
@@ -111,6 +111,18 @@ show_data_distribution(scaled_counts)
 ``` r
 seed <- 1 # setting a seed for a reproducible outcome
 elbow_plot(seed, scaled_counts)
+#> Warning: empty cluster: try a better set of initial centers
+#> Warning: empty cluster: try a better set of initial centers
+#> Warning: empty cluster: try a better set of initial centers
+#> Warning: empty cluster: try a better set of initial centers
+#> Warning: empty cluster: try a better set of initial centers
+#> Warning: empty cluster: try a better set of initial centers
+#> Warning: empty cluster: try a better set of initial centers
+#> Warning: empty cluster: try a better set of initial centers
+#> Warning: empty cluster: try a better set of initial centers
+#> Warning: empty cluster: try a better set of initial centers
+#> Warning: empty cluster: try a better set of initial centers
+#> Warning: empty cluster: try a better set of initial centers
 ```
 
 <img src="man/figures/README-exampleElbowPlot-1.png" width="100%" /> As
@@ -120,35 +132,35 @@ overview.
 
 ``` r
 #print(colnames(scaled_counts))
-probes <- list("disease3_DKD_glomerulus_Geometric_Segment", "disease4_DKD_glomerulus_Geometric_Segment", "disease2B_DKD_glomerulus_Geometric_Segment")
+probes <- list("disease3_DKD_glomerulus_Geometric_Segment", "disease1B_DKD_glomerulus_Geometric_Segment", "disease2B_DKD_glomerulus_WT")
 sumBioRepsMatrix <- summarise_bio_replicates(scaled_counts, probes)
 ```
 
-|        | disease3_DKD_glomerulus_Geometric_Segment | disease4_DKD_glomerulus_Geometric_Segment | disease2B_DKD_glomerulus_Geometric_Segment |
-|:-------|------------------------------------------:|------------------------------------------:|-------------------------------------------:|
-| PTBP1  |                                 0.1658914 |                                 1.3262507 |                                 -0.3451329 |
-| HBA2   |                                -0.3215282 |                                 2.5176004 |                                 -0.0355711 |
-| REN    |                                -0.1254242 |                                -0.2322258 |                                  1.0018659 |
-| HSPA1A |                                -0.2666545 |                                 1.9438170 |                                 -0.1998299 |
-| TIMP3  |                                -0.1399782 |                                -0.8917626 |                                  1.2280850 |
-| CCN2   |                                -0.0166328 |                                -0.0896967 |                                  1.4178946 |
+|          | disease3_DKD_glomerulus_Geometric_Segment | disease1B_DKD_glomerulus_Geometric_Segment | disease2B_DKD_glomerulus_WT |
+|:---------|------------------------------------------:|-------------------------------------------:|----------------------------:|
+| A2M      |                                 0.7326170 |                                 -0.1149016 |                  -1.3503324 |
+| C3       |                                -0.2893549 |                                  1.4431712 |                  -0.8644613 |
+| ALDOB    |                                -0.8564917 |                                  0.6752631 |                   1.0377204 |
+| SERPING1 |                                 0.1467075 |                                  1.0335593 |                  -1.3269742 |
+| APOE     |                                 0.8517822 |                                 -0.6496811 |                  -1.0538832 |
+| ASS1     |                                 0.2686383 |                                  0.8501191 |                  -1.3873957 |
 
 **Generating K-means for clustering in the heatmap:**
 
 ``` r
 seed <- 10 #set a seed for reproducibility, but try different seeds first
-k_clusters <- 4
+k_clusters <- 3
 K_meanTable <- Kmean_generation(sumBioRepsMatrix, seed, k_clusters)
 ```
 
-|          | disease3_DKD_glomerulus_Geometric_Segment | disease4_DKD_glomerulus_Geometric_Segment | disease2B_DKD_glomerulus_Geometric_Segment |     |
-|:---------|------------------------------------------:|------------------------------------------:|-------------------------------------------:|----:|
-| PTBP1    |                                 0.1658914 |                                  1.326251 |                                 -0.3451329 |   1 |
-| HBA2     |                                -0.3215282 |                                  2.517600 |                                 -0.0355711 |   1 |
-| HSPA1A   |                                -0.2666545 |                                  1.943817 |                                 -0.1998299 |   1 |
-| HSP90AA1 |                                -0.2396252 |                                  2.111296 |                                 -0.1852615 |   1 |
-| HSPA1B   |                                -0.2427051 |                                  1.857943 |                                 -0.2052410 |   1 |
-| HBB      |                                -0.3113832 |                                  2.153545 |                                  0.1469509 |   1 |
+|       | disease3_DKD_glomerulus_Geometric_Segment | disease1B_DKD_glomerulus_Geometric_Segment | disease2B_DKD_glomerulus_WT |     |
+|:------|------------------------------------------:|-------------------------------------------:|----------------------------:|----:|
+| ALDOB |                                -0.8564917 |                                  0.6752631 |                    1.037720 |   1 |
+| AGL   |                                -0.4895648 |                                 -0.5154561 |                    1.494586 |   1 |
+| A2M   |                                 0.7326170 |                                 -0.1149016 |                   -1.350332 |   2 |
+| APOE  |                                 0.8517822 |                                 -0.6496811 |                   -1.053883 |   2 |
+| ASL   |                                 0.5509249 |                                  0.3669706 |                   -1.468821 |   2 |
+| ACAT1 |                                 0.5859757 |                                  0.2818318 |                   -1.453783 |   2 |
 
 The most variable genes of each cluster are selected using the following
 function. A new object is created to save the most variable genes for
@@ -157,76 +169,43 @@ divided into individual cluster matrices. These matrices are then sorted
 by their variance.
 
 ``` r
-number_of_annotations_per_cluster <- 5
-k_clusters <- 4
+number_of_annotations_per_cluster <- 3
+k_clusters <- 3
 mostVarGeneslist <- most_variable_genes(K_meanTable, number_of_annotations_per_cluster, k_clusters)
 print(mostVarGeneslist)
 #> [[1]]
-#> [1] "HBA2"
+#> [1] "AGL"
 #> 
 #> [[2]]
-#> [1] "HSPB1"
+#> [1] "ALDOB"
 #> 
 #> [[3]]
-#> [1] "ADAM15"
+#> [1] NA
 #> 
 #> [[4]]
-#> [1] "HSP90AA1"
+#> [1] "ASL"
 #> 
 #> [[5]]
-#> [1] "HBB"
+#> [1] "APC"
 #> 
 #> [[6]]
-#> [1] "ADIRF"
+#> [1] "ACAT1"
 #> 
 #> [[7]]
-#> [1] "GSN"
+#> [1] "BTK"
 #> 
 #> [[8]]
-#> [1] "HLA-DRA"
+#> [1] "ACADS"
 #> 
 #> [[9]]
-#> [1] "S100A6"
-#> 
-#> [[10]]
-#> [1] "SLCO2A1"
-#> 
-#> [[11]]
-#> [1] "FTH1"
-#> 
-#> [[12]]
-#> [1] "F2RL3"
-#> 
-#> [[13]]
-#> [1] "CYP26B1"
-#> 
-#> [[14]]
-#> [1] "PLIN2"
-#> 
-#> [[15]]
-#> [1] "CIRBP"
-#> 
-#> [[16]]
-#> [1] "DUX4"
-#> 
-#> [[17]]
-#> [1] "FAM90A1"
-#> 
-#> [[18]]
-#> [1] "SLC9A3R2"
-#> 
-#> [[19]]
-#> [1] "ELOA3D"
-#> 
-#> [[20]]
-#> [1] "PLPP3"
+#> [1] "C3"
 ```
 
 **To set the annotation for a heatmap the following function can be
 used:**
 
 ``` r
-number_of_annotations_per_cluster <- 5
+number_of_annotations_per_cluster <- 3
 annotation_for_heatmap <- set_annotation(sumBioRepsMatrix, number_of_annotations_per_cluster)
 ```
 
@@ -235,7 +214,7 @@ k-means clustering outside of the general heatmap function. This allows
 for a more reliable splitting of the heatmap by its assigned clusters.
 
 ``` r
-k_clusters <- 2
+k_clusters <- 3
 split_heatmap_clusters <- performing_kMeans(sumBioRepsMatrix, k_clusters)
 ```
 
@@ -293,14 +272,14 @@ hm <- function_complexHeatmap_var(scaled_counts, probes, number_of_annotations_p
 as in this example:**
 
 ``` r
-probes <- list("disease3_DKD_glomerulus_Geometric_Segment", "disease4_DKD_glomerulus_Geometric_Segment", "disease2B_DKD_glomerulus_Geometric_Segment")
+probes <- list("disease3_DKD_glomerulus_Geometric_Segment", "disease1B_DKD_glomerulus_Geometric_Segment", "disease2B_DKD_glomerulus_WT")
 sumBioRepsMatrix <- summarise_bio_replicates(scaled_counts, probes)
 
 seed <- 1
-k_clusters <- 4
+k_clusters <- 3
 K_meanTable <- Kmean_generation(sumBioRepsMatrix, seed, k_clusters)
 
-anno_specific_genes <- list("CALM2", "SAT1", "NPHS2", "ALDOB", "HBB", "SPOCK2", "CD81", "LAMP1")
+anno_specific_genes <- list("C3", "ALDOB", "ACADS", "APOE")
 annotation_for_heatmap <- set_annotation(sumBioRepsMatrix, anno_specific_genes)
 split_heatmap_clusters <- performing_kMeans(sumBioRepsMatrix, k_clusters)
 

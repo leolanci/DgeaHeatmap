@@ -47,7 +47,7 @@ library(testthat)
 #del_layer6 <- grep("layer", colnames(input_data))
 #input_data <- input_data[, -del_layer6]
 #input_data <- read.csv("/Users/llancell/Documents/Demo Data for R Package/NormCounts_ExampleDataNanostring.csv")
-input_data <- read.csv(system.file())
+input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
 ```
 
 
@@ -67,13 +67,13 @@ factors_for_individual_matrix = list(parameter1, parameter2)
 indiMatrix <- individual_matrix(factors_for_individual_matrix, matrixCounts)
 ```
 ```{r showIndividualMatrix, echo=FALSE}
-knitr::kable(head(indiMatrix[, 1:9]),"pipe")
+knitr::kable(head(indiMatrix[, 1:4]),"pipe")
 ```
 
 **Filtering the matrix for only an x amount of most variably expressed genes:**
 
 ```{r exampleFilteringForTopExprGenes, echo=TRUE}
-top_number_of_genes <- 500
+top_number_of_genes <- 20
 varGenesMatrix <- filtering_for_top_exprGenes(indiMatrix, top_number_of_genes)
 print(nrow(varGenesMatrix))
 ```
@@ -98,7 +98,7 @@ elbow_plot(seed, scaled_counts)
 As desired, the samples can further be summarized as biological replicates to help generate more clearly arranged heatmaps and to give a better overview.
 ```{r exampleSummariseBioReplicates, echo=TRUE, results='hide'}
 #print(colnames(scaled_counts))
-probes <- list("disease3_DKD_glomerulus_Geometric_Segment", "disease4_DKD_glomerulus_Geometric_Segment", "disease2B_DKD_glomerulus_Geometric_Segment")
+probes <- list("disease3_DKD_glomerulus_Geometric_Segment", "disease1B_DKD_glomerulus_Geometric_Segment", "disease2B_DKD_glomerulus_WT")
 sumBioRepsMatrix <- summarise_bio_replicates(scaled_counts, probes)
 ```
 ```{r showSummedBioReplicates, echo=FALSE}
@@ -108,7 +108,7 @@ knitr::kable(head(sumBioRepsMatrix[, 1:3]),"pipe")
 
 ```{r exampleKmeanGeneration, echo=TRUE}
 seed <- 10 #set a seed for reproducibility, but try different seeds first
-k_clusters <- 4
+k_clusters <- 3
 K_meanTable <- Kmean_generation(sumBioRepsMatrix, seed, k_clusters)
 ```
 ```{r showGeneratedKmeans, echo=FALSE}
@@ -117,21 +117,21 @@ knitr::kable(head(K_meanTable[, 1:4]),"pipe")
 
 The most variable genes of each cluster are selected using the following function. A new object is created to save the most variable genes for each cluster, while the matrix that includes clusters for each gene is divided into individual cluster matrices. These matrices are then sorted by their variance. 
 ```{r exampleMostVariableGenes, echo=TRUE}
-number_of_annotations_per_cluster <- 5
-k_clusters <- 4
+number_of_annotations_per_cluster <- 3
+k_clusters <- 3
 mostVarGeneslist <- most_variable_genes(K_meanTable, number_of_annotations_per_cluster, k_clusters)
 print(mostVarGeneslist)
 ```
 **To set the annotation for a heatmap the following function can be used:**
 
 ```{r exampleSetAnnotation, echo=TRUE}
-number_of_annotations_per_cluster <- 5
+number_of_annotations_per_cluster <- 3
 annotation_for_heatmap <- set_annotation(sumBioRepsMatrix, number_of_annotations_per_cluster)
 ```
 
 "performing_kMeans" is a function specifically written to perform k-means clustering outside of the general heatmap function. This allows for a more reliable splitting of the heatmap by its assigned clusters.
 ```{r examplePerformingKmeansClustering, echo=TRUE}
-k_clusters <- 2
+k_clusters <- 3
 split_heatmap_clusters <- performing_kMeans(sumBioRepsMatrix, k_clusters)
 ```
 
@@ -171,14 +171,14 @@ hm <- function_complexHeatmap_var(scaled_counts, probes, number_of_annotations_p
 **A heatmap can further be generated with annotation of specific genes, as in this example:**
 
 ```{r exampleHeatmapSpecificAnnotation}
-probes <- list("disease3_DKD_glomerulus_Geometric_Segment", "disease4_DKD_glomerulus_Geometric_Segment", "disease2B_DKD_glomerulus_Geometric_Segment")
+probes <- list("disease3_DKD_glomerulus_Geometric_Segment", "disease1B_DKD_glomerulus_Geometric_Segment", "disease2B_DKD_glomerulus_WT")
 sumBioRepsMatrix <- summarise_bio_replicates(scaled_counts, probes)
 
 seed <- 1
-k_clusters <- 4
+k_clusters <- 3
 K_meanTable <- Kmean_generation(sumBioRepsMatrix, seed, k_clusters)
 
-anno_specific_genes <- list("CALM2", "SAT1", "NPHS2", "ALDOB", "HBB", "SPOCK2", "CD81", "LAMP1")
+anno_specific_genes <- list("C3", "ALDOB", "ACADS", "APOE")
 annotation_for_heatmap <- set_annotation(sumBioRepsMatrix, anno_specific_genes)
 split_heatmap_clusters <- performing_kMeans(sumBioRepsMatrix, k_clusters)
 
