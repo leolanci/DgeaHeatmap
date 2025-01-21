@@ -15,11 +15,11 @@ package is aimed at simplifying the extraction of raw read counts from
 ## Installation
 
 You can install the development version of DgeaHeatmap from
-[GitHub](https://github.com/) with:
+[GitLab](https://gitlab.com/) with:
 
 ``` r
 # install.packages("pak")
-pak::pak("leolanci/Dgea_Heatmap_Package")
+devtools::install_gitlab(repo = "https://gitlab.ub.uni-bielefeld.de/leolanci/Dgea_Heatmap_Package.git")
 ```
 
 ## Usage
