@@ -31,11 +31,11 @@ The goal of DgeaHeatmap is to enable R users to generate heatmaps more easily an
 
 ## Installation
 
-You can install the development version of DgeaHeatmap from [GitHub](https://github.com/) with:
+You can install the development version of DgeaHeatmap from [GitLab](https://gitlab.com/) with:
 
 ``` r
 # install.packages("pak")
-pak::pak("leolanci/Dgea_Heatmap_Package")
+devtools::install_gitlab(repo = "https://gitlab.ub.uni-bielefeld.de/spittaulab/Dgea_Heatmap_Package.git")
 ```
 
 ## Usage
@@ -425,4 +425,4 @@ venn.plot <- vennDiagram(results_all_DEG,
 ```
 Chen, H., Boutros, P.C. VennDiagram: a package for the generation of highly-customizable Venn and Euler diagrams in R. BMC Bioinformatics 12, 35 (2011). https://doi.org/10.1186/1471-2105-12-35
 
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
+
