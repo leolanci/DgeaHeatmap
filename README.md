@@ -19,7 +19,7 @@ You can install the development version of DgeaHeatmap from
 
 ``` r
 # install.packages("pak")
-devtools::install_gitlab(repo = "https://gitlab.ub.uni-bielefeld.de/leolanci/Dgea_Heatmap_Package.git")
+devtools::install_gitlab(repo = "https://gitlab.ub.uni-bielefeld.de/spittaulab/Dgea_Heatmap_Package.git")
 ```
 
 ## Usage
