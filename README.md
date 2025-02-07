@@ -18,7 +18,6 @@ You can install the development version of DgeaHeatmap from
 [GitLab](https://gitlab.com/) with:
 
 ``` r
-# install.packages("pak")
 devtools::install_gitlab("spittaulab/Dgea_Heatmap_Package", host = "gitlab.ub.uni-bielefeld.de")
 ```
 

@@ -26,7 +26,6 @@ The goal of DgeaHeatmap is to enable R users to generate heatmaps more easily an
 You can install the development version of DgeaHeatmap from [GitLab](https://gitlab.com/) with:
 
 ``` {r installDgeaHeatmaps, eval=FALSE} 
-# install.packages("pak")
 devtools::install_gitlab("spittaulab/Dgea_Heatmap_Package", host = "gitlab.ub.uni-bielefeld.de")
 ```
 
