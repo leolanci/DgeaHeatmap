@@ -257,7 +257,7 @@ set_annotation <- function(m_top_genes_matrix, top_x_genes_cluster){
   top_x_genes_clusters <- which(BiocGenerics::rownames(m_top_genes_matrix) %in% top_x_genes_cluster)
   #set row annotation: at = numeric indices of wanted labels, labels = names of wanted labels, which = rows or columns
   labeling = BiocGenerics::rownames(m_top_genes_matrix)[top_x_genes_clusters]
-  anno = ComplexHeatmap::anno_mark(at = top_x_genes_clusters, labels = labeling, which = "row")
+  anno = ComplexHeatmap::anno_mark(at = top_x_genes_clusters, labels = labeling, labels_gp = grid::gpar(fontsize = fontsize_rowAnnotation), which = "row")
 
   return(anno)
 }
