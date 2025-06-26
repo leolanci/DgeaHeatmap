@@ -244,15 +244,16 @@ most_variable_genes <- function(m_kmeans,number_of_annotations_per_cluster, k){
   return(top_x_variable_genes)
 }
 
-#' Function to set annotation for a heatmap.
+#' Function to set row annotation for a heatmap.
 #'
 #' @param m_top_genes_matrix An input matrix to used for heatmap generation and choosing annotation for a heatmap.
 #' @param top_x_genes_cluster A list of the most variable x genes of each cluster in a heatmap.
+#' @param fontsize_rowAnnotation An integer defining the font size of the row annotation
 #'
 #' @return A numeric index from the orginal matrix.
 #' @export
 
-set_annotation <- function(m_top_genes_matrix, top_x_genes_cluster){
+set_annotation <- function(m_top_genes_matrix, top_x_genes_cluster, fontsize_rowAnnotation){
   #get numeric indices of top_x_genes_clusters
   top_x_genes_clusters <- which(BiocGenerics::rownames(m_top_genes_matrix) %in% top_x_genes_cluster)
   #set row annotation: at = numeric indices of wanted labels, labels = names of wanted labels, which = rows or columns
