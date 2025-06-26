@@ -2,18 +2,20 @@
 % Please edit documentation in R/Heatmap_building.R
 \name{set_annotation}
 \alias{set_annotation}
-\title{Function to set annotation for a heatmap.}
+\title{Function to set row annotation for a heatmap.}
 \usage{
-set_annotation(m_top_genes_matrix, top_x_genes_cluster)
+set_annotation(m_top_genes_matrix, top_x_genes_cluster, fontsize_rowAnnotation)
 }
 \arguments{
 \item{m_top_genes_matrix}{An input matrix to used for heatmap generation and choosing annotation for a heatmap.}
 
 \item{top_x_genes_cluster}{A list of the most variable x genes of each cluster in a heatmap.}
+
+\item{fontsize_rowAnnotation}{An integer defining the font size of the row annotation}
 }
 \value{
 A numeric index from the orginal matrix.
 }
 \description{
-Function to set annotation for a heatmap.
+Function to set row annotation for a heatmap.
 }

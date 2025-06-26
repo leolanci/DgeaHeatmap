@@ -11,6 +11,7 @@ function_complexHeatmap_var(
   k,
   seed,
   Title,
+  fontsize_rowAnnotation,
   fontsize_columnNames,
   fontsize_rowNames,
   title_heatmapLegend,
@@ -32,6 +33,8 @@ function_complexHeatmap_var(
 \item{seed}{An integer used to set seed for reproducibility and k-Mean clustering.}
 
 \item{Title}{A string to set the title of the heatmap.}
+
+\item{fontsize_rowAnnotation}{An integer used to set the font size of the row annotation in the heatmap}
 
 \item{fontsize_columnNames}{An integer used to set the font size of the columns in the heatmap.}
 
@@ -60,5 +63,6 @@ number_of_annotations_per_cluster <- 10
 k <- 3
 seed <- 1
 Title <- "Heatmap with annotation of most variable genes"
+fontsize_rowAnnotation <- 8
 color_Palette <- "RdBu"
 }
