@@ -333,6 +333,7 @@ print_heatmap <- function(seed,m_top_genes_matrix, title, split, anno,fontsize_c
 #' @param k An integer used to set number of cluster in the heatmap.
 #' @param seed An integer used to set seed for reproducibility and k-Mean clustering.
 #' @param Title A string to set the title of the heatmap.
+#' @param fontsize_rowAnnotation An integer used to set the font size of the row annotation in the heatmap
 #' @param fontsize_columnNames An integer used to set the font size of the columns in the heatmap.
 #' @param fontsize_rowNames An integer used to set the font size of the rownames in the heatmap.
 #' @param title_heatmapLegend A string setting the title of the legend of the heatmap.
@@ -351,13 +352,14 @@ print_heatmap <- function(seed,m_top_genes_matrix, title, split, anno,fontsize_c
 #' k <- 3
 #' seed <- 1
 #' Title <- "Heatmap with annotation of most variable genes"
+#' fontsize_rowAnnotation <- 8
 #' color_Palette <- "RdBu"
-function_complexHeatmap_var <- function(topGenes_matrix, probes, number_of_annotations_per_cluster, k, seed, Title, fontsize_columnNames,fontsize_rowNames, title_heatmapLegend,WidthNum, HeightNum, UnitSize, color_Palette){
+function_complexHeatmap_var <- function(topGenes_matrix, probes, number_of_annotations_per_cluster, k, seed, Title, fontsize_rowAnnotation, fontsize_columnNames,fontsize_rowNames, title_heatmapLegend,WidthNum, HeightNum, UnitSize, color_Palette){
   m_top_genes_matrix <- summarise_bio_replicates(topGenes_matrix, probes)
 
   m_kmeans <- Kmean_generation(m_top_genes_matrix, seed, k)
   top_x_genes_cluster <- most_variable_genes(m_kmeans, number_of_annotations_per_cluster, k)
-  anno <- set_annotation(m_top_genes_matrix, top_x_genes_cluster)
+  anno <- set_annotation(m_top_genes_matrix, top_x_genes_cluster, fontsize_rowAnnotation)
   split <- performing_kMeans(m_top_genes_matrix, k)
   hm <- print_heatmap(seed,m_top_genes_matrix, Title, split, anno,fontsize_columnNames,fontsize_rowNames, title_heatmapLegend,WidthNum, HeightNum, UnitSize, color_Palette)
   return(hm)
@@ -382,3 +384,4 @@ get_heatmap_colors <- function(colorPalette) {
     return(heatmap_color_scheme)
   }
 }
+
