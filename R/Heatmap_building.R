@@ -363,4 +363,22 @@ function_complexHeatmap_var <- function(topGenes_matrix, probes, number_of_annot
   return(hm)
 }
 
-
+#' Creating a color scheme based on the available color palettes of RColorBrewer for the heatmap.
+#'
+#' @param colorPalette An input string defining the color palette (available from RColorBrewer).
+#'
+#' @return The colors used in heatmap based on either ComplexHeatmap default or RColorBrewer.
+#' @export
+#'
+#' @examples
+#' colorPalette <- "RdBu"
+get_heatmap_colors <- function(colorPalette) {
+  if (is.null(colorPalette)) {
+    # Use ComplexHeatmap default color function
+    return(NULL)
+  } else {
+    # Generate color vector from RColorBrewer palette
+    heatmap_color_scheme <- color_setting(colorPalette)
+    return(heatmap_color_scheme)
+  }
+}
