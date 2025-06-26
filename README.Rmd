@@ -125,7 +125,8 @@ print(mostVarGeneslist)
 
 ```{r exampleSetAnnotation, echo=TRUE}
 number_of_annotations_per_cluster <- 3
-annotation_for_heatmap <- set_annotation(sumBioRepsMatrix, number_of_annotations_per_cluster)
+fontsize_rowAnnotation <- 8
+annotation_for_heatmap <- set_annotation(sumBioRepsMatrix, number_of_annotations_per_cluster, fontsize_rowAnnotation)
 ```
 
 "performing_kMeans" is a function specifically written to perform k-means clustering outside of the general heatmap function. This allows for a more reliable splitting of the heatmap by its assigned clusters.
@@ -164,7 +165,7 @@ HeightNum <- 3
 UnitSize <- "cm"
 colorPalette <- "RdBu"
 
-hm <- function_complexHeatmap_var(scaled_counts, probes, number_of_annotations_per_cluster, k_clusters, seed, title, fontsize_columnNames, fontsize_rowNames, title_heatmap_legend, WidthNum, HeightNum, UnitSize, colorPalette)
+hm <- function_complexHeatmap_var(scaled_counts, probes, number_of_annotations_per_cluster, k_clusters, seed, title, fontsize_rowAnnotation, fontsize_columnNames, fontsize_rowNames, title_heatmap_legend, WidthNum, HeightNum, UnitSize, colorPalette)
 ```
 
 **A heatmap can further be generated with annotation of specific genes, as in this example:**
@@ -178,7 +179,7 @@ k_clusters <- 3
 K_meanTable <- Kmean_generation(sumBioRepsMatrix, seed, k_clusters)
 
 anno_specific_genes <- list("C3", "ALDOB", "ACADS", "APOE")
-annotation_for_heatmap <- set_annotation(sumBioRepsMatrix, anno_specific_genes)
+annotation_for_heatmap <- set_annotation(sumBioRepsMatrix, anno_specific_genes, fontsize_rowAnnotation)
 split_heatmap_clusters <- performing_kMeans(sumBioRepsMatrix, k_clusters)
 
 title <- "Heatmap with specific annotation"
