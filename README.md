@@ -333,6 +333,71 @@ of different settings. The options include:
 - changeable height size of the heatmap
 - changeable unit used for the heatmap sizes
 
+``` r
+groups <- c("disease3_DKD_glomerulus_Geometric_Segment", "disease1B_DKD_glomerulus_Geometric_Segment", "disease2B_DKD_glomerulus_WT")
+sample_names <- c(colnames(scaled_counts))
+# Match each sample name to the correct group
+group_assignment <- sapply(sample_names, function(sample) {
+  matched <- groups[sapply(groups, function(g) grepl(g, sample))]
+  if (length(matched) > 0) matched[1] else NA
+})
+# Ensure same length
+stopifnot(length(sample_names) == length(group_assignment))
+
+# Create dataframe
+sample_metadata <- data.frame(Group = group_assignment, row.names = sample_names)
+
+all(colnames(scaled_counts) == rownames(sample_metadata)) # confirm matrix column names match metadata rownames
+#> [1] TRUE
+
+group_colors <- list(Group = c("disease3_DKD_glomerulus_Geometric_Segment" = "#1b9e77", "disease1B_DKD_glomerulus_Geometric_Segment" = "#7570b3", "disease2B_DKD_glomerulus_WT" = "#e7298a"))
+
+names(group_colors$Group)
+#> [1] "disease3_DKD_glomerulus_Geometric_Segment" 
+#> [2] "disease1B_DKD_glomerulus_Geometric_Segment"
+#> [3] "disease2B_DKD_glomerulus_WT"
+print(sample_metadata)
+#>                                                                                    Group
+#> disease3_DKD_glomerulus_Geometric_Segment_7    disease3_DKD_glomerulus_Geometric_Segment
+#> disease3_DKD_glomerulus_Geometric_Segment_8    disease3_DKD_glomerulus_Geometric_Segment
+#> disease1B_DKD_glomerulus_Geometric_Segment_14 disease1B_DKD_glomerulus_Geometric_Segment
+#> disease2B_DKD_glomerulus_WT1_1                               disease2B_DKD_glomerulus_WT
+```
+
+``` r
+# parameters and their options in adv_heatmap()
+ncounts_matrix <- scaled_counts                       # input matrix
+seed <- 1                                             # sets seed
+column_name <- "Heatmap 1"                              # name for heatmap
+colorPalette <- "RdBu"                                # available color palettes from RColorBrewer ()
+cluster_method <- "hierarchical"                      # cluster methods, either "hierarchical" or "kmeans"
+distance_method <- "euclidean"                        # method for creating the distance matrix for hierarchical clustering
+cluster_rows <- TRUE                                  # optional clustering of rows, default = TRUE
+cluster_columns <- TRUE                               # optional clustering of columns, default = FALSE
+k_row = NULL                                          # splitting of rows in heatmaps using k-means, would be an integer
+k_col = NULL                                          # splitting of columns in heatmaps using k-means, would be an integer
+sample_metadata <- sample_metadata                    # dataframe containing the metadata information of the file
+annotation_colors <- group_colors                     # list containing the column groups and the choosen colors for the column annotation per group
+annotation_name_side = "right"                        # optional change: side of annotation name, default = "right"
+show_row_names <- TRUE                                # optional change: show of rownames on = TRUE & off = FALSE, default = FALSE
+show_column_names = TRUE                              # optional change: show of column names on = TRUE & off = FALSE, default = TRUE
+row_annotation = FALSE                                # optional row annotation, default = FALSE
+row_annotation_method = "auto"                        # set if row_annotation = TRUE: options are "auto" & "specific"
+row_anno_names = NULL                                 # set if row_annotation = TRUE & row_annotation_method = "specific: input list of specific genes for the row annotation
+row_anno_number = 5                                   # optional change: number of automatic row annotations per cluster
+fontsize_rowAnnotation = 8                            # optional change: fontsize of the optional row annotation, default = 8
+fontsize_columnNames = 8                              # optional change: fontsize of the optional column names, default = 6
+fontsize_rowNames = 4                                 # optional change: fontsize of the optional row names, default = 4
+title_heatmapLegend = "Expression"                    # changeable title of the legend, default "Expression"
+WidthNum = 4.5                                        # optional change of heatmap width, default = 4.5
+HeightNum = 3                                         # optional change of heatmap height, default = 3
+UnitSize = "cm"                                       # optional change of heatmap unit for sizes, default = "cm"
+
+hm <- adv_Heatmap(ncounts_matrix, seed = seed, column_name = column_name, colorPalette = colorPalette, cluster_method = cluster_method, cluster_rows = cluster_rows, cluster_columns = cluster_columns, k_row = k_row, k_col = k_col, sample_metadata = sample_metadata, annotation_colors = annotation_colors, annotation_name_side = annotation_name_side, show_row_names = show_row_names, show_column_names = show_column_names, row_annotation = row_annotation, row_annotation_method = row_annotation_method, row_anno_names = row_anno_names ,row_anno_number = row_anno_number, fontsize_rowAnnotation = fontsize_rowAnnotation, fontsize_columnNames = fontsize_columnNames, fontsize_rowNames = fontsize_rowNames, title_heatmapLegend = title_heatmapLegend, WidthNum = WidthNum, HeightNum = HeightNum, UnitSize = UnitSize)
+```
+
+<img src="man/figures/README-exampleadv_heatmap-1.png" width="100%" />
+
 ### Differential Gene Expression Analysis Using Nanostring Data
 
 **Functions to analyze Nanostring GeoMx DSP data:**
