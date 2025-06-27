@@ -399,6 +399,7 @@ get_heatmap_colors <- function(colorPalette) {
 #' @param k_col An integer used to set number of clusters for column clustering in the heatmap.
 #' @param sample_metadata A dataframe containing the metadata information for the grouping of the columns.
 #' @param annotation_colors A list assigning choosen colors to the corresponding groups.
+#' @param annotation_name_side The side of the column annotation description, default = "right".
 #' @param show_row_names A Boolean switching rownames on the heatmap on and off.
 #' @param show_column_names A Boolean switching colum names on the heatmap on and off.
 #' @param row_annotation A Boolean switching row annotation on the heatmap on and off.
@@ -431,6 +432,7 @@ adv_Heatmap <- function(
     k_col = NULL,
     sample_metadata = NULL,
     annotation_colors = NULL,
+    annotation_name_side = "right",      # side of annotation name, default = "right"
     show_row_names = FALSE,
     show_column_names = TRUE,
     row_annotation = FALSE,               # FALSE or TRUE
@@ -448,8 +450,8 @@ adv_Heatmap <- function(
 {
   # Distance matrix helper
   get_dist <- function(x, method) {
-    if (method == "correlation") as.dist(1 - cor(t(x)))
-    else dist(x, method = method)
+    if (method == "correlation") stats::as.dist(1 - stats::cor(t(x)))
+    else stats::dist(x, method = method)
   }
 
   # Clustering logic
@@ -461,11 +463,11 @@ adv_Heatmap <- function(
     row_data <- ncounts_matrix
 
     if (cluster_method == "hierarchical") {
-      row_dist <- get_dist(ncounts_matrix, distance_method)
-      row_clust <- hclust(row_dist, method = "complete")
-      row_dend <- as.dendrogram(row_clust)
+      row_dist <- get_dist(row_data, distance_method)
+      row_clust <- stats::hclust(row_dist, method = "complete")
+      row_dend <- stats::as.dendrogram(row_clust)
       if (!is.null(k_row)) {
-        row_split <- cutree(row_clust, k = k_row)
+        row_split <- stats::cutree(row_clust, k = k_row)
         row_split <- as.factor(row_split)
         row_dend = TRUE
       }
@@ -482,10 +484,10 @@ adv_Heatmap <- function(
 
     if (cluster_method == "hierarchical") {
       col_dist <- get_dist(col_data, distance_method)
-      col_clust <- hclust(col_dist, method = "average")
-      col_dend <- as.dendrogram(col_clust)
+      col_clust <- stats::hclust(col_dist, method = "average")
+      col_dend <- stats::as.dendrogram(col_clust)
       if (!is.null(k_col)) {
-        col_split <- cutree(col_clust, k = k_col)
+        col_split <- stats::cutree(col_clust, k = k_col)
         col_split <- as.factor(col_split)
         col_dend = TRUE
       }
@@ -509,24 +511,32 @@ adv_Heatmap <- function(
   annotation_for_rows <- NULL
   if(row_annotation) {
     if (row_annotation_method == "auto") {
-      clusters_row <- levels(factor_rowClusters)
-      nClusters_row <- max(clusters_row)
 
-      y <- sumBioRepsMatrix # creates copy of the summarized biological replicates matrix
-      m_clustered <- BiocGenerics::cbind(y, factor_rowClusters) # bind clusters to matrix
-      last_column <- ncol(m_clustered)
-      o <- BiocGenerics::order(m_clustered[, last_column]) # Ordering the genes by their k-means
-      m_clustered <- m_clustered[o,]
-      top_x_genes_cluster <- most_variable_genes(m_clustered, row_anno_number, nClusters_row) #get most variable expressed genes of each cluster
-      annotation_for_rows <- set_annotation(ncounts_matrix, top_x_genes_cluster, fontsize_rowAnnotation)
+      if (!is.null(k_row)) {
+        m_kmeans <- Kmean_generation(ncounts_matrix, seed, k_row)
+        top_x_genes_cluster <- most_variable_genes(m_kmeans, row_anno_number, k_row) #get most variable expressed genes of each cluster
+        annotation_for_rows <- set_annotation(ncounts_matrix, top_x_genes_cluster, fontsize_rowAnnotation)
 
-      #for (i in levels(row_split)) {
-      # cluster_genes <- rownames_mat[row_split == i]
-      #cluster_data <- mat[cluster_genes, ]
-      #gene_vars <- apply(cluster_data, 1, var)
-      #top_genes <- names(sort(gene_vars, decreasing = TRUE))[1:min(top_n, length(gene_vars))]
-      #annotation_for_rows <- set_annotation(sumBioRepsMatrix, top_genes)
-      #}
+      } else {
+        y <- ncounts_matrix
+        top_x_genes_cluster <- list()
+        #estimates the variance for each row
+        variance_row <- apply(y, 1, stats::var)
+        # binds a column with the estimated variance of each gene to clustermatrix
+        cluster_matrix <- BiocGenerics::cbind(y, variance_row)
+        #get number of last column
+        number_of_last_column <- ncol(y)
+        # orders the variances from highest to lowest
+        o <- BiocGenerics::order(y[, number_of_last_column], decreasing = TRUE)
+        # orders matrix according to order of variances ( highest to lowest)
+        cluster_matrix <- y[o,]
+        # makes a list of the gene names with the highest variance
+        cluster_genes_highest_var <- as.list(BiocGenerics::rownames(y)[1:row_anno_number])
+        # creates list with most_variable_genes of all cluster
+        top_x_genes_cluster <- append (top_x_genes_cluster, cluster_genes_highest_var)
+        # set annotation for rows
+        annotation_for_rows <- set_annotation(ncounts_matrix, top_x_genes_cluster, fontsize_rowAnnotation)
+      }
 
     } else if (row_annotation_method == "specific"){
       annotation_for_rows <- set_annotation(ncounts_matrix, row_anno_names, fontsize_rowAnnotation)

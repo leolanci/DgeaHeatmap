@@ -88,6 +88,7 @@ scaled_counts <- scale_counts(varGenesMatrix)
 ```{r exampleShowDataDistribution, echo=TRUE}
 show_data_distribution(scaled_counts)
 ```
+
 **Generating an elbow plot to choose k for k-mean generation:**
 
 ```{r exampleElbowPlot, echo=TRUE}
@@ -194,6 +195,34 @@ colorPalette <- "RdBu"
 hm <- print_heatmap(seed, sumBioRepsMatrix, title, split_heatmap_clusters, annotation_for_heatmap, fontsize_columnNames, fontsize_rowNames, title_heatmap_legend, WidthNum, HeightNum, UnitSize, colorPalette)
 
 ```
+**Generate heatmaps with advanced customization:**
+With the function "adv_heatmap" users can generate heatmaps using a lot of different settings. 
+The options include:
+- changeable heatmap title
+- changeable seed for clustering and reproducibility
+- changeable color palettes in the heatmap
+- choice between the cluster methods: hierarchical and k-means
+- choice between distancing methods for hierarchical clustering (e.g. euclidean, correlation)
+- optional clustering of rows
+- optional clustering of columns
+- optional splitting of rows through k-means
+- optional splitting of columns through k-means
+- optional annotation of the columns based on an input metadata file
+- changeable color schemes for the column annotation
+- changeable side of the column annotation
+- optional display of row names
+- optional display of column names
+- optional annotation of some row names: either automatic through choosing the most variable rows or specific using an input list of the rownames
+- changeable number of automatic row annotations
+- changeable font size of the row annotation
+- changeable font size of the column names
+- changeable font size of the row names
+- changeable title of the heatmap legend
+- changeable width size of the heatmap
+- changeable height size of the heatmap
+- changeable unit used for the heatmap sizes
+
+
 
 ### Differential Gene Expression Analysis Using Nanostring Data
 
