@@ -195,9 +195,12 @@ colorPalette <- "RdBu"
 hm <- print_heatmap(seed, sumBioRepsMatrix, title, split_heatmap_clusters, annotation_for_heatmap, fontsize_columnNames, fontsize_rowNames, title_heatmap_legend, WidthNum, HeightNum, UnitSize, colorPalette)
 
 ```
+
 **Generate heatmaps with advanced customization:**
+
 With the function "adv_heatmap" users can generate heatmaps using a lot of different settings. 
 The options include:
+
 - changeable heatmap title
 - changeable seed for clustering and reproducibility
 - changeable color palettes in the heatmap
