@@ -385,3 +385,202 @@ get_heatmap_colors <- function(colorPalette) {
   }
 }
 
+#' Creating a color scheme based on the available color palettes of RColorBrewer for the heatmap.
+#'
+#' @param ncounts_matrix An input matrix to create the heatmap.
+#' @param seed An integer used to set seed for reproducibility and k-Mean clustering.
+#' @param column_name A string to set the title of the heatmap.
+#' @param colorPalette Name of the colorPalette used for the heatmap.
+#' @param cluster_method A string setting the cluster method for the heatmap.
+#' @param distance_method A string setting the distance method for clustering.
+#' @param cluster_rows A Boolean switching the optional clustering of the rows on and off.
+#' @param cluster_columns A Boolean switching the optional clustering of the columns on and off.
+#' @param k_row An integer used to set number of clusters for row clustering in the heatmap.
+#' @param k_col An integer used to set number of clusters for column clustering in the heatmap.
+#' @param sample_metadata A dataframe containing the metadata information for the grouping of the columns.
+#' @param annotation_colors A list assigning choosen colors to the corresponding groups.
+#' @param show_row_names A Boolean switching rownames on the heatmap on and off.
+#' @param show_column_names A Boolean switching colum names on the heatmap on and off.
+#' @param row_annotation A Boolean switching row annotation on the heatmap on and off.
+#' @param row_annotation_method A string setting the annotation method of the heatmap.
+#' @param row_anno_names A list containing choosen rownames to use for the row annotation.
+#' @param row_anno_number An integer setting the number of automatic annotations assigned per cluster.
+#' @param fontsize_rowAnnotation An integer setting the fontsize of the optional row annotation.
+#' @param fontsize_columnNames An integer setting the fontsize of the column names.
+#' @param fontsize_rowNames An integer setting the fontsize of the row names.
+#' @param title_heatmapLegend A string setting the changeable title of the legend, default "Expression".
+#' @param WidthNum A float setting the width of the heatmap.
+#' @param HeightNum A float setting the height of the heatmap.
+#' @param UnitSize A string such as "cm" or "inch" to set the unit of HeightNum and WidthNum.
+#'
+#' @return The colors used in heatmap based on either ComplexHeatmap default or RColorBrewer.
+#' @export
+#'
+#' @examples
+#' colorPalette <- "RdBu"
+adv_Heatmap <- function(
+    ncounts_matrix,
+    seed = 1,                            # default seed = 1, changeable and suggested to be changed
+    column_name = "Heatmap",             # changeable title of the heatmap, default "Heatmap
+    colorPalette = NULL,               # "RdBu" ir any other color Palette available through RColorBrewer
+    cluster_method = "hierarchical",     # "hierarchical", "kmeans"
+    distance_method = "euclidean",       # or "correlation"
+    cluster_rows = TRUE,
+    cluster_columns = FALSE,
+    k_row = NULL,
+    k_col = NULL,
+    sample_metadata = NULL,
+    annotation_colors = NULL,
+    show_row_names = FALSE,
+    show_column_names = TRUE,
+    row_annotation = FALSE,               # FALSE or TRUE
+    row_annotation_method = "none",              # "auto", "specific", "none"
+    row_anno_names = NULL,                # option to set list of specific genes as row annotation
+    row_anno_number = 5,                  # default number of annotations per cluster
+    fontsize_rowAnnotation = 8,           # fontsize of the optional row annotation
+    fontsize_columnNames = 6,
+    fontsize_rowNames = 4,
+    title_heatmapLegend = "Expression",      # changeable title of the legend, default "Expression"
+    WidthNum = 4.5,
+    HeightNum = 3,
+    UnitSize = "cm"
+)
+{
+  # Distance matrix helper
+  get_dist <- function(x, method) {
+    if (method == "correlation") as.dist(1 - cor(t(x)))
+    else dist(x, method = method)
+  }
+
+  # Clustering logic
+  row_split <- col_split <- NULL
+  row_dend <- col_dend <- TRUE  # default TRUE if unspecified
+
+  # --- ROW CLUSTERING ---
+  if (cluster_rows) {
+    row_data <- ncounts_matrix
+
+    if (cluster_method == "hierarchical") {
+      row_dist <- get_dist(ncounts_matrix, distance_method)
+      row_clust <- hclust(row_dist, method = "complete")
+      row_dend <- as.dendrogram(row_clust)
+      if (!is.null(k_row)) {
+        row_split <- cutree(row_clust, k = k_row)
+        row_split <- as.factor(row_split)
+        row_dend = TRUE
+      }
+
+    } else if (cluster_method == "kmeans") {
+      row_split <- performing_kMeans(row_data, k_row)
+
+    }
+  }
+
+  # --- COLUMN CLUSTERING ---
+  if (cluster_columns) {
+    col_data <- t(ncounts_matrix)
+
+    if (cluster_method == "hierarchical") {
+      col_dist <- get_dist(col_data, distance_method)
+      col_clust <- hclust(col_dist, method = "average")
+      col_dend <- as.dendrogram(col_clust)
+      if (!is.null(k_col)) {
+        col_split <- cutree(col_clust, k = k_col)
+        col_split <- as.factor(col_split)
+        col_dend = TRUE
+      }
+
+    } else if (cluster_method == "kmeans") {
+      col_split <- performing_kMeans(col_data, k_col)
+
+    }
+  }
+  # --- Sample Annotation ---
+  col_ha <- NULL
+  if (!is.null(sample_metadata)) {
+    col_ha <- ComplexHeatmap::HeatmapAnnotation(
+      df = data.frame(sample_metadata),
+      col = as.list(annotation_colors),
+      annotation_name_side = annotation_name_side
+    )
+  }
+
+  # --- Row Annotation ---
+  annotation_for_rows <- NULL
+  if(row_annotation) {
+    if (row_annotation_method == "auto") {
+      clusters_row <- levels(factor_rowClusters)
+      nClusters_row <- max(clusters_row)
+
+      y <- sumBioRepsMatrix # creates copy of the summarized biological replicates matrix
+      m_clustered <- BiocGenerics::cbind(y, factor_rowClusters) # bind clusters to matrix
+      last_column <- ncol(m_clustered)
+      o <- BiocGenerics::order(m_clustered[, last_column]) # Ordering the genes by their k-means
+      m_clustered <- m_clustered[o,]
+      top_x_genes_cluster <- most_variable_genes(m_clustered, row_anno_number, nClusters_row) #get most variable expressed genes of each cluster
+      annotation_for_rows <- set_annotation(ncounts_matrix, top_x_genes_cluster, fontsize_rowAnnotation)
+
+      #for (i in levels(row_split)) {
+      # cluster_genes <- rownames_mat[row_split == i]
+      #cluster_data <- mat[cluster_genes, ]
+      #gene_vars <- apply(cluster_data, 1, var)
+      #top_genes <- names(sort(gene_vars, decreasing = TRUE))[1:min(top_n, length(gene_vars))]
+      #annotation_for_rows <- set_annotation(sumBioRepsMatrix, top_genes)
+      #}
+
+    } else if (row_annotation_method == "specific"){
+      annotation_for_rows <- set_annotation(ncounts_matrix, row_anno_names, fontsize_rowAnnotation)
+    }
+  }
+
+
+
+  # --- Final Ordering Check --- #
+  # Reset column split if clustering is not active
+  if (!cluster_columns) {
+    col_split <- NULL
+    col_dend <- FALSE
+  }
+  if (!cluster_rows) {
+    row_split <- NULL
+    row_dend <- FALSE
+  }
+  # --- Draw Heatmap ---
+  heatmap_color_scheme <- get_heatmap_colors(colorPalette)            # sets the color Palette for the heatmap
+  set.seed(seed)                          # sets a seed for randomizer to generate reproducable heatmaps
+
+
+  ht = ComplexHeatmap::Heatmap(
+    ncounts_matrix,
+    cluster_rows = if (is.logical(row_dend)) row_dend else row_dend,
+    cluster_columns = if (is.logical(col_dend)) col_dend else col_dend,
+    col = heatmap_color_scheme,
+    row_split = row_split,
+    column_split = col_split,
+    top_annotation = col_ha,
+    #right_annotation = right_anno,
+    show_row_names = show_row_names,
+    show_column_names = show_column_names,
+    column_title = column_name ,
+    use_raster = FALSE,
+    column_names_gp = grid::gpar(fontsize = fontsize_columnNames),
+    row_names_gp = grid::gpar(fontsize = fontsize_rowNames),
+    heatmap_legend_param = list(title = title_heatmapLegend),
+    width = grid::unit(WidthNum, UnitSize),
+    height = grid::unit(HeightNum, UnitSize))
+
+  # Wrap addition of row annotation
+  #right_anno <- NULL
+  if (isTRUE(row_annotation)) {
+    ht <- ht + ComplexHeatmap::rowAnnotation(mark = annotation_for_rows)
+    #right_anno <- ComplexHeatmap::rowAnnotation(
+    #mark = annotation_for_rows,
+    #annotation_name_gp = grid::gpar(fontsize = fontsize_rowAnnotation)
+
+  }
+
+  hm = ComplexHeatmap::draw(ht)
+  return(hm)
+
+
+}

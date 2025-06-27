@@ -3,6 +3,7 @@
 export(Kmean_generation)
 export(aExprsDataQC)
 export(add_demoElem)
+export(adv_Heatmap)
 export(build_matrix)
 export(color_setting)
 export(elbow_plot)
