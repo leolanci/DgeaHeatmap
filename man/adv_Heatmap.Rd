@@ -21,7 +21,7 @@ adv_Heatmap(
   show_row_names = FALSE,
   show_column_names = TRUE,
   row_annotation = FALSE,
-  row_annotation_method = "none",
+  row_annotation_method = "auto",
   row_anno_names = NULL,
   row_anno_number = 5,
   fontsize_rowAnnotation = 8,
