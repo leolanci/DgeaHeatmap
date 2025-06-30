@@ -403,7 +403,7 @@ or alternatively be produced within R as shown below.
 
 ``` r
 # set a list of the groups (names should be contained within the sample names)
-groups <- c("disease3_DKD_glomerulus_Geometric_Segment", "disease1B_DKD_glomerulus_Geometric_Segment", "disease2B_DKD_glomerulus_WT")
+groups <- c("3_DKD_glomerulus_Geometric_S", "1B_DKD_glomerulus_Geometric_S", "2B_DKD_glomerulus_WT")
 
 # get the sample names from the used data set
 sample_names <- c(colnames(scaled_counts))
@@ -425,18 +425,17 @@ all(colnames(scaled_counts) == rownames(sample_metadata))
 #> [1] TRUE
 
 # set a list with the Groups and choose colors for them
-group_colors <- list(Group = c("disease3_DKD_glomerulus_Geometric_Segment" = "#1b9e77", "disease1B_DKD_glomerulus_Geometric_Segment" = "#7570b3", "disease2B_DKD_glomerulus_WT" = "#e7298a"))
+group_colors <- list(Group = c("3_DKD_glomerulus_Geometric_S" = "#1b9e77", "1B_DKD_glomerulus_Geometric_S" = "#7570b3", "2B_DKD_glomerulus_WT" = "#e7298a"))
 
 names(group_colors$Group)
-#> [1] "disease3_DKD_glomerulus_Geometric_Segment" 
-#> [2] "disease1B_DKD_glomerulus_Geometric_Segment"
-#> [3] "disease2B_DKD_glomerulus_WT"
+#> [1] "3_DKD_glomerulus_Geometric_S"  "1B_DKD_glomerulus_Geometric_S"
+#> [3] "2B_DKD_glomerulus_WT"
 print(sample_metadata)
-#>                                                                                    Group
-#> disease3_DKD_glomerulus_Geometric_Segment_7    disease3_DKD_glomerulus_Geometric_Segment
-#> disease3_DKD_glomerulus_Geometric_Segment_8    disease3_DKD_glomerulus_Geometric_Segment
-#> disease1B_DKD_glomerulus_Geometric_Segment_14 disease1B_DKD_glomerulus_Geometric_Segment
-#> disease2B_DKD_glomerulus_WT1_1                               disease2B_DKD_glomerulus_WT
+#>                                                                       Group
+#> disease3_DKD_glomerulus_Geometric_Segment_7    3_DKD_glomerulus_Geometric_S
+#> disease3_DKD_glomerulus_Geometric_Segment_8    3_DKD_glomerulus_Geometric_S
+#> disease1B_DKD_glomerulus_Geometric_Segment_14 1B_DKD_glomerulus_Geometric_S
+#> disease2B_DKD_glomerulus_WT1_1                         2B_DKD_glomerulus_WT
 ```
 
 The heatmap parameters can then be changed to generate a more advanced
@@ -503,24 +502,24 @@ sample_metadata <- sample_metadata                               # dataframe con
 annotation_colors <- group_colors                     # list containing the column groups and the choosen colors for the column annotation per group, default = NULL
 annotation_name_side = "right"                        # optional change: side of annotation name, default = "right"
 show_row_names <- FALSE                               # optional change: show of rownames on = TRUE & off = FALSE, default = FALSE
-show_column_names = TRUE                              # optional change: show of column names on = TRUE & off = FALSE, default = TRUE
+show_column_names = FALSE                              # optional change: show of column names on = TRUE & off = FALSE, default = TRUE
 row_annotation = TRUE                                # optional row annotation, default = FALSE
 row_annotation_method = "auto"                        # set if row_annotation = TRUE: options are "auto" & "specific", default = "auto"
 row_anno_names = NULL                                 # set if row_annotation = TRUE & row_annotation_method = "specific: input list of specific genes for the row annotation, default = NULL
 row_anno_number = 5                                   # optional change: number of automatic row annotations per cluster, default = 5
 fontsize_title = 15                                   # optional change: fontsize the heatmap title, default = 15
-fontsize_rowAnnotation = 6                            # optional change: fontsize of the optional row annotation, default = 8
+fontsize_rowAnnotation = 8                            # optional change: fontsize of the optional row annotation, default = 8
 fontsize_columnNames = 6                              # optional change: fontsize of the optional column names, default = 6
 fontsize_rowNames = 4                                 # optional change: fontsize of the optional row names, default = 4
-fontsize_cluster_labels = 6                           # optional change: fontsize of the cluster labels, default = 8
+fontsize_cluster_labels = 12                           # optional change: fontsize of the cluster labels, default = 8
 fontsize_group_annotation = 10                         # optional change: font size of the group annotation title, default = 8.
-fontsize_group_annotation_legend = 8                 # optional change: fontsize of optional group annotation legend title, default = 10
-fontsize_group_annotation_labels = 6                  # optional change: fontsize of optional group annotation legend labels, default = 8
-fontsize_heatmap_legend = 8                           # optional change: fontsize of heatmap legend, default = 10
-fontsize_heatmap_legend_labels = 6                    # optional change: fontsize of heatmap legend labels, default = 8
+fontsize_group_annotation_legend = 10                 # optional change: fontsize of optional group annotation legend title, default = 10
+fontsize_group_annotation_labels = 8                  # optional change: fontsize of optional group annotation legend labels, default = 8
+fontsize_heatmap_legend = 10                           # optional change: fontsize of heatmap legend, default = 10
+fontsize_heatmap_legend_labels = 8                    # optional change: fontsize of heatmap legend labels, default = 8
 title_heatmapLegend = "Expression"                    # changeable title of the legend, default "Expression"
-WidthNum = 4.5                                        # optional change of heatmap width, default = 4.5
-HeightNum = 3                                         # optional change of heatmap height, default = 3
+WidthNum = 5                                        # optional change of heatmap width, default = 4.5
+HeightNum = 7                                         # optional change of heatmap height, default = 3
 UnitSize = "cm"                                       # optional change of heatmap unit for sizes, default = "cm"
 
 hm <- adv_Heatmap(ncounts_matrix, seed = seed, column_name = column_name, colorPalette = colorPalette, cluster_method = cluster_method, cluster_rows = cluster_rows, cluster_columns = cluster_columns, k_row = k_row, k_col = k_col, sample_metadata = sample_metadata, annotation_colors = annotation_colors, annotation_name_side = annotation_name_side, show_row_names = show_row_names, show_column_names = show_column_names, row_annotation = row_annotation, row_annotation_method = row_annotation_method, row_anno_names = row_anno_names ,row_anno_number = row_anno_number, fontsize_title = fontsize_title, fontsize_rowAnnotation = fontsize_rowAnnotation, fontsize_columnNames = fontsize_columnNames, fontsize_rowNames = fontsize_rowNames, fontsize_cluster_labels = fontsize_cluster_labels, fontsize_group_annotation = fontsize_group_annotation, fontsize_group_annotation_legend = fontsize_group_annotation_legend, fontsize_group_annotation_labels = fontsize_group_annotation_labels, fontsize_heatmap_legend = fontsize_heatmap_legend, fontsize_heatmap_legend_labels = fontsize_heatmap_legend_labels, title_heatmapLegend = title_heatmapLegend, WidthNum = WidthNum, HeightNum = HeightNum, UnitSize = UnitSize)
