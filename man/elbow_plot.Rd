@@ -4,12 +4,14 @@
 \alias{elbow_plot}
 \title{Function to create an elbow plot to choose k for clustering by k-Means.}
 \usage{
-elbow_plot(seed, top_genes_matrix)
+elbow_plot(seed, top_genes_matrix, maxK = 15)
 }
 \arguments{
 \item{seed}{An integer to set seed for the k-Mean generation, allows reproducibility.}
 
 \item{top_genes_matrix}{A matrix for which the best number of clusters in k-Means Clustering is supposed to be calculated.}
+
+\item{maxK}{An integer determining the maximum number of possible clusters.}
 }
 \value{
 An elbow plot to choose k.
