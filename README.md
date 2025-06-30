@@ -303,7 +303,7 @@ hm <- print_heatmap(seed, sumBioRepsMatrix, title, split_heatmap_clusters, annot
 
 **Generate heatmaps with advanced customization:**
 
-With the function “adv_heatmap” users can generate heatmaps using a lot
+With the function “adv_Heatmap” users can generate heatmaps using a lot
 of different settings. The options include:
 
 - changeable heatmap title
@@ -333,26 +333,77 @@ of different settings. The options include:
 - changeable height size of the heatmap
 - changeable unit used for the heatmap sizes
 
-The respective metadata file (dataframe) can be generated similarly to
-this example:
+The advanced heatmap can then be generated usind adv_Heatmap() and
+choosing parameter options by specifically setting them or alternatively
+use the parameters default. The only input necessary to directly
+generate a heatmap is the input matrix as shown below.
 
 ``` r
+# default settings of the parameters
+seed <- 1                                             # sets seed
+column_name <- "Heatmap"                              # name for heatmap
+colorPalette <- NULL                                  # available color palettes from RColorBrewer ()
+cluster_method <- "hierarchical"                      # cluster methods, either "hierarchical" or "kmeans"
+distance_method <- "euclidean"                        # method for creating the distance matrix for hierarchical clustering
+cluster_rows <- TRUE                                  # optional clustering of rows, default = TRUE
+cluster_columns <- FALSE                              # optional clustering of columns, default = FALSE
+k_row = NULL                                          # splitting of rows in heatmaps using k-means, would be an integer
+k_col = NULL                                          # splitting of columns in heatmaps using k-means, would be an integer
+sample_metadata <- NULL                               # dataframe containing the metadata information of the file
+annotation_colors <- NULL                             # list containing the column groups and the choosen colors for the column annotation per group
+annotation_name_side = "right"                        # optional change: side of annotation name
+show_row_names <- FALSE                               # optional change: show of rownames on = TRUE & off = FALSE
+show_column_names = TRUE                              # optional change: show of column names on = TRUE & off = FALSE
+row_annotation = FALSE                                # optional row annotation
+row_annotation_method = "auto"                        # set if row_annotation = TRUE: options are "auto" & "specific"
+row_anno_names = NULL                                 # set if row_annotation = TRUE & row_annotation_method = "specific: input list of specific genes for the row annotation
+row_anno_number = 5                                   # optional change: number of automatic row annotations per cluster
+fontsize_rowAnnotation = 8                            # optional change: fontsize of the optional row annotation
+fontsize_columnNames = 6                              # optional change: fontsize of the optional column names
+fontsize_rowNames = 4                                 # optional change: fontsize of the optional row names
+title_heatmapLegend = "Expression"                    # changeable title of the legend, default "Expression"
+WidthNum = 4.5                                        # optional change of heatmap width
+HeightNum = 3                                         # optional change of heatmap height
+UnitSize = "cm"                                       # optional change of heatmap unit for sizes
+
+# Using the adv_Heatmap() function with only the input matrix file. All other parameters use their default option.
+adv_Heatmap(scaled_counts)
+```
+
+<img src="man/figures/README-exampleadv_Heatmap_default-1.png" width="100%" /><img src="man/figures/README-exampleadv_Heatmap_default-2.png" width="100%" />
+
+All the optional parameters can then be changed to the taste and
+specifications of the user. For example, the color scheme can be
+changed, the row names can be shown in the heatmap and a group
+annotation can be pictured using a metadata file as input.
+
+This metadata file can either be loaded into R as an excel or csv file,
+or alternatively be produced within R as shown below.
+
+``` r
+# set a list of the groups (names should be contained within the sample names)
 groups <- c("disease3_DKD_glomerulus_Geometric_Segment", "disease1B_DKD_glomerulus_Geometric_Segment", "disease2B_DKD_glomerulus_WT")
+
+# get the sample names from the used data set
 sample_names <- c(colnames(scaled_counts))
+
 # Match each sample name to the correct group
 group_assignment <- sapply(sample_names, function(sample) {
   matched <- groups[sapply(groups, function(g) grepl(g, sample))]
   if (length(matched) > 0) matched[1] else NA
 })
+
 # Ensure same length
 stopifnot(length(sample_names) == length(group_assignment))
 
-# Create dataframe
+# Create a dataframe with the sample names and their respective group assignments
 sample_metadata <- data.frame(Group = group_assignment, row.names = sample_names)
 
-all(colnames(scaled_counts) == rownames(sample_metadata)) # confirm matrix column names match metadata rownames
+# confirm matrix column names match the metadata rownames
+all(colnames(scaled_counts) == rownames(sample_metadata)) 
 #> [1] TRUE
 
+# set a list with the Groups and choose colors for them
 group_colors <- list(Group = c("disease3_DKD_glomerulus_Geometric_Segment" = "#1b9e77", "disease1B_DKD_glomerulus_Geometric_Segment" = "#7570b3", "disease2B_DKD_glomerulus_WT" = "#e7298a"))
 
 names(group_colors$Group)
@@ -367,16 +418,19 @@ print(sample_metadata)
 #> disease2B_DKD_glomerulus_WT1_1                               disease2B_DKD_glomerulus_WT
 ```
 
+The heatmap parameters can then be changed to generate a more advanced
+and custom heatmap:
+
 ``` r
-# parameters and their options in adv_heatmap()
+# parameters and their options in adv_Heatmap()
 ncounts_matrix <- scaled_counts                       # input matrix
 seed <- 1                                             # sets seed
-column_name <- "Heatmap 1"                              # name for heatmap
+column_name <- "Heatmap 1"                            # name for heatmap
 colorPalette <- "RdBu"                                # available color palettes from RColorBrewer ()
 cluster_method <- "hierarchical"                      # cluster methods, either "hierarchical" or "kmeans"
 distance_method <- "euclidean"                        # method for creating the distance matrix for hierarchical clustering
 cluster_rows <- TRUE                                  # optional clustering of rows, default = TRUE
-cluster_columns <- TRUE                               # optional clustering of columns, default = FALSE
+cluster_columns <- FALSE                               # optional clustering of columns, default = FALSE
 k_row = NULL                                          # splitting of rows in heatmaps using k-means, would be an integer
 k_col = NULL                                          # splitting of columns in heatmaps using k-means, would be an integer
 sample_metadata <- sample_metadata                    # dataframe containing the metadata information of the file
@@ -389,7 +443,7 @@ row_annotation_method = "auto"                        # set if row_annotation = 
 row_anno_names = NULL                                 # set if row_annotation = TRUE & row_annotation_method = "specific: input list of specific genes for the row annotation
 row_anno_number = 5                                   # optional change: number of automatic row annotations per cluster
 fontsize_rowAnnotation = 8                            # optional change: fontsize of the optional row annotation, default = 8
-fontsize_columnNames = 8                              # optional change: fontsize of the optional column names, default = 6
+fontsize_columnNames = 6                              # optional change: fontsize of the optional column names, default = 6
 fontsize_rowNames = 4                                 # optional change: fontsize of the optional row names, default = 4
 title_heatmapLegend = "Expression"                    # changeable title of the legend, default "Expression"
 WidthNum = 4.5                                        # optional change of heatmap width, default = 4.5

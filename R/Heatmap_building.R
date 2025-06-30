@@ -423,7 +423,7 @@ adv_Heatmap <- function(
     ncounts_matrix,
     seed = 1,                            # default seed = 1, changeable and suggested to be changed
     column_name = "Heatmap",             # changeable title of the heatmap, default "Heatmap
-    colorPalette = NULL,               # "RdBu" ir any other color Palette available through RColorBrewer
+    colorPalette = NULL,                 # "RdBu" ir any other color Palette available through RColorBrewer, default is blue to red over white from ComplexHeatmaps
     cluster_method = "hierarchical",     # "hierarchical", "kmeans"
     distance_method = "euclidean",       # or "correlation"
     cluster_rows = TRUE,
@@ -436,7 +436,7 @@ adv_Heatmap <- function(
     show_row_names = FALSE,
     show_column_names = TRUE,
     row_annotation = FALSE,               # FALSE or TRUE
-    row_annotation_method = "none",              # "auto", "specific", "none"
+    row_annotation_method = "auto",       # "auto", "specific", "none"
     row_anno_names = NULL,                # option to set list of specific genes as row annotation
     row_anno_number = 5,                  # default number of annotations per cluster
     fontsize_rowAnnotation = 8,           # fontsize of the optional row annotation
