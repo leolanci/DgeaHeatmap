@@ -481,7 +481,7 @@ cluster_method <- "kmeans"                      # cluster methods, either "hiera
 distance_method <- "euclidean"                        # method for creating the distance matrix for hierarchical clustering
 cluster_rows <- TRUE                                  # optional clustering of rows, default = TRUE
 cluster_columns <- TRUE                               # optional clustering of columns, default = FALSE
-k_row = 2                                          # splitting of rows in heatmaps using k-means, would be an integer
+k_row = 3                                          # splitting of rows in heatmaps using k-means, would be an integer
 k_col = 2                                          # splitting of columns in heatmaps using k-means, would be an integer
 sample_metadata <- sample_metadata                    # dataframe containing the metadata information of the file
 annotation_colors <- group_colors                     # list containing the column groups and the choosen colors for the column annotation per group
