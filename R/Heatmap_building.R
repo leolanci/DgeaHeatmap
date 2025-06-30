@@ -103,6 +103,7 @@ show_data_distribution <- function(scaled_counts){
 #'
 #' @param seed An integer to set seed for the k-Mean generation, allows reproducibility.
 #' @param top_genes_matrix A matrix for which the best number of clusters in k-Means Clustering is supposed to be calculated.
+#' @param maxK An integer determining the maximum number of possible clusters.
 #'
 #' @return An elbow plot to choose k.
 #' @export
@@ -110,12 +111,17 @@ show_data_distribution <- function(scaled_counts){
 #' @examples
 #' seed <- 1
 #' top_genes_matrix <- matrix
-elbow_plot <- function(seed, top_genes_matrix){
+elbow_plot <- function(
+    seed,                             # seed for start of clustering.
+    top_genes_matrix,                 # input matrix for which the number of clusters is calculated.
+    maxK = 15                         # Integer determining the maximum number of possible clusters, default = 15.
+    ){
+  maxK <- maxK
   set.seed(seed) # reproducible outcome
   wss <- function(k) {
     stats::kmeans(top_genes_matrix, algorithm = "Lloyd", k, nstart = 10, iter.max = 50)$tot.withinss
   }
-  k.values <- 1:15 # compute and plot wws for k = 1 to k = 15
+  k.values <- 1:maxK # compute and plot wws for k = 1 to k = 15
   wss_values <- purrr::map_dbl(k.values, wss)
   plot(k.values, wss_values, type = "b", pch = 19, frame = FALSE, xlab = "Number of clusters K", ylab = "Total within-clusters sum of squares")
 

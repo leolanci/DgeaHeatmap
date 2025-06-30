@@ -128,10 +128,23 @@ elbow_plot(seed, scaled_counts)
 #> Warning: empty cluster: try a better set of initial centers
 ```
 
-<img src="man/figures/README-exampleElbowPlot-1.png" width="100%" /> As
-desired, the samples can further be summarized as biological replicates
-to help generate more clearly arranged heatmaps and to give a better
-overview.
+<img src="man/figures/README-exampleElbowPlot-1.png" width="100%" />
+
+This can also be conducted with the transposed matrix to get the number
+of clusters the columns can be divided into:
+
+``` r
+maxK <- 4                                 # only 4 samples therefore a max of 4 clusters possible
+seed <- 1                                 # setting a seed for a reproducible outcome
+transposed_matrix <- t(scaled_counts)     # transposes matrix
+elbow_plot(seed, transposed_matrix, maxK)
+```
+
+<img src="man/figures/README-exampleElbowPlot_columns-1.png" width="100%" />
+
+As desired, the samples can further be summarized as biological
+replicates to help generate more clearly arranged heatmaps and to give a
+better overview.
 
 ``` r
 #print(colnames(scaled_counts))
@@ -367,10 +380,10 @@ HeightNum = 3                                         # optional change of heatm
 UnitSize = "cm"                                       # optional change of heatmap unit for sizes
 
 # Using the adv_Heatmap() function with only the input matrix file. All other parameters use their default option.
-adv_Heatmap(scaled_counts)
+hm <- adv_Heatmap(scaled_counts)
 ```
 
-<img src="man/figures/README-exampleadv_Heatmap_default-1.png" width="100%" /><img src="man/figures/README-exampleadv_Heatmap_default-2.png" width="100%" />
+<img src="man/figures/README-exampleadv_Heatmap_default-1.png" width="100%" />
 
 All the optional parameters can then be changed to the taste and
 specifications of the user. For example, the color scheme can be
