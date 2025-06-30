@@ -24,9 +24,11 @@ adv_Heatmap(
   row_annotation_method = "auto",
   row_anno_names = NULL,
   row_anno_number = 5,
+  fontsize_title = 15,
   fontsize_rowAnnotation = 8,
   fontsize_columnNames = 6,
   fontsize_rowNames = 4,
+  fontsize_cluster_labels = 8,
   fontsize_group_annotation_legend = 10,
   fontsize_group_annotation_labels = 8,
   fontsize_heatmap_legend = 10,
@@ -76,11 +78,15 @@ adv_Heatmap(
 
 \item{row_anno_number}{An integer setting the number of automatic annotations assigned per cluster.}
 
+\item{fontsize_title}{An integer setting the fontsize of the heatmap title, default = 15.}
+
 \item{fontsize_rowAnnotation}{An integer setting the fontsize of the optional row annotation.}
 
 \item{fontsize_columnNames}{An integer setting the fontsize of the column names.}
 
 \item{fontsize_rowNames}{An integer setting the fontsize of the row names.}
+
+\item{fontsize_cluster_labels}{An integer setting the fontsize of the cluster labels, default = 8.}
 
 \item{fontsize_group_annotation_legend}{An integer setting the fontsize of the group annotation legend name.}
 
