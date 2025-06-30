@@ -415,6 +415,10 @@ get_heatmap_colors <- function(colorPalette) {
 #' @param fontsize_rowAnnotation An integer setting the fontsize of the optional row annotation.
 #' @param fontsize_columnNames An integer setting the fontsize of the column names.
 #' @param fontsize_rowNames An integer setting the fontsize of the row names.
+#' @param fontsize_group_annotation_legend An integer setting the fontsize of the group annotation legend name.
+#' @param fontsize_group_annotation_labels An integer setting the fontsize of the group annotation labels in the legend.
+#' @param fontsize_heatmap_legend An integer setting the fontsize of the heatmap legend title.
+#' @param fontsize_heatmap_legend_labels An integer setting the fontsize of the heatmap legend labels.
 #' @param title_heatmapLegend A string setting the changeable title of the legend, default "Expression".
 #' @param WidthNum A float setting the width of the heatmap.
 #' @param HeightNum A float setting the height of the heatmap.
@@ -427,28 +431,32 @@ get_heatmap_colors <- function(colorPalette) {
 #' colorPalette <- "RdBu"
 adv_Heatmap <- function(
     ncounts_matrix,
-    seed = 1,                            # default seed = 1, changeable and suggested to be changed
-    column_name = "Heatmap",             # changeable title of the heatmap, default "Heatmap
-    colorPalette = NULL,                 # "RdBu" ir any other color Palette available through RColorBrewer, default is blue to red over white from ComplexHeatmaps
-    cluster_method = "hierarchical",     # "hierarchical", "kmeans"
-    distance_method = "euclidean",       # or "correlation"
+    seed = 1,                                  # default seed = 1, changeable and suggested to be changed
+    column_name = "Heatmap",                   # changeable title of the heatmap, default "Heatmap
+    colorPalette = NULL,                       # "RdBu" ir any other color Palette available through RColorBrewer, default is blue to red over white from ComplexHeatmaps
+    cluster_method = "hierarchical",           # "hierarchical", "kmeans"
+    distance_method = "euclidean",             # or "correlation"
     cluster_rows = TRUE,
     cluster_columns = FALSE,
     k_row = NULL,
     k_col = NULL,
     sample_metadata = NULL,
     annotation_colors = NULL,
-    annotation_name_side = "right",      # side of annotation name, default = "right"
+    annotation_name_side = "right",            # side of annotation name, default = "right"
     show_row_names = FALSE,
     show_column_names = TRUE,
-    row_annotation = FALSE,               # FALSE or TRUE
-    row_annotation_method = "auto",       # "auto", "specific", "none"
-    row_anno_names = NULL,                # option to set list of specific genes as row annotation
-    row_anno_number = 5,                  # default number of annotations per cluster
-    fontsize_rowAnnotation = 8,           # fontsize of the optional row annotation
-    fontsize_columnNames = 6,
-    fontsize_rowNames = 4,
-    title_heatmapLegend = "Expression",      # changeable title of the legend, default "Expression"
+    row_annotation = FALSE,                    # FALSE or TRUE
+    row_annotation_method = "auto",           # "auto", "specific", "none"
+    row_anno_names = NULL,                     # option to set list of specific genes as row annotation
+    row_anno_number = 5,                       # default number of annotations per cluster
+    fontsize_rowAnnotation = 8,                # fontsize of the optional row annotation
+    fontsize_columnNames = 6,                  # fontsize of column names
+    fontsize_rowNames = 4,                     # fontsize of row names
+    fontsize_group_annotation_legend = 10,     # fontsize of optional group annotation legend title
+    fontsize_group_annotation_labels = 8,      # fontsize of optional group annotation legend labels
+    fontsize_heatmap_legend = 10,              # fontsize of heatmap legend
+    fontsize_heatmap_legend_labels = 8,        # fontsize of heatmap legend labels
+    title_heatmapLegend = "Expression",        # changeable title of the legend, default "Expression"
     WidthNum = 4.5,
     HeightNum = 3,
     UnitSize = "cm"
@@ -509,7 +517,12 @@ adv_Heatmap <- function(
     col_ha <- ComplexHeatmap::HeatmapAnnotation(
       df = data.frame(sample_metadata),
       col = as.list(annotation_colors),
-      annotation_name_side = annotation_name_side
+      annotation_name_side = annotation_name_side,
+      #annotation_name_gp = grid::gpar(fontsize = fontsize_group_annotation),
+      annotation_legend_param = list(
+                                     title_gp = grid::gpar(fontsize = fontsize_group_annotation_legend),   # font size for legend title
+                                     labels_gp = grid::gpar(fontsize = fontsize_group_annotation_labels)   # font size for legend labels
+      )
     )
   }
 
@@ -581,7 +594,7 @@ adv_Heatmap <- function(
     use_raster = FALSE,
     column_names_gp = grid::gpar(fontsize = fontsize_columnNames),
     row_names_gp = grid::gpar(fontsize = fontsize_rowNames),
-    heatmap_legend_param = list(title = title_heatmapLegend),
+    heatmap_legend_param = list(title = title_heatmapLegend, title_gp = grid::gpar(fontsize = fontsize_heatmap_legend), labels_gp = grid::gpar(fontsize = fontsize_heatmap_legend_labels)),
     width = grid::unit(WidthNum, UnitSize),
     height = grid::unit(HeightNum, UnitSize))
 
