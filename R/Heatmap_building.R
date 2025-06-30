@@ -394,37 +394,38 @@ get_heatmap_colors <- function(colorPalette) {
 #' Creating a color scheme based on the available color palettes of RColorBrewer for the heatmap.
 #'
 #' @param ncounts_matrix An input matrix to create the heatmap.
-#' @param seed An integer used to set seed for reproducibility and k-Mean clustering.
-#' @param column_name A string to set the title of the heatmap.
-#' @param colorPalette Name of the colorPalette used for the heatmap.
-#' @param cluster_method A string setting the cluster method for the heatmap.
-#' @param distance_method A string setting the distance method for clustering.
-#' @param cluster_rows A Boolean switching the optional clustering of the rows on and off.
-#' @param cluster_columns A Boolean switching the optional clustering of the columns on and off.
-#' @param k_row An integer used to set number of clusters for row clustering in the heatmap.
-#' @param k_col An integer used to set number of clusters for column clustering in the heatmap.
-#' @param sample_metadata A dataframe containing the metadata information for the grouping of the columns.
-#' @param annotation_colors A list assigning choosen colors to the corresponding groups.
+#' @param seed An integer used to set seed for reproducibility and k-Mean clustering, default = 1.
+#' @param column_name A string to set the title of the heatmap, default = "Heatmap".
+#' @param colorPalette Name of the colorPalette used for the heatmap, default = NULL.
+#' @param cluster_method A string setting the cluster method for the heatmap, default = "hierarchical".
+#' @param distance_method A string setting the distance method for clustering, default = "euclidean".
+#' @param cluster_rows A Boolean switching the optional clustering of the rows on and off, default = TRUE.
+#' @param cluster_columns A Boolean switching the optional clustering of the columns on and off, default = FALSE.
+#' @param k_row An integer used to set number of clusters for row clustering in the heatmap, default = NULL.
+#' @param k_col An integer used to set number of clusters for column clustering in the heatmap, default = NULL.
+#' @param sample_metadata A dataframe containing the metadata information for the grouping of the columns, default = NULL.
+#' @param annotation_colors A list assigning choosen colors to the corresponding groups, default = NULL.
 #' @param annotation_name_side The side of the column annotation description, default = "right".
-#' @param show_row_names A Boolean switching rownames on the heatmap on and off.
-#' @param show_column_names A Boolean switching colum names on the heatmap on and off.
-#' @param row_annotation A Boolean switching row annotation on the heatmap on and off.
-#' @param row_annotation_method A string setting the annotation method of the heatmap.
-#' @param row_anno_names A list containing choosen rownames to use for the row annotation.
-#' @param row_anno_number An integer setting the number of automatic annotations assigned per cluster.
-#' @param fontsize_title An integer setting the fontsize of the heatmap title, default = 15.
-#' @param fontsize_rowAnnotation An integer setting the fontsize of the optional row annotation.
-#' @param fontsize_columnNames An integer setting the fontsize of the column names.
-#' @param fontsize_rowNames An integer setting the fontsize of the row names.
-#' @param fontsize_cluster_labels An integer setting the fontsize of the cluster labels, default = 8.
-#' @param fontsize_group_annotation_legend An integer setting the fontsize of the group annotation legend name.
-#' @param fontsize_group_annotation_labels An integer setting the fontsize of the group annotation labels in the legend.
-#' @param fontsize_heatmap_legend An integer setting the fontsize of the heatmap legend title.
-#' @param fontsize_heatmap_legend_labels An integer setting the fontsize of the heatmap legend labels.
+#' @param show_row_names A Boolean switching rownames on the heatmap on and off, default = FALSE.
+#' @param show_column_names A Boolean switching colum names on the heatmap on and off, default = TRUE.
+#' @param row_annotation A Boolean switching row annotation on the heatmap on and off, default = FALSE.
+#' @param row_annotation_method A string setting the annotation method of the heatmap, default = "auto".
+#' @param row_anno_names A list containing choosen rownames to use for the row annotation, default = NULL.
+#' @param row_anno_number An integer setting the number of automatic annotations assigned per cluster, default = 5.
+#' @param fontsize_title An integer setting the font size of the heatmap title, default = 15.
+#' @param fontsize_rowAnnotation An integer setting the font size of the optional row annotation, default = 10.
+#' @param fontsize_columnNames An integer setting the font size of the column names, default = 6.
+#' @param fontsize_rowNames An integer setting the font size of the row names, default = 4.
+#' @param fontsize_cluster_labels An integer setting the font size of the cluster labels, default = 8.
+#' @param fontsize_group_annotation An integer setting the font size of the group annotation title, default = 8.
+#' @param fontsize_group_annotation_legend An integer setting the font size of the group annotation legend name, default = 10.
+#' @param fontsize_group_annotation_labels An integer setting the font size of the group annotation labels in the legend, default = 8.
+#' @param fontsize_heatmap_legend An integer setting the font size of the heatmap legend title, default = 10.
+#' @param fontsize_heatmap_legend_labels An integer setting the font size of the heatmap legend labels, default = 8.
 #' @param title_heatmapLegend A string setting the changeable title of the legend, default "Expression".
-#' @param WidthNum A float setting the width of the heatmap.
-#' @param HeightNum A float setting the height of the heatmap.
-#' @param UnitSize A string such as "cm" or "inch" to set the unit of HeightNum and WidthNum.
+#' @param WidthNum A float setting the width of the heatmap, default = 4.5.
+#' @param HeightNum A float setting the height of the heatmap, default = 3.
+#' @param UnitSize A string such as "cm" or "inch" to set the unit of HeightNum and WidthNum, default = "cm".
 #'
 #' @return The colors used in heatmap based on either ComplexHeatmap default or RColorBrewer.
 #' @export
@@ -448,14 +449,15 @@ adv_Heatmap <- function(
     show_row_names = FALSE,
     show_column_names = TRUE,
     row_annotation = FALSE,                    # FALSE or TRUE
-    row_annotation_method = "auto",           # "auto", "specific", "none"
+    row_annotation_method = "auto",            # "auto", "specific", "none"
     row_anno_names = NULL,                     # option to set list of specific genes as row annotation
     row_anno_number = 5,                       # default number of annotations per cluster
     fontsize_title = 15,                       # fontsize of the heatmap title
-    fontsize_rowAnnotation = 8,                # fontsize of the optional row annotation
+    fontsize_rowAnnotation = 10,               # fontsize of the optional row annotation
     fontsize_columnNames = 6,                  # fontsize of column names
     fontsize_rowNames = 4,                     # fontsize of row names
     fontsize_cluster_labels = 8,               # fontsize of cluster labels
+    fontsize_group_annotation = 8,             # fontsize of optional group annotation
     fontsize_group_annotation_legend = 10,     # fontsize of optional group annotation legend title
     fontsize_group_annotation_labels = 8,      # fontsize of optional group annotation legend labels
     fontsize_heatmap_legend = 10,              # fontsize of heatmap legend
@@ -522,7 +524,7 @@ adv_Heatmap <- function(
       df = data.frame(sample_metadata),
       col = as.list(annotation_colors),
       annotation_name_side = annotation_name_side,
-      #annotation_name_gp = grid::gpar(fontsize = fontsize_group_annotation),
+      annotation_name_gp = grid::gpar(fontsize = fontsize_group_annotation),
       annotation_legend_param = list(
                                      title_gp = grid::gpar(fontsize = fontsize_group_annotation_legend),   # font size for legend title
                                      labels_gp = grid::gpar(fontsize = fontsize_group_annotation_labels)   # font size for legend labels
