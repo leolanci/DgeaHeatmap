@@ -374,6 +374,7 @@ row_anno_number = 5                                   # optional change: number 
 fontsize_rowAnnotation = 8                            # optional change: fontsize of the optional row annotation
 fontsize_columnNames = 6                              # optional change: fontsize of the optional column names
 fontsize_rowNames = 4                                 # optional change: fontsize of the optional row names
+fontsize_group_annotation = 10                        # optional change: fontsize of group annotation
 title_heatmapLegend = "Expression"                    # changeable title of the legend, default "Expression"
 WidthNum = 4.5                                        # optional change of heatmap width
 HeightNum = 3                                         # optional change of heatmap height
@@ -458,6 +459,10 @@ row_anno_number = 5                                   # optional change: number 
 fontsize_rowAnnotation = 8                            # optional change: fontsize of the optional row annotation, default = 8
 fontsize_columnNames = 6                              # optional change: fontsize of the optional column names, default = 6
 fontsize_rowNames = 4                                 # optional change: fontsize of the optional row names, default = 4
+fontsize_group_annotation_legend = 10                 # optional change: fontsize of optional group annotation legend title, default = 10
+fontsize_group_annotation_labels = 8                  # optional change: fontsize of optional group annotation legend labels, default = 8
+fontsize_heatmap_legend = 10                          # optional change: fontsize of heatmap legend, default = 10
+fontsize_heatmap_legend_labels = 8                    # optional change: fontsize of heatmap legend labels, default = 8
 title_heatmapLegend = "Expression"                    # changeable title of the legend, default "Expression"
 WidthNum = 4.5                                        # optional change of heatmap width, default = 4.5
 HeightNum = 3                                         # optional change of heatmap height, default = 3
@@ -495,6 +500,10 @@ row_anno_number = 5                                   # optional change: number 
 fontsize_rowAnnotation = 8                            # optional change: fontsize of the optional row annotation, default = 8
 fontsize_columnNames = 8                              # optional change: fontsize of the optional column names, default = 6
 fontsize_rowNames = 4                                 # optional change: fontsize of the optional row names, default = 4
+fontsize_group_annotation_legend = 10                 # optional change: fontsize of optional group annotation legend title, default = 10
+fontsize_group_annotation_labels = 8                  # optional change: fontsize of optional group annotation legend labels, default = 8
+fontsize_heatmap_legend = 10                          # optional change: fontsize of heatmap legend, default = 10
+fontsize_heatmap_legend_labels = 8                    # optional change: fontsize of heatmap legend labels, default = 8
 title_heatmapLegend = "Expression"                    # changeable title of the legend, default "Expression"
 WidthNum = 4.5                                        # optional change of heatmap width, default = 4.5
 HeightNum = 3                                         # optional change of heatmap height, default = 3

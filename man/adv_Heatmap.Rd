@@ -27,6 +27,10 @@ adv_Heatmap(
   fontsize_rowAnnotation = 8,
   fontsize_columnNames = 6,
   fontsize_rowNames = 4,
+  fontsize_group_annotation_legend = 10,
+  fontsize_group_annotation_labels = 8,
+  fontsize_heatmap_legend = 10,
+  fontsize_heatmap_legend_labels = 8,
   title_heatmapLegend = "Expression",
   WidthNum = 4.5,
   HeightNum = 3,
@@ -77,6 +81,14 @@ adv_Heatmap(
 \item{fontsize_columnNames}{An integer setting the fontsize of the column names.}
 
 \item{fontsize_rowNames}{An integer setting the fontsize of the row names.}
+
+\item{fontsize_group_annotation_legend}{An integer setting the fontsize of the group annotation legend name.}
+
+\item{fontsize_group_annotation_labels}{An integer setting the fontsize of the group annotation labels in the legend.}
+
+\item{fontsize_heatmap_legend}{An integer setting the fontsize of the heatmap legend title.}
+
+\item{fontsize_heatmap_legend_labels}{An integer setting the fontsize of the heatmap legend labels.}
 
 \item{title_heatmapLegend}{A string setting the changeable title of the legend, default "Expression".}
 
