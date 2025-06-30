@@ -374,7 +374,11 @@ row_anno_number = 5                                   # optional change: number 
 fontsize_rowAnnotation = 8                            # optional change: fontsize of the optional row annotation
 fontsize_columnNames = 6                              # optional change: fontsize of the optional column names
 fontsize_rowNames = 4                                 # optional change: fontsize of the optional row names
-fontsize_group_annotation = 10                        # optional change: fontsize of group annotation
+fontsize_cluster_labels = 8                           # optional change: fontsize of the cluster labels, default = 8
+fontsize_group_annotation_legend = 10                 # optional change: fontsize of optional group annotation legend title, default = 10
+fontsize_group_annotation_labels = 8                  # optional change: fontsize of optional group annotation legend labels, default = 8
+fontsize_heatmap_legend = 10                          # optional change: fontsize of heatmap legend, default = 10
+fontsize_heatmap_legend_labels = 8                    # optional change: fontsize of heatmap legend labels, default = 8
 title_heatmapLegend = "Expression"                    # changeable title of the legend, default "Expression"
 WidthNum = 4.5                                        # optional change of heatmap width
 HeightNum = 3                                         # optional change of heatmap height
@@ -456,9 +460,11 @@ row_annotation = FALSE                                # optional row annotation,
 row_annotation_method = "auto"                        # set if row_annotation = TRUE: options are "auto" & "specific"
 row_anno_names = NULL                                 # set if row_annotation = TRUE & row_annotation_method = "specific: input list of specific genes for the row annotation
 row_anno_number = 5                                   # optional change: number of automatic row annotations per cluster
+fontsize_title = 15                                   # optional change: fontsize the heatmap title, default = 15
 fontsize_rowAnnotation = 8                            # optional change: fontsize of the optional row annotation, default = 8
 fontsize_columnNames = 6                              # optional change: fontsize of the optional column names, default = 6
 fontsize_rowNames = 4                                 # optional change: fontsize of the optional row names, default = 4
+fontsize_cluster_labels = 8                           # optional change: fontsize of the cluster labels, default = 8
 fontsize_group_annotation_legend = 10                 # optional change: fontsize of optional group annotation legend title, default = 10
 fontsize_group_annotation_labels = 8                  # optional change: fontsize of optional group annotation legend labels, default = 8
 fontsize_heatmap_legend = 10                          # optional change: fontsize of heatmap legend, default = 10
@@ -468,7 +474,7 @@ WidthNum = 4.5                                        # optional change of heatm
 HeightNum = 3                                         # optional change of heatmap height, default = 3
 UnitSize = "cm"                                       # optional change of heatmap unit for sizes, default = "cm"
 
-hm <- adv_Heatmap(ncounts_matrix, seed = seed, column_name = column_name, colorPalette = colorPalette, cluster_method = cluster_method, cluster_rows = cluster_rows, cluster_columns = cluster_columns, k_row = k_row, k_col = k_col, sample_metadata = sample_metadata, annotation_colors = annotation_colors, annotation_name_side = annotation_name_side, show_row_names = show_row_names, show_column_names = show_column_names, row_annotation = row_annotation, row_annotation_method = row_annotation_method, row_anno_names = row_anno_names ,row_anno_number = row_anno_number, fontsize_rowAnnotation = fontsize_rowAnnotation, fontsize_columnNames = fontsize_columnNames, fontsize_rowNames = fontsize_rowNames, title_heatmapLegend = title_heatmapLegend, WidthNum = WidthNum, HeightNum = HeightNum, UnitSize = UnitSize)
+hm <- adv_Heatmap(ncounts_matrix, seed = seed, column_name = column_name, colorPalette = colorPalette, cluster_method = cluster_method, cluster_rows = cluster_rows, cluster_columns = cluster_columns, k_row = k_row, k_col = k_col, sample_metadata = sample_metadata, annotation_colors = annotation_colors, annotation_name_side = annotation_name_side, show_row_names = show_row_names, show_column_names = show_column_names, row_annotation = row_annotation, row_annotation_method = row_annotation_method, row_anno_names = row_anno_names ,row_anno_number = row_anno_number, fontsize_title = fontsize_title, fontsize_rowAnnotation = fontsize_rowAnnotation, fontsize_columnNames = fontsize_columnNames, fontsize_rowNames = fontsize_rowNames, fontsize_cluster_labels = fontsize_cluster_labels, fontsize_group_annotation_legend = fontsize_group_annotation_legend, fontsize_group_annotation_labels = fontsize_group_annotation_labels, fontsize_heatmap_legend = fontsize_heatmap_legend, fontsize_heatmap_legend_labels = fontsize_heatmap_legend_labels, title_heatmapLegend = title_heatmapLegend, WidthNum = WidthNum, HeightNum = HeightNum, UnitSize = UnitSize)
 ```
 
 <img src="man/figures/README-exampleadv_heatmap-1.png" width="100%" />
@@ -497,19 +503,21 @@ row_annotation = TRUE                                # optional row annotation, 
 row_annotation_method = "auto"                        # set if row_annotation = TRUE: options are "auto" & "specific"
 row_anno_names = NULL                                 # set if row_annotation = TRUE & row_annotation_method = "specific: input list of specific genes for the row annotation
 row_anno_number = 5                                   # optional change: number of automatic row annotations per cluster
-fontsize_rowAnnotation = 8                            # optional change: fontsize of the optional row annotation, default = 8
+fontsize_title = 20                                   # optional change: fontsize the heatmap title, default = 15
+fontsize_rowAnnotation = 6                            # optional change: fontsize of the optional row annotation, default = 8
 fontsize_columnNames = 8                              # optional change: fontsize of the optional column names, default = 6
 fontsize_rowNames = 4                                 # optional change: fontsize of the optional row names, default = 4
-fontsize_group_annotation_legend = 10                 # optional change: fontsize of optional group annotation legend title, default = 10
-fontsize_group_annotation_labels = 8                  # optional change: fontsize of optional group annotation legend labels, default = 8
-fontsize_heatmap_legend = 10                          # optional change: fontsize of heatmap legend, default = 10
-fontsize_heatmap_legend_labels = 8                    # optional change: fontsize of heatmap legend labels, default = 8
+fontsize_cluster_labels = 6                           # optional change: fontsize of the cluster labels, default = 8
+fontsize_group_annotation_legend = 8                 # optional change: fontsize of optional group annotation legend title, default = 10
+fontsize_group_annotation_labels = 6                  # optional change: fontsize of optional group annotation legend labels, default = 8
+fontsize_heatmap_legend = 8                          # optional change: fontsize of heatmap legend, default = 10
+fontsize_heatmap_legend_labels = 6                    # optional change: fontsize of heatmap legend labels, default = 8
 title_heatmapLegend = "Expression"                    # changeable title of the legend, default "Expression"
 WidthNum = 4.5                                        # optional change of heatmap width, default = 4.5
 HeightNum = 3                                         # optional change of heatmap height, default = 3
 UnitSize = "cm"                                       # optional change of heatmap unit for sizes, default = "cm"
 
-hm <- adv_Heatmap(ncounts_matrix, seed = seed, column_name = column_name, colorPalette = colorPalette, cluster_method = cluster_method, cluster_rows = cluster_rows, cluster_columns = cluster_columns, k_row = k_row, k_col = k_col, sample_metadata = sample_metadata, annotation_colors = annotation_colors, annotation_name_side = annotation_name_side, show_row_names = show_row_names, show_column_names = show_column_names, row_annotation = row_annotation, row_annotation_method = row_annotation_method, row_anno_names = row_anno_names ,row_anno_number = row_anno_number, fontsize_rowAnnotation = fontsize_rowAnnotation, fontsize_columnNames = fontsize_columnNames, fontsize_rowNames = fontsize_rowNames, title_heatmapLegend = title_heatmapLegend, WidthNum = WidthNum, HeightNum = HeightNum, UnitSize = UnitSize)
+hm <- adv_Heatmap(ncounts_matrix, seed = seed, column_name = column_name, colorPalette = colorPalette, cluster_method = cluster_method, cluster_rows = cluster_rows, cluster_columns = cluster_columns, k_row = k_row, k_col = k_col, sample_metadata = sample_metadata, annotation_colors = annotation_colors, annotation_name_side = annotation_name_side, show_row_names = show_row_names, show_column_names = show_column_names, row_annotation = row_annotation, row_annotation_method = row_annotation_method, row_anno_names = row_anno_names ,row_anno_number = row_anno_number, fontsize_title = fontsize_title, fontsize_rowAnnotation = fontsize_rowAnnotation, fontsize_columnNames = fontsize_columnNames, fontsize_rowNames = fontsize_rowNames, fontsize_cluster_labels = fontsize_cluster_labels, fontsize_group_annotation_legend = fontsize_group_annotation_legend, fontsize_group_annotation_labels = fontsize_group_annotation_labels, fontsize_heatmap_legend = fontsize_heatmap_legend, fontsize_heatmap_legend_labels = fontsize_heatmap_legend_labels, title_heatmapLegend = title_heatmapLegend, WidthNum = WidthNum, HeightNum = HeightNum, UnitSize = UnitSize)
 ```
 
 <img src="man/figures/README-K_meansadv_heatmap-1.png" width="100%" />

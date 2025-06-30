@@ -412,9 +412,11 @@ get_heatmap_colors <- function(colorPalette) {
 #' @param row_annotation_method A string setting the annotation method of the heatmap.
 #' @param row_anno_names A list containing choosen rownames to use for the row annotation.
 #' @param row_anno_number An integer setting the number of automatic annotations assigned per cluster.
+#' @param fontsize_title An integer setting the fontsize of the heatmap title, default = 15.
 #' @param fontsize_rowAnnotation An integer setting the fontsize of the optional row annotation.
 #' @param fontsize_columnNames An integer setting the fontsize of the column names.
 #' @param fontsize_rowNames An integer setting the fontsize of the row names.
+#' @param fontsize_cluster_labels An integer setting the fontsize of the cluster labels, default = 8.
 #' @param fontsize_group_annotation_legend An integer setting the fontsize of the group annotation legend name.
 #' @param fontsize_group_annotation_labels An integer setting the fontsize of the group annotation labels in the legend.
 #' @param fontsize_heatmap_legend An integer setting the fontsize of the heatmap legend title.
@@ -449,9 +451,11 @@ adv_Heatmap <- function(
     row_annotation_method = "auto",           # "auto", "specific", "none"
     row_anno_names = NULL,                     # option to set list of specific genes as row annotation
     row_anno_number = 5,                       # default number of annotations per cluster
+    fontsize_title = 15,                       # fontsize of the heatmap title
     fontsize_rowAnnotation = 8,                # fontsize of the optional row annotation
     fontsize_columnNames = 6,                  # fontsize of column names
     fontsize_rowNames = 4,                     # fontsize of row names
+    fontsize_cluster_labels = 8,               # fontsize of cluster labels
     fontsize_group_annotation_legend = 10,     # fontsize of optional group annotation legend title
     fontsize_group_annotation_labels = 8,      # fontsize of optional group annotation legend labels
     fontsize_heatmap_legend = 10,              # fontsize of heatmap legend
@@ -590,10 +594,12 @@ adv_Heatmap <- function(
     #right_annotation = right_anno,
     show_row_names = show_row_names,
     show_column_names = show_column_names,
-    column_title = column_name ,
+    column_title = column_name,
+    column_title_gp = grid::gpar(fontsize = fontsize_title),
     use_raster = FALSE,
     column_names_gp = grid::gpar(fontsize = fontsize_columnNames),
     row_names_gp = grid::gpar(fontsize = fontsize_rowNames),
+    row_title_gp = grid::gpar(fontsize = fontsize_cluster_labels),
     heatmap_legend_param = list(title = title_heatmapLegend, title_gp = grid::gpar(fontsize = fontsize_heatmap_legend), labels_gp = grid::gpar(fontsize = fontsize_heatmap_legend_labels)),
     width = grid::unit(WidthNum, UnitSize),
     height = grid::unit(HeightNum, UnitSize))
