@@ -108,7 +108,7 @@ adv_Heatmap(
 \item{UnitSize}{A string such as "cm" or "inch" to set the unit of HeightNum and WidthNum, default = "cm".}
 }
 \value{
-The colors used in heatmap based on either ComplexHeatmap default or RColorBrewer.
+An advanced and customizable heatmap.
 }
 \description{
 Creating a color scheme based on the available color palettes of RColorBrewer for the heatmap.

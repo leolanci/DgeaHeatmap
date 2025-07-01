@@ -427,7 +427,7 @@ get_heatmap_colors <- function(colorPalette) {
 #' @param HeightNum A float setting the height of the heatmap, default = 3.
 #' @param UnitSize A string such as "cm" or "inch" to set the unit of HeightNum and WidthNum, default = "cm".
 #'
-#' @return The colors used in heatmap based on either ComplexHeatmap default or RColorBrewer.
+#' @return An advanced and customizable heatmap.
 #' @export
 #'
 #' @examples

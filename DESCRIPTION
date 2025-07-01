@@ -11,7 +11,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Config/testthat/edition: 3
 biocViews: BiocStyle, edgeR
-Imports: BiocGenerics, ComplexHeatmap, RColorBrewer, purrr, magrittr, rlang, NanoStringNCTools, Biobase, GeomxTools, stats
+Imports: BiocGenerics, ComplexHeatmap, RColorBrewer, purrr, magrittr, rlang, NanoStringNCTools, Biobase, GeomxTools, stats, limma, edgeR, utils
 VignetteBuilder: knitr
 Suggests: 
     BiocStyle,
@@ -27,8 +27,6 @@ Suggests:
     EnvStats,
     GeoMxWorkflows, 
     VennDiagram,
-    edgeR,
     ggiraph,
-    ggsankey, 
-    utils,
+    ggsankey,
     stringr
