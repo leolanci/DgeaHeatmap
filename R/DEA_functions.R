@@ -16,7 +16,7 @@
 #' comparisons <- list("Comp1 = c("Group_a", "Group_b"), "Comp2" = c("Group_c", "Group_d"))
 #' prefix = "DEA"
 #'
-trial_DGEALimma <- function(
+DGEALimma <- function(
     rawCounts,
     metadata,
     grouping_columns,
@@ -73,7 +73,8 @@ trial_DGEALimma <- function(
     voom_data = v,
     fit = fit2,
     results = results,
-    design = design
+    design = design,
+    normFactors = y
   ))
 
 }

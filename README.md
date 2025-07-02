@@ -725,145 +725,52 @@ Bayes. Finally, the results of the differential gene expression analysis
 are classified as up, down, or not significantly differently expressed.
 
 ``` r
-library(edgeR)
-#> Loading required package: limma
-#> 
-#> Attaching package: 'limma'
-#> The following object is masked from 'package:BiocGenerics':
-#> 
-#>     plotMA
-library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following object is masked from 'package:NanoStringNCTools':
-#> 
-#>     groups
-#> The following objects are masked from 'package:S4Vectors':
-#> 
-#>     first, intersect, rename, setdiff, setequal, union
-#> The following object is masked from 'package:Biobase':
-#> 
-#>     combine
-#> The following objects are masked from 'package:BiocGenerics':
-#> 
-#>     combine, intersect, setdiff, union
-#> The following object is masked from 'package:testthat':
-#> 
-#>     matches
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
-library(tidyr)
-#> 
-#> Attaching package: 'tidyr'
-#> The following object is masked from 'package:S4Vectors':
-#> 
-#>     expand
-#> The following object is masked from 'package:testthat':
-#> 
-#>     matches
-library(tidyverse)
-#> ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-#> ✔ forcats   1.0.0     ✔ readr     2.1.5
-#> ✔ lubridate 1.9.3     ✔ stringr   1.5.1
-#> ✔ purrr     1.0.2
-#> ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-#> ✖ dplyr::combine()       masks Biobase::combine(), BiocGenerics::combine()
-#> ✖ readr::edition_get()   masks testthat::edition_get()
-#> ✖ tidyr::expand()        masks S4Vectors::expand()
-#> ✖ dplyr::filter()        masks stats::filter()
-#> ✖ dplyr::first()         masks S4Vectors::first()
-#> ✖ dplyr::groups()        masks NanoStringNCTools::groups()
-#> ✖ purrr::is_null()       masks testthat::is_null()
-#> ✖ dplyr::lag()           masks stats::lag()
-#> ✖ readr::local_edition() masks testthat::local_edition()
-#> ✖ tidyr::matches()       masks dplyr::matches(), testthat::matches()
-#> ✖ ggplot2::Position()    masks BiocGenerics::Position(), base::Position()
-#> ✖ dplyr::rename()        masks S4Vectors::rename()
-#> ✖ lubridate::second()    masks S4Vectors::second()
-#> ✖ lubridate::second<-()  masks S4Vectors::second<-()
-#> ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
-
 coldata2 <- as.data.frame((coldata_2))
-comp <- paste0(coldata2$segment, coldata2$region, coldata2$class, coldata2$slide_name)
-comp <- gsub(" ", "_", comp)
-design <- model.matrix(~0 + comp)
 
-coldata2$comp <- gsub(" ", "_", coldata2$comp)
+comparisons <- list(
+  "GeometricSegment_glomerulus_Dkd_disease1b_vs_disease2B" = c("Geometric_Segment_glomerulus_DKD_disease1B ", "Geometric_Segment_glomerulus_DKD_disease2B "),
+  "GeometricSegmentglomerulus_DKD_disease1B_vs_disease3" = c("Geometric_Segment_glomerulus_DKD_disease1B ", "Geometric_Segment_glomerulus_DKD_disease3"),
+  "GeometricSegmentglomerulus_DKD_disease2B_vs_disease3" = c("Geometric_Segment_glomerulus_DKD_disease2B ", "Geometric_Segment_glomerulus_DKD_disease3")
+)
 
-contrasts <- makeContrasts(GeometricSegment_glomerulus_Dkd_disease1b_vs_disease2B = compGeometric_SegmentglomerulusDKDdisease1B - compGeometric_SegmentglomerulusDKDdisease2B,
-                           GeometricSegmentglomerulus_DKD_disease1B_vs_disease3 = compGeometric_SegmentglomerulusDKDdisease1B - compGeometric_SegmentglomerulusDKDdisease3,
-                           GeometricSegmentglomerulus_DKD_disease2B_vs_disease3 = compGeometric_SegmentglomerulusDKDdisease2B - compGeometric_SegmentglomerulusDKDdisease3,
-                           levels = design)
+groupingColumns <- c("segment", "region", "class", "slide_name")
+DGEA_results <- trial_DGEALimma(copy_df_Expr, coldata2, grouping_columns = groupingColumns, comparisons = comparisons)
 
-y = DGEList(counts = copy_df_Expr)
-y = calcNormFactors(y)
-v = voom(y, design)
-
-fit <- lmFit(v, design) 
-fit2 <- contrasts.fit(fit, contrasts) # contrasts.fit must be run before eBayes
-fit2 <- eBayes(fit2)
-
-results_all_DEG <- decideTests(fit2)
+results_all_DEG <- decideTests(DGEA_results$fit)
+#> Error in decideTests(DGEA_results$fit): could not find function "decideTests"
 summary(results_all_DEG)
-#>        GeometricSegment_glomerulus_Dkd_disease1b_vs_disease2B
-#> Down                                                     2455
-#> NotSig                                                  15425
-#> Up                                                        624
-#>        GeometricSegmentglomerulus_DKD_disease1B_vs_disease3
-#> Down                                                   2965
-#> NotSig                                                14821
-#> Up                                                      718
-#>        GeometricSegmentglomerulus_DKD_disease2B_vs_disease3
-#> Down                                                   1225
-#> NotSig                                                15748
-#> Up                                                     1531
+#> Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'summary': object 'results_all_DEG' not found
 
 result1 = topTable(fit2, coef= "GeometricSegment_glomerulus_Dkd_disease1b_vs_disease2B", number = Inf, adjust.method = "fdr") %>%
   as.data.frame() # differentially expressed genes are obtained by topTreat() function
+#> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'as.data.frame': could not find function "topTable"
+
 # filter results to get significantly differentially expressed genes
-
-
-
-
 topUp <- result1[which(result1$logFC > 0),] [1:100,] # up reg top 100
+#> Error: object 'result1' not found
 topDown <- result1[which(result1$logFC < 0),] [1:100,] # down reg top 100
+#> Error: object 'result1' not found
 
 class(topUp)
-#> [1] "data.frame"
+#> Error: object 'topUp' not found
 
 NamesUpReg <- row.names(topUp)
+#> Error: object 'topUp' not found
 NamesDownReg <- row.names(topDown)
+#> Error: object 'topDown' not found
 print(NamesDownReg)
-#>   [1] "PLIN2"    "IL1RL1"   "C1R"      "CHI3L1"   "PIGT"     "F2RL3"   
-#>   [7] "S100A8"   "TMEM150C" "DDIT4"    "S100A12"  "S100A9"   "SH3BP5"  
-#>  [13] "CCL14"    "LYVE1"    "APOD"     "SYNPO"    "TRPC6"    "PHACTR4" 
-#>  [19] "RBM3"     "LILRA5"   "KANK1"    "RAMP3"    "PAK1"     "ZDHHC6"  
-#>  [25] "WDR41"    "TMEM248"  "VTI1A"    "LGALS8"   "CRYAB"    "NPHS1"   
-#>  [31] "CLIC5"    "GCA"      "AGFG2"    "AKR1C1"   "ALS2CL"   "ARL6IP5" 
-#>  [37] "BAMBI"    "FCER1G"   "STAB1"    "MMP9"     "PLCE1"    "SMCHD1"  
-#>  [43] "FTH1"     "FBXL17"   "FCN2"     "ALOX5AP"  "NTNG1"    "TNNT2"   
-#>  [49] "FBXL5"    "SNRK"     "IGFBP2"   "PTPRQ"    "CAVIN2"   "MXI1"    
-#>  [55] "SCFD1"    "DAB2"     "F3"       "LEPROT"   "TGFBR3"   "MTFR1"   
-#>  [61] "TMEM178A" "PDE2A"    "NFASC"    "FGR"      "UBR1"     "CNN2"    
-#>  [67] "PRKAR2B"  "CTDSPL"   "NDN"      "HYAL2"    "SPOCK1"   "TTC14"   
-#>  [73] "TYRO3"    "ARHGEF3"  "CCN2"     "DDX3X"    "NPHS2"    "CTNND1"  
-#>  [79] "FGF1"     "ABI1"     "SLC2A3"   "ZNF280D"  "S100A11"  "H2AC6"   
-#>  [85] "RASSF8"   "CRIM1"    "GJA1"     "MAFB"     "TFG"      "TLN1"    
-#>  [91] "STX11"    "ALDH1A1"  "FLT1"     "PDZK1IP1" "COL4A3"   "GSTK1"   
-#>  [97] "CNN3"     "IKBKB"    "BLCAP"    "FPR1"
+#> Error: object 'NamesDownReg' not found
 
 result1 <- result1 %>%
   dplyr::mutate(isSignificant = case_when(
     adj.P.Val < 0.05& abs(logFC) >1 ~TRUE,
     TRUE ~ FALSE # If condictions in the line above are not met, gene is not DE.
     ))
+#> Error: object 'result1' not found
 
 sigDEresults <- result1 %>%
   dplyr::filter(isSignificant == TRUE)
+#> Error: object 'result1' not found
 ```
 
 inesdesantiago (2020) 10 Tips & Tricks for complex model.matrix designs
@@ -892,26 +799,16 @@ venn.plot <- vennDiagram(results_all_DEG,
               include=c("up", "down"), mar=rep(1,4), cex=c(1.5,1,0.7), lwd=1,
               counts.col=c("red", "blue"),
               circle.col = c("red", "blue", "green3"))
+#> Error in vennDiagram(results_all_DEG, imagetype = "tiff", include = c("up", : could not find function "vennDiagram"
 ```
 
-<img src="man/figures/README-VennDiagramm-1.png" width="100%" /> Chen,
-H., Boutros, P.C. VennDiagram: a package for the generation of
+Chen, H., Boutros, P.C. VennDiagram: a package for the generation of
 highly-customizable Venn and Euler diagrams in R. BMC Bioinformatics 12,
 35 (2011). <https://doi.org/10.1186/1471-2105-12-35>
 
     #> Warning: package 'data.table' was built under R version 4.4.3
     #> 
     #> Attaching package: 'data.table'
-    #> The following objects are masked from 'package:lubridate':
-    #> 
-    #>     hour, isoweek, mday, minute, month, quarter, second, wday, week,
-    #>     yday, year
-    #> The following object is masked from 'package:purrr':
-    #> 
-    #>     transpose
-    #> The following objects are masked from 'package:dplyr':
-    #> 
-    #>     between, first, last
     #> The following objects are masked from 'package:S4Vectors':
     #> 
     #>     first, second
