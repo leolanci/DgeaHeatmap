@@ -594,42 +594,26 @@ Differential gene expression analysis based on the negative binomial distributio
 https://doi.org/10.18129/B9.bioc.DESeq2
 
 To perform the differential gene expression analysis, limma voom is utilized. First, a matrix is created in which each coefficient represents the average of the samples from one group. Afterwards, the contrasts are set to direct testing between chosen groups in the analysis. To scale the raw library sizes, the normalization factors are calculated. The count data is then transformed to log2-counts per million, and the mean-variance relationship is estimated. By fitting a linear model to each gene, both fold changes and standard errors are estimated. The fitted model objects are then reorientated from the coefficients of the design matrix to any set of contrasts of the original coefficients. The standard errors are smoothed by empirical Bayes. Finally, the results of the differential gene expression analysis are classified as up, down, or not significantly differently expressed.
-```{r PerformingDEGLimmaVoom,echo=TRUE, include=TRUE, error=TRUE, warning=FALSE}
-library(edgeR)
-library(dplyr)
-library(tidyr)
-library(tidyverse)
 
+```{r PerformingDEGLimmaVoomfct,echo=TRUE, include=TRUE, error=TRUE, warning=FALSE}
 coldata2 <- as.data.frame((coldata_2))
-comp <- paste0(coldata2$segment, coldata2$region, coldata2$class, coldata2$slide_name)
-comp <- gsub(" ", "_", comp)
-design <- model.matrix(~0 + comp)
 
-coldata2$comp <- gsub(" ", "_", coldata2$comp)
+comparisons <- list(
+  "GeometricSegment_glomerulus_Dkd_disease1b_vs_disease2B" = c("Geometric_Segment_glomerulus_DKD_disease1B ", "Geometric_Segment_glomerulus_DKD_disease2B "),
+  "GeometricSegmentglomerulus_DKD_disease1B_vs_disease3" = c("Geometric_Segment_glomerulus_DKD_disease1B ", "Geometric_Segment_glomerulus_DKD_disease3"),
+  "GeometricSegmentglomerulus_DKD_disease2B_vs_disease3" = c("Geometric_Segment_glomerulus_DKD_disease2B ", "Geometric_Segment_glomerulus_DKD_disease3")
+)
 
-contrasts <- makeContrasts(GeometricSegment_glomerulus_Dkd_disease1b_vs_disease2B = compGeometric_SegmentglomerulusDKDdisease1B - compGeometric_SegmentglomerulusDKDdisease2B,
-                           GeometricSegmentglomerulus_DKD_disease1B_vs_disease3 = compGeometric_SegmentglomerulusDKDdisease1B - compGeometric_SegmentglomerulusDKDdisease3,
-                           GeometricSegmentglomerulus_DKD_disease2B_vs_disease3 = compGeometric_SegmentglomerulusDKDdisease2B - compGeometric_SegmentglomerulusDKDdisease3,
-                           levels = design)
+groupingColumns <- c("segment", "region", "class", "slide_name")
+DGEA_results <- DGEALimma(copy_df_Expr, coldata2, grouping_columns = groupingColumns, comparisons = comparisons)
 
-y = DGEList(counts = copy_df_Expr)
-y = calcNormFactors(y)
-v = voom(y, design)
-
-fit <- lmFit(v, design) 
-fit2 <- contrasts.fit(fit, contrasts) # contrasts.fit must be run before eBayes
-fit2 <- eBayes(fit2)
-
-results_all_DEG <- decideTests(fit2)
+results_all_DEG <- decideTests(DGEA_results$fit)
 summary(results_all_DEG)
 
 result1 = topTable(fit2, coef= "GeometricSegment_glomerulus_Dkd_disease1b_vs_disease2B", number = Inf, adjust.method = "fdr") %>%
   as.data.frame() # differentially expressed genes are obtained by topTreat() function
+
 # filter results to get significantly differentially expressed genes
-
-
-
-
 topUp <- result1[which(result1$logFC > 0),] [1:100,] # up reg top 100
 topDown <- result1[which(result1$logFC < 0),] [1:100,] # down reg top 100
 
@@ -647,8 +631,9 @@ result1 <- result1 %>%
 
 sigDEresults <- result1 %>%
   dplyr::filter(isSignificant == TRUE)
-
 ```
+
+
 inesdesantiago (2020) 10 Tips & Tricks for complex model.matrix designs in DGE analysis. 
 Sequencing QC and data analysis blog. Available from: 
 Bibliography
@@ -674,9 +659,10 @@ Chen, H., Boutros, P.C. VennDiagram: a package for the generation of highly-cust
 
 ```{r extractionNormalizedCounts, echo=FALSE}
 library(data.table)
+y <- DGEA_results$normFactors
 class(y)
 head(y)
-CPM <- cpm(y)
+CPM <- edgeR::cpm(y)
 head(CPM)
 class(CPM)
 
