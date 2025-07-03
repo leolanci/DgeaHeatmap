@@ -135,7 +135,7 @@ DGEA_DESeq2 <- function (rawCounts, metadata, grouping_columns, comparisons){
       }
     } else {
       warning(paste("Contrast failed:", name, "-> One or both levels not found in comp factor levels"))
-      print(setdiff(contrast_pair, levels(colData(dds)$comp)))
+      print(setdiff(contrast_pair, levels(SummarizedExperiment::colData(dds)$comp)))
     }
   }
   contrast_names <- names(comparisons)
@@ -144,4 +144,95 @@ DGEA_DESeq2 <- function (rawCounts, metadata, grouping_columns, comparisons){
     results = results_list,
     contrasts = contrast_names
   ))
+}
+
+#' Extracts the results of the DEA with DESeq2
+#'
+#' @param results_list A list containing the results of the DEA.
+#' @param comparisons An element of the class list, that contains optional information on specific comparisons that are to be conducted (simplifies the results).
+#' @param only_up A Boolean opting for only up regulated genes, default = FALSE.
+#' @param only_down A Boolean opting for only down regulated genes, default = FALSE.
+#' @param up_down A Boolean opting for only up and down regulated genes, default = FALSE.
+#' @param only_sig A Boolean opting for only significantly regulated genes, default = FALSE.
+#' @param padj_cutoff A Float, setting the adjusted p-values cutoff, default = 0.05.
+#' @param lfc_cutoff A Float, setting the fold change cutoff, default = 0.
+#'
+#' @return A list containing the voom data, fitting of the linear model, results of the contrasts, and the generated design.
+#' @export
+#'
+#' @examples
+#' results_list <- list
+#' comparisons <- list("Comp1 = c("Group_a", "Group_b"), "Comp2" = c("Group_c", "Group_d"))
+#'
+extractDEGenes <- function(results_list, comparisons,
+only_up = FALSE,
+only_down = FALSE,
+up_down = FALSE,
+only_sig = FALSE,
+padj_cutoff = 0.05,
+lfc_cutoff = 0) {
+
+  # Check for incompatible options
+  if ((only_up + only_down + up_down + only_sig) > 1) {
+    stop("Only one of 'only_up', 'only_down', 'up_down', or 'only_sig' can be TRUE at a time.")
+  }
+
+  # Get union of all genes across all comparisons
+  all_genes <- unique(unlist(lapply(results_list, rownames)))
+
+  if (up_down) {
+    # Build 3-state matrix (genes x comparisons)
+    state_matrix <- matrix(0, nrow = length(all_genes), ncol = length(results_list))
+    rownames(state_matrix) <- all_genes
+    colnames(state_matrix) <- names(results_list)
+
+    for (comparisons in names(results_list)) {
+      res <- results_list[[comparisons]]
+      genes_in_res <- rownames(res)
+
+      for (gene in genes_in_res) {
+        padj <- res[gene, "padj"]
+        lfc <- res[gene, "log2FoldChange"]
+
+        if (!is.na(padj) && padj < padj_cutoff && !is.na(lfc)) {
+          if (lfc > lfc_cutoff) {
+            state_matrix[gene, comparisons] <- 1
+          } else if (lfc < -lfc_cutoff) {
+            state_matrix[gene, comparisons] <- -1
+          }
+        }
+      }
+    }
+    return(state_matrix)
+
+  } else {
+    # Initialize list to store gene vectors
+    gene_lists <- list()
+
+    for (comparison in names(results_list)) {
+      res <- results_list[[comparison]]
+
+      # Filter by significance if requested
+      sig_res <- if (only_sig || only_up || only_down) {
+        res[!is.na(res$padj) & res$padj < padj_cutoff, ]
+      } else {
+        res
+      }
+
+      # Extract genes based on requested direction
+      if (only_up) {
+        genes <- rownames(sig_res)[sig_res$log2FoldChange > lfc_cutoff]
+      } else if (only_down) {
+        genes <- rownames(sig_res)[sig_res$log2FoldChange < -lfc_cutoff]
+      } else if (only_sig) {
+        genes <- rownames(sig_res)
+      } else {
+        # If no filtering requested, return all genes
+        genes <- rownames(res)
+      }
+
+      gene_lists[[comparison]] <- genes
+    }
+    return(gene_lists)
+  }
 }
