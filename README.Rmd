@@ -593,7 +593,11 @@ Love M, Ahlmann-Eltze C, Forbes K, Anders S, Huber W, FP7 RE, NHGRI N, CZI (2023
 Differential gene expression analysis based on the negative binomial distribution. 
 https://doi.org/10.18129/B9.bioc.DESeq2
 
-To perform the differential gene expression analysis, limma voom is utilized. First, a matrix is created in which each coefficient represents the average of the samples from one group. Afterwards, the contrasts are set to direct testing between chosen groups in the analysis. To scale the raw library sizes, the normalization factors are calculated. The count data is then transformed to log2-counts per million, and the mean-variance relationship is estimated. By fitting a linear model to each gene, both fold changes and standard errors are estimated. The fitted model objects are then reorientated from the coefficients of the design matrix to any set of contrasts of the original coefficients. The standard errors are smoothed by empirical Bayes. Finally, the results of the differential gene expression analysis are classified as up, down, or not significantly differently expressed.
+The differential gene expression analysis can be conducted based on limma voom, DESeq2, and edgeR.
+
+** DEA Limma **
+
+Utilizing limma voom, a matrix is created in which each coefficient represents the average of the samples from one group. Afterwards, the contrasts are set to direct testing between chosen groups in the analysis. To scale the raw library sizes, the normalization factors are calculated. The count data is then transformed to log2-counts per million, and the mean-variance relationship is estimated. By fitting a linear model to each gene, both fold changes and standard errors are estimated. The fitted model objects are then reorientated from the coefficients of the design matrix to any set of contrasts of the original coefficients. The standard errors are smoothed by empirical Bayes. Finally, the results of the differential gene expression analysis are classified as up, down, or not significantly differently expressed.
 
 ```{r PerformingDEGLimmaVoomfct,echo=TRUE, include=TRUE, error=TRUE, warning=FALSE}
 coldata2 <- as.data.frame((coldata_2))
@@ -649,13 +653,92 @@ https://www.bioconductor.org/packages/devel/bioc/vignettes/GeomxTools/inst/doc
 The results from the differential gene expression analysis are visualized using a Venn diagramm to represent the up- and down- regulated genes between groups. This is set up in the following way:
 ```{r VennDiagramm, echo=TRUE, error=TRUE, warning=FALSE}
 library(VennDiagram)
+library(limma)
 venn.plot <- vennDiagram(results_all_DEG,
               imagetype = "tiff",
-              include=c("up", "down"), mar=rep(1,4), cex=c(1.5,1,0.7), lwd=1,
+              include=c("up", "down"), mar=rep(1,4), cex=c(1,1,0.7), lwd=1,
               counts.col=c("red", "blue"),
               circle.col = c("red", "blue", "green3"))
 ```
 Chen, H., Boutros, P.C. VennDiagram: a package for the generation of highly-customizable Venn and Euler diagrams in R. BMC Bioinformatics 12, 35 (2011). https://doi.org/10.1186/1471-2105-12-35
+
+** DEA DESeq2 **
+
+The raw counts are first structured into a DESeqDataSEt and comparisons are used to test specific differences between groups. Next, the size factors are estimated for normalization and dispersion values are estimated for each gene. A GLM (generalized linear model) is fit to the data through negative niomial distribution. A Wald test is performed for statistical testing and p-values are adjusted for multiple testing through Benjamin-Hochberg procedure. The data is then classified into up and down reguated and not significantly expressed genes.
+
+```{r PerformingDEGDESeq2fct,echo=TRUE, include=TRUE, error=TRUE, warning=FALSE}
+comparisons <- list(
+  "disease1b_vs_disease2B" = c("Geometric_Segment_glomerulus_DKD_disease1B", "Geometric_Segment_glomerulus_DKD_disease2B"),
+  "disease1b_vs_disease3"  = c("Geometric_Segment_glomerulus_DKD_disease1B", "Geometric_Segment_glomerulus_DKD_disease3"),
+  "disease2B_vs_disease3"  = c("Geometric_Segment_glomerulus_DKD_disease2B", "Geometric_Segment_glomerulus_DKD_disease3")
+)
+int_counts <- round(copy_df_Expr)
+groupingColumns <- c("segment", "region", "class", "slide_name")
+results_DESeq2 <- DGEA_DESeq2(int_counts, coldata2, groupingColumns,comparisons)
+results_list_d <- results_DESeq2$results
+```
+Venn Diagram for up regulated genes extracted from the DESeq2 analysis:
+```{r DESeq2_Venn_upreg}
+library(ggvenn)
+up_genes <- extractDEGenes(results_list_d, contrasts, only_up = TRUE)
+ggvenn(up_genes, fill_color = c("red", "green", "blue"))
+```
+
+Venn Diagram for down regulated genes extracted from the DESeq2 analysis:
+```{r DESeq2_Venn_downreg}
+down_genes <- extractDEGenes(results_list_d, contrasts, only_down = TRUE)
+ggvenn(down_genes, fill_color = c("red", "green", "blue"))
+```
+Venn Diagram for significant genes extracted from the DESeq2 analysis:
+```{r DESeq2_Venn_sigreg}
+sig_genes <- extractDEGenes(results_list_d, contrasts, only_sig = TRUE)
+head(sig_genes)
+ggvenn(sig_genes, fill_color = c("red", "green", "blue"))
+```
+
+Venn Diagram for up and down regulated genes extracted from the DESeq2 analysis:
+```{r DESeq2_Venn_updownreg}
+state_mat <- extractDEGenes(results_list_d, contrasts, up_down = TRUE)
+head(state_mat)
+venn.plot <- vennDiagram(state_mat,
+                         imagetype = "tiff",
+                         include=c("up", "down"), mar=rep(1,4), cex=c(1.5,1,0.7), lwd=1,
+                         counts.col=c("red", "blue"),
+                         circle.col = c("red", "blue", "green3"))
+```
+
+** DEA edgeR **
+
+The raw counts are first used to construct a DGEList object and grouping factors are identified. Then genes with low expression are filtered before the normalization factors are calculated using trimmed mean of m-values (TMM). A linear model is fitted to each gene and fold changes, as well as standard errors are estimated. The model is then reorientated using contrasts (set as comparison) of the original coefficients. The results of the differential gene expression analysis are classified as up, down, or not significantly differently expressed.
+
+```{r DEA_edgeR}
+comparisons <- list(
+  "GeometricSegment_glomerulus_Dkd_disease1b_vs_disease2B" = c("Geometric_Segment_glomerulus_DKD_disease1B ", "Geometric_Segment_glomerulus_DKD_disease2B "),
+  "GeometricSegmentglomerulus_DKD_disease1B_vs_disease3" = c("Geometric_Segment_glomerulus_DKD_disease1B ", "Geometric_Segment_glomerulus_DKD_disease3"),
+  "GeometricSegmentglomerulus_DKD_disease2B_vs_disease3" = c("Geometric_Segment_glomerulus_DKD_disease2B ", "Geometric_Segment_glomerulus_DKD_disease3")
+)
+groupingColumns <- c("segment", "region", "class", "slide_name")
+results_edgeR <- DGEAedgeR(int_counts, coldata2, groupingColumns, comparisons, prefix = "DEA")
+
+edgeR_summary <- summarize_edgeR_DEA(results_edgeR)
+```
+
+Venn Diagram for up and down regulated genes extracted from the edgeR analysis:
+```{r DEA_Venn_edgeR}
+# Suppose `edgeR_summary` is the output of summarize_edgeR_DEA()
+state_matrix <- edgeR_summary$classified_results %>%
+  lapply(function(df) df$decision) %>%       # extract the –1/0/+1 vector for each contrast
+  do.call(cbind, .)                          # bind into a matrix
+colnames(state_matrix) <- names(edgeR_summary$classified_results)
+
+venn.plot <- vennDiagram(state_matrix,
+                         imagetype = "tiff",
+                         include=c("up", "down"), mar=rep(1,4), cex=c(1,0.8,0.7), lwd=1,
+                         counts.col=c("red", "blue"),
+                         circle.col = c("red", "blue", "green3"))
+```
+
+Normalized Counts can for example be extracted as in this example:
 
 ```{r extractionNormalizedCounts, echo=FALSE}
 library(data.table)

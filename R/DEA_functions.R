@@ -236,3 +236,166 @@ lfc_cutoff = 0) {
     return(gene_lists)
   }
 }
+
+
+#' Performs a differential expression analysis based on edgeR
+#'
+#' @param rawCounts A matrix containing raw counts (integers).
+#' @param metadata A dataframe containing the meta data information of the raw counts matrix.
+#' @param grouping_columns A list of the columns names in the metadata file that are used to generate the groups for the DEA that are compared with each other.
+#' @param comparisons An element of the class list, that contains optional information on specific comparisons that are to be conducted (simplifies the results).
+#' @param prefix A string used as a prefix for the contrast_names that are generated.
+#'
+#' @return A list containing the voom data, fitting of the linear model, results of the contrasts, and the generated design.
+#' @export
+#'
+#' @examples
+#' rawCounts <- matrix
+#' metadata <- data.frame
+#' grouping_columns <- c("segment", "region", "class", "slide_name")
+#' comparisons <- list("Comp1 = c("Group_a", "Group_b"), "Comp2" = c("Group_c", "Group_d"))
+#' prefix <- "DEA"
+#'
+DGEAedgeR <- function(
+    rawCounts,
+    metadata,
+    grouping_columns,
+    comparisons = NULL,    # named list of specific comparisons; e.g. list(comp1_vs_comp2 = c("comp1", "comp2"))
+    prefix = "DEA"
+) {
+  # Check grouping columns in metadata
+  if (!all(grouping_columns %in% colnames(metadata))) {
+    stop("Some grouping_columns not found in metadata")
+  }
+
+  # Create composite group factor
+  comp <- apply(metadata[, grouping_columns, drop = FALSE], 1, paste, collapse = "_")
+  comp <- gsub(" ", "_", comp)  # replace spaces with underscores
+  metadata$comp <- factor(comp)
+
+  # Create DGEList object
+  y <- edgeR::DGEList(counts = rawCounts, group = metadata$comp)
+
+  # Filter lowly expressed genes (optional, adjust thresholds as needed)
+  keep <- edgeR::filterByExpr(y, group = metadata$comp)
+  y <- y[keep, , keep.lib.sizes=FALSE]
+
+  # Calculate normalization factors
+  y <- edgeR::calcNormFactors(y)
+
+  # Create design matrix without intercept (one column per group)
+  design <- stats::model.matrix(~0 + metadata$comp)
+  colnames(design) <- levels(metadata$comp)
+
+  # Fit negative binomial GLM
+  y <- edgeR::estimateDisp(y, design)
+  fit <- edgeR::glmFit(y, design)
+
+  # delete trailing spaces from comparisons
+  comparisons <- lapply(comparisons, trimws)
+
+  # Prepare contrasts matrix
+  if (!is.null(comparisons)) {
+    # named list of pairs, e.g. list(comp1_vs_comp2 = c("comp1", "comp2"))
+    contrast_list <- lapply(comparisons, function(x) {
+      contrast_vec <- rep(0, length(levels(metadata$comp)))
+      names(contrast_vec) <- levels(metadata$comp)
+      contrast_vec[x[1]] <- 1
+      contrast_vec[x[2]] <- -1
+      contrast_vec
+    })
+    contrast_matrix <- do.call(cbind, contrast_list)
+    colnames(contrast_matrix) <- names(comparisons)
+  } else {
+    # all pairwise contrasts
+    comb <- utils::combn(levels(metadata$comp), 2)
+    contrast_matrix <- apply(comb, 2, function(x) {
+      contrast_vec <- rep(0, length(levels(metadata$comp)))
+      names(contrast_vec) <- levels(metadata$comp)
+      contrast_vec[x[1]] <- 1
+      contrast_vec[x[2]] <- -1
+      contrast_vec
+    })
+    colnames(contrast_matrix) <- apply(comb, 2, function(x) paste0(prefix, "_", x[1], "_vs_", x[2]))
+  }
+
+
+  # Run likelihood ratio tests for each contrast and collect results
+  results <- list()
+  for (i in seq_len(ncol(contrast_matrix))) {
+    ct <- contrast_matrix[, i]
+    lrt <- edgeR::glmLRT(fit, contrast = ct)
+    top <- edgeR::topTags(lrt, n = Inf)$table
+    results[[colnames(contrast_matrix)[i]]] <- top
+  }
+
+  return(list(
+    dgeList = y,
+    design = design,
+    fit = fit,
+    contrast_matrix = contrast_matrix,
+    results = results
+  ))
+}
+
+#' Summarize the results of the DEA with edgeR
+#'
+#' @param results_edgeR A list containing the results of the DEA.
+#' @param lfc_threshold A Float, setting the threshold value for the fold change, default = 1.
+#' @param fdr_threshold A Float, setting the False Discovery Rate threshold, default = 0.05.
+#' @param return_significant_genes A Boolean opting for the output of significantly regulated genes, default = TRUE
+#'
+#' @return A list containing the voom data, fitting of the linear model, results of the contrasts, and the generated design.
+#' @export
+#'
+#' @examples
+#' results_list <- list
+#' comparisons <- list("Comp1 = c("Group_a", "Group_b"), "Comp2" = c("Group_c", "Group_d"))
+#'
+summarize_edgeR_DEA <- function(results_edgeR,
+                                lfc_threshold = 1,
+                                fdr_threshold = 0.05,
+                                return_significant_genes = TRUE) {
+  all_results <- results_edgeR$results
+  gene_classifications <- list()
+  summary_table <- data.frame()
+
+  for (contrast in names(all_results)) {
+    res <- all_results[[contrast]] %>%
+      as.data.frame() %>%
+      dplyr::mutate(
+        decision = dplyr::case_when(
+          FDR < fdr_threshold & logFC > lfc_threshold ~ 1,
+          FDR < fdr_threshold & logFC < -lfc_threshold ~ -1,
+          TRUE ~ 0
+        )
+      )
+
+    gene_classifications[[contrast]] <- res
+
+    summary_counts <- table(factor(res$decision, levels = c(-1, 0, 1)))
+    summary_table <- rbind(summary_table,
+                           data.frame(
+                             contrast = contrast,
+                             down = summary_counts["-1"],
+                             not_sig = summary_counts["0"],
+                             up = summary_counts["1"]
+                           ))
+  }
+
+  # Optionally extract significant gene names
+  if (return_significant_genes) {
+    sig_genes <- lapply(gene_classifications, function(df) {
+      df_sig <- df[df$decision != 0, ]
+      rownames(df_sig)
+    })
+  } else {
+    sig_genes <- NULL
+  }
+
+  return(list(
+    classified_results = gene_classifications,
+    summary = summary_table,
+    significant_gene_names = sig_genes
+  ))
+}
