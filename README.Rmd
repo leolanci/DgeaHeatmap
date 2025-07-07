@@ -91,14 +91,14 @@ show_data_distribution(scaled_counts)
 
 **Generating an elbow plot to choose k for k-mean generation:**
 
-```{r exampleElbowPlot, echo=TRUE}
+```{r exampleElbowPlot, echo=TRUE, warning=FALSE}
 seed <- 1 # setting a seed for a reproducible outcome
 elbow_plot(seed, scaled_counts)
 ```
 
 This can also be conducted with the transposed matrix to get the number of clusters the columns can be divided into:
 
-```{r exampleElbowPlot_columns, echo=TRUE}
+```{r exampleElbowPlot_columns, echo=TRUE, warning=FALSE}
 maxK <- 4                                 # only 4 samples therefore a max of 4 clusters possible
 seed <- 1                                 # setting a seed for a reproducible outcome
 transposed_matrix <- t(scaled_counts)     # transposes matrix
@@ -131,7 +131,6 @@ The most variable genes of each cluster are selected using the following functio
 number_of_annotations_per_cluster <- 3
 k_clusters <- 3
 mostVarGeneslist <- most_variable_genes(K_meanTable, number_of_annotations_per_cluster, k_clusters)
-print(mostVarGeneslist)
 ```
 **To set the annotation for a heatmap the following function can be used:**
 
@@ -147,14 +146,14 @@ k_clusters <- 3
 split_heatmap_clusters <- performing_kMeans(sumBioRepsMatrix, k_clusters)
 ```
 
-```{r}
+```{r colorPaletteSetUp, results='hide'}
 colorPalette <- "RdBu"
 color_setting(colorPalette)
 ```
 
 **Finally, a heatmap with clusters can be generated as in this example:**
 
-```{r}
+```{r Heatmap_printheatmap}
 seed <- 1
 title <- "Heatmap DKD glomerulus segment"
 fontsize_columnNames <-6
@@ -595,7 +594,7 @@ https://doi.org/10.18129/B9.bioc.DESeq2
 
 The differential gene expression analysis can be conducted based on limma voom, DESeq2, and edgeR.
 
-** DEA Limma **
+**DEA Limma**
 
 Utilizing limma voom, a matrix is created in which each coefficient represents the average of the samples from one group. Afterwards, the contrasts are set to direct testing between chosen groups in the analysis. To scale the raw library sizes, the normalization factors are calculated. The count data is then transformed to log2-counts per million, and the mean-variance relationship is estimated. By fitting a linear model to each gene, both fold changes and standard errors are estimated. The fitted model objects are then reorientated from the coefficients of the design matrix to any set of contrasts of the original coefficients. The standard errors are smoothed by empirical Bayes. Finally, the results of the differential gene expression analysis are classified as up, down, or not significantly differently expressed.
 
@@ -662,7 +661,7 @@ venn.plot <- vennDiagram(results_all_DEG,
 ```
 Chen, H., Boutros, P.C. VennDiagram: a package for the generation of highly-customizable Venn and Euler diagrams in R. BMC Bioinformatics 12, 35 (2011). https://doi.org/10.1186/1471-2105-12-35
 
-** DEA DESeq2 **
+**DEA DESeq2**
 
 The raw counts are first structured into a DESeqDataSEt and comparisons are used to test specific differences between groups. Next, the size factors are estimated for normalization and dispersion values are estimated for each gene. A GLM (generalized linear model) is fit to the data through negative niomial distribution. A Wald test is performed for statistical testing and p-values are adjusted for multiple testing through Benjamin-Hochberg procedure. The data is then classified into up and down reguated and not significantly expressed genes.
 
@@ -678,7 +677,7 @@ results_DESeq2 <- DGEA_DESeq2(int_counts, coldata2, groupingColumns,comparisons)
 results_list_d <- results_DESeq2$results
 ```
 Venn Diagram for up regulated genes extracted from the DESeq2 analysis:
-```{r DESeq2_Venn_upreg}
+```{r DESeq2_Venn_upreg, warning=FALSE}
 library(ggvenn)
 up_genes <- extractDEGenes(results_list_d, contrasts, only_up = TRUE)
 ggvenn(up_genes, fill_color = c("red", "green", "blue"))
@@ -692,7 +691,6 @@ ggvenn(down_genes, fill_color = c("red", "green", "blue"))
 Venn Diagram for significant genes extracted from the DESeq2 analysis:
 ```{r DESeq2_Venn_sigreg}
 sig_genes <- extractDEGenes(results_list_d, contrasts, only_sig = TRUE)
-head(sig_genes)
 ggvenn(sig_genes, fill_color = c("red", "green", "blue"))
 ```
 
@@ -707,7 +705,7 @@ venn.plot <- vennDiagram(state_mat,
                          circle.col = c("red", "blue", "green3"))
 ```
 
-** DEA edgeR **
+**DEA edgeR**
 
 The raw counts are first used to construct a DGEList object and grouping factors are identified. Then genes with low expression are filtered before the normalization factors are calculated using trimmed mean of m-values (TMM). A linear model is fitted to each gene and fold changes, as well as standard errors are estimated. The model is then reorientated using contrasts (set as comparison) of the original coefficients. The results of the differential gene expression analysis are classified as up, down, or not significantly differently expressed.
 
@@ -724,7 +722,7 @@ edgeR_summary <- summarize_edgeR_DEA(results_edgeR)
 ```
 
 Venn Diagram for up and down regulated genes extracted from the edgeR analysis:
-```{r DEA_Venn_edgeR}
+```{r DEA_Venn_edgeR, warning=FALSE}
 # Suppose `edgeR_summary` is the output of summarize_edgeR_DEA()
 state_matrix <- edgeR_summary$classified_results %>%
   lapply(function(df) df$decision) %>%       # extract the –1/0/+1 vector for each contrast
@@ -740,7 +738,7 @@ venn.plot <- vennDiagram(state_matrix,
 
 Normalized Counts can for example be extracted as in this example:
 
-```{r extractionNormalizedCounts, echo=FALSE}
+```{r extractionNormalizedCounts, echo=FALSE, warning=FALSE, results='hide'}
 library(data.table)
 y <- DGEA_results$normFactors
 class(y)
