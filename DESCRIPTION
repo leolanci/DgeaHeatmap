@@ -29,4 +29,5 @@ Suggests:
     ggiraph,
     ggsankey,
     stringr,
-    ggvenn
+    ggvenn,
+    data.table
