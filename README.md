@@ -694,10 +694,20 @@ comparisons <- list(
 groupingColumns <- c("segment", "region", "class", "slide_name")
 DGEA_results <- DGEALimma(copy_df_Expr, coldata2, grouping_columns = groupingColumns, comparisons = comparisons)
 
-results_all_DEG <- decideTests(DGEA_results$fit)
-#> Error in decideTests(DGEA_results$fit): could not find function "decideTests"
+results_all_DEG <- limma::decideTests(DGEA_results$fit)
 summary(results_all_DEG)
-#> Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'summary': object 'results_all_DEG' not found
+#>        Geometric_Segment_glomerulus_DKD_disease1B  - Geometric_Segment_glomerulus_DKD_disease2B 
+#> Down                                                                                        2455
+#> NotSig                                                                                     15425
+#> Up                                                                                           624
+#>        Geometric_Segment_glomerulus_DKD_disease1B  - Geometric_Segment_glomerulus_DKD_disease3
+#> Down                                                                                      2965
+#> NotSig                                                                                   14821
+#> Up                                                                                         718
+#>        Geometric_Segment_glomerulus_DKD_disease2B  - Geometric_Segment_glomerulus_DKD_disease3
+#> Down                                                                                      1225
+#> NotSig                                                                                   15748
+#> Up                                                                                        1531
 
 result1 = topTable(fit2, coef= "GeometricSegment_glomerulus_Dkd_disease1b_vs_disease2B", number = Inf, adjust.method = "fdr") %>%
   as.data.frame() # differentially expressed genes are obtained by topTreat() function
@@ -763,10 +773,10 @@ venn.plot <- vennDiagram(results_all_DEG,
               include=c("up", "down"), mar=rep(1,4), cex=c(1,1,0.7), lwd=1,
               counts.col=c("red", "blue"),
               circle.col = c("red", "blue", "green3"))
-#> Error: object 'results_all_DEG' not found
 ```
 
-Chen, H., Boutros, P.C. VennDiagram: a package for the generation of
+<img src="man/figures/README-VennDiagramm-1.png" width="100%" /> Chen,
+H., Boutros, P.C. VennDiagram: a package for the generation of
 highly-customizable Venn and Euler diagrams in R. BMC Bioinformatics 12,
 35 (2011). <https://doi.org/10.1186/1471-2105-12-35>
 
@@ -789,7 +799,7 @@ comparisons <- list(
 )
 int_counts <- round(copy_df_Expr)
 groupingColumns <- c("segment", "region", "class", "slide_name")
-results_DESeq2 <- DGEA_DESeq2(int_counts, coldata2, groupingColumns,comparisons)
+results_DESeq2 <- DGEADESeq2(int_counts, coldata2, groupingColumns,comparisons)
 #> converting counts to integer mode
 #> estimating size factors
 #> estimating dispersions

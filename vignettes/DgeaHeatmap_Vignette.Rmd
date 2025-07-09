@@ -654,7 +654,7 @@ comparisons <- list(
 )
 int_counts <- round(copy_df_Expr)
 groupingColumns <- c("segment", "region", "class", "slide_name")
-results_DESeq2 <- DGEA_DESeq2(int_counts, coldata2, groupingColumns,comparisons)
+results_DESeq2 <- DGEADESeq2(int_counts, coldata2, groupingColumns,comparisons)
 results_list_d <- results_DESeq2$results
 ```
 Venn Diagram for up regulated genes extracted from the DESeq2 analysis:

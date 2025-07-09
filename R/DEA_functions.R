@@ -95,7 +95,7 @@ DGEALimma <- function(
 #' grouping_columns <- c("segment", "region", "class", "slide_name")
 #' comparisons <- list("Comp1 = c("Group_a", "Group_b"), "Comp2" = c("Group_c", "Group_d"))
 #'
-DGEA_DESeq2 <- function (rawCounts, metadata, grouping_columns, comparisons){
+DGEADESeq2 <- function (rawCounts, metadata, grouping_columns, comparisons){
   # Filter genes with non-zero counts in at least n samples (e.g., n = 2)
   keep <- rowSums(rawCounts > 0) >= 2
   filtered_counts <- rawCounts[keep, ]
