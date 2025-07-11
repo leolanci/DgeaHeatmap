@@ -768,7 +768,11 @@ venn.plot <- vennDiagram(results_all_DEG,
               circle.col = c("red", "blue", "green3"))
 ```
 
-(inst/extdata/VennLimmaupdownreg.jpeg)
+<figure>
+<img src="inst/extdata/VennLimmaupdownreg.jpeg"
+alt="Venn Diagram Limma results" />
+<figcaption aria-hidden="true">Venn Diagram Limma results</figcaption>
+</figure>
 
 Chen, H., Boutros, P.C. VennDiagram: a package for the generation of
 highly-customizable Venn and Euler diagrams in R. BMC Bioinformatics 12,
@@ -805,7 +809,7 @@ up_genes <- extractDEGenes(results_list_d, contrasts, only_up = TRUE)
 ggvenn(up_genes, fill_color = c("red", "green", "blue"))
 ```
 
-(inst/extdata/VennDESeq2upreg.jpeg)
+![](inst/extdata/VennDESeq2upreg.jpeg)
 
 Venn Diagram for down regulated genes extracted from the DESeq2
 analysis:
@@ -815,7 +819,7 @@ down_genes <- extractDEGenes(results_list_d, contrasts, only_down = TRUE)
 ggvenn(down_genes, fill_color = c("red", "green", "blue"))
 ```
 
-(inst/extdata/VennDESeq2downreg.jpeg)
+![](inst/extdata/VennDESeq2downreg.jpeg)
 
 Venn Diagram for significant genes extracted from the DESeq2 analysis:
 
@@ -824,7 +828,7 @@ sig_genes <- extractDEGenes(results_list_d, contrasts, only_sig = TRUE)
 ggvenn(sig_genes, fill_color = c("red", "green", "blue"))
 ```
 
-(inst/extdata/VennDESeq2sigreg.jpeg)
+![](inst/extdata/VennDESeq2sigreg.jpeg)
 
 Venn Diagram for up and down regulated genes extracted from the DESeq2
 analysis:
@@ -839,7 +843,7 @@ venn.plot <- vennDiagram(state_mat,
                          circle.col = c("red", "blue", "green3"))
 ```
 
-(inst/extdata/VennDESeq2updownreg.jpeg)
+![](inst/extdata/VennDESeq2updownreg.jpeg)
 
 **DEA edgeR**
 
@@ -880,7 +884,7 @@ venn.plot <- vennDiagram(state_matrix,
                          circle.col = c("red", "blue", "green3"))
 ```
 
-(inst/extdata/VennedgeRupdownreg.jpeg)
+![](inst/extdata/VennedgeRupdownreg.jpeg)
 
 Normalized Counts can for example be extracted as in this example:
 
