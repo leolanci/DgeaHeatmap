@@ -19,10 +19,6 @@ knitr::opts_chunk$set(
 library(DgeaHeatmap)
 ```
 
----
-output: github_document
----
-
 
 # DgeaHeatmap
 
