@@ -760,14 +760,7 @@ regulated genes between groups. This is set up in the following way:
 
 ``` r
 library(VennDiagram)
-#> Loading required package: grid
-#> Loading required package: futile.logger
 library(limma)
-#> 
-#> Attaching package: 'limma'
-#> The following object is masked from 'package:BiocGenerics':
-#> 
-#>     plotMA
 venn.plot <- vennDiagram(results_all_DEG,
               imagetype = "tiff",
               include=c("up", "down"), mar=rep(1,4), cex=c(1,1,0.7), lwd=1,
@@ -775,8 +768,9 @@ venn.plot <- vennDiagram(results_all_DEG,
               circle.col = c("red", "blue", "green3"))
 ```
 
-<img src="man/figures/README-VennDiagramm-1.png" width="100%" /> Chen,
-H., Boutros, P.C. VennDiagram: a package for the generation of
+(inst/extdata/VennLimmaupdownreg.jpeg)
+
+Chen, H., Boutros, P.C. VennDiagram: a package for the generation of
 highly-customizable Venn and Euler diagrams in R. BMC Bioinformatics 12,
 35 (2011). <https://doi.org/10.1186/1471-2105-12-35>
 
@@ -800,23 +794,6 @@ comparisons <- list(
 int_counts <- round(copy_df_Expr)
 groupingColumns <- c("segment", "region", "class", "slide_name")
 results_DESeq2 <- DGEADESeq2(int_counts, coldata2, groupingColumns,comparisons)
-#> converting counts to integer mode
-#> estimating size factors
-#> estimating dispersions
-#> gene-wise dispersion estimates
-#> mean-dispersion relationship
-#> -- note: fitType='parametric', but the dispersion trend was not well captured by the
-#>    function: y = a/x + b, and a local regression fit was automatically substituted.
-#>    specify fitType='local' or 'mean' to avoid this message next time.
-#> final dispersion estimates
-#> fitting model and testing
-#> 1 rows did not converge in beta, labelled in mcols(object)$betaConv. Use larger maxit argument with nbinomWaldTest
-#> -- replacing outliers and refitting for 14848 genes
-#> -- DESeq argument 'minReplicatesForReplace' = 7 
-#> -- original counts are preserved in counts(dds)
-#> estimating dispersions
-#> fitting model and testing
-#> 1 rows did not converge in beta, labelled in mcols(object)$betaConv. Use larger maxit argument with nbinomWaldTest
 results_list_d <- results_DESeq2$results
 ```
 
@@ -824,35 +801,11 @@ Venn Diagram for up regulated genes extracted from the DESeq2 analysis:
 
 ``` r
 library(ggvenn)
-#> Loading required package: dplyr
-#> 
-#> Attaching package: 'dplyr'
-#> The following object is masked from 'package:NanoStringNCTools':
-#> 
-#>     groups
-#> The following objects are masked from 'package:S4Vectors':
-#> 
-#>     first, intersect, rename, setdiff, setequal, union
-#> The following object is masked from 'package:Biobase':
-#> 
-#>     combine
-#> The following objects are masked from 'package:BiocGenerics':
-#> 
-#>     combine, intersect, setdiff, union
-#> The following object is masked from 'package:testthat':
-#> 
-#>     matches
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
 up_genes <- extractDEGenes(results_list_d, contrasts, only_up = TRUE)
 ggvenn(up_genes, fill_color = c("red", "green", "blue"))
 ```
 
-<img src="man/figures/README-DESeq2_Venn_upreg-1.png" width="100%" />
+(inst/extdata/VennDESeq2upreg.jpeg)
 
 Venn Diagram for down regulated genes extracted from the DESeq2
 analysis:
@@ -862,7 +815,8 @@ down_genes <- extractDEGenes(results_list_d, contrasts, only_down = TRUE)
 ggvenn(down_genes, fill_color = c("red", "green", "blue"))
 ```
 
-<img src="man/figures/README-DESeq2_Venn_downreg-1.png" width="100%" />
+(inst/extdata/VennDESeq2downreg.jpeg)
+
 Venn Diagram for significant genes extracted from the DESeq2 analysis:
 
 ``` r
@@ -870,7 +824,7 @@ sig_genes <- extractDEGenes(results_list_d, contrasts, only_sig = TRUE)
 ggvenn(sig_genes, fill_color = c("red", "green", "blue"))
 ```
 
-<img src="man/figures/README-DESeq2_Venn_sigreg-1.png" width="100%" />
+(inst/extdata/VennDESeq2sigreg.jpeg)
 
 Venn Diagram for up and down regulated genes extracted from the DESeq2
 analysis:
@@ -878,24 +832,14 @@ analysis:
 ``` r
 state_mat <- extractDEGenes(results_list_d, contrasts, up_down = TRUE)
 head(state_mat)
-#>        disease1b_vs_disease2B disease1b_vs_disease3 disease2B_vs_disease3
-#> A2M                         0                     0                     0
-#> NAT2                        0                     0                     0
-#> ACADM                      -1                     0                     0
-#> ACADS                       0                     0                     0
-#> ACAT1                       0                     0                     1
-#> ACVRL1                      0                     0                     0
 venn.plot <- vennDiagram(state_mat,
                          imagetype = "tiff",
                          include=c("up", "down"), mar=rep(1,4), cex=c(1.5,1,0.7), lwd=1,
                          counts.col=c("red", "blue"),
                          circle.col = c("red", "blue", "green3"))
-#> Warning in plot.window(...): "imagetype" is not a graphical parameter
-#> Warning in plot.xy(xy, type, ...): "imagetype" is not a graphical parameter
-#> Warning in title(...): "imagetype" is not a graphical parameter
 ```
 
-<img src="man/figures/README-DESeq2_Venn_updownreg-1.png" width="100%" />
+(inst/extdata/VennDESeq2updownreg.jpeg)
 
 **DEA edgeR**
 
@@ -929,7 +873,6 @@ state_matrix <- edgeR_summary$classified_results %>%
   lapply(function(df) df$decision) %>%       # extract the –1/0/+1 vector for each contrast
   do.call(cbind, .)                          # bind into a matrix
 colnames(state_matrix) <- names(edgeR_summary$classified_results)
-
 venn.plot <- vennDiagram(state_matrix,
                          imagetype = "tiff",
                          include=c("up", "down"), mar=rep(1,4), cex=c(1,0.8,0.7), lwd=1,
@@ -937,15 +880,12 @@ venn.plot <- vennDiagram(state_matrix,
                          circle.col = c("red", "blue", "green3"))
 ```
 
-<img src="man/figures/README-DEA_Venn_edgeR-1.png" width="100%" />
+(inst/extdata/VennedgeRupdownreg.jpeg)
 
 Normalized Counts can for example be extracted as in this example:
 
     #> 
     #> Attaching package: 'data.table'
-    #> The following objects are masked from 'package:dplyr':
-    #> 
-    #>     between, first, last
     #> The following objects are masked from 'package:S4Vectors':
     #> 
     #>     first, second
