@@ -745,7 +745,7 @@ venn.plot <- vennDiagram(state_matrix,
 
 Normalized Counts can for example be extracted as in this example:
 
-```{r extractionNormalizedCounts, echo=FALSE, warning=FALSE, results='hide'}
+```{r extractionNormalizedCounts, echo=FALSE, warning=FALSE, results='hide', eval=FALSE}
 library(data.table)
 y <- DGEA_results$normFactors
 class(y)
