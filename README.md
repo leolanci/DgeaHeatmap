@@ -887,9 +887,3 @@ venn.plot <- vennDiagram(state_matrix,
 ![](inst/extdata/VennedgeRupdownreg.jpeg)
 
 Normalized Counts can for example be extracted as in this example:
-
-    #> 
-    #> Attaching package: 'data.table'
-    #> The following objects are masked from 'package:S4Vectors':
-    #> 
-    #>     first, second
