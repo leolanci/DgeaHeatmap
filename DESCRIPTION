@@ -10,7 +10,7 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Config/testthat/edition: 3
-biocViews: BiocStyle, edgeR
+biocViews: 
 Imports: BiocGenerics, ComplexHeatmap, RColorBrewer, purrr, magrittr, rlang, NanoStringNCTools, Biobase, GeomxTools, stats, limma, edgeR, utils, DESeq2, SummarizedExperiment, dplyr
 VignetteBuilder: knitr
 Suggests: 
