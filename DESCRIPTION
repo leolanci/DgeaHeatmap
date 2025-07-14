@@ -4,14 +4,22 @@ Version: 0.99.0
 Authors@R: 
     person("Leonie", "Lancelle", , "leonie.lancelle@uni-bielefeld.de", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: Package for DGEA and heatmap generation primarly for Nanostring GeoMx DSP data, also works for other data.
+Description: Package for data extraction from Nanostring GeoMx DSP data, also works for other data. Simple functions for Differential Expression Analysis. User-friendly and highly customizable functions for heatmap generation.
 License: GPL-3 + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Config/testthat/edition: 3
-biocViews: 
+output: 
+    BiocStyle::html_document
+  vignette: >
+    %\VignetteIndexEntry{Vignette Title}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
+biocViews: Bayesian,Clustering, DifferentialExpression, GeneExpression, Normalization, PrincipalComponent, RNASeq, Regression, Sequencing, Software, Transcription, AlternativeSplicing, BatchEffect,BiomedicalInformatics, CellBiology, Cheminformatics, DataImport, DifferentialSplicing, Epigenetics, ExonArray, FunctionalGenomics, GeneExpression, GeneSetEnrichment, Genetics, ImmunoOncology, Metabolomics, MicroRNAArray, Microarray, MultipleComparison, Normalization, OneChannel, Preprocessing, ProprietaryPlatforms, Proteomics, QualityControl, RNASeq, Regression, Sequencing, SystemsBiology, TimeCourse, TwoChannel, mRNAMicroarray
 Imports: BiocGenerics, ComplexHeatmap, RColorBrewer, purrr, magrittr, rlang, NanoStringNCTools, Biobase, GeomxTools, stats, limma, edgeR, utils, DESeq2, SummarizedExperiment, dplyr
+URL: https://gitlab.ub.uni-bielefeld.de/spittaulab/Dgea_Heatmap_Package
+BugReports: https://gitlab.ub.uni-bielefeld.de/spittaulab/Dgea_Heatmap_Package/-/issues
 VignetteBuilder: knitr
 Suggests: 
     BiocStyle,
