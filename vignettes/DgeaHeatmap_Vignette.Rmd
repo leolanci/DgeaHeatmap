@@ -1,6 +1,6 @@
 ---
 title: "DgeaHeatmap_Vignette"
-author: "Lancelle, Leonie"
+author: "Lancelle, Leonie Johanna"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{DgeaHeatmap_Vignette}
