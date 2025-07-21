@@ -7,8 +7,9 @@
 #' @export
 #'
 #' @examples
-#' counts_data <- file
 #' x <- 1
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' matrixCounts <- build_matrix(input_data, x)
 
 build_matrix <- function(counts_data, x){
   #BiocGenerics::colnames(counts_data)[x] <- "genes"
@@ -28,8 +29,12 @@ build_matrix <- function(counts_data, x){
 #' @export
 #'
 #' @examples
-#' factors_for_matrix <- list("Female", "6_month")
-#' mmatrix <- matrix
+#' factors_for_individual_matrix = list("DKD", "glomerulus")
+#' x <- 1
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' matrixCounts <- build_matrix(input_data, x)
+#' indiMatrix <- individual_matrix(factors_for_individual_matrix, matrixCounts)
+#'
 individual_matrix <- function(factors_for_matrix_devision, mmatrix) {
   for (i in factors_for_matrix_devision) {
     chosen_columns <- BiocGenerics::grep(i, BiocGenerics::colnames(mmatrix))
@@ -49,8 +54,12 @@ individual_matrix <- function(factors_for_matrix_devision, mmatrix) {
 #' @export
 #'
 #' @examples
-#' top_number_of_genes <- 500
-#' counts_data <- matrix
+#' x <- 1
+#' top_number_of_genes <- 20
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' matrixCounts <- build_matrix(input_data, x)
+#' counts_data <- matrixCounts
+#' varGenesMatrix <- filtering_for_top_exprGenes(counts_data, top_number_of_genes)
 filtering_for_top_exprGenes <- function(counts_data, top_number_of_genes){
   var_genes <- apply(counts_data, 1, stats::var) #estimating the variance of each gene
   # Sorting the genes by their variance and creating a new object with chosen number of most variable genes
@@ -73,7 +82,10 @@ filtering_for_top_exprGenes <- function(counts_data, top_number_of_genes){
 #' @export
 #'
 #' @examples
-#' countsmatrix <- matrix
+#' x <- 1
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' countsmatrix <- build_matrix(input_data, x)
+#' scaled_counts <- scale_counts(countsmatrix)
 
 scale_counts <- function(countsmatrix){
   scaled_counts =
@@ -92,6 +104,14 @@ scale_counts <- function(countsmatrix){
 #'
 #' @return A plot visualizing the data distribution of Z-count scaled data.
 #' @export
+#'
+#' @examples
+#' x <- 1
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' matrixCounts <- build_matrix(input_data, x)
+#' scaled_counts <- scale_counts(matrixCounts)
+#' show_data_distribution(scaled_counts)
+
 show_data_distribution <- function(scaled_counts){
   apply(scaled_counts, MARGIN = 1, mean) %>%  #calculate the mean per row
     graphics::hist(., main = "", xlab = "Z-score values", col = "dodgerblue2") #build histogram to see data distribution
@@ -109,8 +129,14 @@ show_data_distribution <- function(scaled_counts){
 #' @export
 #'
 #' @examples
+#' x <- 1
 #' seed <- 1
-#' top_genes_matrix <- matrix
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' matrixCounts <- build_matrix(input_data, x)
+#' scaled_counts <- scale_counts(matrixCounts)
+#' top_genes_matrix <- scaled_counts
+#' elbow_plot(seed, top_genes_matrix)
+
 elbow_plot <- function(
     seed,                             # seed for start of clustering.
     top_genes_matrix,                 # input matrix for which the number of clusters is calculated.
@@ -137,6 +163,7 @@ elbow_plot <- function(
 #'
 #' @examples
 #' colorPalette <- "RdBu"
+#' color_setting(colorPalette)
 color_setting <- function(colorPalette){
   my_colors = RColorBrewer::brewer.pal(n=11, name = colorPalette)
   my_colors = grDevices::colorRampPalette(my_colors)(50)
@@ -153,8 +180,11 @@ color_setting <- function(colorPalette){
 #' @export
 #'
 #' @examples
-#' top_genes_matrix <- matrix
-#' probes <- list("Region1", "Region2", "Region3")
+#' x <- 1
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' top_genes_matrix <- build_matrix(input_data, x)
+#' probes <- list("disease3", "disease4", "disease1B")
+#' newMatrix <- summarise_bio_replicates(top_genes_matrix, probes)
 
 
 summarise_bio_replicates <- function(top_genes_matrix, probes){
@@ -188,9 +218,13 @@ summarise_bio_replicates <- function(top_genes_matrix, probes){
 #' @export
 #'
 #' @examples
-#' m_top_genes_matrix <- matrix
+#' x <- 1
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' matrixCounts <- build_matrix(input_data, x)
+#' m_top_genes_matrix <- scale_counts(matrixCounts)
 #' seed <- 1
 #' k <- 1
+#' k_means <- Kmean_generation(m_top_genes_matrix, seed, k)
 
 Kmean_generation <- function(m_top_genes_matrix, seed,k){
   # Creating a copy of the matrix with the summarized biological replicates
@@ -217,9 +251,15 @@ Kmean_generation <- function(m_top_genes_matrix, seed,k){
 #' @export
 #'
 #' @examples
-#' m_kmeans <- matrix
-#' number_of_annotations_per_cluster <- 10
+#' x <- 1
+#' number_of_annotations_per_cluster <- 5
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' matrixCounts <- build_matrix(input_data, x)
+#' m_top_genes_matrix <- scale_counts(matrixCounts)
+#' seed <- 1
 #' k <- 1
+#' m_kmeans <- Kmean_generation(m_top_genes_matrix, seed, k)
+#' top_x_variable_genes <- most_variable_genes(m_kmeans, number_of_annotations_per_cluster, k)
 most_variable_genes <- function(m_kmeans,number_of_annotations_per_cluster, k){
   last_column <- ncol(m_kmeans)
   top_x_variable_genes <- list()
@@ -258,7 +298,20 @@ most_variable_genes <- function(m_kmeans,number_of_annotations_per_cluster, k){
 #'
 #' @return A numeric index from the orginal matrix.
 #' @export
-
+#'
+#' @examples
+#' x <- 1
+#' number_of_annotations_per_cluster <- 5
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' matrixCounts <- build_matrix(input_data, x)
+#' m_top_genes_matrix <- scale_counts(matrixCounts)
+#' seed <- 1
+#' k <- 1
+#' fontsize_rowAnnotation <- 8
+#' m_kmeans <- Kmean_generation(m_top_genes_matrix, seed, k)
+#' top_x_genes_cluster <- most_variable_genes(m_kmeans, number_of_annotations_per_cluster, k)
+#' anno <- set_annotation(m_top_genes_matrix, top_x_genes_cluster, fontsize_rowAnnotation)
+#'
 set_annotation <- function(m_top_genes_matrix, top_x_genes_cluster, fontsize_rowAnnotation){
   #get numeric indices of top_x_genes_clusters
   top_x_genes_clusters <- which(BiocGenerics::rownames(m_top_genes_matrix) %in% top_x_genes_cluster)
@@ -278,8 +331,12 @@ set_annotation <- function(m_top_genes_matrix, top_x_genes_cluster, fontsize_row
 #' @export
 #'
 #' @examples
-#' m_top_genes_matrix <- matrix
-#' k <-- 3
+#' x <- 1
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' matrixCounts <- build_matrix(input_data, x)
+#' m_top_genes_matrix <- scale_counts(matrixCounts)
+#' k <- 1
+#' split <- performing_kMeans(m_top_genes_matrix, k)
 performing_kMeans <- function(m_top_genes_matrix, k){
   kclus <- stats::kmeans(m_top_genes_matrix, k)  #performance of kmean clustering
   kclus$cluster #check on kmean clusters
@@ -306,17 +363,27 @@ performing_kMeans <- function(m_top_genes_matrix, k){
 #' @export
 #'
 #' @examples
+#' x <- 1
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' matrixCounts <- build_matrix(input_data, x)
+#' m_top_genes_matrix <- scale_counts(matrixCounts)
+#' k <- 1
+#' split <- performing_kMeans(m_top_genes_matrix, k)
 #' seed <- 1
-#' m_top_genes_matrix <- matrix
+#' fontsize_rowAnnotation <- 8
+#' m_kmeans <- Kmean_generation(m_top_genes_matrix, seed, k)
+#' number_of_annotations_per_cluster <- 5
+#' top_x_genes_cluster <- most_variable_genes(m_kmeans, number_of_annotations_per_cluster, k)
+#' anno <- set_annotation(m_top_genes_matrix, top_x_genes_cluster, fontsize_rowAnnotation)
 #' title <- "Heatmap of Data"
-#' split <- #split
 #' fontsize_columnNames <- 6
 #' fontsize_rowNames <- 4
-#' title_heatmaoLegend <- "Expression"
+#' title_heatmapLegend <- "Expression"
 #' WidthNum <- 4.5
 #' HeightNum <- 3
 #' UnitSize <- "cm"
 #' color_Palette <- "RdBu"
+#' print_heatmap(seed, m_top_genes_matrix, title, split, anno, fontsize_columnNames, fontsize_rowNames, title_heatmapLegend, WidthNum, HeightNum, UnitSize, color_Palette)
 print_heatmap <- function(seed,m_top_genes_matrix, title, split, anno, fontsize_columnNames, fontsize_rowNames, title_heatmapLegend,WidthNum, HeightNum, UnitSize, color_Palette){
   color_setting(color_Palette)
   set.seed(seed)
@@ -352,14 +419,24 @@ print_heatmap <- function(seed,m_top_genes_matrix, title, split, anno, fontsize_
 #' @export
 #'
 #' @examples
-#' topGenes_matrix <- matrix
-#' probes <- list("Female", "Male")
-#' number_of_annotations_per_cluster <- 10
-#' k <- 3
+#' x <- 1
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' matrixCounts <- build_matrix(input_data, x)
+#' topGenes_matrix <- scale_counts(matrixCounts)
+#' probes <- list("disease3", "disease4", "disease1B")
+#' k <- 1
 #' seed <- 1
-#' Title <- "Heatmap with annotation of most variable genes"
 #' fontsize_rowAnnotation <- 8
+#' number_of_annotations_per_cluster <- 5
+#' Title <- "Heatmap of Data"
+#' fontsize_columnNames <- 6
+#' fontsize_rowNames <- 4
+#' title_heatmapLegend <- "Expression"
+#' WidthNum <- 4.5
+#' HeightNum <- 3
+#' UnitSize <- "cm"
 #' color_Palette <- "RdBu"
+#' function_complexHeatmap_var(topGenes_matrix, probes, number_of_annotations_per_cluster, k, seed, Title, fontsize_rowAnnotation, fontsize_columnNames,fontsize_rowNames, title_heatmapLegend,WidthNum, HeightNum, UnitSize, color_Palette)
 function_complexHeatmap_var <- function(topGenes_matrix, probes, number_of_annotations_per_cluster, k, seed, Title, fontsize_rowAnnotation, fontsize_columnNames,fontsize_rowNames, title_heatmapLegend,WidthNum, HeightNum, UnitSize, color_Palette){
   m_top_genes_matrix <- summarise_bio_replicates(topGenes_matrix, probes)
 
@@ -380,6 +457,7 @@ function_complexHeatmap_var <- function(topGenes_matrix, probes, number_of_annot
 #'
 #' @examples
 #' colorPalette <- "RdBu"
+#' get_heatmap_colors(colorPalette)
 get_heatmap_colors <- function(colorPalette) {
   if (is.null(colorPalette)) {
     # Use ComplexHeatmap default color function
@@ -432,6 +510,12 @@ get_heatmap_colors <- function(colorPalette) {
 #'
 #' @examples
 #' colorPalette <- "RdBu"
+#'  x <- 1
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' matrixCounts <- build_matrix(input_data, x)
+#' ncounts_matrix <- scale_counts(matrixCounts)
+#' adv_Heatmap(ncounts_matrix)
+
 adv_Heatmap <- function(
     ncounts_matrix,
     seed = 1,                                  # default seed = 1, changeable and suggested to be changed

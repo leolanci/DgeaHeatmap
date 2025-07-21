@@ -20,7 +20,13 @@ A list of the most variable rows (genes) of each cluster.
 Function to determine the most variable genes of each cluster to enable annotation..
 }
 \examples{
-m_kmeans <- matrix
-number_of_annotations_per_cluster <- 10
+x <- 1
+number_of_annotations_per_cluster <- 5
+input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+matrixCounts <- build_matrix(input_data, x)
+m_top_genes_matrix <- scale_counts(matrixCounts)
+seed <- 1
 k <- 1
+m_kmeans <- Kmean_generation(m_top_genes_matrix, seed, k)
+top_x_variable_genes <- most_variable_genes(m_kmeans, number_of_annotations_per_cluster, k)
 }

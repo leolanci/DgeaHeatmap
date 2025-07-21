@@ -57,12 +57,22 @@ A plotted heatmap of the input data.
 Creating a heatmap with annotation of x most variable rows(genes).
 }
 \examples{
-topGenes_matrix <- matrix
-probes <- list("Female", "Male")
-number_of_annotations_per_cluster <- 10
-k <- 3
+x <- 1
+input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+matrixCounts <- build_matrix(input_data, x)
+topGenes_matrix <- scale_counts(matrixCounts)
+probes <- list("disease3", "disease4", "disease1B")
+k <- 1
 seed <- 1
-Title <- "Heatmap with annotation of most variable genes"
 fontsize_rowAnnotation <- 8
+number_of_annotations_per_cluster <- 5
+Title <- "Heatmap of Data"
+fontsize_columnNames <- 6
+fontsize_rowNames <- 4
+title_heatmapLegend <- "Expression"
+WidthNum <- 4.5
+HeightNum <- 3
+UnitSize <- "cm"
 color_Palette <- "RdBu"
+function_complexHeatmap_var(topGenes_matrix, probes, number_of_annotations_per_cluster, k, seed, Title, fontsize_rowAnnotation, fontsize_columnNames,fontsize_rowNames, title_heatmapLegend,WidthNum, HeightNum, UnitSize, color_Palette)
 }

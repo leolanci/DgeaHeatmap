@@ -17,4 +17,5 @@ Creating a color scheme based on the available color palettes of RColorBrewer fo
 }
 \examples{
 colorPalette <- "RdBu"
+get_heatmap_colors(colorPalette)
 }
