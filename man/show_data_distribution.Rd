@@ -15,3 +15,10 @@ A plot visualizing the data distribution of Z-count scaled data.
 \description{
 Function to visualize the data distribution within the data of a matrix.
 }
+\examples{
+x <- 1
+input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+matrixCounts <- build_matrix(input_data, x)
+scaled_counts <- scale_counts(matrixCounts)
+show_data_distribution(scaled_counts)
+}

@@ -18,6 +18,9 @@ A new matrix where biological replicated are summarized as their mean.
 Summarizes columns biological replicates of a matrix into one.
 }
 \examples{
-top_genes_matrix <- matrix
-probes <- list("Region1", "Region2", "Region3")
+x <- 1
+input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+top_genes_matrix <- build_matrix(input_data, x)
+probes <- list("disease3", "disease4", "disease1B")
+newMatrix <- summarise_bio_replicates(top_genes_matrix, probes)
 }

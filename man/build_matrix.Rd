@@ -18,6 +18,7 @@ A matrix.
 Builds a matrix from an input csv file, with one column as rownames
 }
 \examples{
-counts_data <- file
 x <- 1
+input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+matrixCounts <- build_matrix(input_data, x)
 }

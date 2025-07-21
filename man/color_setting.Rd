@@ -17,4 +17,5 @@ Function to set color scheme for a heatmap.
 }
 \examples{
 colorPalette <- "RdBu"
+color_setting(colorPalette)
 }
