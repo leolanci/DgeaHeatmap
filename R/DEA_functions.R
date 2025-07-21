@@ -14,8 +14,8 @@
 #' metadata <- data.frame
 #' grouping_columns <- c("segment", "region", "class", "slide_name")
 #' comparisons <- list("Comp1 = c("Group_a", "Group_b"), "Comp2" = c("Group_c", "Group_d"))
-#' prefix = "DEA"
-#'
+#' prefix <- "DEA"
+#' DGEAListResults <- DGEALimma(rawCounts, metadatam grouping_columns, comparisons, prefix)
 DGEALimma <- function(
     rawCounts,
     metadata,
@@ -94,7 +94,8 @@ DGEALimma <- function(
 #' metadata <- data.frame
 #' grouping_columns <- c("segment", "region", "class", "slide_name")
 #' comparisons <- list("Comp1 = c("Group_a", "Group_b"), "Comp2" = c("Group_c", "Group_d"))
-#'
+#' results_DESeq2 <- DGEADESeq2(rawCounts, metadata, grouping_columns,comparisons)
+
 DGEADESeq2 <- function (rawCounts, metadata, grouping_columns, comparisons){
   # Filter genes with non-zero counts in at least n samples (e.g., n = 2)
   keep <- rowSums(rawCounts > 0) >= 2
@@ -161,9 +162,14 @@ DGEADESeq2 <- function (rawCounts, metadata, grouping_columns, comparisons){
 #' @export
 #'
 #' @examples
-#' results_list <- list
-#' comparisons <- list("Comp1 = c("Group_a", "Group_b"), "Comp2" = c("Group_c", "Group_d"))
-#'
+#' rawCounts <- matrix
+#' metadata <- data.frame
+#' grouping_columns <- c("segment", "region", "class", "slide_name")
+#' comparisons <- list("disease1b_vs_disease2B" = c("Geometric_Segment_glomerulus_DKD_disease1B", "Geometric_Segment_glomerulus_DKD_disease2B"), "disease1b_vs_disease3"  = c("Geometric_Segment_glomerulus_DKD_disease1B", "Geometric_Segment_glomerulus_DKD_disease3"), "disease2B_vs_disease3"  = c("Geometric_Segment_glomerulus_DKD_disease2B", "Geometric_Segment_glomerulus_DKD_disease3"))
+#' results_DESeq2 <- DGEADESeq2(rawCounts, metadata, grouping_columns,comparisons)
+#' results_list <- list("Comp1 = c("Group_a", "Group_b"), "Comp2" = c("Group_c", "Group_d"))
+#' down_genes <- extractDEGenes(results_list, comparisons, only_down = TRUE)
+
 extractDEGenes <- function(results_list, comparisons,
 only_up = FALSE,
 only_down = FALSE,

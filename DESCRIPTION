@@ -2,7 +2,7 @@ Package: DgeaHeatmap
 Title: Implementation of functions to analyze nanostring and other data for DGE and to generate heatmaps
 Version: 0.99.0
 Authors@R: 
-    person("Leonie", "Lancelle", , "leonie.lancelle@uni-bielefeld.de", role = c("aut", "cre"),
+    person("Leonie Johanna", "Lancelle", , "leonie.lancelle@uni-bielefeld.de", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
 Description: Package for data extraction from Nanostring GeoMx DSP data, also works for other data. Simple functions for Differential Expression Analysis. User-friendly and highly customizable functions for heatmap generation.
 License: GPL-3 + file LICENSE
