@@ -10,12 +10,12 @@
 #' @export
 #'
 #' @examples
-#' rawCounts <- matrix
-#' metadata <- data.frame
+#' rawCounts <- read.csv(system.file("extdata/RawDataExamplePackageNanostring.csv", package = "DgeaHeatmap"))
+#' metadata <- read.csv(system.file("extdata/MetaDataPackageNanostring.csv", package = "DgeaHeatmap"))
 #' grouping_columns <- c("segment", "region", "class", "slide_name")
 #' comparisons <- list("Comp1 = c("Group_a", "Group_b"), "Comp2" = c("Group_c", "Group_d"))
 #' prefix <- "DEA"
-#' DGEAListResults <- DGEALimma(rawCounts, metadatam grouping_columns, comparisons, prefix)
+#' DGEAListResults <- DGEALimma(rawCounts, metadata, grouping_columns, comparisons, prefix)
 DGEALimma <- function(
     rawCounts,
     metadata,
@@ -90,8 +90,8 @@ DGEALimma <- function(
 #' @export
 #'
 #' @examples
-#' rawCounts <- matrix
-#' metadata <- data.frame
+#' rawCounts <- read.csv(system.file("extdata/RawDataExamplePackageNanostring.csv", package = "DgeaHeatmap"))
+#' metadata <- read.csv(system.file("extdata/MetaDataPackageNanostring.csv", package = "DgeaHeatmap"))
 #' grouping_columns <- c("segment", "region", "class", "slide_name")
 #' comparisons <- list("Comp1 = c("Group_a", "Group_b"), "Comp2" = c("Group_c", "Group_d"))
 #' results_DESeq2 <- DGEADESeq2(rawCounts, metadata, grouping_columns,comparisons)
@@ -162,12 +162,11 @@ DGEADESeq2 <- function (rawCounts, metadata, grouping_columns, comparisons){
 #' @export
 #'
 #' @examples
-#' rawCounts <- matrix
-#' metadata <- data.frame
+#' rawCounts <- read.csv(system.file("extdata/RawDataExamplePackageNanostring.csv", package = "DgeaHeatmap"))
+#' metadata <- read.csv(system.file("extdata/MetaDataPackageNanostring.csv", package = "DgeaHeatmap"))
 #' grouping_columns <- c("segment", "region", "class", "slide_name")
-#' comparisons <- list("disease1b_vs_disease2B" = c("Geometric_Segment_glomerulus_DKD_disease1B", "Geometric_Segment_glomerulus_DKD_disease2B"), "disease1b_vs_disease3"  = c("Geometric_Segment_glomerulus_DKD_disease1B", "Geometric_Segment_glomerulus_DKD_disease3"), "disease2B_vs_disease3"  = c("Geometric_Segment_glomerulus_DKD_disease2B", "Geometric_Segment_glomerulus_DKD_disease3"))
-#' results_DESeq2 <- DGEADESeq2(rawCounts, metadata, grouping_columns,comparisons)
-#' results_list <- list("Comp1 = c("Group_a", "Group_b"), "Comp2" = c("Group_c", "Group_d"))
+#' comparisons <- list("Comp1 = c("Group_a", "Group_b"), "Comp2" = c("Group_c", "Group_d"))
+#' results_list <- DGEADESeq2(rawCounts, metadata, grouping_columns,comparisons)
 #' down_genes <- extractDEGenes(results_list, comparisons, only_down = TRUE)
 
 extractDEGenes <- function(results_list, comparisons,
@@ -256,12 +255,13 @@ lfc_cutoff = 0) {
 #' @export
 #'
 #' @examples
-#' rawCounts <- matrix
-#' metadata <- data.frame
+#' rawCounts <- read.csv(system.file("extdata/RawDataExamplePackageNanostring.csv", package = "DgeaHeatmap"))
+#' metadata <- read.csv(system.file("extdata/MetaDataPackageNanostring.csv", package = "DgeaHeatmap"))
 #' grouping_columns <- c("segment", "region", "class", "slide_name")
 #' comparisons <- list("Comp1 = c("Group_a", "Group_b"), "Comp2" = c("Group_c", "Group_d"))
 #' prefix <- "DEA"
-#'
+#' results_edgeR <- DGEAedgeR(rawCounts, metadata, grouping_columns, comparisons, prefix = "DEA")
+
 DGEAedgeR <- function(
     rawCounts,
     metadata,
@@ -355,9 +355,13 @@ DGEAedgeR <- function(
 #' @export
 #'
 #' @examples
-#' results_list <- list
+#' rawCounts <- read.csv(system.file("extdata/RawDataExamplePackageNanostring.csv", package = "DgeaHeatmap"))
+#' metadata <- read.csv(system.file("extdata/MetaDataPackageNanostring.csv", package = "DgeaHeatmap"))
+#' grouping_columns <- c("segment", "region", "class", "slide_name")
 #' comparisons <- list("Comp1 = c("Group_a", "Group_b"), "Comp2" = c("Group_c", "Group_d"))
-#'
+#' prefix <- "DEA"
+#' results_edgeR <- DGEAedgeR(rawCounts, metadata, grouping_columns, comparisons, prefix = "DEA")
+#' sumresults <- summarize_edgeR_DEA(results_edgeR)
 summarize_edgeR_DEA <- function(results_edgeR,
                                 lfc_threshold = 1,
                                 fdr_threshold = 0.05,
