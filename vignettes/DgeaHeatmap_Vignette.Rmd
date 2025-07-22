@@ -46,6 +46,8 @@ input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "Dge
 ```
 
 
+
+
 ```{r exampleBuildMatrix, echo=TRUE, results='hide'}
 library(DgeaHeatmap)
 x <- 1
@@ -736,3 +738,8 @@ class(df_normCounts)
 write.csv(df_normCounts, "/Users/llancell/Documents/gitLab_SpittauLab/Dgea_Heatmap_Package/tests/testthat/NormCounts_ExampleDataNanostring.csv", row.names = FALSE)
 
 ```
+
+```{r sessionInfo, echo=FALSE}
+sessionInfo()
+```
+

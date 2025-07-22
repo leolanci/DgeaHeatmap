@@ -6,7 +6,12 @@
 #' @export
 #'
 #' @examples
-#' demoData <- file
+#' datadir <- system.file("extdata", "WTA_NGS_Example", package="GeoMxWorkflows")
+#' DCCFiles <- dir(file.path(datadir, "dccs"), pattern = ".dcc$", full.names = TRUE, recursive = TRUE)
+#' PKCFiles <- unzip(zipfile = dir(file.path(datadir, "pkcs"), pattern = ".zip$", full.names = TRUE, recursive = TRUE))
+#' SampleAnnotationFile <- dir(file.path(datadir, "annotation"), pattern = ".xlsx$", full.names = TRUE, recursive = TRUE)
+#' demoData <- suppressWarnings(GeomxTools::readNanoStringGeoMxSet(dccFiles = DCCFiles, pkcFiles = PKCFiles, phenoDataFile = SampleAnnotationFile, phenoDataSheet = "Template", phenoDataDccColName = "Sample_ID", protocolDataColNames = c("aoi","roi"), configFile = NULL, analyte = "RNA", phenoDataColPrefix = "", experimentDataColNames = NULL))
+#' demoData <- add_demoElem(demoData)
 add_demoElem <- function(demoData){
   Biobase::assayDataElement(demoData, elt = "exprs")
   Biobase::assayDataElement(demoData, "demoElem") <-
@@ -25,9 +30,16 @@ add_demoElem <- function(demoData){
 #' @export
 #'
 #' @examples
-#' demoData <- file
+#' datadir <- system.file("extdata", "WTA_NGS_Example", package="GeoMxWorkflows")
+#' DCCFiles <- dir(file.path(datadir, "dccs"), pattern = ".dcc$", full.names = TRUE, recursive = TRUE)
+#' PKCFiles <- unzip(zipfile = dir(file.path(datadir, "pkcs"), pattern = ".zip$", full.names = TRUE, recursive = TRUE))
+#' SampleAnnotationFile <- dir(file.path(datadir, "annotation"), pattern = ".xlsx$", full.names = TRUE, recursive = TRUE)
+#' rawDataObject <- suppressWarnings(GeomxTools::readNanoStringGeoMxSet(dccFiles = DCCFiles, pkcFiles = PKCFiles, phenoDataFile = SampleAnnotationFile, phenoDataSheet = "Template", phenoDataDccColName = "Sample_ID", protocolDataColNames = c("aoi","roi"), configFile = NULL, analyte = "RNA", phenoDataColPrefix = "", experimentDataColNames = NULL))
+#' demoData <- add_demoElem(rawDataObject)
+#' NanoStringNCTools::assayDataApply(demoData, MARGIN=1, FUN=mean, elt="demoElem")[1:5]
 #' VGroup <-"aoi"
-#' elt <- "demoElem"
+#' vElt <- "demoElem"
+#' demoData <- split_data_by_column(demoData, VGroup, vElt)
 split_data_by_column <- function(demoData, vGroup, vElt){
   utils::head(NanoStringNCTools::esBy(demoData,
             GROUP = vGroup,
@@ -70,6 +82,19 @@ aExprsDataQC <- function(demoData, vFlags){
 #' @export
 #'
 #' @examples
+#' datadir <- system.file("extdata", "WTA_NGS_Example", package="GeoMxWorkflows")
+#' DCCFiles <- dir(file.path(datadir, "dccs"), pattern = ".dcc$", full.names = TRUE, recursive = TRUE)
+#' PKCFiles <- unzip(zipfile = dir(file.path(datadir, "pkcs"), pattern = ".zip$", full.names = TRUE, recursive = TRUE))
+#' SampleAnnotationFile <- dir(file.path(datadir, "annotation"), pattern = ".xlsx$", full.names = TRUE, recursive = TRUE)
+#' rawDataObject <- suppressWarnings(GeomxTools::readNanoStringGeoMxSet(dccFiles = DCCFiles, pkcFiles = PKCFiles, phenoDataFile = SampleAnnotationFile, phenoDataSheet = "Template", phenoDataDccColName = "Sample_ID", protocolDataColNames = c("aoi","roi"), configFile = NULL, analyte = "RNA", phenoDataColPrefix = "", experimentDataColNames = NULL))
+#' demoData <- add_demoElem(rawDataObject)
+#' NanoStringNCTools::assayDataApply(demoData, MARGIN=1, FUN=mean, elt="demoElem")[1:5]
+#' VGroup <-"aoi"
+#' vElt <- "demoElem"
+#' demoData <- split_data_by_column(demoData, VGroup, vElt)
+#' QCPassed <- aExprsDataQC(demoData, "QCFlags")
+#' df_Exp <- genRawReadCountTable(demoData)
+
 #' demoData <- file
 genRawReadCountTable <- function(demoData){
   target_demoData <- GeomxTools::aggregateCounts(demoData)
