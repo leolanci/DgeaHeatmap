@@ -9,6 +9,11 @@ test_that("I can use the 3rd edition", {
   expect_true(TRUE)
 })
 
+# basic check
+test_that("basic check", {
+  expect_true()
+})
+
 test_that("Matrix is build from an input file and one column is put as rownames", {
 
   input_data <- read.csv(test_path("testfile_counts.csv"))
@@ -155,3 +160,4 @@ test_that("performing k_mean clustering outside of the heatmap works", {
 })
 
 
+test_check("DgeaHeatmap")

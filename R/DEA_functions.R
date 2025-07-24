@@ -11,9 +11,10 @@
 #'
 #' @examples
 #' rawCounts <- read.csv(system.file("extdata/RawDataExamplePackageNanostring.csv", package = "DgeaHeatmap"))
+#' rawCounts <- build_matrix(rawCounts, 1)
 #' metadata <- read.csv(system.file("extdata/MetaDataPackageNanostring.csv", package = "DgeaHeatmap"))
 #' grouping_columns <- c("segment", "region", "class", "slide_name")
-#' comparisons <- list("Comp1 = c("Group_a", "Group_b"), "Comp2" = c("Group_c", "Group_d"))
+#' comparisons <- list(Comp1 = c("Geometric_Segment_glomerulus_DKD_disease3", "PanCK_tubule_DKD_disease4"), Comp2 = c("neg_tubule_DKD_disease4", "PanCK_tubule_DKD_disease4"))
 #' prefix <- "DEA"
 #' DGEAListResults <- DGEALimma(rawCounts, metadata, grouping_columns, comparisons, prefix)
 DGEALimma <- function(
@@ -91,9 +92,12 @@ DGEALimma <- function(
 #'
 #' @examples
 #' rawCounts <- read.csv(system.file("extdata/RawDataExamplePackageNanostring.csv", package = "DgeaHeatmap"))
+#' rawCounts <- build_matrix(rawCounts, 1)
 #' metadata <- read.csv(system.file("extdata/MetaDataPackageNanostring.csv", package = "DgeaHeatmap"))
 #' grouping_columns <- c("segment", "region", "class", "slide_name")
-#' comparisons <- list("Comp1 = c("Group_a", "Group_b"), "Comp2" = c("Group_c", "Group_d"))
+#' comparisons <- list(Comp1 = c("Geometric_Segment_glomerulus_DKD_disease3", "PanCK_tubule_DKD_disease4"), Comp2 = c("neg_tubule_DKD_disease4", "PanCK_tubule_DKD_disease4"))
+#' storage.mode(rawCounts) <- "integer"
+#' sum(!is.finite(as.matrix(rawCounts)))
 #' results_DESeq2 <- DGEADESeq2(rawCounts, metadata, grouping_columns,comparisons)
 
 DGEADESeq2 <- function (rawCounts, metadata, grouping_columns, comparisons){
@@ -163,10 +167,14 @@ DGEADESeq2 <- function (rawCounts, metadata, grouping_columns, comparisons){
 #'
 #' @examples
 #' rawCounts <- read.csv(system.file("extdata/RawDataExamplePackageNanostring.csv", package = "DgeaHeatmap"))
+#' rawCounts <- build_matrix(rawCounts, 1)
 #' metadata <- read.csv(system.file("extdata/MetaDataPackageNanostring.csv", package = "DgeaHeatmap"))
 #' grouping_columns <- c("segment", "region", "class", "slide_name")
-#' comparisons <- list("Comp1 = c("Group_a", "Group_b"), "Comp2" = c("Group_c", "Group_d"))
-#' results_list <- DGEADESeq2(rawCounts, metadata, grouping_columns,comparisons)
+#' comparisons <- list(Comp1 = c("Geometric_Segment_glomerulus_DKD_disease3", "PanCK_tubule_DKD_disease4"), Comp2 = c("neg_tubule_DKD_disease4", "PanCK_tubule_DKD_disease4"))
+#' storage.mode(rawCounts) <- "integer"
+#' sum(!is.finite(as.matrix(rawCounts)))
+#' results_list_DESeq2 <- DGEADESeq2(rawCounts, metadata, grouping_columns,comparisons)
+#' results_list <- results_list_DESeq2$results
 #' down_genes <- extractDEGenes(results_list, comparisons, only_down = TRUE)
 
 extractDEGenes <- function(results_list, comparisons,
@@ -193,6 +201,11 @@ lfc_cutoff = 0) {
 
     for (comparisons in names(results_list)) {
       res <- results_list[[comparisons]]
+      if (!is.data.frame(res)) res <- as.data.frame(res)
+      if (!all(c("padj", "log2FoldChange") %in% colnames(res))) {
+        warning(paste("Missing expected columns in", comparison))
+        next
+      }
       genes_in_res <- rownames(res)
 
       for (gene in genes_in_res) {
@@ -256,9 +269,10 @@ lfc_cutoff = 0) {
 #'
 #' @examples
 #' rawCounts <- read.csv(system.file("extdata/RawDataExamplePackageNanostring.csv", package = "DgeaHeatmap"))
+#' rawCounts <- build_matrix(rawCounts, 1)
 #' metadata <- read.csv(system.file("extdata/MetaDataPackageNanostring.csv", package = "DgeaHeatmap"))
 #' grouping_columns <- c("segment", "region", "class", "slide_name")
-#' comparisons <- list("Comp1 = c("Group_a", "Group_b"), "Comp2" = c("Group_c", "Group_d"))
+#' comparisons <- list(Comp1 = c("Geometric_Segment_glomerulus_DKD_disease3", "PanCK_tubule_DKD_disease4"), Comp2 = c("neg_tubule_DKD_disease4", "PanCK_tubule_DKD_disease4"))
 #' prefix <- "DEA"
 #' results_edgeR <- DGEAedgeR(rawCounts, metadata, grouping_columns, comparisons, prefix = "DEA")
 
@@ -356,9 +370,10 @@ DGEAedgeR <- function(
 #'
 #' @examples
 #' rawCounts <- read.csv(system.file("extdata/RawDataExamplePackageNanostring.csv", package = "DgeaHeatmap"))
+#' rawCounts <- build_matrix(rawCounts, 1)
 #' metadata <- read.csv(system.file("extdata/MetaDataPackageNanostring.csv", package = "DgeaHeatmap"))
 #' grouping_columns <- c("segment", "region", "class", "slide_name")
-#' comparisons <- list("Comp1 = c("Group_a", "Group_b"), "Comp2" = c("Group_c", "Group_d"))
+#' comparisons <- list(Comp1 = c("Geometric_Segment_glomerulus_DKD_disease3", "PanCK_tubule_DKD_disease4"), Comp2 = c("neg_tubule_DKD_disease4", "PanCK_tubule_DKD_disease4"))
 #' prefix <- "DEA"
 #' results_edgeR <- DGEAedgeR(rawCounts, metadata, grouping_columns, comparisons, prefix = "DEA")
 #' sumresults <- summarize_edgeR_DEA(results_edgeR)
