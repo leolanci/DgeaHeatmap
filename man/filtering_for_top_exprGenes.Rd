@@ -20,7 +20,7 @@ Function to filter a matrix to extract a chosen number of most variable rows thr
 \examples{
 x <- 1
 top_number_of_genes <- 20
-input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+input_data <- read.csv(system.file("extdata/testfile_counts.csv", package <- "DgeaHeatmap"))
 matrixCounts <- build_matrix(input_data, x)
 counts_data <- matrixCounts
 varGenesMatrix <- filtering_for_top_exprGenes(counts_data, top_number_of_genes)

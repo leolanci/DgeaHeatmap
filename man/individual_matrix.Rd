@@ -18,9 +18,9 @@ A new matrix containing fewer columns than before, that have previously been spe
 Creates a matrix only containing chosen columns of an original matrix with more data.
 }
 \examples{
-factors_for_individual_matrix = list("DKD", "glomerulus")
+factors_for_individual_matrix <- list("DKD", "glomerulus")
 x <- 1
-input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+input_data <- read.csv(system.file("extdata/testfile_counts.csv", package <- "DgeaHeatmap"))
 matrixCounts <- build_matrix(input_data, x)
 indiMatrix <- individual_matrix(factors_for_individual_matrix, matrixCounts)
 
