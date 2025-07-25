@@ -42,9 +42,9 @@ DGEALimma <- function(
 
   # Create all pairwise contrasts
   if (!is.null(comparisons)) {
-    contrast_strings <- sapply(comparisons, function(groups) {
+    contrast_strings <- vapply(comparisons, function(groups) {
       paste0(groups[1], " - ", groups[2])
-    })
+    }, character(1))
     contrast_names <- names(comparisons)
   } else {
     # fallback to all pairwise
@@ -57,9 +57,9 @@ DGEALimma <- function(
   contrast_matrix <- limma::makeContrasts(contrasts = contrast_strings, levels = design)
 
   # generate DGEList object
-  y = edgeR::DGEList(counts = rawCounts)
+  y <- edgeR::DGEList(counts = rawCounts)
   # calculate normalization factors
-  y = edgeR::calcNormFactors(y)
+  y <- edgeR::calcNormFactors(y)
   # voom transformation
   v = limma::voom(y, design)
   # fit linear model
@@ -397,7 +397,7 @@ summarize_edgeR_DEA <- function(results_edgeR,
     res <- all_results[[contrast]] %>%
       as.data.frame() %>%
       dplyr::mutate(
-        decision = dplyr::case_when(
+        decision <- dplyr::case_when(
           FDR < fdr_threshold & logFC > lfc_threshold ~ 1,
           FDR < fdr_threshold & logFC < -lfc_threshold ~ -1,
           TRUE ~ 0

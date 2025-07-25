@@ -43,7 +43,7 @@ add_demoElem <- function(demoData){
 split_data_by_column <- function(demoData, vGroup, vElt){
   utils::head(NanoStringNCTools::esBy(demoData,
             GROUP = vGroup,
-            FUN = function(x) {
+            FUN <- function(x) {
               NanoStringNCTools::assayDataApply(x, MARGIN = 1, FUN=mean, elt=vElt)
             }))
   return(demoData)

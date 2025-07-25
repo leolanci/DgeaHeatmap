@@ -37,5 +37,4 @@ Suggests:
     ggsankey,
     stringr,
     ggvenn,
-    data.table,
-    testthat
+    data.table
