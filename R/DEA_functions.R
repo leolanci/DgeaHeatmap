@@ -1,4 +1,6 @@
-#' Performs a differential expression analysis based on limma voom
+#' DGEALimma
+#'
+#' @description Performs a differential expression analysis based on limma voom
 #'
 #' @param rawCounts A matrix containing raw counts (integers).
 #' @param metadata A dataframe containing the meta data information of the raw counts matrix.
@@ -80,7 +82,9 @@ DGEALimma <- function(
 
 }
 
-#' Performs a differential expression analysis based on DESeq2
+#' DGEADESeq2
+#'
+#' @description Performs a differential expression analysis based on DESeq2
 #'
 #' @param rawCounts A matrix containing raw counts (integers).
 #' @param metadata A dataframe containing the meta data information of the raw counts matrix.
@@ -151,7 +155,9 @@ DGEADESeq2 <- function (rawCounts, metadata, grouping_columns, comparisons){
   ))
 }
 
-#' Extracts the results of the DEA with DESeq2
+#' extractDEGenes
+#'
+#' @description Extracts the results of the DEA with DESeq2
 #'
 #' @param results_list A list containing the results of the DEA.
 #' @param comparisons An element of the class list, that contains optional information on specific comparisons that are to be conducted (simplifies the results).
@@ -256,7 +262,9 @@ lfc_cutoff = 0) {
 }
 
 
-#' Performs a differential expression analysis based on edgeR
+#' DGEAedgeR
+#'
+#' @description Performs a differential expression analysis based on edgeR
 #'
 #' @param rawCounts A matrix containing raw counts (integers).
 #' @param metadata A dataframe containing the meta data information of the raw counts matrix.

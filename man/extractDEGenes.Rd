@@ -2,7 +2,7 @@
 % Please edit documentation in R/DEA_functions.R
 \name{extractDEGenes}
 \alias{extractDEGenes}
-\title{Extracts the results of the DEA with DESeq2}
+\title{extractDEGenes}
 \usage{
 extractDEGenes(
   results_list,
