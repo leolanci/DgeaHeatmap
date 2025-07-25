@@ -2,7 +2,7 @@
 % Please edit documentation in R/DEA_functions.R
 \name{DGEADESeq2}
 \alias{DGEADESeq2}
-\title{Performs a differential expression analysis based on DESeq2}
+\title{DGEADESeq2}
 \usage{
 DGEADESeq2(rawCounts, metadata, grouping_columns, comparisons)
 }

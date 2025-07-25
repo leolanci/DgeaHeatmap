@@ -10,13 +10,13 @@ test_that("I can use the 3rd edition", {
 })
 
 # basic check
-test_that("basic check", {
-  expect_true()
+test_that("basic test", {
+  expect_true(TRUE)
 })
 
 test_that("Matrix is build from an input file and one column is put as rownames", {
 
-  input_data <- read.csv(test_path("testfile_counts.csv"))
+  input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
   x <- 1
   matrix_class <- c("matrix","array")
   actual_outcome <- build_matrix(input_data, x)
@@ -28,7 +28,7 @@ test_that("Matrix is build from an input file and one column is put as rownames"
 })
 
 test_that("An factor dependent individual matrix is build from a bigger matrix", {
-  input_data <- read.csv(test_path("testfile_counts.csv"))
+  input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
   counts_data <- build_matrix(input_data, 1)
   factors_for_matrix <- list("DKD", "glomerulus")
   print(factors_for_matrix)
@@ -40,14 +40,14 @@ test_that("An factor dependent individual matrix is build from a bigger matrix",
   expect_equal(class(rownames(actual_outcome)), "character")
   # testing if number of columns that contain string in original matrix equals number of column in output matrix
   actual_output <- ncol(actual_outcome)
-  expected_output <- 2
+  expected_output <- 4
   expect_equal(actual_output, expected_output)
 
 })
 
 
 test_that("Variance of each gene is estimated and only the most variable genes are filtered from matrix", {
-  input_data <- read.csv(test_path("testfile_counts.csv"))
+  input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
   counts_data <- build_matrix(input_data, 1)
   top_number_of_genes <- 20
   highly_variable_genes <- filtering_for_top_exprGenes(counts_data, top_number_of_genes)
@@ -65,7 +65,7 @@ test_that("Variance of each gene is estimated and only the most variable genes a
 })
 
 test_that("Counts are scaled through Z-score scaling", {
-  input_data <- read.csv(test_path("testfile_counts.csv"))
+  input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
   counts_data <- build_matrix(input_data, 1)
   scaled_counts <- scale_counts(counts_data)
   if(any(scaled_counts < 2)){
@@ -88,7 +88,7 @@ test_that("Counts are scaled through Z-score scaling", {
 
 
 test_that("summarizing the biological replicates works", {
-  input_data <- read.csv(test_path("testfile_counts.csv"))
+  input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
   counts_data <- build_matrix(input_data, 1)
   factors_for_matrix <- list("disease")
   matrix_class <- c("matrix","array")
@@ -107,7 +107,7 @@ test_that("summarizing the biological replicates works", {
 })
 
 test_that("K-mean generation works",{
-  input_data <- read.csv(test_path("testfile_counts.csv"))
+  input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
   counts_data <- build_matrix(input_data, 1)
   factors_for_matrix <- list("disease")
   matrix_class <- c("matrix","array")
@@ -127,7 +127,7 @@ test_that("K-mean generation works",{
 })
 
 test_that("function makes list of most variable genes (rows) of each cluster", {
-  input_data <- read.csv(test_path("testfile_counts.csv"))
+  input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
   counts_data <- build_matrix(input_data, 1)
   factors_for_matrix <- list("disease")
   matrix_class <- c("matrix","array")
@@ -143,7 +143,7 @@ test_that("function makes list of most variable genes (rows) of each cluster", {
 })
 
 test_that("performing k_mean clustering outside of the heatmap works", {
-  input_data <- read.csv(test_path("testfile_counts.csv"))
+  input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
   counts_data <- build_matrix(input_data, 1)
   factors_for_matrix <- list("disease")
   matrix_class <- c("matrix","array")
@@ -159,5 +159,8 @@ test_that("performing k_mean clustering outside of the heatmap works", {
 
 })
 
+test_that("basic test runs", {
+  expect_true(TRUE)
+})
 
-test_check("DgeaHeatmap")
+

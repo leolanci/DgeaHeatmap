@@ -2,7 +2,7 @@
 % Please edit documentation in R/DEA_functions.R
 \name{DGEAedgeR}
 \alias{DGEAedgeR}
-\title{Performs a differential expression analysis based on edgeR}
+\title{DGEAedgeR}
 \usage{
 DGEAedgeR(
   rawCounts,

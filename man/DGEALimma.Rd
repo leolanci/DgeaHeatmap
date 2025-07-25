@@ -2,7 +2,7 @@
 % Please edit documentation in R/DEA_functions.R
 \name{DGEALimma}
 \alias{DGEALimma}
-\title{Performs a differential expression analysis based on limma voom}
+\title{DGEALimma}
 \usage{
 DGEALimma(
   rawCounts,
