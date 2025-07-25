@@ -52,7 +52,7 @@ Function to build a heatmap using other functions.
 }
 \examples{
 x <- 1
-input_data <- read.csv(system.file("extdata/testfile_counts.csv", package <- "DgeaHeatmap"))
+input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
 matrixCounts <- build_matrix(input_data, x)
 m_top_genes_matrix <- scale_counts(matrixCounts)
 k <- 1

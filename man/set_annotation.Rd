@@ -22,7 +22,7 @@ Function to set row annotation for a heatmap.
 \examples{
 x <- 1
 number_of_annotations_per_cluster <- 5
-input_data <- read.csv(system.file("extdata/testfile_counts.csv", package <- "DgeaHeatmap"))
+input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
 matrixCounts <- build_matrix(input_data, x)
 m_top_genes_matrix <- scale_counts(matrixCounts)
 seed <- 1
