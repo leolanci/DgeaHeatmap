@@ -58,7 +58,7 @@ Creating a heatmap with annotation of x most variable rows(genes).
 }
 \examples{
 x <- 1
-input_data <- read.csv(system.file("extdata/testfile_counts.csv", package <- "DgeaHeatmap"))
+input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
 matrixCounts <- build_matrix(input_data, x)
 topGenes_matrix <- scale_counts(matrixCounts)
 probes <- list("disease3", "disease4", "disease1B")
