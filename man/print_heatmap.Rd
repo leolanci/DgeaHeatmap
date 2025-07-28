@@ -5,7 +5,6 @@
 \title{Function to build a heatmap using other functions.}
 \usage{
 print_heatmap(
-  seed,
   m_top_genes_matrix,
   title,
   split,
@@ -20,8 +19,6 @@ print_heatmap(
 )
 }
 \arguments{
-\item{seed}{An integer used to set seed for k-Means clustering.}
-
 \item{m_top_genes_matrix}{An input matrix for which the heatmap is created.}
 
 \item{title}{A string used to set the title of the heatmap.}
@@ -59,7 +56,8 @@ k <- 1
 split <- performing_kMeans(m_top_genes_matrix, k)
 seed <- 1
 fontsize_rowAnnotation <- 8
-m_kmeans <- Kmean_generation(m_top_genes_matrix, seed, k)
+set.seed(seed)
+m_kmeans <- Kmean_generation(m_top_genes_matrix, k)
 number_of_annotations_per_cluster <- 5
 top_x_genes_cluster <- most_variable_genes(m_kmeans, number_of_annotations_per_cluster, k)
 anno <- set_annotation(m_top_genes_matrix, top_x_genes_cluster, fontsize_rowAnnotation)
@@ -71,5 +69,6 @@ WidthNum <- 4.5
 HeightNum <- 3
 UnitSize <- "cm"
 color_Palette <- "RdBu"
-print_heatmap(seed, m_top_genes_matrix, title, split, anno, fontsize_columnNames, fontsize_rowNames, title_heatmapLegend, WidthNum, HeightNum, UnitSize, color_Palette)
+set.seed(seed)
+print_heatmap(m_top_genes_matrix, title, split, anno, fontsize_columnNames, fontsize_rowNames, title_heatmapLegend, WidthNum, HeightNum, UnitSize, color_Palette)
 }

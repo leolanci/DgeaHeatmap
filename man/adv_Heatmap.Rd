@@ -6,7 +6,6 @@
 \usage{
 adv_Heatmap(
   ncounts_matrix,
-  seed = 1,
   column_name = "Heatmap",
   colorPalette = NULL,
   cluster_method = "hierarchical",
@@ -42,8 +41,6 @@ adv_Heatmap(
 }
 \arguments{
 \item{ncounts_matrix}{An input matrix to create the heatmap.}
-
-\item{seed}{An integer used to set seed for reproducibility and k-Mean clustering, default <- 1.}
 
 \item{column_name}{A string to set the title of the heatmap, default <- "Heatmap".}
 
@@ -116,8 +113,10 @@ Creating a color scheme based on the available color palettes of RColorBrewer fo
 \examples{
 colorPalette <- "RdBu"
  x <- 1
+ seed <- 1
 input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
 matrixCounts <- build_matrix(input_data, x)
 ncounts_matrix <- scale_counts(matrixCounts)
+set.seed
 adv_Heatmap(ncounts_matrix)
 }
