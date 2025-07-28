@@ -293,7 +293,7 @@ group_assignment <- sapply(sample_names, function(sample) {
 stopifnot(length(sample_names) == length(group_assignment))
 
 # Create a dataframe with the sample names and their respective group assignments
-sample_metadata <- data.frame(Group = group_assignment, row.names = sample_names)
+sample_metadata <- data.frame(Group <- group_assignment, row.names <- sample_names)
 
 # confirm matrix column names match the metadata rownames
 all(colnames(scaled_counts) == rownames(sample_metadata)) 
@@ -319,7 +319,7 @@ cluster_columns <- FALSE                              # optional clustering of c
 k_row <- NULL                                          # splitting of rows in heatmaps using k-means, would be an integer, default = NULL
 k_col <- NULL                                          # splitting of columns in heatmaps using k-means, would be an integer, default = NULL
 sample_metadata <- sample_metadata                               # dataframe containing the metadata information of the file, default = NULL
-annotation_colors <- group_colors                     # list containing the column groups and the choosen colors for the column annotation per group, default = NULL
+annotation_colors = group_colors                     # list containing the column groups and the choosen colors for the column annotation per group, default = NULL
 annotation_name_side <-"right"                        # optional change: side of annotation name, default = "right"
 show_row_names <- TRUE                               # optional change: show of rownames on = TRUE & off = FALSE, default = FALSE
 show_column_names <- TRUE                              # optional change: show of column names on = TRUE & off = FALSE, default = TRUE
@@ -362,7 +362,7 @@ cluster_columns <- TRUE                              # optional clustering of co
 k_row <- 3                                          # splitting of rows in heatmaps using k-means, would be an integer, default = NULL
 k_col <- 2                                          # splitting of columns in heatmaps using k-means, would be an integer, default = NULL
 sample_metadata <- sample_metadata                               # dataframe containing the metadata information of the file, default = NULL
-annotation_colors <- group_colors                     # list containing the column groups and the choosen colors for the column annotation per group, default = NULL
+annotation_colors = group_colors                     # list containing the column groups and the choosen colors for the column annotation per group, default = NULL
 annotation_name_side <- "right"                        # optional change: side of annotation name, default = "right"
 show_row_names <- FALSE                               # optional change: show of rownames on = TRUE & off = FALSE, default = FALSE
 show_column_names <- FALSE                              # optional change: show of column names on = TRUE & off = FALSE, default = TRUE
