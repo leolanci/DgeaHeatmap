@@ -28,7 +28,7 @@ DGEALimma <- function(
 
   # Check input
   if (!all(grouping_columns %in% colnames(metadata))) {
-    stop("Some grouping_columns not found in metadata")
+    stop("Not all grouping_columns found in metadata")
   }
   # Combine grouping columns into one composite group
   comp <- apply(metadata[, grouping_columns, drop = FALSE], 1, paste, collapse = "_")
@@ -61,7 +61,7 @@ DGEALimma <- function(
   # calculate normalization factors
   y <- edgeR::calcNormFactors(y)
   # voom transformation
-  v = limma::voom(y, design)
+  v <- limma::voom(y, design)
   # fit linear model
   fit <- limma::lmFit(v, design)
   fit2 <- limma::contrasts.fit(fit, contrast_matrix) # contrasts.fit must be run before eBayes
@@ -104,7 +104,7 @@ DGEALimma <- function(
 #' sum(!is.finite(as.matrix(rawCounts)))
 #' results_DESeq2 <- DGEADESeq2(rawCounts, metadata, grouping_columns,comparisons)
 
-DGEADESeq2 <- function (rawCounts, metadata, grouping_columns, comparisons){
+DGEADESeq2 <- function( rawCounts, metadata, grouping_columns, comparisons ) {
   # Filter genes with non-zero counts in at least n samples (e.g., n = 2)
   keep <- rowSums(rawCounts > 0) >= 2
   filtered_counts <- rawCounts[keep, ]
@@ -117,9 +117,9 @@ DGEADESeq2 <- function (rawCounts, metadata, grouping_columns, comparisons){
 
   # Build DESeq2 dataset
   dds <- DESeq2::DESeqDataSetFromMatrix(
-    countData <- filtered_counts,
-    colData <- metadata,
-    design <- ~ 0 + comp
+    countData = filtered_counts,
+    colData = metadata,
+    design = ~ 0 + comp
   )
 
   # Run DESeq2 pipeline
@@ -143,8 +143,15 @@ DGEADESeq2 <- function (rawCounts, metadata, grouping_columns, comparisons){
         results_list[[name]] <- as.data.frame(res)
       }
     } else {
-      warning(paste("Contrast failed:", name, "-> One or both levels not found in comp factor levels"))
-      print(setdiff(contrast_pair, levels(SummarizedExperiment::colData(dds)$comp)))
+      missing_levels <- setdiff(contrast_pair, levels(SummarizedExperiment::colData(dds)$comp))
+      message(
+        sprintf(
+          "Contrast failed: %s -> One or both levels not found in comp factor levels: %s",
+          name,
+          paste(missing_levels, collapse = ", ")
+        )
+      )
+
     }
   }
   contrast_names <- names(comparisons)
@@ -183,13 +190,14 @@ DGEADESeq2 <- function (rawCounts, metadata, grouping_columns, comparisons){
 #' results_list <- results_list_DESeq2$results
 #' down_genes <- extractDEGenes(results_list, comparisons, only_down = TRUE)
 
-extractDEGenes <- function(results_list, comparisons,
-only_up = FALSE,
-only_down = FALSE,
-up_down = FALSE,
-only_sig = FALSE,
-padj_cutoff = 0.05,
-lfc_cutoff = 0) {
+extractDEGenes <- function(results_list,
+                           comparisons,
+                           only_up = FALSE,
+                           only_down = FALSE,
+                           up_down = FALSE,
+                           only_sig = FALSE,
+                           padj_cutoff = 0.05,
+                           lfc_cutoff = 0) {
 
   # Check for incompatible options
   if ((only_up + only_down + up_down + only_sig) > 1) {
@@ -284,16 +292,15 @@ lfc_cutoff = 0) {
 #' prefix <- "DEA"
 #' results_edgeR <- DGEAedgeR(rawCounts, metadata, grouping_columns, comparisons, prefix = "DEA")
 
-DGEAedgeR <- function(
-    rawCounts,
-    metadata,
-    grouping_columns,
-    comparisons = NULL,    # named list of specific comparisons; e.g. list(comp1_vs_comp2 = c("comp1", "comp2"))
-    prefix = "DEA"
+DGEAedgeR <- function( rawCounts,
+                       metadata,
+                       grouping_columns,
+                       comparisons = NULL,    # named list of specific comparisons; e.g. list(comp1_vs_comp2 = c("comp1", "comp2"))
+                       prefix = "DEA"
 ) {
   # Check grouping columns in metadata
   if (!all(grouping_columns %in% colnames(metadata))) {
-    stop("Some grouping_columns not found in metadata")
+    stop("Some of the grouping_columns not found in metadata")
   }
 
   # Create composite group factor
@@ -306,7 +313,7 @@ DGEAedgeR <- function(
 
   # Filter lowly expressed genes (optional, adjust thresholds as needed)
   keep <- edgeR::filterByExpr(y, group = metadata$comp)
-  y <- y[keep, , keep.lib.sizes=FALSE]
+  y <- y[keep, , keep.lib.sizes = FALSE]
 
   # Calculate normalization factors
   y <- edgeR::calcNormFactors(y)
@@ -397,7 +404,7 @@ summarize_edgeR_DEA <- function(results_edgeR,
     res <- all_results[[contrast]] %>%
       as.data.frame() %>%
       dplyr::mutate(
-        decision <- dplyr::case_when(
+        decision = dplyr::case_when(
           FDR < fdr_threshold & logFC > lfc_threshold ~ 1,
           FDR < fdr_threshold & logFC < -lfc_threshold ~ -1,
           TRUE ~ 0

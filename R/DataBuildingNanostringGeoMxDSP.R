@@ -1,21 +1,21 @@
 #' Build a matrix from an input csv file, with one column as rownames
 #'
-#' @param demoData A NanostringGeoMxSet object, storing all expression, annotation, and probe information linked together.
+#' @param demoData A NanostringGeoMxSet object.
 #'
 #' @return A NanostringGeoMxSet object.
 #' @export
 #'
 #' @examples
-#' datadir <- system.file("extdata", "WTA_NGS_Example", package="GeoMxWorkflows")
+#' datadir <-system.file("extdata", "WTA_NGS_Example", package="GeoMxWorkflows")
 #' DCCFiles <- dir(file.path(datadir, "dccs"), pattern = ".dcc$", full.names = TRUE, recursive = TRUE)
 #' PKCFiles <- unzip(zipfile = dir(file.path(datadir, "pkcs"), pattern = ".zip$", full.names = TRUE, recursive = TRUE))
 #' SampleAnnotationFile <- dir(file.path(datadir, "annotation"), pattern = ".xlsx$", full.names = TRUE, recursive = TRUE)
 #' demoData <- suppressWarnings(GeomxTools::readNanoStringGeoMxSet(dccFiles = DCCFiles, pkcFiles = PKCFiles, phenoDataFile = SampleAnnotationFile, phenoDataSheet = "Template", phenoDataDccColName = "Sample_ID", protocolDataColNames = c("aoi","roi"), configFile = NULL, analyte = "RNA", phenoDataColPrefix = "", experimentDataColNames = NULL))
 #' demoData <- add_demoElem(demoData)
-add_demoElem <- function(demoData){
+add_demoElem <- function( demoData ) {
   Biobase::assayDataElement(demoData, elt = "exprs")
   Biobase::assayDataElement(demoData, "demoElem") <-
-    NanoStringNCTools::assayDataApply(demoData, MARGIN=2, FUN=log, base=10, elt="exprs")
+    NanoStringNCTools::assayDataApply(demoData, MARGIN = 2, FUN = log, base = 10, elt = "exprs")
   Biobase::assayDataElement(demoData, "demoElem")[seq_len(3), seq_len(2)]
   return(demoData)
 }
@@ -43,8 +43,8 @@ add_demoElem <- function(demoData){
 split_data_by_column <- function(demoData, vGroup, vElt){
   utils::head(NanoStringNCTools::esBy(demoData,
             GROUP = vGroup,
-            FUN <- function(x) {
-              NanoStringNCTools::assayDataApply(x, MARGIN = 1, FUN=mean, elt=vElt)
+            FUN = function( x ) {
+              NanoStringNCTools::assayDataApply( x, MARGIN = 1, FUN = mean, elt = vElt )
             }))
   return(demoData)
 }
@@ -62,13 +62,13 @@ split_data_by_column <- function(demoData, vGroup, vElt){
 #' vFlags <-"QCFlags"
 
 aExprsDataQC <- function(demoData, vFlags){
-  demoData <- GeomxTools::shiftCountsOne(demoData, useDALogic = TRUE)
+  demoData <- GeomxTools::shiftCountsOne( demoData, useDALogic = TRUE )
   demoData <- GeomxTools::setSegmentQCFlags(demoData)
   utils::head(Biobase::protocolData(demoData)[[vFlags]])
   demoData <- GeomxTools::setBioProbeQCFlags(demoData)
   Biobase::featureData(demoData)[[vFlags]][seq_len(5), seq_len(4)]
   QCResultsIndex <- which(apply(Biobase::protocolData(demoData)[[vFlags]],
-                                1L , function(x) sum(x) == 0L))
+                                1L, function(x) sum(x) == 0L))
   QCPassed <- demoData[, QCResultsIndex]
   dim(QCPassed)
   return(QCPassed)
@@ -96,8 +96,8 @@ aExprsDataQC <- function(demoData, vFlags){
 #' df_Exp <- genRawReadCountTable(demoData)
 
 #' demoData <- file
-genRawReadCountTable <- function(demoData){
-  target_demoData <- GeomxTools::aggregateCounts(demoData)
+genRawReadCountTable <- function( demoData ) {
+  target_demoData <- GeomxTools::aggregateCounts( demoData )
   dim(target_demoData)
 
   GeomxTools::featureType(demoData)
@@ -108,4 +108,3 @@ genRawReadCountTable <- function(demoData){
   df_Exp <- BiocGenerics::as.data.frame(matrix_Exp)
   return(df_Exp)
 }
-
