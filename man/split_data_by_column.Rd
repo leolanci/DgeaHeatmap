@@ -26,7 +26,7 @@ PKCFiles <- unzip(zipfile = dir(file.path(datadir, "pkcs"), pattern = ".zip$", f
 SampleAnnotationFile <- dir(file.path(datadir, "annotation"), pattern = ".xlsx$", full.names = TRUE, recursive = TRUE)
 rawDataObject <- suppressWarnings(GeomxTools::readNanoStringGeoMxSet(dccFiles = DCCFiles, pkcFiles = PKCFiles, phenoDataFile = SampleAnnotationFile, phenoDataSheet = "Template", phenoDataDccColName = "Sample_ID", protocolDataColNames = c("aoi","roi"), configFile = NULL, analyte = "RNA", phenoDataColPrefix = "", experimentDataColNames = NULL))
 demoData <- add_demoElem(rawDataObject)
-NanoStringNCTools::assayDataApply(demoData, MARGIN=1, FUN=mean, elt="demoElem")[1:5]
+NanoStringNCTools::assayDataApply(demoData, MARGIN=1, FUN=mean, elt="demoElem")[seq_len(5)]
 VGroup <-"aoi"
 vElt <- "demoElem"
 demoData <- split_data_by_column(demoData, VGroup, vElt)

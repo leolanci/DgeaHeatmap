@@ -55,7 +55,7 @@ matrixCounts <- build_matrix(input_data, x)
 
 ```
 ```{r showTable, echo=FALSE, message=FALSE, warning=FALSE, include=TRUE, out.height="60%", out.width="60%"}
-knitr::kable(head(matrixCounts[, 1:4]),"pipe")
+knitr::kable(head(matrixCounts[, seq_len(4)]),"pipe")
 ```
 ```{r exampleIndividualMatrix, echo=TRUE}
 parameter1 <- "DKD"
@@ -64,7 +64,7 @@ factors_for_individual_matrix <- list(parameter1, parameter2)
 indiMatrix <- individual_matrix(factors_for_individual_matrix, matrixCounts)
 ```
 ```{r showIndividualMatrix, echo=FALSE}
-knitr::kable(head(indiMatrix[, 1:4]),"pipe")
+knitr::kable(head(indiMatrix[, seq_len(4)]),"pipe")
 ```
 
 Filtering the matrix for only an x amount of most variable expressed genes:
@@ -105,7 +105,7 @@ probes <- list("disease3_DKD_glomerulus_Geometric_Segment", "disease1B_DKD_glome
 sumBioRepsMatrix <- summarise_bio_replicates(scaled_counts, probes)
 ```
 ```{r showSummedBioReplicates, echo=FALSE}
-knitr::kable(head(sumBioRepsMatrix[, 1:3]),"pipe")
+knitr::kable(head(sumBioRepsMatrix[, seq_len(3)]),"pipe")
 ```
 Generating K-means for clustering in the heatmap:
 ```{r exampleKmeanGeneration, echo=TRUE}
@@ -116,7 +116,7 @@ K_meanTable <- Kmean_generation(sumBioRepsMatrix,k_clusters)
 print(K_meanTable)
 ```
 ```{r showGeneratedKmeans, echo=FALSE}
-knitr::kable(head(K_meanTable[, 1:4]),"pipe")
+knitr::kable(head(K_meanTable[, seq_len(4)]),"pipe")
 ```
 
 The most variable genes of each cluster are selected through the following function. A new object is created with the purpose of saving the most variable genes for each cluster, while the matrix with included cluster for each gene is divided into individual cluster matrices. These matrices are each sorted by their variance. 
@@ -467,7 +467,7 @@ PrePro_rawDataObject <- add_demoElem(rawDataObject)
 
 class(PrePro_rawDataObject)
 #loop over the features(1) or samples(2) of the assayData element and get the mean
-assayDataApply(PrePro_rawDataObject, MARGIN=1, FUN=mean, elt="demoElem")[1:5]
+assayDataApply(PrePro_rawDataObject, MARGIN=1, FUN=mean, elt="demoElem")[seq_len(5)]
 
 #split the data by group column with feature, pheno or protrocol data then get the mean
 VGroup <- "aoi"
@@ -480,7 +480,7 @@ QCPassed <- aExprsDataQC(PrePro_rawDataObject, "QCFlags")
 df_Exp <- genRawReadCountTable(PrePro_rawDataObject)
 ```
 ```{r showExpressionMatrix, echo=FALSE, warning=FALSE}
-knitr::kable(head(df_Exp[, 1:9]),"pipe")
+knitr::kable(head(df_Exp[, seq_len(9)]),"pipe")
 ``` 
 Anon Analyzing GeoMx-NGS RNA Expression Data with GeomxTools. Available from: 
 http://bioconductor.riken.jp/packages/3.15/workflows/vignettes/GeoMxWorkflows/
@@ -568,7 +568,7 @@ colnames(copy_df_Expr) <- gsub("\\.", "_", colnames(copy_df_Expr))
 
 ```
 ```{r exampleColumnNameExchange, echo=FALSE}
-knitr::kable(head(copy_df_Expr[, 1:9]),"pipe")
+knitr::kable(head(copy_df_Expr[, seq_len(9)]),"pipe")
 ```
 
 
@@ -613,8 +613,8 @@ result1 <- topTable(fit2, coef= "GeometricSegment_glomerulus_Dkd_disease1b_vs_di
   as.data.frame() # differentially expressed genes are obtained by topTreat() function
 
 # filter results to get significantly differentially expressed genes
-topUp <- result1[which(result1$logFC > 0),] [1:100,] # up reg top 100
-topDown <- result1[which(result1$logFC < 0),] [1:100,] # down reg top 100
+topUp <- result1[which(result1$logFC > 0),] [seq_len(100),] # up reg top 100
+topDown <- result1[which(result1$logFC < 0),] [seq_len(100),] # down reg top 100
 
 class(topUp)
 

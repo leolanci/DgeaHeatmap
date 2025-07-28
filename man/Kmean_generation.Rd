@@ -4,12 +4,10 @@
 \alias{Kmean_generation}
 \title{Generates K-means for the columns and rows of a matrix.}
 \usage{
-Kmean_generation(m_top_genes_matrix, seed, k)
+Kmean_generation(m_top_genes_matrix, k)
 }
 \arguments{
 \item{m_top_genes_matrix}{An input matrix for which they K-Means are calculated next.}
-
-\item{seed}{An integer to set the seed for the K-Mean calculation, allows reproducibility.}
 
 \item{k}{Number k of how many clusters are created.}
 }
@@ -26,5 +24,6 @@ matrixCounts <- build_matrix(input_data, x)
 m_top_genes_matrix <- scale_counts(matrixCounts)
 seed <- 1
 k <- 1
-k_means <- Kmean_generation(m_top_genes_matrix, seed, k)
+set.seed(seed)
+k_means <- Kmean_generation(m_top_genes_matrix, k)
 }
