@@ -9,7 +9,6 @@ function_complexHeatmap_var(
   probes,
   number_of_annotations_per_cluster,
   k,
-  seed,
   Title,
   fontsize_rowAnnotation,
   fontsize_columnNames,
@@ -29,8 +28,6 @@ function_complexHeatmap_var(
 \item{number_of_annotations_per_cluster}{An integer used to set the number of annotations per cluster in the heatmap.}
 
 \item{k}{An integer used to set number of cluster in the heatmap.}
-
-\item{seed}{An integer used to set seed for reproducibility and k-Mean clustering.}
 
 \item{Title}{A string to set the title of the heatmap.}
 
@@ -74,5 +71,6 @@ WidthNum <- 4.5
 HeightNum <- 3
 UnitSize <- "cm"
 color_Palette <- "RdBu"
-function_complexHeatmap_var(topGenes_matrix, probes, number_of_annotations_per_cluster, k, seed, Title, fontsize_rowAnnotation, fontsize_columnNames,fontsize_rowNames, title_heatmapLegend,WidthNum, HeightNum, UnitSize, color_Palette)
+set.seed(seed)
+function_complexHeatmap_var(topGenes_matrix, probes, number_of_annotations_per_cluster, k, Title, fontsize_rowAnnotation, fontsize_columnNames,fontsize_rowNames, title_heatmapLegend,WidthNum, HeightNum, UnitSize, color_Palette)
 }

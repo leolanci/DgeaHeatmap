@@ -114,14 +114,14 @@ test_that("K-mean generation works",{
   indi_matrix <- individual_matrix(factors_for_matrix, counts_data)
   probes <- list("DKD_glomerulus", "DKD_tubule")
   SumTable <- summarise_bio_replicates(indi_matrix, probes)
-  K_meanTable <- Kmean_generation(SumTable, 1, 3)
+  K_meanTable <- Kmean_generation(SumTable, 3)
   colNumSum <- ncol(SumTable)
   expected_outcome <- colNumSum +1
   actual_outcome <- ncol(K_meanTable)
   # testing that a new column is added
   expect_equal(actual_outcome, expected_outcome)
   # testing the outcome of the function to be "matrix" "array"
-  actual_outcome <- Kmean_generation(SumTable, 1, 1)
+  actual_outcome <- Kmean_generation(SumTable, 1)
   expect_equal(class(actual_outcome), matrix_class)
 
 })
@@ -134,7 +134,7 @@ test_that("function makes list of most variable genes (rows) of each cluster", {
   indi_matrix <- individual_matrix(factors_for_matrix, counts_data)
   probes <- list("DKD_glomerulus", "DKD_tubule")
   SumTable <- summarise_bio_replicates(indi_matrix, probes)
-  K_meanTable <- Kmean_generation(SumTable, 1, 1)
+  K_meanTable <- Kmean_generation(SumTable, 1)
   actualOutput <- most_variable_genes(K_meanTable, 1, 2)
   # testing the outcome is a list
   expected_outcome <- "list"
@@ -150,7 +150,7 @@ test_that("performing k_mean clustering outside of the heatmap works", {
   indi_matrix <- individual_matrix(factors_for_matrix, counts_data)
   probes <- list("DKD_glomerulus", "DKD_tubule")
   SumTable <- summarise_bio_replicates(indi_matrix, probes)
-  K_meanTable <- Kmean_generation(SumTable, 1, 1)
+  K_meanTable <- Kmean_generation(SumTable, 1)
   actualOutput <- performing_kMeans(SumTable, 1)
   # testing that outcomes is right class
   expect_outcome <- "character"

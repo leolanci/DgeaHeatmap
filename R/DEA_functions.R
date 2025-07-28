@@ -117,9 +117,9 @@ DGEADESeq2 <- function (rawCounts, metadata, grouping_columns, comparisons){
 
   # Build DESeq2 dataset
   dds <- DESeq2::DESeqDataSetFromMatrix(
-    countData = filtered_counts,
-    colData = metadata,
-    design = ~ 0 + comp
+    countData <- filtered_counts,
+    colData <- metadata,
+    design <- ~ 0 + comp
   )
 
   # Run DESeq2 pipeline

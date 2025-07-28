@@ -121,7 +121,6 @@ show_data_distribution <- function(scaled_counts){
 
 #' Function to create an elbow plot to choose k for clustering by k-Means.
 #'
-#' @param seed An integer to set seed for the k-Mean generation, allows reproducibility.
 #' @param top_genes_matrix A matrix for which the best number of clusters in k-Means Clustering is supposed to be calculated.
 #' @param maxK An integer determining the maximum number of possible clusters.
 #'
@@ -135,15 +134,14 @@ show_data_distribution <- function(scaled_counts){
 #' matrixCounts <- build_matrix(input_data, x)
 #' scaled_counts <- scale_counts(matrixCounts)
 #' top_genes_matrix <- scaled_counts
-#' elbow_plot(seed, top_genes_matrix)
+#' set.seed(seed)
+#' elbow_plot(top_genes_matrix)
 
 elbow_plot <- function(
-    seed,                             # seed for start of clustering.
     top_genes_matrix,                 # input matrix for which the number of clusters is calculated.
     maxK = 15                         # Integer determining the maximum number of possible clusters, default <- 15.
     ){
   maxK <- maxK
-  set.seed(seed) # reproducible outcome
   wss <- function(k) {
     stats::kmeans(top_genes_matrix, algorithm = "Lloyd", k, nstart = 10, iter.max = 50)$tot.withinss
   }
@@ -211,7 +209,6 @@ summarise_bio_replicates <- function(top_genes_matrix, probes){
 #' Generates K-means for the columns and rows of a matrix.
 #'
 #' @param m_top_genes_matrix An input matrix for which they K-Means are calculated next.
-#' @param seed An integer to set the seed for the K-Mean calculation, allows reproducibility.
 #' @param k Number k of how many clusters are created.
 #'
 #' @return All calculated K-Means of the matrix.
@@ -224,13 +221,12 @@ summarise_bio_replicates <- function(top_genes_matrix, probes){
 #' m_top_genes_matrix <- scale_counts(matrixCounts)
 #' seed <- 1
 #' k <- 1
-#' k_means <- Kmean_generation(m_top_genes_matrix, seed, k)
+#' set.seed(seed)
+#' k_means <- Kmean_generation(m_top_genes_matrix, k)
 
-Kmean_generation <- function(m_top_genes_matrix, seed,k){
+Kmean_generation <- function(m_top_genes_matrix, k){
   # Creating a copy of the matrix with the summarized biological replicates
   y <- m_top_genes_matrix
-  # Setting a random factor for reproducibility
-  set.seed(seed)
   # Generating the k-means
   km <- stats::kmeans(y, k)
   m_kmeans <- BiocGenerics::cbind(y, km$cluster)
@@ -258,7 +254,8 @@ Kmean_generation <- function(m_top_genes_matrix, seed,k){
 #' m_top_genes_matrix <- scale_counts(matrixCounts)
 #' seed <- 1
 #' k <- 1
-#' m_kmeans <- Kmean_generation(m_top_genes_matrix, seed, k)
+#' set.seed(seed)
+#' m_kmeans <- Kmean_generation(m_top_genes_matrix, k)
 #' top_x_variable_genes <- most_variable_genes(m_kmeans, number_of_annotations_per_cluster, k)
 most_variable_genes <- function(m_kmeans,number_of_annotations_per_cluster, k){
   last_column <- ncol(m_kmeans)
@@ -308,7 +305,8 @@ most_variable_genes <- function(m_kmeans,number_of_annotations_per_cluster, k){
 #' seed <- 1
 #' k <- 1
 #' fontsize_rowAnnotation <- 8
-#' m_kmeans <- Kmean_generation(m_top_genes_matrix, seed, k)
+#' set.seed(seed)
+#' m_kmeans <- Kmean_generation(m_top_genes_matrix, k)
 #' top_x_genes_cluster <- most_variable_genes(m_kmeans, number_of_annotations_per_cluster, k)
 #' anno <- set_annotation(m_top_genes_matrix, top_x_genes_cluster, fontsize_rowAnnotation)
 #'
@@ -346,7 +344,6 @@ performing_kMeans <- function(m_top_genes_matrix, k){
 
 #' Function to build a heatmap using other functions.
 #'
-#' @param seed An integer used to set seed for k-Means clustering.
 #' @param m_top_genes_matrix An input matrix for which the heatmap is created.
 #' @param title A string used to set the title of the heatmap.
 #' @param split A dataframe containing information about the clustering of the rows of the input matrix.
@@ -371,7 +368,8 @@ performing_kMeans <- function(m_top_genes_matrix, k){
 #' split <- performing_kMeans(m_top_genes_matrix, k)
 #' seed <- 1
 #' fontsize_rowAnnotation <- 8
-#' m_kmeans <- Kmean_generation(m_top_genes_matrix, seed, k)
+#' set.seed(seed)
+#' m_kmeans <- Kmean_generation(m_top_genes_matrix, k)
 #' number_of_annotations_per_cluster <- 5
 #' top_x_genes_cluster <- most_variable_genes(m_kmeans, number_of_annotations_per_cluster, k)
 #' anno <- set_annotation(m_top_genes_matrix, top_x_genes_cluster, fontsize_rowAnnotation)
@@ -383,10 +381,10 @@ performing_kMeans <- function(m_top_genes_matrix, k){
 #' HeightNum <- 3
 #' UnitSize <- "cm"
 #' color_Palette <- "RdBu"
-#' print_heatmap(seed, m_top_genes_matrix, title, split, anno, fontsize_columnNames, fontsize_rowNames, title_heatmapLegend, WidthNum, HeightNum, UnitSize, color_Palette)
-print_heatmap <- function(seed,m_top_genes_matrix, title, split, anno, fontsize_columnNames, fontsize_rowNames, title_heatmapLegend,WidthNum, HeightNum, UnitSize, color_Palette){
+#' set.seed(seed)
+#' print_heatmap(m_top_genes_matrix, title, split, anno, fontsize_columnNames, fontsize_rowNames, title_heatmapLegend, WidthNum, HeightNum, UnitSize, color_Palette)
+print_heatmap <- function(m_top_genes_matrix, title, split, anno, fontsize_columnNames, fontsize_rowNames, title_heatmapLegend,WidthNum, HeightNum, UnitSize, color_Palette){
   color_setting(color_Palette)
-  set.seed(seed)
   ht <- ComplexHeatmap::Heatmap(m_top_genes_matrix, name = "mat", split = split,
                column_title = title ,
                use_raster = FALSE, cluster_columns = FALSE,
@@ -404,7 +402,6 @@ print_heatmap <- function(seed,m_top_genes_matrix, title, split, anno, fontsize_
 #' @param probes A list of strings to summarize biological replicated in the columns.
 #' @param number_of_annotations_per_cluster An integer used to set the number of annotations per cluster in the heatmap.
 #' @param k An integer used to set number of cluster in the heatmap.
-#' @param seed An integer used to set seed for reproducibility and k-Mean clustering.
 #' @param Title A string to set the title of the heatmap.
 #' @param fontsize_rowAnnotation An integer used to set the font size of the row annotation in the heatmap
 #' @param fontsize_columnNames An integer used to set the font size of the columns in the heatmap.
@@ -436,15 +433,16 @@ print_heatmap <- function(seed,m_top_genes_matrix, title, split, anno, fontsize_
 #' HeightNum <- 3
 #' UnitSize <- "cm"
 #' color_Palette <- "RdBu"
-#' function_complexHeatmap_var(topGenes_matrix, probes, number_of_annotations_per_cluster, k, seed, Title, fontsize_rowAnnotation, fontsize_columnNames,fontsize_rowNames, title_heatmapLegend,WidthNum, HeightNum, UnitSize, color_Palette)
-function_complexHeatmap_var <- function(topGenes_matrix, probes, number_of_annotations_per_cluster, k, seed, Title, fontsize_rowAnnotation, fontsize_columnNames,fontsize_rowNames, title_heatmapLegend,WidthNum, HeightNum, UnitSize, color_Palette){
+#' set.seed(seed)
+#' function_complexHeatmap_var(topGenes_matrix, probes, number_of_annotations_per_cluster, k, Title, fontsize_rowAnnotation, fontsize_columnNames,fontsize_rowNames, title_heatmapLegend,WidthNum, HeightNum, UnitSize, color_Palette)
+function_complexHeatmap_var <- function(topGenes_matrix, probes, number_of_annotations_per_cluster, k, Title, fontsize_rowAnnotation, fontsize_columnNames,fontsize_rowNames, title_heatmapLegend,WidthNum, HeightNum, UnitSize, color_Palette){
   m_top_genes_matrix <- summarise_bio_replicates(topGenes_matrix, probes)
 
-  m_kmeans <- Kmean_generation(m_top_genes_matrix, seed, k)
+  m_kmeans <- Kmean_generation(m_top_genes_matrix, k)
   top_x_genes_cluster <- most_variable_genes(m_kmeans, number_of_annotations_per_cluster, k)
   anno <- DgeaHeatmap::set_annotation(m_top_genes_matrix, top_x_genes_cluster, fontsize_rowAnnotation)
   split <- performing_kMeans(m_top_genes_matrix, k)
-  hm <- print_heatmap(seed,m_top_genes_matrix, Title, split, anno, fontsize_columnNames, fontsize_rowNames, title_heatmapLegend,WidthNum, HeightNum, UnitSize, color_Palette)
+  hm <- print_heatmap(m_top_genes_matrix, Title, split, anno, fontsize_columnNames, fontsize_rowNames, title_heatmapLegend,WidthNum, HeightNum, UnitSize, color_Palette)
   return(hm)
 }
 
@@ -472,7 +470,6 @@ get_heatmap_colors <- function(colorPalette) {
 #' Creating a color scheme based on the available color palettes of RColorBrewer for the heatmap.
 #'
 #' @param ncounts_matrix An input matrix to create the heatmap.
-#' @param seed An integer used to set seed for reproducibility and k-Mean clustering, default <- 1.
 #' @param column_name A string to set the title of the heatmap, default <- "Heatmap".
 #' @param colorPalette Name of the colorPalette used for the heatmap, default <- NULL.
 #' @param cluster_method A string setting the cluster method for the heatmap, default <- "hierarchical".
@@ -511,14 +508,15 @@ get_heatmap_colors <- function(colorPalette) {
 #' @examples
 #' colorPalette <- "RdBu"
 #'  x <- 1
+#'  seed <- 1
 #' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
 #' ncounts_matrix <- scale_counts(matrixCounts)
+#' set.seed
 #' adv_Heatmap(ncounts_matrix)
 
 adv_Heatmap <- function(
     ncounts_matrix,
-    seed = 1,                                  # default seed = 1, changeable and suggested to be changed
     column_name = "Heatmap",                   # changeable title of the heatmap, default "Heatmap
     colorPalette = NULL,                       # "RdBu" ir any other color Palette available through RColorBrewer, default is blue to red over white from ComplexHeatmaps
     cluster_method = "hierarchical",           # "hierarchical", "kmeans"
@@ -622,7 +620,7 @@ adv_Heatmap <- function(
     if (row_annotation_method == "auto") {
 
       if (!is.null(k_row)) {
-        m_kmeans <- Kmean_generation(ncounts_matrix, seed, k_row)
+        m_kmeans <- Kmean_generation(ncounts_matrix, k_row)
         top_x_genes_cluster <- most_variable_genes(m_kmeans, row_anno_number, k_row) #get most variable expressed genes of each cluster
         annotation_for_rows <- set_annotation(ncounts_matrix, top_x_genes_cluster, fontsize_rowAnnotation)
 
@@ -666,7 +664,6 @@ adv_Heatmap <- function(
   }
   # --- Draw Heatmap ---
   heatmap_color_scheme <- get_heatmap_colors(colorPalette)            # sets the color Palette for the heatmap
-  set.seed(seed)                          # sets a seed for randomizer to generate reproducable heatmaps
 
 
   ht = ComplexHeatmap::Heatmap(
