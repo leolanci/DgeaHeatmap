@@ -63,7 +63,7 @@ individual_matrix <- function(factors_for_matrix_devision, mmatrix) {
 filtering_for_top_exprGenes <- function(counts_data, top_number_of_genes){
   var_genes <- apply(counts_data, 1, stats::var) #estimating the variance of each gene
   # Sorting the genes by their variance and creating a new object with chosen number of most variable genes
-  select_var <- names(sort(var_genes, decreasing = TRUE))[1:top_number_of_genes]
+  select_var <- names(sort(var_genes, decreasing = TRUE))[seq_len(top_number_of_genes)]
   highly_variable_genes <- counts_data[select_var,]
   dim(highly_variable_genes)
 
@@ -145,7 +145,7 @@ elbow_plot <- function(
   wss <- function(k) {
     stats::kmeans(top_genes_matrix, algorithm = "Lloyd", k, nstart = 10, iter.max = 50)$tot.withinss
   }
-  k.values <- 1:maxK # compute and plot wws for k <- 1 to k <- 15
+  k.values <- seq_len(maxK) # compute and plot wws for k <- 1 to k <- 15
   wss_values <- purrr::map_dbl(k.values, wss)
   plot(k.values, wss_values, type = "b", pch = 19, frame = FALSE, xlab = "Number of clusters K", ylab = "Total within-clusters sum of squares")
 
@@ -197,7 +197,7 @@ summarise_bio_replicates <- function(top_genes_matrix, probes){
     # get means of each sample and safe as a numeric values
     m_top_genes_matrix <- BiocGenerics::cbind(m_top_genes_matrix, group_mean)
   }
-  m_top_genes_matrix <- m_top_genes_matrix[,-1:-number_columns]
+  m_top_genes_matrix <- m_top_genes_matrix[,-seq_len(number_columns)]
   if (ncol(m_top_genes_matrix) == length(probes)) {
     BiocGenerics::colnames(m_top_genes_matrix) <- probes
     return(m_top_genes_matrix)
@@ -260,7 +260,7 @@ Kmean_generation <- function(m_top_genes_matrix, k){
 most_variable_genes <- function(m_kmeans,number_of_annotations_per_cluster, k){
   last_column <- ncol(m_kmeans)
   top_x_variable_genes <- list()
-  for (i in 1:k){
+  for (i in seq_len(k)){
     cluster_matrix <- m_kmeans[(m_kmeans[,last_column]) == i,]
     cluster_matrix <- cluster_matrix[,-last_column]
     #estimates the variance for each row
@@ -278,7 +278,7 @@ most_variable_genes <- function(m_kmeans,number_of_annotations_per_cluster, k){
     # orders matrix according to order of variances ( highest to lowest)
     cluster_matrix <- cluster_matrix[o,]
     # makes a list of the gene names with the highest variance
-    cluster_genes_highest_var <- as.list(BiocGenerics::rownames(cluster_matrix)[1:number_of_annotations_per_cluster])
+    cluster_genes_highest_var <- as.list(BiocGenerics::rownames(cluster_matrix)[seq_len(number_of_annotations_per_cluster)])
 
     # creates list with most_variable_genes of all cluster
     top_x_variable_genes <- append (top_x_variable_genes, cluster_genes_highest_var)
@@ -638,7 +638,7 @@ adv_Heatmap <- function(
         # orders matrix according to order of variances ( highest to lowest)
         cluster_matrix <- y[o,]
         # makes a list of the gene names with the highest variance
-        cluster_genes_highest_var <- as.list(BiocGenerics::rownames(y)[1:row_anno_number])
+        cluster_genes_highest_var <- as.list(BiocGenerics::rownames(y)[seq_len(row_anno_number)])
         # creates list with most_variable_genes of all cluster
         top_x_genes_cluster <- append (top_x_genes_cluster, cluster_genes_highest_var)
         # set annotation for rows
