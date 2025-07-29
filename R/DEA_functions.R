@@ -104,7 +104,7 @@ DGEALimma <- function(
 #' sum(!is.finite(as.matrix(rawCounts)))
 #' results_DESeq2 <- DGEADESeq2(rawCounts, metadata, grouping_columns,comparisons)
 
-DGEADESeq2 <- function( rawCounts, metadata, grouping_columns, comparisons ) {
+DGEADESeq2 <- function(rawCounts, metadata, grouping_columns, comparisons) {
   # Filter genes with non-zero counts in at least n samples (e.g., n = 2)
   keep <- rowSums(rawCounts > 0) >= 2
   filtered_counts <- rawCounts[keep, ]
@@ -292,11 +292,11 @@ extractDEGenes <- function(results_list,
 #' prefix <- "DEA"
 #' results_edgeR <- DGEAedgeR(rawCounts, metadata, grouping_columns, comparisons, prefix = "DEA")
 
-DGEAedgeR <- function( rawCounts,
-                       metadata,
-                       grouping_columns,
-                       comparisons = NULL,    # named list of specific comparisons; e.g. list(comp1_vs_comp2 = c("comp1", "comp2"))
-                       prefix = "DEA"
+DGEAedgeR <- function(rawCounts,
+                      metadata,
+                      grouping_columns,
+                      comparisons = NULL,    # named list of specific comparisons; e.g. list(comp1_vs_comp2 = c("comp1", "comp2"))
+                      prefix = "DEA"
 ) {
   # Check grouping columns in metadata
   if (!all(grouping_columns %in% colnames(metadata))) {

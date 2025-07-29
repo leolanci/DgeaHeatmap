@@ -12,7 +12,7 @@
 #' SampleAnnotationFile <- dir(file.path(datadir, "annotation"), pattern = ".xlsx$", full.names = TRUE, recursive = TRUE)
 #' demoData <- suppressWarnings(GeomxTools::readNanoStringGeoMxSet(dccFiles = DCCFiles, pkcFiles = PKCFiles, phenoDataFile = SampleAnnotationFile, phenoDataSheet = "Template", phenoDataDccColName = "Sample_ID", protocolDataColNames = c("aoi","roi"), configFile = NULL, analyte = "RNA", phenoDataColPrefix = "", experimentDataColNames = NULL))
 #' demoData <- add_demoElem(demoData)
-add_demoElem <- function( demoData ) {
+add_demoElem <- function(demoData) {
   Biobase::assayDataElement(demoData, elt = "exprs")
   Biobase::assayDataElement(demoData, "demoElem") <-
     NanoStringNCTools::assayDataApply(demoData, MARGIN = 2, FUN = log, base = 10, elt = "exprs")
@@ -40,11 +40,11 @@ add_demoElem <- function( demoData ) {
 #' VGroup <-"aoi"
 #' vElt <- "demoElem"
 #' demoData <- split_data_by_column(demoData, VGroup, vElt)
-split_data_by_column <- function(demoData, vGroup, vElt){
+split_data_by_column <- function(demoData, vGroup, vElt) {
   utils::head(NanoStringNCTools::esBy(demoData,
-            GROUP = vGroup,
-            FUN = function( x ) {
-              NanoStringNCTools::assayDataApply( x, MARGIN = 1, FUN = mean, elt = vElt )
+                                      GROUP = vGroup,
+                                      FUN = function(x) {
+                                        NanoStringNCTools::assayDataApply(x, MARGIN = 1, FUN = mean, elt = vElt)
             }))
   return(demoData)
 }
@@ -61,8 +61,8 @@ split_data_by_column <- function(demoData, vGroup, vElt){
 #' demoData <- file
 #' vFlags <-"QCFlags"
 
-aExprsDataQC <- function(demoData, vFlags){
-  demoData <- GeomxTools::shiftCountsOne( demoData, useDALogic = TRUE )
+aExprsDataQC <- function(demoData, vFlags) {
+  demoData <- GeomxTools::shiftCountsOne(demoData, useDALogic = TRUE)
   demoData <- GeomxTools::setSegmentQCFlags(demoData)
   utils::head(Biobase::protocolData(demoData)[[vFlags]])
   demoData <- GeomxTools::setBioProbeQCFlags(demoData)
@@ -96,8 +96,8 @@ aExprsDataQC <- function(demoData, vFlags){
 #' df_Exp <- genRawReadCountTable(demoData)
 
 #' demoData <- file
-genRawReadCountTable <- function( demoData ) {
-  target_demoData <- GeomxTools::aggregateCounts( demoData )
+genRawReadCountTable <- function(demoData) {
+  target_demoData <- GeomxTools::aggregateCounts(demoData)
   dim(target_demoData)
 
   GeomxTools::featureType(demoData)
