@@ -34,28 +34,17 @@ DGEALimma <- function(
   comp <- apply(metadata[, grouping_columns, drop = FALSE], 1, paste, collapse = "_")
   comp <- gsub(" ", "_", comp)  # Replace spaces with underscores
   metadata$comp <- make.names(comp)  # Clean names for use in model.matrix
-
   # Create design matrix
   comp_factor <- factor(metadata$comp)
   design <- stats::model.matrix(~0 + comp_factor)
   colnames(design) <- levels(comp_factor)
 
   # Create all pairwise contrasts
-  if (!is.null(comparisons)) {
-    contrast_strings <- vapply(comparisons, function(groups) {
-      paste0(groups[1], " - ", groups[2])
-    }, character(1))
-    contrast_names <- names(comparisons)
-  } else {
-    # fallback to all pairwise
-    comb <- utils::combn(levels(comp_factor), 2)
-    contrast_strings <- apply(comb, 2, function(x) paste0(x[1], " - ", x[2]))
-    contrast_names <- apply(comb, 2, function(x) paste0(prefix, "_", x[1], "_vs_", x[2]))
-  }
-
+  contrast_info <- pairwise_contrasts(comparisons, comp_factor)
+  contrast_names <- contrast_info$names
+  contrast_strings <- contrast_info$strings
   # create contrasts matrix
   contrast_matrix <- limma::makeContrasts(contrasts = contrast_strings, levels = design)
-
   # generate DGEList object
   y <- edgeR::DGEList(counts = rawCounts)
   # calculate normalization factors
@@ -71,7 +60,6 @@ DGEALimma <- function(
     limma::topTable(fit2, coef = coef_name, number = Inf, sort.by = "P")
   })
   names(results) <- contrast_names
-
   return(list(
     voom_data = v,
     fit = fit2,
@@ -79,7 +67,6 @@ DGEALimma <- function(
     design = design,
     normFactors = y
   ))
-
 }
 
 #' DGEADESeq2
@@ -135,7 +122,7 @@ DGEADESeq2 <- function(rawCounts, metadata, grouping_columns, comparisons) {
       res <- tryCatch({
         DESeq2::results(dds, contrast = c("comp", contrast_pair[1], contrast_pair[2]))
       }, error = function(e) {
-        warning(paste("Contrast failed:", name, "->", e$message))
+        warning("Contrast failed:", name, "->", e$message)
         NULL
       })
 
@@ -144,13 +131,13 @@ DGEADESeq2 <- function(rawCounts, metadata, grouping_columns, comparisons) {
       }
     } else {
       missing_levels <- setdiff(contrast_pair, levels(SummarizedExperiment::colData(dds)$comp))
+      collapsed <- paste(missing_levels, collapse = ", ")
       message(
-        sprintf(
-          "Contrast failed: %s -> One or both levels not found in comp factor levels: %s",
+          "Contrast failed:",
           name,
-          paste(missing_levels, collapse = ", ")
+          "-> One or both levels not found in comp factor levels:",
+          collapsed
         )
-      )
 
     }
   }
@@ -217,7 +204,7 @@ extractDEGenes <- function(results_list,
       res <- results_list[[comparisons]]
       if (!is.data.frame(res)) res <- as.data.frame(res)
       if (!all(c("padj", "log2FoldChange") %in% colnames(res))) {
-        warning(paste("Missing expected columns in", comparison))
+        warning("Missing expected columns in", comparison)
         next
       }
       genes_in_res <- rownames(res)
@@ -438,4 +425,42 @@ summarize_edgeR_DEA <- function(results_edgeR,
     summary = summary_table,
     significant_gene_names = sig_genes
   ))
+}
+
+#' Create pairwise contrasts
+#'
+#' @param comparisons An element of the class list, that contains optional information on specific comparisons that are to be conducted (simplifies the results).
+#' @param comp_factor A factor, for fallback all pairwise comparison.
+#' @param prefix A string used as a prefix for the contrast_names that are generated.
+#'
+#' @return A character vector of contrast names.
+#' @export
+#'
+#' @examples
+#' rawCounts <- read.csv(system.file("extdata/RawDataExamplePackageNanostring.csv", package = "DgeaHeatmap"))
+#' rawCounts <- build_matrix(rawCounts, 1)
+#' metadata <- read.csv(system.file("extdata/MetaDataPackageNanostring.csv", package = "DgeaHeatmap"))
+#' grouping_columns <- c("segment", "region", "class", "slide_name")
+#' comparisons <- list(Comp1 = c("Geometric_Segment_glomerulus_DKD_disease3", "PanCK_tubule_DKD_disease4"), Comp2 = c("neg_tubule_DKD_disease4", "PanCK_tubule_DKD_disease4"))
+#' comp <- apply(metadata[, grouping_columns, drop = FALSE], 1, paste, collapse = "_")
+#' comp <- gsub(" ", "_", comp)  # Replace spaces with underscores
+#' metadata$comp <- make.names(comp)  # Clean names for use in model.matrix
+#' comp_factor <- factor(metadata$comp)
+#' paired_contrasts <- pairwise_contrasts(comparisons, comp_factor)
+#'
+pairwise_contrasts <- function(comparisons, comp_factor, prefix = "Contrast") {
+  # Create all pairwise contrasts
+  if (!is.null(comparisons)) {
+    contrast_strings <- vapply(comparisons, function(groups) {
+      paste0(groups[1], " - ", groups[2])
+    }, character(1))
+    contrast_names <- names(comparisons)
+  } else {
+    # fallback to all pairwise
+    comb <- utils::combn(levels(comp_factor), 2)
+    contrast_strings <- apply(comb, 2, function(x) paste0(x[1], " - ", x[2]))
+    contrast_names <- apply(comb, 2, function(x) paste0(prefix, "_", x[1], "_vs_", x[2]))
+  }
+  paired_contrasts <- list(contrast_strings, contrast_names)
+  return(list(strings = contrast_strings, names = contrast_names))
 }
