@@ -511,48 +511,74 @@ get_heatmap_colors <- function(colorPalette) {
 #' set.seed
 #' adv_Heatmap(ncounts_matrix)
 
-adv_Heatmap <- function(ncounts_matrix,
-                        column_name = "Heatmap",                   # changeable title of the heatmap, default "Heatmap
-                        colorPalette = NULL,                       # "RdBu" ir any other color Palette available through RColorBrewer, default is blue to red over white from ComplexHeatmaps
-                        cluster_method = "hierarchical",           # "hierarchical", "kmeans"
-                        distance_method = "euclidean",             # or "correlation"
-                        cluster_rows = TRUE,
-                        cluster_columns = FALSE,
-                        k_row = NULL,
-                        k_col = NULL,
-                        sample_metadata = NULL,
-                        annotation_colors = NULL,
-                        annotation_name_side = "right",            # side of annotation name, default = "right"
-                        show_row_names = FALSE,
-                        show_column_names = TRUE,
-                        row_annotation = FALSE,                    # FALSE or TRUE
-                        row_annotation_method = "auto",            # "auto", "specific", "none"
-                        row_anno_names = NULL,                     # option to set list of specific genes as row annotation
-                        row_anno_number = 5,                       # default number of annotations per cluster
-                        fontsize_title = 15,                       # fontsize of the heatmap title
-                        fontsize_rowAnnotation = 10,               # fontsize of the optional row annotation
-                        fontsize_columnNames = 6,                  # fontsize of column names
-                        fontsize_rowNames = 4,                     # fontsize of row names
-                        fontsize_cluster_labels = 8,               # fontsize of cluster labels
-                        fontsize_group_annotation = 8,             # fontsize of optional group annotation
-                        fontsize_group_annotation_legend = 10,     # fontsize of optional group annotation legend title
-                        fontsize_group_annotation_labels = 8,      # fontsize of optional group annotation legend labels
-                        fontsize_heatmap_legend = 10,              # fontsize of heatmap legend
-                        fontsize_heatmap_legend_labels = 8,        # fontsize of heatmap legend labels
-                        title_heatmapLegend = "Expression",        # changeable title of the legend, default "Expression"
-                        WidthNum = 4.5,
-                        HeightNum = 3,
-                        UnitSize = "cm") {
-  # Distance matrix helper
-  get_dist <- function(x, method) {
-    if (method == "correlation") stats::as.dist(1 - stats::cor(t(x)))
-    else stats::dist(x, method = method)
-  }
+adv_Heatmap <- function(ncounts_matrix, column_name = "Heatmap", colorPalette = NULL, cluster_method = "hierarchical", distance_method = "euclidean", cluster_rows = TRUE, cluster_columns = FALSE, k_row = NULL,
+                        k_col = NULL, sample_metadata = NULL, annotation_colors = NULL, annotation_name_side = "right", show_row_names = FALSE, show_column_names = TRUE, row_annotation = FALSE,                    # FALSE or TRUE
+                        row_annotation_method = "auto", row_anno_names = NULL, row_anno_number = 5, fontsize_title = 15, fontsize_rowAnnotation = 10, fontsize_columnNames = 6, fontsize_rowNames = 4, fontsize_cluster_labels = 8, fontsize_group_annotation = 8, fontsize_group_annotation_legend = 10,     # fontsize of optional group annotation legend title
+                        fontsize_group_annotation_labels = 8, fontsize_heatmap_legend = 10, fontsize_heatmap_legend_labels = 8, title_heatmapLegend = "Expression", WidthNum = 4.5, HeightNum = 3, UnitSize = "cm") {
+
  # Clustering logic
     row_split <- col_split <- NULL
     row_dend <- col_dend <- TRUE  # default TRUE if unspecified
 
   # --- ROW CLUSTERING ---
+    rows_clustered <- row_clustering(ncounts_matrix, cluster_rows = cluster_rows, cluster_method = cluster_method, distance_method = distance_method, k_row = k_row, row_split = row_split, row_dend = row_dend)
+    row_split <- rows_clustered$row_split
+    row_dend <- rows_clustered$dend
+  # --- COLUMN CLUSTERING ---
+    columns_clustered <- column_clustering(ncounts_matrix, cluster_columns = cluster_columns, cluster_method = cluster_method, distance_method = distance_method, k_col = k_col, col_split = col_split, col_dend = col_dend)
+    col_split <- columns_clustered$col_split
+    col_dend <- columns_clustered$dend
+  # --- Sample Annotation ---
+  col_ha <- NULL
+  col_ha <- set_sample_annotation(sample_metadata = sample_metadata, annotation_colors = group_colors, annotation_name_side = annotation_name_side, fontsize_group_annotation = fontsize_group_annotation, fontsize_group_annotation_legend = fontsize_group_annotation_legend, fontsize_group_annotation_labels = fontsize_group_annotation_labels)
+
+  # --- Row Annotation ---
+  annotation_for_rows <- NULL
+  annotation_for_rows <- set_row_annotation(ncounts_matrix = ncounts_matrix, k_row = k_row, row_annotation = row_annotation, row_annotation_method = row_annotation_method, row_anno_names = row_anno_names, row_anno_number = row_anno_number, fontsize_rowAnnotation = fontsize_rowAnnotation)
+
+  # --- Final Ordering Check --- #
+  # Reset column split if clustering is not active
+  if (!cluster_columns) {
+    col_split <- NULL
+    col_dend <- FALSE
+  }
+  if (!cluster_rows) {
+    row_split <- NULL
+    row_dend <- FALSE
+  }
+  # --- Draw Heatmap ---
+  ht <- draw_adv_heatmap(ncounts_matrix, column_name = column_name, colorPalette = colorPalette, show_row_names = show_row_names, show_column_names = show_column_names, fontsize_title = fontsize_title, fontsize_columnNames = fontsize_columnNames, fontsize_rowNames = fontsize_rowNames, fontsize_cluster_labels = fontsize_cluster_labels, fontsize_heatmap_legend = fontsize_heatmap_legend, fontsize_heatmap_legend_labels = fontsize_heatmap_legend_labels, title_heatmapLegend = title_heatmapLegend, WidthNum = WidthNum, HeightNum = HeightNum, UnitSize = UnitSize, row_annotation = row_annotation, annotation_for_rows = annotation_for_rows, row_split = row_split, col_split = col_split, row_dend = row_dend, col_dend = col_dend, col_ha = col_ha)
+  hm <- ComplexHeatmap::draw(ht)
+  return(hm)
+}
+
+
+#' Setting the row clustering
+#'
+#' @param ncounts_matrix An input matrix to create the clustering.
+#' @param cluster_rows A Boolean switching the optional clustering of the rows on and off, default <- TRUE.
+#' @param cluster_method A string setting the cluster method for the heatmap, default <- "hierarchical".
+#' @param distance_method A string setting the distance method for clustering, default <- "euclidean".
+#' @param k_row An integer used to set number of clusters for row clustering, default <- NULL.
+#' @param row_split An integer seeting the column clustering by kmeans.
+#' @param row_dend A Boolean switching column clustering by hierarchical clustering on (default).
+#'
+#' @return row_split where the rows are split into clusters
+#' @export
+#'
+#' @examples
+#'  x <- 1
+#'  seed <- 1
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' matrixCounts <- build_matrix(input_data, x)
+#' ncounts_matrix <- scale_counts(matrixCounts)
+#' set.seed
+#' row_split <- NULL
+#' row_dend <- TRUE
+#' rows_clustered <- row_clustering(ncounts_matrix, cluster_rows = TRUE, cluster_method = "hierarchical", distance_method = "euclidean", k_row = NULL, row_split = row_split, row_dend = row_dend)
+row_clustering <- function(ncounts_matrix, cluster_rows = TRUE, cluster_method = "hierarchical",  distance_method = "euclidean", k_row = NULL, row_split = NULL, row_dend = TRUE) {
+  row_split <- row_split
+  row_dend <- row_dend  # default TRUE if unspecified
   if (cluster_rows) {
     row_data <- ncounts_matrix
 
@@ -571,8 +597,58 @@ adv_Heatmap <- function(ncounts_matrix,
 
     }
   }
+  return(list(row_split  = row_split, dend = row_dend))
+}
 
-  # --- COLUMN CLUSTERING ---
+#' Calculates the distance matrix
+#'
+#' @param x An input matrix to create the distance matrix.
+#' @param method Astring setting the distance method for clustering, default <- "euclidean".
+
+#'
+#' @return A distance matrix.
+#' @export
+#'
+#' @examples
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' x <- 1
+#' matrixCounts <- build_matrix(input_data, x)
+#' matrix <- scale_counts(matrixCounts)
+#' method <- "euclidean"
+#' distance_matrix <- get_dist(matrix, method)
+
+get_dist <- function(x, method) {
+  if (method == "correlation") stats::as.dist(1 - stats::cor(t(x)))
+  else stats::dist(x, method = method)
+}
+
+#' Setting the column clustering
+#'
+#' @param ncounts_matrix An input matrix to create the clustering.
+#' @param cluster_columns A Boolean switching the optional clustering of the rows on and off, default <- TRUE.
+#' @param cluster_method A string setting the cluster method for the heatmap, default <- "hierarchical".
+#' @param distance_method A string setting the distance method for clustering, default <- "euclidean".
+#' @param k_col An integer used to set number of clusters for row clustering, default <- NULL.
+#' @param col_split An integer seeting the column clustering by kmeans.
+#' @param col_dend A Boolean switching column clustering by hierarchical clustering on (default).
+#'
+#' @return col_split where the rows are split into clusters
+#' @export
+#'
+#' @examples
+#'  x <- 1
+#'  seed <- 1
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' matrixCounts <- build_matrix(input_data, x)
+#' ncounts_matrix <- scale_counts(matrixCounts)
+#' set.seed
+#' col_split <- NULL
+#' col_dend <- TRUE
+#' columns_clustered <- column_clustering(ncounts_matrix, cluster_columns = TRUE, cluster_method = "hierarchical", distance_method = "euclidean", k_col = NULL, col_split = col_split, col_dend = col_dend)
+
+column_clustering <- function(ncounts_matrix, cluster_columns = TRUE, cluster_method = "hierarchical",  distance_method = "euclidean", k_col = NULL, col_split = NULL, col_dend = TRUE) {
+  col_split <- col_split
+  col_dend <- col_dend
   if (cluster_columns) {
     col_data <- t(ncounts_matrix)
 
@@ -591,7 +667,45 @@ adv_Heatmap <- function(ncounts_matrix,
 
     }
   }
-  # --- Sample Annotation ---
+  return(list(col_split  = col_split, dend = col_dend))
+}
+
+#' Setting the sample annotation
+#'
+#' @param sample_metadata A dataframe containing the metadata information for the grouping of the columns, default <- NULL.
+#' @param annotation_colors A list assigning choosen colors to the corresponding groups, default <- NULL.
+#' @param annotation_name_side The side of the column annotation description, default <- "right".
+#' @param fontsize_group_annotation An integer setting the font size of the group annotation title, default <- 8.
+#' @param fontsize_group_annotation_legend An integer setting the font size of the group annotation legend name, default <- 10.
+#' @param fontsize_group_annotation_labels An integer setting the font size of the group annotation labels in the legend, default <- 8.
+#'
+#' @return A "HeamapAnnotation" object if "sample_metadata" is provided, otherwise NULL.
+#' @export
+#'
+#' @examples
+#'  x <- 1
+#'  seed <- 1
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' matrixCounts <- build_matrix(input_data, x)
+#' ncounts_matrix <- scale_counts(matrixCounts)
+#' set.seed
+#' groups <- c("3_DKD_glomerulus_Geometric_S", "1B_DKD_glomerulus_Geometric_S", "2B_DKD_glomerulus_WT")
+#' sample_names <- c(colnames(ncounts_matrix))
+#' group_assignment <- sapply(sample_names, function(sample) { matched <- groups[sapply(groups, function(g) grepl(g, sample))]
+#' if (length(matched) > 0) matched[1] else NA })
+#' stopifnot(length(sample_names) == length(group_assignment))
+#' sample_metadata <- data.frame(Group = group_assignment, row.names = sample_names)
+#' all(colnames(ncounts_matrix) == rownames(sample_metadata))
+#' group_colors <- list(Group = c("3_DKD_glomerulus_Geometric_S" = "#1b9e77", "1B_DKD_glomerulus_Geometric_S" = "#7570b3", "2B_DKD_glomerulus_WT" = "#e7298a"))
+#' col_ha <- set_sample_annotation(sample_metadata = sample_metadata, annotation_colors = group_colors)
+
+set_sample_annotation <- function(sample_metadata = NULL,
+                                  annotation_colors = NULL,
+                                  annotation_name_side = "right",
+                                  fontsize_group_annotation = 8,             # fontsize of optional group annotation
+                                  fontsize_group_annotation_legend = 10,     # fontsize of optional group annotation legend title
+                                  fontsize_group_annotation_labels = 8      # fontsize of optional group annotation legend labels
+                                  ) {
   col_ha <- NULL
   if (!is.null(sample_metadata)) {
     col_ha <- ComplexHeatmap::HeatmapAnnotation(
@@ -605,8 +719,38 @@ adv_Heatmap <- function(ncounts_matrix,
       )
     )
   }
+  return(col_ha)
+}
 
-  # --- Row Annotation ---
+#' Setting the row annotation
+#'
+#' @param ncounts_matrix An input matrix to create the heatmap.
+#' @param row_annotation A Boolean switching row annotation on the heatmap on and off, default <- FALSE.
+#' @param row_annotation_method A string setting the annotation method of the heatmap, default <- "auto".
+#' @param row_anno_names A list containing choosen rownames to use for the row annotation, default <- NULL.
+#' @param row_anno_number An integer setting the number of automatic annotations assigned per cluster, default <- 5.
+#' @param k_row An integer used to set number of clusters for row clustering in the heatmap, default <- NULL.
+#' @param fontsize_rowAnnotation An integer setting the font size of the group annotation labels in the legend, default <- 8.
+#'
+#' @return Numeric index from matrix for the row annotation
+#' @export
+#'
+#' @examples
+#'  x <- 1
+#'  seed <- 1
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' matrixCounts <- build_matrix(input_data, x)
+#' ncounts_matrix <- scale_counts(matrixCounts)
+#' set.seed(seed)
+#' annotation_for_rows <- set_row_annotation(ncounts_matrix)
+set_row_annotation <- function(ncounts_matrix,
+                               k_row = NULL,
+                               row_annotation = FALSE,                    # FALSE or TRUE
+                               row_annotation_method = "auto",            # "auto", "specific", "none"
+                               row_anno_names = NULL,                     # option to set list of specific genes as row annotation
+                               row_anno_number = 5,
+                               fontsize_rowAnnotation = 10
+                               ) {
   annotation_for_rows <- NULL
   if (row_annotation) {
     if (row_annotation_method == "auto") {
@@ -641,18 +785,60 @@ adv_Heatmap <- function(ncounts_matrix,
       annotation_for_rows <- set_annotation(ncounts_matrix, row_anno_names, fontsize_rowAnnotation)
     }
   }
+}
 
-  # --- Final Ordering Check --- #
-  # Reset column split if clustering is not active
-  if (!cluster_columns) {
-    col_split <- NULL
-    col_dend <- FALSE
-  }
-  if (!cluster_rows) {
-    row_split <- NULL
-    row_dend <- FALSE
-  }
-  # --- Draw Heatmap ---
+#' Draw the advanced heatmap
+#'
+#' @param ncounts_matrix An input matrix to create the heatmap.
+#' @param column_name A string to set the title of the heatmap, default <- "Heatmap".
+#' @param colorPalette Name of the colorPalette used for the heatmap, default <- NULL.
+#' @param show_row_names A Boolean switching rownames on the heatmap on and off, default <- FALSE.
+#' @param show_column_names A Boolean switching colum names on the heatmap on and off, default <- TRUE.
+#' @param fontsize_title An integer setting the font size of the heatmap title, default <- 15.
+#' @param fontsize_columnNames An integer setting the font size of the column names, default <- 6.
+#' @param fontsize_rowNames An integer setting the font size of the row names, default <- 4.
+#' @param fontsize_cluster_labels An integer setting the font size of the cluster labels, default <- 8.
+#' @param fontsize_heatmap_legend An integer setting the font size of the heatmap legend title, default <- 10.
+#' @param fontsize_heatmap_legend_labels An integer setting the font size of the heatmap legend labels, default <- 8.
+#' @param title_heatmapLegend A string setting the changeable title of the legend, default "Expression".
+#' @param WidthNum A float setting the width of the heatmap, default <- 4.5.
+#' @param HeightNum A float setting the height of the heatmap, default <- 3.
+#' @param UnitSize A string such as "cm" or "inch" to set the unit of HeightNum and WidthNum, default <- "cm".
+#' @param annotation_for_rows Numeric index from matrix for the row annotation
+#' @param row_annotation A Boolean switching row annotation on the heatmap on and off, default <- FALSE.
+#' @param row_split An integer seeting the row clustering by kmeans.
+#' @param col_split An integer seeting the column clustering by kmeans.
+#' @param col_ha A "HeamapAnnotation" object if "sample_metadata" is provided, otherwise NULL.
+#' @param row_dend A Boolean switching row clustering by hierarchical clustering on (default).
+#' @param col_dend A Boolean switching column clustering by hierarchical clustering on (default).
+#'
+#'
+#' @return Row annotation
+#' @export
+#'
+#' @examples
+#'  x <- 1
+#'  seed <- 1
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' matrixCounts <- build_matrix(input_data, x)
+#' ncounts_matrix <- scale_counts(matrixCounts)
+#' set.seed(seed)
+#' row_split <- NULL
+#' row_dend <- TRUE
+#' col_split <- NULL
+#' col_dend <- TRUE
+#' groups <- c("3_DKD_glomerulus_Geometric_S", "1B_DKD_glomerulus_Geometric_S", "2B_DKD_glomerulus_WT")
+#' sample_names <- c(colnames(ncounts_matrix))
+#' group_assignment <- sapply(sample_names, function(sample) { matched <- groups[sapply(groups, function(g) grepl(g, sample))]
+#' if (length(matched) > 0) matched[1] else NA })
+#' stopifnot(length(sample_names) == length(group_assignment))
+#' sample_metadata <- data.frame(Group = group_assignment, row.names = sample_names)
+#' all(colnames(ncounts_matrix) == rownames(sample_metadata))
+#' group_colors <- list(Group = c("3_DKD_glomerulus_Geometric_S" = "#1b9e77", "1B_DKD_glomerulus_Geometric_S" = "#7570b3", "2B_DKD_glomerulus_WT" = "#e7298a"))
+#' col_ha <- set_sample_annotation(sample_metadata = sample_metadata, annotation_colors = group_colors)
+#' ht <- draw_adv_heatmap(ncounts_matrix)
+
+draw_adv_heatmap <- function(ncounts_matrix, column_name = "Heatmap", colorPalette = NULL, col_ha = NULL, show_row_names = FALSE, show_column_names = TRUE, fontsize_title = 15, fontsize_columnNames = 6, fontsize_rowNames = 4, fontsize_cluster_labels = 8, fontsize_heatmap_legend = 10, fontsize_heatmap_legend_labels = 8, title_heatmapLegend = "Expression", WidthNum = 4.5, HeightNum = 3, UnitSize = "cm", row_annotation = FALSE, annotation_for_rows = NULL, row_split = NULL, col_split = NULL, row_dend = TRUE, col_dend = TRUE) {
   heatmap_color_scheme <- get_heatmap_colors(colorPalette)            # sets the color Palette for the heatmap
   ht <- ComplexHeatmap::Heatmap(ncounts_matrix,
                                 cluster_rows = if (is.logical(row_dend)) row_dend else row_dend,
@@ -677,9 +863,7 @@ adv_Heatmap <- function(ncounts_matrix,
   #right_anno <- NULL
   if (isTRUE(row_annotation)) {
     ht <- ht + ComplexHeatmap::rowAnnotation(mark = annotation_for_rows)
-
   }
-
   hm <- ComplexHeatmap::draw(ht)
   return(hm)
 }
