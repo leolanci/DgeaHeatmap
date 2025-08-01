@@ -621,7 +621,7 @@ DGEA_results <- DGEALimma(copy_df_Expr, coldata2, grouping_columns = groupingCol
 results_all_DEG <- limma::decideTests(DGEA_results$fit)
 summary(results_all_DEG)
 
-result1 <- topTable(fit2, coef= "GeometricSegment_glomerulus_Dkd_disease1b_vs_disease2B", number = Inf, adjust.method = "fdr") %>%
+result1 <- limma::topTable(DGEA_results$fit, coef= "Geometric_Segment_glomerulus_DKD_disease1B  - Geometric_Segment_glomerulus_DKD_disease2B ", number = Inf, adjust.method = "fdr") %>%
   as.data.frame() # differentially expressed genes are obtained by topTreat() function
 
 # filter results to get significantly differentially expressed genes
@@ -635,7 +635,7 @@ NamesDownReg <- row.names(topDown)
 print(NamesDownReg)
 
 result1 <- result1 %>%
-  dplyr::mutate(isSignificant = case_when(
+  dplyr::mutate(isSignificant = dplyr::case_when(
     adj.P.Val < 0.05& abs(logFC) >1 ~TRUE,
     TRUE ~ FALSE # If condictions in the line above are not met, gene is not DE.
     ))
