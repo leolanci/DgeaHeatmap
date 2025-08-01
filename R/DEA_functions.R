@@ -95,28 +95,22 @@ DGEADESeq2 <- function(rawCounts, metadata, grouping_columns, comparisons) {
   # Filter genes with non-zero counts in at least n samples (e.g., n = 2)
   keep <- rowSums(rawCounts > 0) >= 2
   filtered_counts <- rawCounts[keep, ]
-
   # Combine grouping columns into a composite factor
   comp <- apply(metadata[, grouping_columns, drop = FALSE], 1, paste, collapse = "_")
   comp <- gsub(" ", "_", comp)
   metadata$comp <- make.names(comp)
   metadata$comp <- factor(metadata$comp)
-
   # Build DESeq2 dataset
   dds <- DESeq2::DESeqDataSetFromMatrix(
     countData = filtered_counts,
     colData = metadata,
     design = ~ 0 + comp
   )
-
   # Run DESeq2 pipeline
   dds <- DESeq2::DESeq(dds, sfType = "poscounts")
-
   results_list <- list()
-
   for (name in names(comparisons)) {
     contrast_pair <- trimws(comparisons[[name]])
-
     # Check levels exist in your comp factor:
     if (all(contrast_pair %in% levels(SummarizedExperiment::colData(dds)$comp))) {
       res <- tryCatch({
@@ -125,7 +119,6 @@ DGEADESeq2 <- function(rawCounts, metadata, grouping_columns, comparisons) {
         warning("Contrast failed:", name, "->", e$message)
         NULL
       })
-
       if (!is.null(res)) {
         results_list[[name]] <- as.data.frame(res)
       }
@@ -138,7 +131,6 @@ DGEADESeq2 <- function(rawCounts, metadata, grouping_columns, comparisons) {
           "-> One or both levels not found in comp factor levels:",
           collapsed
         )
-
     }
   }
   contrast_names <- names(comparisons)
@@ -185,12 +177,10 @@ extractDEGenes <- function(results_list,
                            only_sig = FALSE,
                            padj_cutoff = 0.05,
                            lfc_cutoff = 0) {
-
   # Check for incompatible options
   if ((only_up + only_down + up_down + only_sig) > 1) {
     stop("Only one of 'only_up', 'only_down', 'up_down', or 'only_sig' can be TRUE at a time.")
   }
-
   # Get union of all genes across all comparisons
   all_genes <- unique(unlist(lapply(results_list, rownames)))
 
@@ -226,33 +216,7 @@ extractDEGenes <- function(results_list,
 
   } else {
     # Initialize list to store gene vectors
-    gene_lists <- list()
-
-    for (comparison in names(results_list)) {
-      res <- results_list[[comparison]]
-
-      # Filter by significance if requested
-      sig_res <- if (only_sig || only_up || only_down) {
-        res[!is.na(res$padj) & res$padj < padj_cutoff, ]
-      } else {
-        res
-      }
-
-      # Extract genes based on requested direction
-      if (only_up) {
-        genes <- rownames(sig_res)[sig_res$log2FoldChange > lfc_cutoff]
-      } else if (only_down) {
-        genes <- rownames(sig_res)[sig_res$log2FoldChange < -lfc_cutoff]
-      } else if (only_sig) {
-        genes <- rownames(sig_res)
-      } else {
-        # If no filtering requested, return all genes
-        genes <- rownames(res)
-      }
-
-      gene_lists[[comparison]] <- genes
-    }
-    return(gene_lists)
+    gene_lists <- extract_genes_direction(results_list, only_up = only_up, only_down = only_down, only_sig = only_sig, padj = padj, padj_cutoff = padj_cutoff, lfc_cutoff = lfc_cutoff)
   }
 }
 
@@ -283,8 +247,7 @@ DGEAedgeR <- function(rawCounts,
                       metadata,
                       grouping_columns,
                       comparisons = NULL,    # named list of specific comparisons; e.g. list(comp1_vs_comp2 = c("comp1", "comp2"))
-                      prefix = "DEA"
-) {
+                      prefix = "DEA") {
   # Check grouping columns in metadata
   if (!all(grouping_columns %in% colnames(metadata))) {
     stop("Some of the grouping_columns not found in metadata")
@@ -296,15 +259,7 @@ DGEAedgeR <- function(rawCounts,
   metadata$comp <- factor(comp)
 
   # Create DGEList object
-  y <- edgeR::DGEList(counts = rawCounts, group = metadata$comp)
-
-  # Filter lowly expressed genes (optional, adjust thresholds as needed)
-  keep <- edgeR::filterByExpr(y, group = metadata$comp)
-  y <- y[keep, , keep.lib.sizes = FALSE]
-
-  # Calculate normalization factors
-  y <- edgeR::calcNormFactors(y)
-
+  y <- prepare_dge_list(rawCounts, metadata)
   # Create design matrix without intercept (one column per group)
   design <- stats::model.matrix(~0 + metadata$comp)
   colnames(design) <- levels(metadata$comp)
@@ -317,31 +272,7 @@ DGEAedgeR <- function(rawCounts,
   comparisons <- lapply(comparisons, trimws)
 
   # Prepare contrasts matrix
-  if (!is.null(comparisons)) {
-    # named list of pairs, e.g. list(comp1_vs_comp2 = c("comp1", "comp2"))
-    contrast_list <- lapply(comparisons, function(x) {
-      contrast_vec <- rep(0, length(levels(metadata$comp)))
-      names(contrast_vec) <- levels(metadata$comp)
-      contrast_vec[x[1]] <- 1
-      contrast_vec[x[2]] <- -1
-      contrast_vec
-    })
-    contrast_matrix <- do.call(cbind, contrast_list)
-    colnames(contrast_matrix) <- names(comparisons)
-  } else {
-    # all pairwise contrasts
-    comb <- utils::combn(levels(metadata$comp), 2)
-    contrast_matrix <- apply(comb, 2, function(x) {
-      contrast_vec <- rep(0, length(levels(metadata$comp)))
-      names(contrast_vec) <- levels(metadata$comp)
-      contrast_vec[x[1]] <- 1
-      contrast_vec[x[2]] <- -1
-      contrast_vec
-    })
-    colnames(contrast_matrix) <- apply(comb, 2, function(x) paste0(prefix, "_", x[1], "_vs_", x[2]))
-  }
-
-
+  contrast_matrix <- create_contrast_matrix_edgeR(metadata = metadata, comparisons = comparisons, prefix = prefix)
   # Run likelihood ratio tests for each contrast and collect results
   results <- list()
   for (i in seq_len(ncol(contrast_matrix))) {
@@ -463,4 +394,145 @@ pairwise_contrasts <- function(comparisons, comp_factor, prefix = "Contrast") {
   }
   paired_contrasts <- list(contrast_strings, contrast_names)
   return(list(strings = contrast_strings, names = contrast_names))
+}
+
+
+#' Get list of genes and their direction of regulation
+#'
+#' @param results_list A list containing the results of the DEA.
+#' @param only_up A Boolean opting for only up regulated genes, default = FALSE.
+#' @param only_down A Boolean opting for only down regulated genes, default = FALSE.
+#' @param padj A Float, defining the adjusted p-value.
+#' @param only_sig A Boolean opting for only significantly regulated genes, default = FALSE.
+#' @param padj_cutoff A Float, setting the adjusted p-values cutoff, default = 0.05.
+#' @param lfc_cutoff A Float, setting the fold change cutoff, default = 0.
+#'
+#' @return A character vector of contrast names.
+#' @export
+#'
+#' @examples
+#' rawCounts <- read.csv(system.file("extdata/RawDataExamplePackageNanostring.csv", package = "DgeaHeatmap"))
+#' rawCounts <- build_matrix(rawCounts, 1)
+#' metadata <- read.csv(system.file("extdata/MetaDataPackageNanostring.csv", package = "DgeaHeatmap"))
+#' grouping_columns <- c("segment", "region", "class", "slide_name")
+#' comparisons <- list(Comp1 = c("Geometric_Segment_glomerulus_DKD_disease3", "PanCK_tubule_DKD_disease4"), Comp2 = c("neg_tubule_DKD_disease4", "PanCK_tubule_DKD_disease4"))
+#' storage.mode(rawCounts) <- "integer"
+#' sum(!is.finite(as.matrix(rawCounts)))
+#' results_list_DESeq2 <- DGEADESeq2(rawCounts, metadata, grouping_columns,comparisons)
+#' results_list <- results_list_DESeq2$results
+#' gene_list <- extract_genes_direction(results_list, only_up = TRUE, only_down = FALSE, only_sig = FALSE, padj = NULL, padj_cutoff = 0.05, lfc_cutoff = 0)
+#'
+
+extract_genes_direction <- function(results_list,
+                                    only_up = FALSE,
+                                    only_down = FALSE,
+                                    only_sig = FALSE,
+                                    padj = NULL,
+                                    padj_cutoff = 0.05,
+                                    lfc_cutoff = 0) {
+  gene_lists <- list()
+
+  for (comparison in names(results_list)) {
+    res <- results_list[[comparison]]
+
+    # Filter by significance if requested
+    sig_res <- if (only_sig || only_up || only_down) {
+      res[!is.na(res$padj) & res$padj < padj_cutoff, ]
+    } else {
+      res
+    }
+
+    # Extract genes based on requested direction
+    if (only_up) {
+      genes <- rownames(sig_res)[sig_res$log2FoldChange > lfc_cutoff]
+    } else if (only_down) {
+      genes <- rownames(sig_res)[sig_res$log2FoldChange < -lfc_cutoff]
+    } else if (only_sig) {
+      genes <- rownames(sig_res)
+    } else {
+      # If no filtering requested, return all genes
+      genes <- rownames(res)
+    }
+
+    gene_lists[[comparison]] <- genes
+  }
+  return(gene_lists)
+}
+
+#' create_contrast_matrix_edgeR
+#'
+#' @description Creates a contrast matrix for edgeR
+#'
+#' @param metadata A dataframe containing the meta data information of the raw counts matrix.
+#' @param comparisons An element of the class list, that contains optional information on specific comparisons that are to be conducted (simplifies the results).
+#' @param prefix A string used as a prefix for the contrast_names that are generated.
+#'
+#' @return A matrix containing the contrasts for DEA with edgeR.
+#' @export
+#'
+#' @examples
+#' rawCounts <- read.csv(system.file("extdata/RawDataExamplePackageNanostring.csv", package = "DgeaHeatmap"))
+#' rawCounts <- build_matrix(rawCounts, 1)
+#' metadata <- read.csv(system.file("extdata/MetaDataPackageNanostring.csv", package = "DgeaHeatmap"))
+#' grouping_columns <- c("segment", "region", "class", "slide_name")
+#' comparisons <- list(Comp1 = c("Geometric_Segment_glomerulus_DKD_disease3", "PanCK_tubule_DKD_disease4"), Comp2 = c("neg_tubule_DKD_disease4", "PanCK_tubule_DKD_disease4"))
+#' prefix <- "DEA"
+#' results_edgeR <- DGEAedgeR(rawCounts, metadata, grouping_columns, comparisons, prefix = "DEA")
+#' contrast_matrix <- create_contrast_matrix_edgeR(metadata = metadata, comparisons = comparisons, prefix = prefix)
+
+create_contrast_matrix_edgeR <- function(metadata , comparisons = NULL, prefix = "DEA") {
+
+  if (!is.null(comparisons)) {
+    # named list of pairs, e.g. list(comp1_vs_comp2 = c("comp1", "comp2"))
+    contrast_list <- lapply(comparisons, function(x) {
+      contrast_vec <- rep(0, length(levels(metadata$comp)))
+      names(contrast_vec) <- levels(metadata$comp)
+      contrast_vec[x[1]] <- 1
+      contrast_vec[x[2]] <- -1
+      contrast_vec
+    })
+    contrast_matrix <- do.call(cbind, contrast_list)
+    colnames(contrast_matrix) <- names(comparisons)
+  } else {
+    # all pairwise contrasts
+    comb <- utils::combn(levels(metadata$comp), 2)
+    contrast_matrix <- apply(comb, 2, function(x) {
+      contrast_vec <- rep(0, length(levels(metadata$comp)))
+      names(contrast_vec) <- levels(metadata$comp)
+      contrast_vec[x[1]] <- 1
+      contrast_vec[x[2]] <- -1
+      contrast_vec
+    })
+    colnames(contrast_matrix) <- apply(comb, 2, function(x) paste0(prefix, "_", x[1], "_vs_", x[2]))
+  }
+  return(contrast_matrix)
+}
+
+#' DGEAedgeR
+#'
+#' @description Creates a contrast matrix for edgeR
+#'
+#' @param rawCounts A matrix containing raw counts (integers).
+#' @param metadata A dataframe containing the meta data information of the raw counts matrix, with a column containing the comparison factors.
+#'
+#' @return A DGEList object.
+#' @export
+#'
+#' @examples
+#' rawCounts <- read.csv(system.file("extdata/RawDataExamplePackageNanostring.csv", package = "DgeaHeatmap"))
+#' rawCounts <- build_matrix(rawCounts, 1)
+#' metadata <- read.csv(system.file("extdata/MetaDataPackageNanostring.csv", package = "DgeaHeatmap"))
+#' y <- prepare_dge_list(rawCounts, metadata)
+
+prepare_dge_list <- function(rawCounts, metadata) {
+  y <- edgeR::DGEList(counts = rawCounts, group = metadata$comp)
+
+  # Filter lowly expressed genes (optional, adjust thresholds as needed)
+  keep <- edgeR::filterByExpr(y, group = metadata$comp)
+  y <- y[keep, , keep.lib.sizes = FALSE]
+
+  # Calculate normalization factors
+  y <- edgeR::calcNormFactors(y)
+  return(y)
+
 }
