@@ -116,7 +116,7 @@ DGEADESeq2 <- function(rawCounts, metadata, grouping_columns, comparisons) {
       res <- tryCatch({
         DESeq2::results(dds, contrast = c("comp", contrast_pair[1], contrast_pair[2]))
       }, error = function(e) {
-        warning("Contrast failed:", name, "->", e$message)
+        message(sprintf("Contrast '%s' failed: %s", name, conditionMessage(e)))
         NULL
       })
       if (!is.null(res)) {
@@ -125,11 +125,11 @@ DGEADESeq2 <- function(rawCounts, metadata, grouping_columns, comparisons) {
     } else {
       missing_levels <- setdiff(contrast_pair, levels(SummarizedExperiment::colData(dds)$comp))
       collapsed <- paste(missing_levels, collapse = ", ")
-      message(
-          "Contrast failed:",
-          name,
-          "-> One or both levels not found in comp factor levels:",
-          collapsed
+      message((sprintf(
+        "Contrast '%s' skipped: level(s) not found in comp factor: %s",
+        name,
+        paste(missing_levels, collapse = ", "))
+      )
         )
     }
   }
@@ -179,7 +179,7 @@ extractDEGenes <- function(results_list,
                            lfc_cutoff = 0) {
   # Check for incompatible options
   if ((only_up + only_down + up_down + only_sig) > 1) {
-    stop("Only one of 'only_up', 'only_down', 'up_down', or 'only_sig' can be TRUE at a time.")
+    stop("One of 'only_up', 'only_down', 'up_down', or 'only_sig' can be TRUE at a time.")
   }
   # Get union of all genes across all comparisons
   all_genes <- unique(unlist(lapply(results_list, rownames)))
@@ -194,7 +194,7 @@ extractDEGenes <- function(results_list,
       res <- results_list[[comparisons]]
       if (!is.data.frame(res)) res <- as.data.frame(res)
       if (!all(c("padj", "log2FoldChange") %in% colnames(res))) {
-        warning("Missing expected columns in", comparison)
+        message("Missing expected columns in", comparison)
         next
       }
       genes_in_res <- rownames(res)
@@ -250,7 +250,7 @@ DGEAedgeR <- function(rawCounts,
                       prefix = "DEA") {
   # Check grouping columns in metadata
   if (!all(grouping_columns %in% colnames(metadata))) {
-    stop("Some of the grouping_columns not found in metadata")
+    stop("Missing columns in metadata")
   }
 
   # Create composite group factor
