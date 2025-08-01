@@ -199,7 +199,7 @@ summarise_bio_replicates <- function(top_genes_matrix, probes) {
     BiocGenerics::colnames(m_top_genes_matrix) <- probes
     return(m_top_genes_matrix)
   } else {
-    message("Error number of probes does not match number of columns!")
+    stop("Number of probes does not match number of columns.")
   }
 }
 
