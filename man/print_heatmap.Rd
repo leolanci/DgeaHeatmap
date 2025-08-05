@@ -23,21 +23,26 @@ print_heatmap(
 
 \item{title}{A string used to set the title of the heatmap.}
 
-\item{split}{A dataframe containing information about the clustering of the rows of the input matrix.}
+\item{split}{A dataframe containing information about the clustering of
+the rows of the input matrix.}
 
 \item{anno}{A numeric index containing row informations for annotation.}
 
-\item{fontsize_columnNames}{An integer used to set the font size of the columns in the heatmap.}
+\item{fontsize_columnNames}{An integer used to set the font size of the
+columns in the heatmap.}
 
-\item{fontsize_rowNames}{An integer used to set the font size of the rownames in the heatmap.}
+\item{fontsize_rowNames}{An integer used to set the font size of the
+rownames in the heatmap.}
 
-\item{title_heatmapLegend}{A string setting the title of the legend of the heatmap.}
+\item{title_heatmapLegend}{A string setting the title of the
+legend of the heatmap.}
 
 \item{WidthNum}{A float setting the width of the heatmap.}
 
 \item{HeightNum}{A float setting the height of the heatmap.}
 
-\item{UnitSize}{A string such as "cm" or "inch" to set the unit of HeightNum and WidthNum.}
+\item{UnitSize}{A string such as "cm" or "inch" to set the unit of
+HeightNum and WidthNum.}
 
 \item{color_Palette}{Name of the colorPalette used for the heatmap.}
 }
@@ -49,7 +54,8 @@ Function to build a heatmap using other functions.
 }
 \examples{
 x <- 1
-input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+input_data <- read.csv(system.file("extdata/testfile_counts.csv",
+package = "DgeaHeatmap"))
 matrixCounts <- build_matrix(input_data, x)
 m_top_genes_matrix <- scale_counts(matrixCounts)
 k <- 1
@@ -59,8 +65,10 @@ fontsize_rowAnnotation <- 8
 set.seed(seed)
 m_kmeans <- Kmean_generation(m_top_genes_matrix, k)
 number_of_annotations_per_cluster <- 5
-top_x_genes_cluster <- most_variable_genes(m_kmeans, number_of_annotations_per_cluster, k)
-anno <- set_annotation(m_top_genes_matrix, top_x_genes_cluster, fontsize_rowAnnotation)
+top_x_genes_cluster <- most_variable_genes(m_kmeans,
+number_of_annotations_per_cluster, k)
+anno <- set_annotation(m_top_genes_matrix, top_x_genes_cluster,
+fontsize_rowAnnotation)
 title <- "Heatmap of Data"
 fontsize_columnNames <- 6
 fontsize_rowNames <- 4
@@ -70,5 +78,7 @@ HeightNum <- 3
 UnitSize <- "cm"
 color_Palette <- "RdBu"
 set.seed(seed)
-print_heatmap(m_top_genes_matrix, title, split, anno, fontsize_columnNames, fontsize_rowNames, title_heatmapLegend, WidthNum, HeightNum, UnitSize, color_Palette)
+print_heatmap(m_top_genes_matrix, title, split, anno, fontsize_columnNames,
+fontsize_rowNames, title_heatmapLegend, WidthNum, HeightNum,
+UnitSize, color_Palette)
 }

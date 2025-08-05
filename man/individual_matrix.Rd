@@ -2,25 +2,31 @@
 % Please edit documentation in R/Heatmap_building.R
 \name{individual_matrix}
 \alias{individual_matrix}
-\title{Creates a matrix only containing chosen columns of an original matrix with more data.}
+\title{Creates a matrix only containing chosen columns of an
+original matrix with more data.}
 \usage{
 individual_matrix(factors_for_matrix_devision, mmatrix)
 }
 \arguments{
-\item{factors_for_matrix_devision}{A list containing variables used to extract specific columns from the original matrix.}
+\item{factors_for_matrix_devision}{A list containing variables used to
+extract specific columns from the original matrix.}
 
-\item{mmatrix}{A matrix used as input, from which specifically chosen columns are extracted.}
+\item{mmatrix}{A matrix used as input, from which specifically chosen columns
+are extracted.}
 }
 \value{
-A new matrix containing fewer columns than before, that have previously been specified.
+A new matrix containing fewer columns than before,
+that have previously been specified.
 }
 \description{
-Creates a matrix only containing chosen columns of an original matrix with more data.
+Creates a matrix only containing chosen columns of an
+original matrix with more data.
 }
 \examples{
 factors_for_individual_matrix <- list("DKD", "glomerulus")
 x <- 1
-input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+input_data <- read.csv(system.file("extdata/testfile_counts.csv",
+package = "DgeaHeatmap"))
 matrixCounts <- build_matrix(input_data, x)
 indiMatrix <- individual_matrix(factors_for_individual_matrix, matrixCounts)
 

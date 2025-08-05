@@ -2,26 +2,33 @@
 % Please edit documentation in R/Heatmap_building.R
 \name{filtering_for_top_exprGenes}
 \alias{filtering_for_top_exprGenes}
-\title{Function to filter a matrix to extract a chosen number of most variable rows through calculation of the variance.}
+\title{Function to filter a matrix to extract a chosen number of most variable rows
+through calculation of the variance.}
 \usage{
 filtering_for_top_exprGenes(counts_data, top_number_of_genes)
 }
 \arguments{
-\item{counts_data}{An input matrix from which the most variable rows are to be extracted.}
+\item{counts_data}{An input matrix from which the most variable rows are to
+be extracted.}
 
-\item{top_number_of_genes}{An integer to set the number of how many rows should be extracted from the original matrix by variance.}
+\item{top_number_of_genes}{An integer to set the number of how many rows
+should be extracted from the original matrix by variance.}
 }
 \value{
-A new matrix containing only the top_number_of_genes count of rows with the highest variance from input matrix.
+A new matrix containing only the top_number_of_genes count of rows
+with the highest variance from input matrix.
 }
 \description{
-Function to filter a matrix to extract a chosen number of most variable rows through calculation of the variance.
+Function to filter a matrix to extract a chosen number of most variable rows
+through calculation of the variance.
 }
 \examples{
 x <- 1
 top_number_of_genes <- 20
-input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+input_data <- read.csv(system.file("extdata/testfile_counts.csv",
+package = "DgeaHeatmap"))
 matrixCounts <- build_matrix(input_data, x)
 counts_data <- matrixCounts
-varGenesMatrix <- filtering_for_top_exprGenes(counts_data, top_number_of_genes)
+varGenesMatrix <- filtering_for_top_exprGenes(counts_data,
+top_number_of_genes)
 }

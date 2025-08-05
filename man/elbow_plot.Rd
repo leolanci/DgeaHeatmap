@@ -7,7 +7,8 @@
 elbow_plot(top_genes_matrix, maxK = 15)
 }
 \arguments{
-\item{top_genes_matrix}{A matrix for which the best number of clusters in k-Means Clustering is supposed to be calculated.}
+\item{top_genes_matrix}{A matrix for which the best number of clusters in
+k-Means Clustering is supposed to be calculated.}
 
 \item{maxK}{An integer determining the maximum number of possible clusters.}
 }
@@ -20,7 +21,8 @@ Function to create an elbow plot to choose k for clustering by k-Means.
 \examples{
 x <- 1
 seed <- 1
-input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+input_data <- read.csv(system.file("extdata/testfile_counts.csv",
+package = "DgeaHeatmap"))
 matrixCounts <- build_matrix(input_data, x)
 scaled_counts <- scale_counts(matrixCounts)
 top_genes_matrix <- scaled_counts

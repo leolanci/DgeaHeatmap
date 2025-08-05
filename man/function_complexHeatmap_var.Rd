@@ -23,27 +23,34 @@ function_complexHeatmap_var(
 \arguments{
 \item{topGenes_matrix}{An input matrix to create the heatmap.}
 
-\item{probes}{A list of strings to summarize biological replicated in the columns.}
+\item{probes}{A list of strings to summarize biological
+replicated in the columns.}
 
-\item{number_of_annotations_per_cluster}{An integer used to set the number of annotations per cluster in the heatmap.}
+\item{number_of_annotations_per_cluster}{An integer used to set the number
+of annotations per cluster in the heatmap.}
 
 \item{k}{An integer used to set number of cluster in the heatmap.}
 
 \item{Title}{A string to set the title of the heatmap.}
 
-\item{fontsize_rowAnnotation}{An integer used to set the font size of the row annotation in the heatmap}
+\item{fontsize_rowAnnotation}{An integer used to set the font size of the
+row annotation in the heatmap}
 
-\item{fontsize_columnNames}{An integer used to set the font size of the columns in the heatmap.}
+\item{fontsize_columnNames}{An integer used to set the font size of the
+columns in the heatmap.}
 
-\item{fontsize_rowNames}{An integer used to set the font size of the rownames in the heatmap.}
+\item{fontsize_rowNames}{An integer used to set the font size of the
+rownames in the heatmap.}
 
-\item{title_heatmapLegend}{A string setting the title of the legend of the heatmap.}
+\item{title_heatmapLegend}{A string setting the title of the legend
+of the heatmap.}
 
 \item{WidthNum}{A float setting the width of the heatmap.}
 
 \item{HeightNum}{A float setting the height of the heatmap.}
 
-\item{UnitSize}{A string such as "cm" or "inch" to set the unit of HeightNum and WidthNum.}
+\item{UnitSize}{A string such as "cm" or "inch" to set the unit of
+HeightNum and WidthNum.}
 
 \item{color_Palette}{Name of the colorPalette used for the heatmap.}
 }
@@ -55,7 +62,8 @@ Creating a heatmap with annotation of x most variable rows(genes).
 }
 \examples{
 x <- 1
-input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+input_data <- read.csv(system.file("extdata/testfile_counts.csv",
+package = "DgeaHeatmap"))
 matrixCounts <- build_matrix(input_data, x)
 topGenes_matrix <- scale_counts(matrixCounts)
 probes <- list("disease3", "disease4", "disease1B")
@@ -72,5 +80,8 @@ HeightNum <- 3
 UnitSize <- "cm"
 color_Palette <- "RdBu"
 set.seed(seed)
-function_complexHeatmap_var(topGenes_matrix, probes, number_of_annotations_per_cluster, k, Title, fontsize_rowAnnotation, fontsize_columnNames,fontsize_rowNames, title_heatmapLegend,WidthNum, HeightNum, UnitSize, color_Palette)
+function_complexHeatmap_var(topGenes_matrix, probes,
+number_of_annotations_per_cluster, k, Title, fontsize_rowAnnotation,
+fontsize_columnNames, fontsize_rowNames, title_heatmapLegend, WidthNum,
+HeightNum, UnitSize, color_Palette)
 }

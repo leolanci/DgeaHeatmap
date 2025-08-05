@@ -7,19 +7,23 @@
 summarise_bio_replicates(top_genes_matrix, probes)
 }
 \arguments{
-\item{top_genes_matrix}{An input matrix with columns representing biological replicates.}
+\item{top_genes_matrix}{An input matrix with columns representing biological
+replicates.}
 
-\item{probes}{List of strings by which columns of biological replicates can be identified.}
+\item{probes}{List of strings by which columns of biological replicates can
+be identified.}
 }
 \value{
-A new matrix where biological replicated are summarized as their mean.
+A new matrix where biological replicated are summarized
+as their mean.
 }
 \description{
 Summarizes columns biological replicates of a matrix into one.
 }
 \examples{
 x <- 1
-input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+input_data <- read.csv(system.file("extdata/testfile_counts.csv",
+package = "DgeaHeatmap"))
 top_genes_matrix <- build_matrix(input_data, x)
 probes <- list("disease3", "disease4", "disease1B")
 newMatrix <- summarise_bio_replicates(top_genes_matrix, probes)

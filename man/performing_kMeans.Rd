@@ -2,7 +2,8 @@
 % Please edit documentation in R/Heatmap_building.R
 \name{performing_kMeans}
 \alias{performing_kMeans}
-\title{Function to perform k-Means clustering for a matrix and setting split to split a heatmap into clusters.}
+\title{Function to perform k-Means clustering for a matrix and setting split to
+split a heatmap into clusters.}
 \usage{
 performing_kMeans(m_top_genes_matrix, k)
 }
@@ -12,14 +13,17 @@ performing_kMeans(m_top_genes_matrix, k)
 \item{k}{Number of clusters for k-Means clustering (chosen by elbow-plot).}
 }
 \value{
-A new dataframe containing information assigning each rows of the input matrix to a cluster.
+A new dataframe containing information assigning each rows of the
+input matrix to a cluster.
 }
 \description{
-Function to perform k-Means clustering for a matrix and setting split to split a heatmap into clusters.
+Function to perform k-Means clustering for a matrix and setting split to
+split a heatmap into clusters.
 }
 \examples{
 x <- 1
-input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+input_data <- read.csv(system.file("extdata/testfile_counts.csv",
+package = "DgeaHeatmap"))
 matrixCounts <- build_matrix(input_data, x)
 m_top_genes_matrix <- scale_counts(matrixCounts)
 k <- 1

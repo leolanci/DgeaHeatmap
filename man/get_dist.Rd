@@ -9,7 +9,7 @@ get_dist(x, method)
 \arguments{
 \item{x}{An input matrix to create the distance matrix.}
 
-\item{method}{Astring setting the distance method for clustering, default <- "euclidean".}
+\item{method}{Astring setting the distance method for clustering.}
 }
 \value{
 A distance matrix.
@@ -18,7 +18,8 @@ A distance matrix.
 Calculates the distance matrix
 }
 \examples{
-input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+input_data <- read.csv(system.file("extdata/testfile_counts.csv",
+package = "DgeaHeatmap"))
 x <- 1
 matrixCounts <- build_matrix(input_data, x)
 matrix <- scale_counts(matrixCounts)
