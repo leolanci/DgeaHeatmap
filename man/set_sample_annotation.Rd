@@ -14,38 +14,53 @@ set_sample_annotation(
 )
 }
 \arguments{
-\item{sample_metadata}{A dataframe containing the metadata information for the grouping of the columns, default <- NULL.}
+\item{sample_metadata}{A dataframe containing the metadata information for
+the grouping of the columns, default <- NULL.}
 
-\item{annotation_colors}{A list assigning choosen colors to the corresponding groups, default <- NULL.}
+\item{annotation_colors}{A list assigning choosen colors to the corresponding
+groups, default <- NULL.}
 
-\item{annotation_name_side}{The side of the column annotation description, default <- "right".}
+\item{annotation_name_side}{The side of the column annotation description,
+default <- "right".}
 
-\item{fontsize_group_annotation}{An integer setting the font size of the group annotation title, default <- 8.}
+\item{fontsize_group_annotation}{An integer setting the font size of the
+group annotation title, default <- 8.}
 
-\item{fontsize_group_annotation_legend}{An integer setting the font size of the group annotation legend name, default <- 10.}
+\item{fontsize_group_annotation_legend}{An integer setting the font size of
+the group annotation legend name, default <- 10.}
 
-\item{fontsize_group_annotation_labels}{An integer setting the font size of the group annotation labels in the legend, default <- 8.}
+\item{fontsize_group_annotation_labels}{An integer setting the font size of
+the group annotation labels in the legend, default <- 8.}
 }
 \value{
-A "HeamapAnnotation" object if "sample_metadata" is provided, otherwise NULL.
+A "HeamapAnnotation" object if "sample_metadata" is provided,
+otherwise NULL.
 }
 \description{
 Setting the sample annotation
 }
 \examples{
- x <- 1
- seed <- 1
-input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+x <- 1
+seed <- 1
+input_data <- read.csv(system.file("extdata/testfile_counts.csv",
+package = "DgeaHeatmap"))
 matrixCounts <- build_matrix(input_data, x)
 ncounts_matrix <- scale_counts(matrixCounts)
 set.seed
-groups <- c("3_DKD_glomerulus_Geometric_S", "1B_DKD_glomerulus_Geometric_S", "2B_DKD_glomerulus_WT")
+groups <- c("3_DKD_glomerulus_Geometric_S", "1B_DKD_glomerulus_Geometric_S",
+"2B_DKD_glomerulus_WT")
 sample_names <- c(colnames(ncounts_matrix))
-group_assignment <- sapply(sample_names, function(sample) { matched <- groups[sapply(groups, function(g) grepl(g, sample))]
-if (length(matched) > 0) matched[1] else NA })
+group_assignment <- sapply(sample_names, function(sample) {
+  matched <- groups[sapply(groups, function(g) grepl(g, sample))]
+  if (length(matched) > 0) matched[1] else NA
+})
 stopifnot(length(sample_names) == length(group_assignment))
-sample_metadata <- data.frame(Group = group_assignment, row.names = sample_names)
+sample_metadata <- data.frame(Group = group_assignment,
+row.names = sample_names)
 all(colnames(ncounts_matrix) == rownames(sample_metadata))
-group_colors <- list(Group = c("3_DKD_glomerulus_Geometric_S" = "#1b9e77", "1B_DKD_glomerulus_Geometric_S" = "#7570b3", "2B_DKD_glomerulus_WT" = "#e7298a"))
-col_ha <- set_sample_annotation(sample_metadata = sample_metadata, annotation_colors = group_colors)
+group_colors <- list(Group = c("3_DKD_glomerulus_Geometric_S" = "#1b9e77",
+"1B_DKD_glomerulus_Geometric_S" = "#7570b3",
+"2B_DKD_glomerulus_WT" = "#e7298a"))
+col_ha <- set_sample_annotation(sample_metadata = sample_metadata,
+annotation_colors = group_colors)
 }

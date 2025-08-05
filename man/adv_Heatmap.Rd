@@ -2,7 +2,8 @@
 % Please edit documentation in R/Heatmap_building.R
 \name{adv_Heatmap}
 \alias{adv_Heatmap}
-\title{Creating a color scheme based on the available color palettes of RColorBrewer for the heatmap.}
+\title{Creating a color scheme based on the available color palettes of
+RColorBrewer for the heatmap.}
 \usage{
 adv_Heatmap(
   ncounts_matrix,
@@ -42,79 +43,109 @@ adv_Heatmap(
 \arguments{
 \item{ncounts_matrix}{An input matrix to create the heatmap.}
 
-\item{column_name}{A string to set the title of the heatmap, default <- "Heatmap".}
+\item{column_name}{A string to set the title of the heatmap,
+default <- "Heatmap".}
 
-\item{colorPalette}{Name of the colorPalette used for the heatmap, default <- NULL.}
+\item{colorPalette}{Name of the colorPalette used for the heatmap,
+default <- NULL.}
 
-\item{cluster_method}{A string setting the cluster method for the heatmap, default <- "hierarchical".}
+\item{cluster_method}{A string setting the cluster method for the heatmap,
+default <- "hierarchical".}
 
-\item{distance_method}{A string setting the distance method for clustering, default <- "euclidean".}
+\item{distance_method}{A string setting the distance method for clustering,
+default <- "euclidean".}
 
-\item{cluster_rows}{A Boolean switching the optional clustering of the rows on and off, default <- TRUE.}
+\item{cluster_rows}{A Boolean switching the optional clustering of the rows
+on and off, default <- TRUE.}
 
-\item{cluster_columns}{A Boolean switching the optional clustering of the columns on and off, default <- FALSE.}
+\item{cluster_columns}{A Boolean switching the optional clustering of the
+columns on and off, default <- FALSE.}
 
-\item{k_row}{An integer used to set number of clusters for row clustering in the heatmap, default <- NULL.}
+\item{k_row}{An integer used to set number of clusters for row clustering
+in the heatmap, default <- NULL.}
 
-\item{k_col}{An integer used to set number of clusters for column clustering in the heatmap, default <- NULL.}
+\item{k_col}{An integer used to set number of clusters for column clustering
+in the heatmap, default <- NULL.}
 
-\item{sample_metadata}{A dataframe containing the metadata information for the grouping of the columns, default <- NULL.}
+\item{sample_metadata}{A dataframe containing the metadata information for
+the grouping of the columns, default <- NULL.}
 
-\item{annotation_colors}{A list assigning choosen colors to the corresponding groups, default <- NULL.}
+\item{annotation_colors}{A list assigning choosen colors to the corresponding
+groups, default <- NULL.}
 
-\item{annotation_name_side}{The side of the column annotation description, default <- "right".}
+\item{annotation_name_side}{The side of the column annotation description,
+default <- "right".}
 
-\item{show_row_names}{A Boolean switching rownames on the heatmap on and off, default <- FALSE.}
+\item{show_row_names}{A Boolean switching rownames on the heatmap on and off,
+default <- FALSE.}
 
-\item{show_column_names}{A Boolean switching colum names on the heatmap on and off, default <- TRUE.}
+\item{show_column_names}{A Boolean switching colum names on the heatmap on
+and off, default <- TRUE.}
 
-\item{row_annotation}{A Boolean switching row annotation on the heatmap on and off, default <- FALSE.}
+\item{row_annotation}{A Boolean switching row annotation on the heatmap on
+and off, default <- FALSE.}
 
-\item{row_annotation_method}{A string setting the annotation method of the heatmap, default <- "auto".}
+\item{row_annotation_method}{A string setting the annotation method of the
+heatmap, default <- "auto".}
 
-\item{row_anno_names}{A list containing choosen rownames to use for the row annotation, default <- NULL.}
+\item{row_anno_names}{A list containing choosen rownames to use for the row
+annotation, default <- NULL.}
 
-\item{row_anno_number}{An integer setting the number of automatic annotations assigned per cluster, default <- 5.}
+\item{row_anno_number}{An integer setting the number of automatic annotations
+assigned per cluster, default <- 5.}
 
-\item{fontsize_title}{An integer setting the font size of the heatmap title, default <- 15.}
+\item{fontsize_title}{An integer setting the font size of the heatmap title.}
 
-\item{fontsize_rowAnnotation}{An integer setting the font size of the optional row annotation, default <- 10.}
+\item{fontsize_rowAnnotation}{An integer setting the font size of the
+optional row annotation, default <- 10.}
 
-\item{fontsize_columnNames}{An integer setting the font size of the column names, default <- 6.}
+\item{fontsize_columnNames}{An integer setting the font size of the
+column names, default <- 6.}
 
-\item{fontsize_rowNames}{An integer setting the font size of the row names, default <- 4.}
+\item{fontsize_rowNames}{An integer setting the font size of the
+row names, default <- 4.}
 
-\item{fontsize_cluster_labels}{An integer setting the font size of the cluster labels, default <- 8.}
+\item{fontsize_cluster_labels}{An integer setting the font size of the
+cluster labels, default <- 8.}
 
-\item{fontsize_group_annotation}{An integer setting the font size of the group annotation title, default <- 8.}
+\item{fontsize_group_annotation}{An integer setting the font size of the
+group annotation title, default <- 8.}
 
-\item{fontsize_group_annotation_legend}{An integer setting the font size of the group annotation legend name, default <- 10.}
+\item{fontsize_group_annotation_legend}{An integer setting the font size of
+the group annotation legend name, default <- 10.}
 
-\item{fontsize_group_annotation_labels}{An integer setting the font size of the group annotation labels in the legend, default <- 8.}
+\item{fontsize_group_annotation_labels}{An integer setting the font size of
+the group annotation labels in the legend, default <- 8.}
 
-\item{fontsize_heatmap_legend}{An integer setting the font size of the heatmap legend title, default <- 10.}
+\item{fontsize_heatmap_legend}{An integer setting the font size of the
+heatmap legend title, default <- 10.}
 
-\item{fontsize_heatmap_legend_labels}{An integer setting the font size of the heatmap legend labels, default <- 8.}
+\item{fontsize_heatmap_legend_labels}{An integer setting the font size of
+the heatmap legend labels, default <- 8.}
 
-\item{title_heatmapLegend}{A string setting the changeable title of the legend, default "Expression".}
+\item{title_heatmapLegend}{A string setting the changeable title of the
+legend, default "Expression".}
 
 \item{WidthNum}{A float setting the width of the heatmap, default <- 4.5.}
 
 \item{HeightNum}{A float setting the height of the heatmap, default <- 3.}
 
-\item{UnitSize}{A string such as "cm" or "inch" to set the unit of HeightNum and WidthNum, default <- "cm".}
+\item{UnitSize}{A string such as "cm" or "inch" to set the unit of HeightNum
+and WidthNum, default <- "cm".}
 }
 \value{
 An advanced and customizable heatmap.
 }
 \description{
-Creating a color scheme based on the available color palettes of RColorBrewer for the heatmap.
+Creating a color scheme based on the available color palettes of
+RColorBrewer for the heatmap.
 }
 \examples{
 colorPalette <- "RdBu"
- x <- 1
- seed <- 1
-input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+x <- 1
+seed <- 1
+input_data <- read.csv(system.file("extdata/testfile_counts.csv",
+package = "DgeaHeatmap"))
 matrixCounts <- build_matrix(input_data, x)
 ncounts_matrix <- scale_counts(matrixCounts)
 set.seed

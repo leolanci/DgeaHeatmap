@@ -7,7 +7,8 @@
 aExprsDataQC(demoData, vFlags)
 }
 \arguments{
-\item{demoData}{A NanostringGeoMxSet object, storing all expression, annotation, and probe information linked together.}
+\item{demoData}{A NanostringGeoMxSet object,
+storing all expression, annotation, and probe information linked together.}
 
 \item{vFlags}{Character string to set the flags for quality control.}
 }
@@ -19,5 +20,5 @@ Function for automatized quality control.
 }
 \examples{
 demoData <- file
-vFlags <-"QCFlags"
+vFlags <- "QCFlags"
 }

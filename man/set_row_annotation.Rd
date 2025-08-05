@@ -17,17 +17,23 @@ set_row_annotation(
 \arguments{
 \item{ncounts_matrix}{An input matrix to create the heatmap.}
 
-\item{k_row}{An integer used to set number of clusters for row clustering in the heatmap, default <- NULL.}
+\item{k_row}{An integer used to set number of clusters for row clustering in
+the heatmap, default <- NULL.}
 
-\item{row_annotation}{A Boolean switching row annotation on the heatmap on and off, default <- FALSE.}
+\item{row_annotation}{A Boolean switching row annotation on the heatmap on
+and off, default <- FALSE.}
 
-\item{row_annotation_method}{A string setting the annotation method of the heatmap, default <- "auto".}
+\item{row_annotation_method}{A string setting the annotation method of the
+heatmap, default <- "auto".}
 
-\item{row_anno_names}{A list containing choosen rownames to use for the row annotation, default <- NULL.}
+\item{row_anno_names}{A list containing choosen rownames to use for the row
+annotation, default <- NULL.}
 
-\item{row_anno_number}{An integer setting the number of automatic annotations assigned per cluster, default <- 5.}
+\item{row_anno_number}{An integer setting the number of automatic annotations
+assigned per cluster, default <- 5.}
 
-\item{fontsize_rowAnnotation}{An integer setting the font size of the group annotation labels in the legend, default <- 8.}
+\item{fontsize_rowAnnotation}{An integer setting the font size of the group
+annotation labels in the legend, default <- 8.}
 }
 \value{
 Numeric index from matrix for the row annotation
@@ -36,9 +42,10 @@ Numeric index from matrix for the row annotation
 Setting the row annotation
 }
 \examples{
- x <- 1
- seed <- 1
-input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+x <- 1
+seed <- 1
+input_data <- read.csv(system.file("extdata/testfile_counts.csv",
+package = "DgeaHeatmap"))
 matrixCounts <- build_matrix(input_data, x)
 ncounts_matrix <- scale_counts(matrixCounts)
 set.seed(seed)

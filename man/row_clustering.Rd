@@ -17,17 +17,19 @@ row_clustering(
 \arguments{
 \item{ncounts_matrix}{An input matrix to create the clustering.}
 
-\item{cluster_rows}{A Boolean switching the optional clustering of the rows on and off, default <- TRUE.}
+\item{cluster_rows}{A Boolean switching the optional clustering of the rows
+on and off, default <- TRUE.}
 
-\item{cluster_method}{A string setting the cluster method for the heatmap, default <- "hierarchical".}
+\item{cluster_method}{A string setting the cluster method for the heatmap.}
 
-\item{distance_method}{A string setting the distance method for clustering, default <- "euclidean".}
+\item{distance_method}{A string setting the distance method for clustering.}
 
-\item{k_row}{An integer used to set number of clusters for row clustering, default <- NULL.}
+\item{k_row}{An integer used to set number of clusters for row clustering.}
 
 \item{row_split}{An integer seeting the column clustering by kmeans.}
 
-\item{row_dend}{A Boolean switching column clustering by hierarchical clustering on (default).}
+\item{row_dend}{A Boolean switching column clustering by hierarchical
+clustering on (default).}
 }
 \value{
 row_split where the rows are split into clusters
@@ -36,13 +38,16 @@ row_split where the rows are split into clusters
 Setting the row clustering
 }
 \examples{
- x <- 1
- seed <- 1
-input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+x <- 1
+seed <- 1
+input_data <- read.csv(system.file("extdata/testfile_counts.csv",
+package = "DgeaHeatmap"))
 matrixCounts <- build_matrix(input_data, x)
 ncounts_matrix <- scale_counts(matrixCounts)
 set.seed
 row_split <- NULL
 row_dend <- TRUE
-rows_clustered <- row_clustering(ncounts_matrix, cluster_rows = TRUE, cluster_method = "hierarchical", distance_method = "euclidean", k_row = NULL, row_split = row_split, row_dend = row_dend)
+rows_clustered <- row_clustering(ncounts_matrix, cluster_rows = TRUE,
+cluster_method = "hierarchical", distance_method = "euclidean", k_row = NULL,
+row_split = row_split, row_dend = row_dend)
 }

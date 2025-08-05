@@ -7,11 +7,14 @@
 set_annotation(m_top_genes_matrix, top_x_genes_cluster, fontsize_rowAnnotation)
 }
 \arguments{
-\item{m_top_genes_matrix}{An input matrix to used for heatmap generation and choosing annotation for a heatmap.}
+\item{m_top_genes_matrix}{An input matrix to used for heatmap generation and
+choosing annotation for a heatmap.}
 
-\item{top_x_genes_cluster}{A list of the most variable x genes of each cluster in a heatmap.}
+\item{top_x_genes_cluster}{A list of the most variable x genes of each
+cluster in a heatmap.}
 
-\item{fontsize_rowAnnotation}{An integer defining the font size of the row annotation}
+\item{fontsize_rowAnnotation}{An integer defining the font size of the
+row annotation}
 }
 \value{
 A numeric index from the orginal matrix.
@@ -22,7 +25,8 @@ Function to set row annotation for a heatmap.
 \examples{
 x <- 1
 number_of_annotations_per_cluster <- 5
-input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+input_data <- read.csv(system.file("extdata/testfile_counts.csv",
+package = "DgeaHeatmap"))
 matrixCounts <- build_matrix(input_data, x)
 m_top_genes_matrix <- scale_counts(matrixCounts)
 seed <- 1
@@ -30,7 +34,9 @@ k <- 1
 fontsize_rowAnnotation <- 8
 set.seed(seed)
 m_kmeans <- Kmean_generation(m_top_genes_matrix, k)
-top_x_genes_cluster <- most_variable_genes(m_kmeans, number_of_annotations_per_cluster, k)
-anno <- set_annotation(m_top_genes_matrix, top_x_genes_cluster, fontsize_rowAnnotation)
+top_x_genes_cluster <- most_variable_genes(m_kmeans,
+number_of_annotations_per_cluster, k)
+anno <- set_annotation(m_top_genes_matrix, top_x_genes_cluster,
+fontsize_rowAnnotation)
 
 }

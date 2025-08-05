@@ -46,7 +46,7 @@ grouping_columns <- c("segment", "region", "class", "slide_name")
 comparisons <- list(Comp1 = c("Geometric_Segment_glomerulus_DKD_disease3", "PanCK_tubule_DKD_disease4"), Comp2 = c("neg_tubule_DKD_disease4", "PanCK_tubule_DKD_disease4"))
 storage.mode(rawCounts) <- "integer"
 sum(!is.finite(as.matrix(rawCounts)))
-results_list_DESeq2 <- DGEADESeq2(rawCounts, metadata, grouping_columns,comparisons)
+results_list_DESeq2 <- DGEADESeq2(rawCounts, metadata, grouping_columns, comparisons)
 results_list <- results_list_DESeq2$results
 down_genes <- extractDEGenes(results_list, comparisons, only_down = TRUE)
 }

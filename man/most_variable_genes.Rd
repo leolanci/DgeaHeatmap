@@ -2,14 +2,16 @@
 % Please edit documentation in R/Heatmap_building.R
 \name{most_variable_genes}
 \alias{most_variable_genes}
-\title{Function to determine the most variable genes of each cluster to enable annotation..}
+\title{Function to determine the most variable genes of each cluster to
+enable annotation..}
 \usage{
 most_variable_genes(m_kmeans, number_of_annotations_per_cluster, k)
 }
 \arguments{
 \item{m_kmeans}{Matrix of the k-Means for each row in a gene set.}
 
-\item{number_of_annotations_per_cluster}{Number of wanted annotations per cluster.}
+\item{number_of_annotations_per_cluster}{Number of wanted annotations
+per cluster.}
 
 \item{k}{Number of clusters.}
 }
@@ -17,17 +19,20 @@ most_variable_genes(m_kmeans, number_of_annotations_per_cluster, k)
 A list of the most variable rows (genes) of each cluster.
 }
 \description{
-Function to determine the most variable genes of each cluster to enable annotation..
+Function to determine the most variable genes of each cluster to
+enable annotation..
 }
 \examples{
 x <- 1
 number_of_annotations_per_cluster <- 5
-input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+input_data <- read.csv(system.file("extdata/testfile_counts.csv",
+package = "DgeaHeatmap"))
 matrixCounts <- build_matrix(input_data, x)
 m_top_genes_matrix <- scale_counts(matrixCounts)
 seed <- 1
 k <- 1
 set.seed(seed)
 m_kmeans <- Kmean_generation(m_top_genes_matrix, k)
-top_x_variable_genes <- most_variable_genes(m_kmeans, number_of_annotations_per_cluster, k)
+top_x_variable_genes <- most_variable_genes(m_kmeans,
+number_of_annotations_per_cluster, k)
 }

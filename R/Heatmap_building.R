@@ -1,6 +1,7 @@
 #' Builds a matrix from an input csv file, with one column as rownames
 #'
-#' @param counts_data A data frame with floats or integers that has strings in one column.
+#' @param counts_data A data frame with floats or integers that
+#' has strings in one column.
 #' @param x Number of column which contains the rownames description.
 #'
 #' @return A matrix.
@@ -10,7 +11,6 @@
 #' x <- 1
 #' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
-
 build_matrix <- function(counts_data, x) {
   list_rownames <- as.list(counts_data[, x])
   counts_data <- as.matrix(counts_data[, -x])
@@ -18,18 +18,23 @@ build_matrix <- function(counts_data, x) {
   return(counts_data)
 }
 
-#' Creates a matrix only containing chosen columns of an original matrix with more data.
+#' Creates a matrix only containing chosen columns of an
+#' original matrix with more data.
 #'
-#' @param factors_for_matrix_devision A list containing variables used to extract specific columns from the original matrix.
-#' @param mmatrix A matrix used as input, from which specifically chosen columns are extracted.
+#' @param factors_for_matrix_devision A list containing variables used to
+#' extract specific columns from the original matrix.
+#' @param mmatrix A matrix used as input, from which specifically chosen columns
+#' are extracted.
 #'
-#' @return A new matrix containing fewer columns than before, that have previously been specified.
+#' @return A new matrix containing fewer columns than before,
+#' that have previously been specified.
 #' @export
 #'
 #' @examples
 #' factors_for_individual_matrix <- list("DKD", "glomerulus")
 #' x <- 1
-#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
+#' package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
 #' indiMatrix <- individual_matrix(factors_for_individual_matrix, matrixCounts)
 #'
@@ -43,25 +48,34 @@ individual_matrix <- function(factors_for_matrix_devision, mmatrix) {
   return(mmatrix)
 }
 
-#' Function to filter a matrix to extract a chosen number of most variable rows through calculation of the variance.
+#' Function to filter a matrix to extract a chosen number of most variable rows
+#' through calculation of the variance.
 #'
-#' @param counts_data An input matrix from which the most variable rows are to be extracted.
-#' @param top_number_of_genes An integer to set the number of how many rows should be extracted from the original matrix by variance.
+#' @param counts_data An input matrix from which the most variable rows are to
+#' be extracted.
+#' @param top_number_of_genes An integer to set the number of how many rows
+#' should be extracted from the original matrix by variance.
 #'
-#' @return A new matrix containing only the top_number_of_genes count of rows with the highest variance from input matrix.
+#' @return A new matrix containing only the top_number_of_genes count of rows
+#' with the highest variance from input matrix.
 #' @export
 #'
 #' @examples
 #' x <- 1
 #' top_number_of_genes <- 20
-#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
+#' package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
 #' counts_data <- matrixCounts
-#' varGenesMatrix <- filtering_for_top_exprGenes(counts_data, top_number_of_genes)
+#' varGenesMatrix <- filtering_for_top_exprGenes(counts_data,
+#' top_number_of_genes)
 filtering_for_top_exprGenes <- function(counts_data, top_number_of_genes) {
-  var_genes <- apply(counts_data, 1, stats::var) #estimating the variance of each gene
-  # Sorting the genes by their variance and creating a new object with chosen number of most variable genes
-  select_var <- names(sort(var_genes, decreasing = TRUE))[seq_len(top_number_of_genes)]
+  # estimating the variance of each gene
+  var_genes <- apply(counts_data, 1, stats::var)
+  # Sorting the genes by their variance and creating a new object
+  #with chosen number of most variable genes
+  select_var <- names(sort(var_genes,
+                           decreasing = TRUE))[seq_len(top_number_of_genes)]
   highly_variable_genes <- counts_data[select_var, ]
   dim(highly_variable_genes)
 
@@ -81,10 +95,10 @@ filtering_for_top_exprGenes <- function(counts_data, top_number_of_genes) {
 #'
 #' @examples
 #' x <- 1
-#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
+#' package = "DgeaHeatmap"))
 #' countsmatrix <- build_matrix(input_data, x)
 #' scaled_counts <- scale_counts(countsmatrix)
-
 scale_counts <- function(countsmatrix) {
   scaled_counts <-
     countsmatrix %>%
@@ -105,21 +119,23 @@ scale_counts <- function(countsmatrix) {
 #'
 #' @examples
 #' x <- 1
-#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
+#' package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
 #' scaled_counts <- scale_counts(matrixCounts)
 #' show_data_distribution(scaled_counts)
-
-show_data_distribution <- function (scaled_counts ) {
-  apply(scaled_counts, MARGIN = 1, mean) %>%  #calculate the mean per row
-    graphics::hist(., main = "", xlab = "Z-score values", col = "dodgerblue2") #build histogram to see data distribution
+show_data_distribution <- function(scaled_counts) {
+  apply(scaled_counts, MARGIN = 1, mean) %>% # calculate the mean per row
+    graphics::hist(., main = "", xlab = "Z-score values", col = "dodgerblue2")
+  # build histogram to see data distribution
 }
 
 
 
 #' Function to create an elbow plot to choose k for clustering by k-Means.
 #'
-#' @param top_genes_matrix A matrix for which the best number of clusters in k-Means Clustering is supposed to be calculated.
+#' @param top_genes_matrix A matrix for which the best number of clusters in
+#' k-Means Clustering is supposed to be calculated.
 #' @param maxK An integer determining the maximum number of possible clusters.
 #'
 #' @return An elbow plot to choose k.
@@ -128,24 +144,28 @@ show_data_distribution <- function (scaled_counts ) {
 #' @examples
 #' x <- 1
 #' seed <- 1
-#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
+#' package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
 #' scaled_counts <- scale_counts(matrixCounts)
 #' top_genes_matrix <- scaled_counts
 #' set.seed(seed)
 #' elbow_plot(top_genes_matrix)
-
-elbow_plot <- function(top_genes_matrix, # input matrix for which the number of clusters is calculated.
-                       maxK = 15                         # Integer determining the maximum number of possible clusters, default <- 15.
-                       ) {
+elbow_plot <- function(top_genes_matrix, # input matrix.
+                       maxK = 15 # maximum number of clusters
+) {
   maxK <- maxK
   wss <- function(k) {
-    stats::kmeans(top_genes_matrix, algorithm = "Lloyd", k, nstart = 10, iter.max = 50)$tot.withinss
+    stats::kmeans(top_genes_matrix,
+                  algorithm = "Lloyd",
+                  k, nstart = 10,
+                  iter.max = 50)$tot.withinss
   }
   k.values <- seq_len(maxK) # compute and plot wws for k <- 1 to k <- 15
   wss_values <- purrr::map_dbl(k.values, wss)
-  plot(k.values, wss_values, type = "b", pch = 19, frame = FALSE, xlab = "Number of clusters K", ylab = "Total within-clusters sum of squares")
-
+  plot(k.values, wss_values, type = "b", pch = 19,
+       frame = FALSE, xlab = "Number of clusters K",
+       ylab = "Total within-clusters sum of squares")
 }
 
 
@@ -168,34 +188,37 @@ color_setting <- function(colorPalette) {
 
 #' Summarizes columns biological replicates of a matrix into one.
 #'
-#' @param top_genes_matrix An input matrix with columns representing biological replicates.
-#' @param probes List of strings by which columns of biological replicates can be identified.
+#' @param top_genes_matrix An input matrix with columns representing biological
+#' replicates.
+#' @param probes List of strings by which columns of biological replicates can
+#' be identified.
 #'
-#' @return A new matrix where biological replicated are summarized as their mean.
+#' @return A new matrix where biological replicated are summarized
+#' as their mean.
 #' @export
 #'
 #' @examples
 #' x <- 1
-#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
+#' package = "DgeaHeatmap"))
 #' top_genes_matrix <- build_matrix(input_data, x)
 #' probes <- list("disease3", "disease4", "disease1B")
 #' newMatrix <- summarise_bio_replicates(top_genes_matrix, probes)
-
-
 summarise_bio_replicates <- function(top_genes_matrix, probes) {
   m_top_genes_matrix <- top_genes_matrix
   number_columns <- ncol(m_top_genes_matrix)
   # loop to grep columns for each mean group
 
   for (p in probes) {
-    m_group <- BiocGenerics::grep(p, BiocGenerics::colnames( m_top_genes_matrix))
+    m_group <- BiocGenerics::grep(p, BiocGenerics::colnames(m_top_genes_matrix))
     # find columns containing "string"
-    group_mean <- rowMeans(subset(m_top_genes_matrix, select = m_group), na.rm = TRUE)
+    group_mean <- rowMeans(subset(m_top_genes_matrix, select = m_group),
+                           na.rm = TRUE)
     # get means of each sample and safe as a numeric values
     m_top_genes_matrix <- BiocGenerics::cbind(m_top_genes_matrix, group_mean)
   }
   m_top_genes_matrix <- m_top_genes_matrix[, -seq_len(number_columns)]
-  if (ncol( m_top_genes_matrix) == length(probes)) {
+  if (ncol(m_top_genes_matrix) == length(probes)) {
     BiocGenerics::colnames(m_top_genes_matrix) <- probes
     return(m_top_genes_matrix)
   } else {
@@ -205,7 +228,8 @@ summarise_bio_replicates <- function(top_genes_matrix, probes) {
 
 #' Generates K-means for the columns and rows of a matrix.
 #'
-#' @param m_top_genes_matrix An input matrix for which they K-Means are calculated next.
+#' @param m_top_genes_matrix An input matrix for which they K-Means
+#' are calculated next.
 #' @param k Number k of how many clusters are created.
 #'
 #' @return All calculated K-Means of the matrix.
@@ -213,14 +237,14 @@ summarise_bio_replicates <- function(top_genes_matrix, probes) {
 #'
 #' @examples
 #' x <- 1
-#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
+#' package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
 #' m_top_genes_matrix <- scale_counts(matrixCounts)
 #' seed <- 1
 #' k <- 1
 #' set.seed(seed)
 #' k_means <- Kmean_generation(m_top_genes_matrix, k)
-
 Kmean_generation <- function(m_top_genes_matrix, k) {
   # Creating a copy of the matrix with the summarized biological replicates
   y <- m_top_genes_matrix
@@ -234,10 +258,12 @@ Kmean_generation <- function(m_top_genes_matrix, k) {
   return(m_kmeans)
 }
 
-#' Function to determine the most variable genes of each cluster to enable annotation..
+#' Function to determine the most variable genes of each cluster to
+#' enable annotation..
 #'
 #' @param m_kmeans Matrix of the k-Means for each row in a gene set.
-#' @param number_of_annotations_per_cluster Number of wanted annotations per cluster.
+#' @param number_of_annotations_per_cluster Number of wanted annotations
+#' per cluster.
 #' @param k Number of clusters.
 #'
 #' @return A list of the most variable rows (genes) of each cluster.
@@ -246,49 +272,58 @@ Kmean_generation <- function(m_top_genes_matrix, k) {
 #' @examples
 #' x <- 1
 #' number_of_annotations_per_cluster <- 5
-#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
+#' package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
 #' m_top_genes_matrix <- scale_counts(matrixCounts)
 #' seed <- 1
 #' k <- 1
 #' set.seed(seed)
 #' m_kmeans <- Kmean_generation(m_top_genes_matrix, k)
-#' top_x_variable_genes <- most_variable_genes(m_kmeans, number_of_annotations_per_cluster, k)
-most_variable_genes <- function(m_kmeans, number_of_annotations_per_cluster, k) {
+#' top_x_variable_genes <- most_variable_genes(m_kmeans,
+#' number_of_annotations_per_cluster, k)
+most_variable_genes <- function(m_kmeans,
+                                number_of_annotations_per_cluster, k) {
   last_column <- ncol(m_kmeans)
   top_x_variable_genes <- list()
   for (i in seq_len(k)) {
-    cluster_matrix <- m_kmeans[( m_kmeans[, last_column]) == i, ]
+    cluster_matrix <- m_kmeans[(m_kmeans[, last_column]) == i, ]
     cluster_matrix <- cluster_matrix[, -last_column]
-    #estimates the variance for each row
+    # estimates the variance for each row
     variance_row <- apply(cluster_matrix, 1, stats::var)
 
     # binds a column with the estimated variance of each gene to clustermatrix
-    cluster_matrix <- BiocGenerics::cbind( cluster_matrix, variance_row)
+    cluster_matrix <- BiocGenerics::cbind(cluster_matrix, variance_row)
 
 
-    #get number of last column
+    # get number of last column
     number_of_last_column <- ncol(cluster_matrix)
 
     # orders the variances from highest to lowest
-    o <- BiocGenerics::order(cluster_matrix[, number_of_last_column], decreasing = TRUE)
+    o <- BiocGenerics::order(cluster_matrix[, number_of_last_column],
+                             decreasing = TRUE)
     # orders matrix according to order of variances ( highest to lowest)
     cluster_matrix <- cluster_matrix[o, ]
     # makes a list of the gene names with the highest variance
-    cluster_genes_highest_var <- as.list(BiocGenerics::rownames(cluster_matrix)[seq_len(number_of_annotations_per_cluster)])
+    cluster_genes_highest_var <- as.list(BiocGenerics::rownames(cluster_matrix)
+                                         [seq_len(
+                                           number_of_annotations_per_cluster)])
 
     # creates list with most_variable_genes of all cluster
-    top_x_variable_genes <- append (top_x_variable_genes, cluster_genes_highest_var)
-
+    top_x_variable_genes <- append(top_x_variable_genes,
+                                   cluster_genes_highest_var)
   }
   return(top_x_variable_genes)
 }
 
 #' Function to set row annotation for a heatmap.
 #'
-#' @param m_top_genes_matrix An input matrix to used for heatmap generation and choosing annotation for a heatmap.
-#' @param top_x_genes_cluster A list of the most variable x genes of each cluster in a heatmap.
-#' @param fontsize_rowAnnotation An integer defining the font size of the row annotation
+#' @param m_top_genes_matrix An input matrix to used for heatmap generation and
+#' choosing annotation for a heatmap.
+#' @param top_x_genes_cluster A list of the most variable x genes of each
+#' cluster in a heatmap.
+#' @param fontsize_rowAnnotation An integer defining the font size of the
+#' row annotation
 #'
 #' @return A numeric index from the orginal matrix.
 #' @export
@@ -296,7 +331,8 @@ most_variable_genes <- function(m_kmeans, number_of_annotations_per_cluster, k) 
 #' @examples
 #' x <- 1
 #' number_of_annotations_per_cluster <- 5
-#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
+#' package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
 #' m_top_genes_matrix <- scale_counts(matrixCounts)
 #' seed <- 1
@@ -304,38 +340,50 @@ most_variable_genes <- function(m_kmeans, number_of_annotations_per_cluster, k) 
 #' fontsize_rowAnnotation <- 8
 #' set.seed(seed)
 #' m_kmeans <- Kmean_generation(m_top_genes_matrix, k)
-#' top_x_genes_cluster <- most_variable_genes(m_kmeans, number_of_annotations_per_cluster, k)
-#' anno <- set_annotation(m_top_genes_matrix, top_x_genes_cluster, fontsize_rowAnnotation)
+#' top_x_genes_cluster <- most_variable_genes(m_kmeans,
+#' number_of_annotations_per_cluster, k)
+#' anno <- set_annotation(m_top_genes_matrix, top_x_genes_cluster,
+#' fontsize_rowAnnotation)
 #'
-set_annotation <- function(m_top_genes_matrix, top_x_genes_cluster, fontsize_rowAnnotation) {
-  #get numeric indices of top_x_genes_clusters
-  top_x_genes_clusters <- which(BiocGenerics::rownames(m_top_genes_matrix) %in% top_x_genes_cluster)
-  #set row annotation: at <- numeric indices of wanted labels, labels <- names of wanted labels, which <- rows or columns
+set_annotation <- function(m_top_genes_matrix, top_x_genes_cluster,
+                           fontsize_rowAnnotation) {
+  # get numeric indices of top_x_genes_clusters
+  top_x_genes_clusters <- which(BiocGenerics::rownames(m_top_genes_matrix)
+                                %in% top_x_genes_cluster)
   labeling <- BiocGenerics::rownames(m_top_genes_matrix)[top_x_genes_clusters]
-  anno <- ComplexHeatmap::anno_mark(at = top_x_genes_clusters, labels = labeling, labels_gp = grid::gpar(fontsize = fontsize_rowAnnotation), which = "row")
+  anno <- ComplexHeatmap::anno_mark(at = top_x_genes_clusters,
+                                    labels = labeling,
+                                    labels_gp = grid::gpar(
+                                      fontsize = fontsize_rowAnnotation),
+                                    which = "row")
 
   return(anno)
 }
 
-#' Function to perform k-Means clustering for a matrix and setting split to split a heatmap into clusters.
+#' Function to perform k-Means clustering for a matrix and setting split to
+#' split a heatmap into clusters.
 #'
 #' @param m_top_genes_matrix A matrix for which K-Means are calculated.
 #' @param k Number of clusters for k-Means clustering (chosen by elbow-plot).
 #'
-#' @return A new dataframe containing information assigning each rows of the input matrix to a cluster.
+#' @return A new dataframe containing information assigning each rows of the
+#' input matrix to a cluster.
 #' @export
 #'
 #' @examples
 #' x <- 1
-#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
+#' package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
 #' m_top_genes_matrix <- scale_counts(matrixCounts)
 #' k <- 1
 #' split <- performing_kMeans(m_top_genes_matrix, k)
 performing_kMeans <- function(m_top_genes_matrix, k) {
-  kclus <- stats::kmeans(m_top_genes_matrix, k)  #performance of kmean clustering
-  kclus$cluster #check on kmean clusters
-  split <- paste0("Cluster\n", kclus$cluster) #set split as kmean clusters for heatmap
+  # performance of kmean clustering
+  kclus <- stats::kmeans(m_top_genes_matrix, k)
+  kclus$cluster # check on kmean clusters
+  # set split as kmean clusters for heatmap
+  split <- paste0("Cluster\n", kclus$cluster)
   return(split)
 }
 
@@ -343,14 +391,19 @@ performing_kMeans <- function(m_top_genes_matrix, k) {
 #'
 #' @param m_top_genes_matrix An input matrix for which the heatmap is created.
 #' @param title A string used to set the title of the heatmap.
-#' @param split A dataframe containing information about the clustering of the rows of the input matrix.
+#' @param split A dataframe containing information about the clustering of
+#' the rows of the input matrix.
 #' @param anno A numeric index containing row informations for annotation.
-#' @param fontsize_columnNames An integer used to set the font size of the columns in the heatmap.
-#' @param fontsize_rowNames An integer used to set the font size of the rownames in the heatmap.
-#' @param title_heatmapLegend A string setting the title of the legend of the heatmap.
+#' @param fontsize_columnNames An integer used to set the font size of the
+#' columns in the heatmap.
+#' @param fontsize_rowNames An integer used to set the font size of the
+#' rownames in the heatmap.
+#' @param title_heatmapLegend A string setting the title of the
+#' legend of the heatmap.
 #' @param WidthNum A float setting the width of the heatmap.
 #' @param HeightNum A float setting the height of the heatmap.
-#' @param UnitSize A string such as "cm" or "inch" to set the unit of HeightNum and WidthNum.
+#' @param UnitSize A string such as "cm" or "inch" to set the unit of
+#' HeightNum and WidthNum.
 #' @param color_Palette Name of the colorPalette used for the heatmap.
 #'
 #' @return A plotted heatmap.
@@ -358,7 +411,8 @@ performing_kMeans <- function(m_top_genes_matrix, k) {
 #'
 #' @examples
 #' x <- 1
-#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
+#' package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
 #' m_top_genes_matrix <- scale_counts(matrixCounts)
 #' k <- 1
@@ -368,8 +422,10 @@ performing_kMeans <- function(m_top_genes_matrix, k) {
 #' set.seed(seed)
 #' m_kmeans <- Kmean_generation(m_top_genes_matrix, k)
 #' number_of_annotations_per_cluster <- 5
-#' top_x_genes_cluster <- most_variable_genes(m_kmeans, number_of_annotations_per_cluster, k)
-#' anno <- set_annotation(m_top_genes_matrix, top_x_genes_cluster, fontsize_rowAnnotation)
+#' top_x_genes_cluster <- most_variable_genes(m_kmeans,
+#' number_of_annotations_per_cluster, k)
+#' anno <- set_annotation(m_top_genes_matrix, top_x_genes_cluster,
+#' fontsize_rowAnnotation)
 #' title <- "Heatmap of Data"
 #' fontsize_columnNames <- 6
 #' fontsize_rowNames <- 4
@@ -379,16 +435,24 @@ performing_kMeans <- function(m_top_genes_matrix, k) {
 #' UnitSize <- "cm"
 #' color_Palette <- "RdBu"
 #' set.seed(seed)
-#' print_heatmap(m_top_genes_matrix, title, split, anno, fontsize_columnNames, fontsize_rowNames, title_heatmapLegend, WidthNum, HeightNum, UnitSize, color_Palette)
-print_heatmap <- function(m_top_genes_matrix, title, split, anno, fontsize_columnNames, fontsize_rowNames, title_heatmapLegend, WidthNum, HeightNum, UnitSize, color_Palette) {
+#' print_heatmap(m_top_genes_matrix, title, split, anno, fontsize_columnNames,
+#' fontsize_rowNames, title_heatmapLegend, WidthNum, HeightNum,
+#' UnitSize, color_Palette)
+print_heatmap <- function(m_top_genes_matrix, title, split, anno,
+                          fontsize_columnNames, fontsize_rowNames,
+                          title_heatmapLegend, WidthNum, HeightNum,
+                          UnitSize, color_Palette) {
   color_setting(color_Palette)
-  ht <- ComplexHeatmap::Heatmap(m_top_genes_matrix, name = "mat", split = split,
-                                column_title = title,
-                                use_raster = FALSE, cluster_columns = FALSE,
-                                column_names_gp = grid::gpar(fontsize = fontsize_columnNames),
-                                row_names_gp = grid::gpar(fontsize = fontsize_rowNames), heatmap_legend_param = list(title = title_heatmapLegend),
-                                width = grid::unit(WidthNum, UnitSize),
-                                height = grid::unit(HeightNum, UnitSize)) + ComplexHeatmap::rowAnnotation(mark = anno)
+  ht <- ComplexHeatmap::Heatmap(m_top_genes_matrix,
+    name = "mat", split = split,
+    column_title = title,
+    use_raster = FALSE, cluster_columns = FALSE,
+    column_names_gp = grid::gpar(fontsize = fontsize_columnNames),
+    row_names_gp = grid::gpar(fontsize = fontsize_rowNames),
+    heatmap_legend_param = list(title = title_heatmapLegend),
+    width = grid::unit(WidthNum, UnitSize),
+    height = grid::unit(HeightNum, UnitSize)
+  ) + ComplexHeatmap::rowAnnotation(mark = anno)
   hm <- ComplexHeatmap::draw(ht)
   return(hm)
 }
@@ -396,17 +460,24 @@ print_heatmap <- function(m_top_genes_matrix, title, split, anno, fontsize_colum
 #' Creating a heatmap with annotation of x most variable rows(genes).
 #'
 #' @param topGenes_matrix An input matrix to create the heatmap.
-#' @param probes A list of strings to summarize biological replicated in the columns.
-#' @param number_of_annotations_per_cluster An integer used to set the number of annotations per cluster in the heatmap.
+#' @param probes A list of strings to summarize biological
+#' replicated in the columns.
+#' @param number_of_annotations_per_cluster An integer used to set the number
+#' of annotations per cluster in the heatmap.
 #' @param k An integer used to set number of cluster in the heatmap.
 #' @param Title A string to set the title of the heatmap.
-#' @param fontsize_rowAnnotation An integer used to set the font size of the row annotation in the heatmap
-#' @param fontsize_columnNames An integer used to set the font size of the columns in the heatmap.
-#' @param fontsize_rowNames An integer used to set the font size of the rownames in the heatmap.
-#' @param title_heatmapLegend A string setting the title of the legend of the heatmap.
+#' @param fontsize_rowAnnotation An integer used to set the font size of the
+#' row annotation in the heatmap
+#' @param fontsize_columnNames An integer used to set the font size of the
+#' columns in the heatmap.
+#' @param fontsize_rowNames An integer used to set the font size of the
+#' rownames in the heatmap.
+#' @param title_heatmapLegend A string setting the title of the legend
+#' of the heatmap.
 #' @param WidthNum A float setting the width of the heatmap.
 #' @param HeightNum A float setting the height of the heatmap.
-#' @param UnitSize A string such as "cm" or "inch" to set the unit of HeightNum and WidthNum.
+#' @param UnitSize A string such as "cm" or "inch" to set the unit of
+#' HeightNum and WidthNum.
 #' @param color_Palette Name of the colorPalette used for the heatmap.
 #'
 #' @return A plotted heatmap of the input data.
@@ -414,7 +485,8 @@ print_heatmap <- function(m_top_genes_matrix, title, split, anno, fontsize_colum
 #'
 #' @examples
 #' x <- 1
-#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
+#' package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
 #' topGenes_matrix <- scale_counts(matrixCounts)
 #' probes <- list("disease3", "disease4", "disease1B")
@@ -431,22 +503,39 @@ print_heatmap <- function(m_top_genes_matrix, title, split, anno, fontsize_colum
 #' UnitSize <- "cm"
 #' color_Palette <- "RdBu"
 #' set.seed(seed)
-#' function_complexHeatmap_var(topGenes_matrix, probes, number_of_annotations_per_cluster, k, Title, fontsize_rowAnnotation, fontsize_columnNames,fontsize_rowNames, title_heatmapLegend,WidthNum, HeightNum, UnitSize, color_Palette)
-function_complexHeatmap_var <- function(topGenes_matrix, probes, number_of_annotations_per_cluster, k, Title, fontsize_rowAnnotation, fontsize_columnNames, fontsize_rowNames, title_heatmapLegend, WidthNum, HeightNum, UnitSize, color_Palette) {
+#' function_complexHeatmap_var(topGenes_matrix, probes,
+#' number_of_annotations_per_cluster, k, Title, fontsize_rowAnnotation,
+#' fontsize_columnNames, fontsize_rowNames, title_heatmapLegend, WidthNum,
+#' HeightNum, UnitSize, color_Palette)
+function_complexHeatmap_var <- function(topGenes_matrix, probes,
+                                        number_of_annotations_per_cluster, k,
+                                        Title, fontsize_rowAnnotation,
+                                        fontsize_columnNames, fontsize_rowNames,
+                                        title_heatmapLegend, WidthNum,
+                                        HeightNum, UnitSize, color_Palette) {
   m_top_genes_matrix <- summarise_bio_replicates(topGenes_matrix, probes)
   m_kmeans <- Kmean_generation(m_top_genes_matrix, k)
-  top_x_genes_cluster <- most_variable_genes(m_kmeans, number_of_annotations_per_cluster, k)
-  anno <- DgeaHeatmap::set_annotation(m_top_genes_matrix, top_x_genes_cluster, fontsize_rowAnnotation)
+  top_x_genes_cluster <- most_variable_genes(m_kmeans,
+                                             number_of_annotations_per_cluster,
+                                             k)
+  anno <- DgeaHeatmap::set_annotation(m_top_genes_matrix, top_x_genes_cluster,
+                                      fontsize_rowAnnotation)
   split <- performing_kMeans(m_top_genes_matrix, k)
-  hm <- print_heatmap(m_top_genes_matrix, Title, split, anno, fontsize_columnNames, fontsize_rowNames, title_heatmapLegend, WidthNum, HeightNum, UnitSize, color_Palette)
+  hm <- print_heatmap(m_top_genes_matrix, Title, split, anno,
+                      fontsize_columnNames, fontsize_rowNames,
+                      title_heatmapLegend, WidthNum, HeightNum,
+                      UnitSize, color_Palette)
   return(hm)
 }
 
-#' Creating a color scheme based on the available color palettes of RColorBrewer for the heatmap.
+#' Creating a color scheme based on the available color palettes of
+#' RColorBrewer for the heatmap.
 #'
-#' @param colorPalette An input string defining the color palette (available from RColorBrewer).
+#' @param colorPalette An input string defining the color palette
+#' (available from RColorBrewer).
 #'
-#' @return The colors used in heatmap based on either ComplexHeatmap default or RColorBrewer.
+#' @return The colors used in heatmap based on either ComplexHeatmap
+#' default or RColorBrewer.
 #' @export
 #'
 #' @examples
@@ -463,78 +552,143 @@ get_heatmap_colors <- function(colorPalette) {
   }
 }
 
-#' Creating a color scheme based on the available color palettes of RColorBrewer for the heatmap.
+#' Creating a color scheme based on the available color palettes of
+#' RColorBrewer for the heatmap.
 #'
 #' @param ncounts_matrix An input matrix to create the heatmap.
-#' @param column_name A string to set the title of the heatmap, default <- "Heatmap".
-#' @param colorPalette Name of the colorPalette used for the heatmap, default <- NULL.
-#' @param cluster_method A string setting the cluster method for the heatmap, default <- "hierarchical".
-#' @param distance_method A string setting the distance method for clustering, default <- "euclidean".
-#' @param cluster_rows A Boolean switching the optional clustering of the rows on and off, default <- TRUE.
-#' @param cluster_columns A Boolean switching the optional clustering of the columns on and off, default <- FALSE.
-#' @param k_row An integer used to set number of clusters for row clustering in the heatmap, default <- NULL.
-#' @param k_col An integer used to set number of clusters for column clustering in the heatmap, default <- NULL.
-#' @param sample_metadata A dataframe containing the metadata information for the grouping of the columns, default <- NULL.
-#' @param annotation_colors A list assigning choosen colors to the corresponding groups, default <- NULL.
-#' @param annotation_name_side The side of the column annotation description, default <- "right".
-#' @param show_row_names A Boolean switching rownames on the heatmap on and off, default <- FALSE.
-#' @param show_column_names A Boolean switching colum names on the heatmap on and off, default <- TRUE.
-#' @param row_annotation A Boolean switching row annotation on the heatmap on and off, default <- FALSE.
-#' @param row_annotation_method A string setting the annotation method of the heatmap, default <- "auto".
-#' @param row_anno_names A list containing choosen rownames to use for the row annotation, default <- NULL.
-#' @param row_anno_number An integer setting the number of automatic annotations assigned per cluster, default <- 5.
-#' @param fontsize_title An integer setting the font size of the heatmap title, default <- 15.
-#' @param fontsize_rowAnnotation An integer setting the font size of the optional row annotation, default <- 10.
-#' @param fontsize_columnNames An integer setting the font size of the column names, default <- 6.
-#' @param fontsize_rowNames An integer setting the font size of the row names, default <- 4.
-#' @param fontsize_cluster_labels An integer setting the font size of the cluster labels, default <- 8.
-#' @param fontsize_group_annotation An integer setting the font size of the group annotation title, default <- 8.
-#' @param fontsize_group_annotation_legend An integer setting the font size of the group annotation legend name, default <- 10.
-#' @param fontsize_group_annotation_labels An integer setting the font size of the group annotation labels in the legend, default <- 8.
-#' @param fontsize_heatmap_legend An integer setting the font size of the heatmap legend title, default <- 10.
-#' @param fontsize_heatmap_legend_labels An integer setting the font size of the heatmap legend labels, default <- 8.
-#' @param title_heatmapLegend A string setting the changeable title of the legend, default "Expression".
+#' @param column_name A string to set the title of the heatmap,
+#' default <- "Heatmap".
+#' @param colorPalette Name of the colorPalette used for the heatmap,
+#' default <- NULL.
+#' @param cluster_method A string setting the cluster method for the heatmap,
+#' default <- "hierarchical".
+#' @param distance_method A string setting the distance method for clustering,
+#' default <- "euclidean".
+#' @param cluster_rows A Boolean switching the optional clustering of the rows
+#' on and off, default <- TRUE.
+#' @param cluster_columns A Boolean switching the optional clustering of the
+#' columns on and off, default <- FALSE.
+#' @param k_row An integer used to set number of clusters for row clustering
+#' in the heatmap, default <- NULL.
+#' @param k_col An integer used to set number of clusters for column clustering
+#' in the heatmap, default <- NULL.
+#' @param sample_metadata A dataframe containing the metadata information for
+#' the grouping of the columns, default <- NULL.
+#' @param annotation_colors A list assigning choosen colors to the corresponding
+#' groups, default <- NULL.
+#' @param annotation_name_side The side of the column annotation description,
+#' default <- "right".
+#' @param show_row_names A Boolean switching rownames on the heatmap on and off,
+#' default <- FALSE.
+#' @param show_column_names A Boolean switching colum names on the heatmap on
+#' and off, default <- TRUE.
+#' @param row_annotation A Boolean switching row annotation on the heatmap on
+#' and off, default <- FALSE.
+#' @param row_annotation_method A string setting the annotation method of the
+#' heatmap, default <- "auto".
+#' @param row_anno_names A list containing choosen rownames to use for the row
+#' annotation, default <- NULL.
+#' @param row_anno_number An integer setting the number of automatic annotations
+#' assigned per cluster, default <- 5.
+#' @param fontsize_title An integer setting the font size of the heatmap title.
+#' @param fontsize_rowAnnotation An integer setting the font size of the
+#' optional row annotation, default <- 10.
+#' @param fontsize_columnNames An integer setting the font size of the
+#' column names, default <- 6.
+#' @param fontsize_rowNames An integer setting the font size of the
+#' row names, default <- 4.
+#' @param fontsize_cluster_labels An integer setting the font size of the
+#' cluster labels, default <- 8.
+#' @param fontsize_group_annotation An integer setting the font size of the
+#' group annotation title, default <- 8.
+#' @param fontsize_group_annotation_legend An integer setting the font size of
+#' the group annotation legend name, default <- 10.
+#' @param fontsize_group_annotation_labels An integer setting the font size of
+#' the group annotation labels in the legend, default <- 8.
+#' @param fontsize_heatmap_legend An integer setting the font size of the
+#' heatmap legend title, default <- 10.
+#' @param fontsize_heatmap_legend_labels An integer setting the font size of
+#' the heatmap legend labels, default <- 8.
+#' @param title_heatmapLegend A string setting the changeable title of the
+#' legend, default "Expression".
 #' @param WidthNum A float setting the width of the heatmap, default <- 4.5.
 #' @param HeightNum A float setting the height of the heatmap, default <- 3.
-#' @param UnitSize A string such as "cm" or "inch" to set the unit of HeightNum and WidthNum, default <- "cm".
+#' @param UnitSize A string such as "cm" or "inch" to set the unit of HeightNum
+#' and WidthNum, default <- "cm".
 #'
 #' @return An advanced and customizable heatmap.
 #' @export
 #'
 #' @examples
 #' colorPalette <- "RdBu"
-#'  x <- 1
-#'  seed <- 1
-#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' x <- 1
+#' seed <- 1
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
+#' package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
 #' ncounts_matrix <- scale_counts(matrixCounts)
 #' set.seed
 #' adv_Heatmap(ncounts_matrix)
-
-adv_Heatmap <- function(ncounts_matrix, column_name = "Heatmap", colorPalette = NULL, cluster_method = "hierarchical", distance_method = "euclidean", cluster_rows = TRUE, cluster_columns = FALSE, k_row = NULL,
-                        k_col = NULL, sample_metadata = NULL, annotation_colors = NULL, annotation_name_side = "right", show_row_names = FALSE, show_column_names = TRUE, row_annotation = FALSE,                    # FALSE or TRUE
-                        row_annotation_method = "auto", row_anno_names = NULL, row_anno_number = 5, fontsize_title = 15, fontsize_rowAnnotation = 10, fontsize_columnNames = 6, fontsize_rowNames = 4, fontsize_cluster_labels = 8, fontsize_group_annotation = 8, fontsize_group_annotation_legend = 10,     # fontsize of optional group annotation legend title
-                        fontsize_group_annotation_labels = 8, fontsize_heatmap_legend = 10, fontsize_heatmap_legend_labels = 8, title_heatmapLegend = "Expression", WidthNum = 4.5, HeightNum = 3, UnitSize = "cm") {
-
- # Clustering logic
-    row_split <- col_split <- NULL
-    row_dend <- col_dend <- TRUE  # default TRUE if unspecified
+adv_Heatmap <- function(ncounts_matrix, column_name = "Heatmap",
+                        colorPalette = NULL, cluster_method = "hierarchical",
+                        distance_method = "euclidean", cluster_rows = TRUE,
+                        cluster_columns = FALSE, k_row = NULL,
+                        k_col = NULL, sample_metadata = NULL,
+                        annotation_colors = NULL,
+                        annotation_name_side = "right", show_row_names = FALSE,
+                        show_column_names = TRUE, row_annotation = FALSE,
+                        row_annotation_method = "auto", row_anno_names = NULL,
+                        row_anno_number = 5, fontsize_title = 15,
+                        fontsize_rowAnnotation = 10, fontsize_columnNames = 6,
+                        fontsize_rowNames = 4, fontsize_cluster_labels = 8,
+                        fontsize_group_annotation = 8,
+                        fontsize_group_annotation_legend = 10,
+                        fontsize_group_annotation_labels = 8,
+                        fontsize_heatmap_legend = 10,
+                        fontsize_heatmap_legend_labels = 8,
+                        title_heatmapLegend = "Expression", WidthNum = 4.5,
+                        HeightNum = 3, UnitSize = "cm") {
+  # Clustering logic
+  row_split <- col_split <- NULL
+  row_dend <- col_dend <- TRUE # default TRUE if unspecified
 
   # --- ROW CLUSTERING ---
-    rows_clustered <- row_clustering(ncounts_matrix, cluster_rows = cluster_rows, cluster_method = cluster_method, distance_method = distance_method, k_row = k_row, row_split = row_split, row_dend = row_dend)
-    row_split <- rows_clustered$row_split
-    row_dend <- rows_clustered$dend
+  rows_clustered <- row_clustering(ncounts_matrix,
+                                   cluster_rows = cluster_rows,
+                                   cluster_method = cluster_method,
+                                   distance_method = distance_method,
+                                   k_row = k_row, row_split = row_split,
+                                   row_dend = row_dend)
+  row_split <- rows_clustered$row_split
+  row_dend <- rows_clustered$dend
   # --- COLUMN CLUSTERING ---
-    columns_clustered <- column_clustering(ncounts_matrix, cluster_columns = cluster_columns, cluster_method = cluster_method, distance_method = distance_method, k_col = k_col, col_split = col_split, col_dend = col_dend)
-    col_split <- columns_clustered$col_split
-    col_dend <- columns_clustered$dend
+  columns_clustered <- column_clustering(ncounts_matrix,
+                                         cluster_columns = cluster_columns,
+                                         cluster_method = cluster_method,
+                                         distance_method = distance_method,
+                                         k_col = k_col, col_split = col_split,
+                                         col_dend = col_dend)
+  col_split <- columns_clustered$col_split
+  col_dend <- columns_clustered$dend
   # --- Sample Annotation ---
   col_ha <- NULL
-  col_ha <- set_sample_annotation(sample_metadata = sample_metadata, annotation_colors = group_colors, annotation_name_side = annotation_name_side, fontsize_group_annotation = fontsize_group_annotation, fontsize_group_annotation_legend = fontsize_group_annotation_legend, fontsize_group_annotation_labels = fontsize_group_annotation_labels)
+  col_ha <- set_sample_annotation(
+    sample_metadata = sample_metadata,
+    annotation_colors = group_colors,
+    annotation_name_side = annotation_name_side,
+    fontsize_group_annotation = fontsize_group_annotation,
+    fontsize_group_annotation_legend = fontsize_group_annotation_legend,
+    fontsize_group_annotation_labels = fontsize_group_annotation_labels)
 
   # --- Row Annotation ---
   annotation_for_rows <- NULL
-  annotation_for_rows <- set_row_annotation(ncounts_matrix = ncounts_matrix, k_row = k_row, row_annotation = row_annotation, row_annotation_method = row_annotation_method, row_anno_names = row_anno_names, row_anno_number = row_anno_number, fontsize_rowAnnotation = fontsize_rowAnnotation)
+  annotation_for_rows <- set_row_annotation(
+    ncounts_matrix = ncounts_matrix,
+    k_row = k_row, row_annotation = row_annotation,
+    row_annotation_method = row_annotation_method,
+    row_anno_names = row_anno_names,
+    row_anno_number = row_anno_number,
+    fontsize_rowAnnotation = fontsize_rowAnnotation)
 
   # --- Final Ordering Check --- #
   # Reset column split if clustering is not active
@@ -547,7 +701,20 @@ adv_Heatmap <- function(ncounts_matrix, column_name = "Heatmap", colorPalette = 
     row_dend <- FALSE
   }
   # --- Draw Heatmap ---
-  ht <- draw_adv_heatmap(ncounts_matrix, column_name = column_name, colorPalette = colorPalette, show_row_names = show_row_names, show_column_names = show_column_names, fontsize_title = fontsize_title, fontsize_columnNames = fontsize_columnNames, fontsize_rowNames = fontsize_rowNames, fontsize_cluster_labels = fontsize_cluster_labels, fontsize_heatmap_legend = fontsize_heatmap_legend, fontsize_heatmap_legend_labels = fontsize_heatmap_legend_labels, title_heatmapLegend = title_heatmapLegend, WidthNum = WidthNum, HeightNum = HeightNum, UnitSize = UnitSize, row_annotation = row_annotation, annotation_for_rows = annotation_for_rows, row_split = row_split, col_split = col_split, row_dend = row_dend, col_dend = col_dend, col_ha = col_ha)
+  ht <- draw_adv_heatmap(
+    ncounts_matrix, column_name = column_name,
+    colorPalette = colorPalette, show_row_names = show_row_names,
+    show_column_names = show_column_names, fontsize_title = fontsize_title,
+    fontsize_columnNames = fontsize_columnNames,
+    fontsize_rowNames = fontsize_rowNames,
+    fontsize_cluster_labels = fontsize_cluster_labels,
+    fontsize_heatmap_legend = fontsize_heatmap_legend,
+    fontsize_heatmap_legend_labels = fontsize_heatmap_legend_labels,
+    title_heatmapLegend = title_heatmapLegend, WidthNum = WidthNum,
+    HeightNum = HeightNum, UnitSize = UnitSize, row_annotation = row_annotation,
+    annotation_for_rows = annotation_for_rows, row_split = row_split,
+    col_split = col_split, row_dend = row_dend, col_dend = col_dend,
+    col_ha = col_ha)
   hm <- ComplexHeatmap::draw(ht)
   return(hm)
 }
@@ -556,29 +723,37 @@ adv_Heatmap <- function(ncounts_matrix, column_name = "Heatmap", colorPalette = 
 #' Setting the row clustering
 #'
 #' @param ncounts_matrix An input matrix to create the clustering.
-#' @param cluster_rows A Boolean switching the optional clustering of the rows on and off, default <- TRUE.
-#' @param cluster_method A string setting the cluster method for the heatmap, default <- "hierarchical".
-#' @param distance_method A string setting the distance method for clustering, default <- "euclidean".
-#' @param k_row An integer used to set number of clusters for row clustering, default <- NULL.
+#' @param cluster_rows A Boolean switching the optional clustering of the rows
+#' on and off, default <- TRUE.
+#' @param cluster_method A string setting the cluster method for the heatmap.
+#' @param distance_method A string setting the distance method for clustering.
+#' @param k_row An integer used to set number of clusters for row clustering.
 #' @param row_split An integer seeting the column clustering by kmeans.
-#' @param row_dend A Boolean switching column clustering by hierarchical clustering on (default).
+#' @param row_dend A Boolean switching column clustering by hierarchical
+#' clustering on (default).
 #'
 #' @return row_split where the rows are split into clusters
 #' @export
 #'
 #' @examples
-#'  x <- 1
-#'  seed <- 1
-#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' x <- 1
+#' seed <- 1
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
+#' package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
 #' ncounts_matrix <- scale_counts(matrixCounts)
 #' set.seed
 #' row_split <- NULL
 #' row_dend <- TRUE
-#' rows_clustered <- row_clustering(ncounts_matrix, cluster_rows = TRUE, cluster_method = "hierarchical", distance_method = "euclidean", k_row = NULL, row_split = row_split, row_dend = row_dend)
-row_clustering <- function(ncounts_matrix, cluster_rows = TRUE, cluster_method = "hierarchical",  distance_method = "euclidean", k_row = NULL, row_split = NULL, row_dend = TRUE) {
+#' rows_clustered <- row_clustering(ncounts_matrix, cluster_rows = TRUE,
+#' cluster_method = "hierarchical", distance_method = "euclidean", k_row = NULL,
+#' row_split = row_split, row_dend = row_dend)
+row_clustering <- function(ncounts_matrix, cluster_rows = TRUE,
+                           cluster_method = "hierarchical",
+                           distance_method = "euclidean",
+                           k_row = NULL, row_split = NULL, row_dend = TRUE) {
   row_split <- row_split
-  row_dend <- row_dend  # default TRUE if unspecified
+  row_dend <- row_dend # default TRUE if unspecified
   if (cluster_rows) {
     row_data <- ncounts_matrix
 
@@ -591,62 +766,71 @@ row_clustering <- function(ncounts_matrix, cluster_rows = TRUE, cluster_method =
         row_split <- as.factor(row_split)
         row_dend <- TRUE
       }
-
     } else if (cluster_method == "kmeans") {
       row_split <- performing_kMeans(row_data, k_row)
-
     }
   }
-  return(list(row_split  = row_split, dend = row_dend))
+  return(list(row_split = row_split, dend = row_dend))
 }
 
 #' Calculates the distance matrix
 #'
 #' @param x An input matrix to create the distance matrix.
-#' @param method Astring setting the distance method for clustering, default <- "euclidean".
+#' @param method Astring setting the distance method for clustering.
 
 #'
 #' @return A distance matrix.
 #' @export
 #'
 #' @examples
-#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
+#' package = "DgeaHeatmap"))
 #' x <- 1
 #' matrixCounts <- build_matrix(input_data, x)
 #' matrix <- scale_counts(matrixCounts)
 #' method <- "euclidean"
 #' distance_matrix <- get_dist(matrix, method)
-
 get_dist <- function(x, method) {
-  if (method == "correlation") stats::as.dist(1 - stats::cor(t(x)))
-  else stats::dist(x, method = method)
+  if (method == "correlation") {
+    stats::as.dist(1 - stats::cor(t(x)))
+  } else {
+    stats::dist(x, method = method)
+  }
 }
 
 #' Setting the column clustering
 #'
 #' @param ncounts_matrix An input matrix to create the clustering.
-#' @param cluster_columns A Boolean switching the optional clustering of the rows on and off, default <- TRUE.
-#' @param cluster_method A string setting the cluster method for the heatmap, default <- "hierarchical".
-#' @param distance_method A string setting the distance method for clustering, default <- "euclidean".
-#' @param k_col An integer used to set number of clusters for row clustering, default <- NULL.
+#' @param cluster_columns A Boolean switching the optional clustering of the
+#' rows on and off, default <- TRUE.
+#' @param cluster_method A string setting the cluster method for the heatmap.
+#' @param distance_method A string setting the distance method for clustering.
+#' @param k_col An integer used to set number of clusters for row clustering.
 #' @param col_split An integer seeting the column clustering by kmeans.
-#' @param col_dend A Boolean switching column clustering by hierarchical clustering on (default).
+#' @param col_dend A Boolean switching column clustering by hierarchical
+#' clustering on (default).
 #'
 #' @return col_split where the rows are split into clusters
 #' @export
 #'
 #' @examples
-#'  x <- 1
-#'  seed <- 1
-#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' x <- 1
+#' seed <- 1
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
+#' package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
 #' ncounts_matrix <- scale_counts(matrixCounts)
 #' set.seed
 #' col_split <- NULL
 #' col_dend <- TRUE
-#' columns_clustered <- column_clustering(ncounts_matrix, cluster_columns = TRUE, cluster_method = "hierarchical", distance_method = "euclidean", k_col = NULL, col_split = col_split, col_dend = col_dend)
-
-column_clustering <- function(ncounts_matrix, cluster_columns = TRUE, cluster_method = "hierarchical",  distance_method = "euclidean", k_col = NULL, col_split = NULL, col_dend = TRUE) {
+#' columns_clustered <- column_clustering(ncounts_matrix,
+#' cluster_columns = TRUE, cluster_method = "hierarchical",
+#' distance_method = "euclidean", k_col = NULL, col_split = col_split,
+#' col_dend = col_dend)
+column_clustering <- function(ncounts_matrix, cluster_columns = TRUE,
+                              cluster_method = "hierarchical",
+                              distance_method = "euclidean", k_col = NULL,
+                              col_split = NULL, col_dend = TRUE) {
   col_split <- col_split
   col_dend <- col_dend
   if (cluster_columns) {
@@ -661,51 +845,63 @@ column_clustering <- function(ncounts_matrix, cluster_columns = TRUE, cluster_me
         col_split <- as.factor(col_split)
         col_dend <- TRUE
       }
-
     } else if (cluster_method == "kmeans") {
       col_split <- performing_kMeans(col_data, k_col)
-
     }
   }
-  return(list(col_split  = col_split, dend = col_dend))
+  return(list(col_split = col_split, dend = col_dend))
 }
 
 #' Setting the sample annotation
 #'
-#' @param sample_metadata A dataframe containing the metadata information for the grouping of the columns, default <- NULL.
-#' @param annotation_colors A list assigning choosen colors to the corresponding groups, default <- NULL.
-#' @param annotation_name_side The side of the column annotation description, default <- "right".
-#' @param fontsize_group_annotation An integer setting the font size of the group annotation title, default <- 8.
-#' @param fontsize_group_annotation_legend An integer setting the font size of the group annotation legend name, default <- 10.
-#' @param fontsize_group_annotation_labels An integer setting the font size of the group annotation labels in the legend, default <- 8.
+#' @param sample_metadata A dataframe containing the metadata information for
+#' the grouping of the columns, default <- NULL.
+#' @param annotation_colors A list assigning choosen colors to the corresponding
+#' groups, default <- NULL.
+#' @param annotation_name_side The side of the column annotation description,
+#' default <- "right".
+#' @param fontsize_group_annotation An integer setting the font size of the
+#' group annotation title, default <- 8.
+#' @param fontsize_group_annotation_legend An integer setting the font size of
+#' the group annotation legend name, default <- 10.
+#' @param fontsize_group_annotation_labels An integer setting the font size of
+#' the group annotation labels in the legend, default <- 8.
 #'
-#' @return A "HeamapAnnotation" object if "sample_metadata" is provided, otherwise NULL.
+#' @return A "HeamapAnnotation" object if "sample_metadata" is provided,
+#' otherwise NULL.
 #' @export
 #'
 #' @examples
-#'  x <- 1
-#'  seed <- 1
-#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' x <- 1
+#' seed <- 1
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
+#' package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
 #' ncounts_matrix <- scale_counts(matrixCounts)
 #' set.seed
-#' groups <- c("3_DKD_glomerulus_Geometric_S", "1B_DKD_glomerulus_Geometric_S", "2B_DKD_glomerulus_WT")
+#' groups <- c("3_DKD_glomerulus_Geometric_S", "1B_DKD_glomerulus_Geometric_S",
+#' "2B_DKD_glomerulus_WT")
 #' sample_names <- c(colnames(ncounts_matrix))
-#' group_assignment <- sapply(sample_names, function(sample) { matched <- groups[sapply(groups, function(g) grepl(g, sample))]
-#' if (length(matched) > 0) matched[1] else NA })
+#' group_assignment <- sapply(sample_names, function(sample) {
+#'   matched <- groups[sapply(groups, function(g) grepl(g, sample))]
+#'   if (length(matched) > 0) matched[1] else NA
+#' })
 #' stopifnot(length(sample_names) == length(group_assignment))
-#' sample_metadata <- data.frame(Group = group_assignment, row.names = sample_names)
+#' sample_metadata <- data.frame(Group = group_assignment,
+#' row.names = sample_names)
 #' all(colnames(ncounts_matrix) == rownames(sample_metadata))
-#' group_colors <- list(Group = c("3_DKD_glomerulus_Geometric_S" = "#1b9e77", "1B_DKD_glomerulus_Geometric_S" = "#7570b3", "2B_DKD_glomerulus_WT" = "#e7298a"))
-#' col_ha <- set_sample_annotation(sample_metadata = sample_metadata, annotation_colors = group_colors)
-
+#' group_colors <- list(Group = c("3_DKD_glomerulus_Geometric_S" = "#1b9e77",
+#' "1B_DKD_glomerulus_Geometric_S" = "#7570b3",
+#' "2B_DKD_glomerulus_WT" = "#e7298a"))
+#' col_ha <- set_sample_annotation(sample_metadata = sample_metadata,
+#' annotation_colors = group_colors)
 set_sample_annotation <- function(sample_metadata = NULL,
                                   annotation_colors = NULL,
                                   annotation_name_side = "right",
-                                  fontsize_group_annotation = 8,             # fontsize of optional group annotation
-                                  fontsize_group_annotation_legend = 10,     # fontsize of optional group annotation legend title
-                                  fontsize_group_annotation_labels = 8      # fontsize of optional group annotation legend labels
-                                  ) {
+                                  fontsize_group_annotation = 8,
+                                  fontsize_group_annotation_legend = 10,
+                                  fontsize_group_annotation_labels = 8
+) {
   col_ha <- NULL
   if (!is.null(sample_metadata)) {
     col_ha <- ComplexHeatmap::HeatmapAnnotation(
@@ -714,8 +910,8 @@ set_sample_annotation <- function(sample_metadata = NULL,
       annotation_name_side = annotation_name_side,
       annotation_name_gp = grid::gpar(fontsize = fontsize_group_annotation),
       annotation_legend_param = list(
-        title_gp = grid::gpar(fontsize = fontsize_group_annotation_legend),   # font size for legend title
-        labels_gp = grid::gpar(fontsize = fontsize_group_annotation_labels)   # font size for legend labels
+        title_gp = grid::gpar(fontsize = fontsize_group_annotation_legend),
+        labels_gp = grid::gpar(fontsize = fontsize_group_annotation_labels)
       )
     )
   }
@@ -725,72 +921,84 @@ set_sample_annotation <- function(sample_metadata = NULL,
 #' Setting the row annotation
 #'
 #' @param ncounts_matrix An input matrix to create the heatmap.
-#' @param row_annotation A Boolean switching row annotation on the heatmap on and off, default <- FALSE.
-#' @param row_annotation_method A string setting the annotation method of the heatmap, default <- "auto".
-#' @param row_anno_names A list containing choosen rownames to use for the row annotation, default <- NULL.
-#' @param row_anno_number An integer setting the number of automatic annotations assigned per cluster, default <- 5.
-#' @param k_row An integer used to set number of clusters for row clustering in the heatmap, default <- NULL.
-#' @param fontsize_rowAnnotation An integer setting the font size of the group annotation labels in the legend, default <- 8.
+#' @param row_annotation A Boolean switching row annotation on the heatmap on
+#' and off, default <- FALSE.
+#' @param row_annotation_method A string setting the annotation method of the
+#' heatmap, default <- "auto".
+#' @param row_anno_names A list containing choosen rownames to use for the row
+#' annotation, default <- NULL.
+#' @param row_anno_number An integer setting the number of automatic annotations
+#' assigned per cluster, default <- 5.
+#' @param k_row An integer used to set number of clusters for row clustering in
+#' the heatmap, default <- NULL.
+#' @param fontsize_rowAnnotation An integer setting the font size of the group
+#' annotation labels in the legend, default <- 8.
 #'
 #' @return Numeric index from matrix for the row annotation
 #' @export
 #'
 #' @examples
-#'  x <- 1
-#'  seed <- 1
-#' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+#' x <- 1
+#' seed <- 1
+#' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
+#' package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
 #' ncounts_matrix <- scale_counts(matrixCounts)
 #' set.seed(seed)
 #' annotation_for_rows <- set_row_annotation(ncounts_matrix)
 set_row_annotation <- function(ncounts_matrix,
                                k_row = NULL,
-                               row_annotation = FALSE,                    # FALSE or TRUE
-                               row_annotation_method = "auto",            # "auto", "specific", "none"
-                               row_anno_names = NULL,                     # option to set list of specific genes as row annotation
+                               row_annotation = FALSE, # FALSE or TRUE
+                               row_annotation_method = "auto",
+                               row_anno_names = NULL,
                                row_anno_number = 5,
-                               fontsize_rowAnnotation = 10
-                               ) {
+                               fontsize_rowAnnotation = 10) {
   annotation_for_rows <- NULL
   if (row_annotation) {
     if (row_annotation_method == "auto") {
-
       if (!is.null(k_row)) {
         m_kmeans <- Kmean_generation(ncounts_matrix, k_row)
-        top_x_genes_cluster <- most_variable_genes(m_kmeans, row_anno_number, k_row) #get most variable expressed genes of each cluster
-        annotation_for_rows <- set_annotation(ncounts_matrix, top_x_genes_cluster, fontsize_rowAnnotation)
-
+        top_x_genes_cluster <- most_variable_genes(m_kmeans,
+                                                   row_anno_number, k_row)
+        annotation_for_rows <- set_annotation(ncounts_matrix,
+                                              top_x_genes_cluster,
+                                              fontsize_rowAnnotation)
       } else {
         y <- ncounts_matrix
         top_x_genes_cluster <- list()
-        #estimates the variance for each row
+        # estimates the variance for each row
         variance_row <- apply(y, 1, stats::var)
-        # binds a column with the estimated variance of each gene to clustermatrix
+        # binds column with the estimated variance of each gene to clustermatrix
         cluster_matrix <- BiocGenerics::cbind(y, variance_row)
-        #get number of last column
+        # get number of last column
         number_of_last_column <- ncol(y)
         # orders the variances from highest to lowest
         o <- BiocGenerics::order(y[, number_of_last_column], decreasing = TRUE)
         # orders matrix according to order of variances ( highest to lowest)
         cluster_matrix <- y[o, ]
         # makes a list of the gene names with the highest variance
-        cluster_genes_highest_var <- as.list(BiocGenerics::rownames(y)[seq_len(row_anno_number)])
+        cluster_genes_highest_var <- as.list(
+          BiocGenerics::rownames(y)[seq_len(row_anno_number)])
         # creates list with most_variable_genes of all cluster
-        top_x_genes_cluster <- append(top_x_genes_cluster, cluster_genes_highest_var)
+        top_x_genes_cluster <- append(top_x_genes_cluster,
+                                      cluster_genes_highest_var)
         # set annotation for rows
-        annotation_for_rows <- set_annotation(ncounts_matrix, top_x_genes_cluster, fontsize_rowAnnotation)
+        annotation_for_rows <- set_annotation(ncounts_matrix,
+                                              top_x_genes_cluster,
+                                              fontsize_rowAnnotation)
       }
-
     } else if (row_annotation_method == "specific") {
-      annotation_for_rows <- set_annotation(ncounts_matrix, row_anno_names, fontsize_rowAnnotation)
+      annotation_for_rows <- set_annotation(ncounts_matrix, row_anno_names,
+                                            fontsize_rowAnnotation)
     }
   }
+  return(annotation_for_rows)
 }
 
 #' Draw the advanced heatmap
 #'
 #' @param ncounts_matrix An input matrix to create the heatmap.
-#' @param column_name A string to set the title of the heatmap, default <- "Heatmap".
+#' @param column_name A string to set the title of the heatmap.
 #' @param colorPalette Name of the colorPalette used for the heatmap, default <- NULL.
 #' @param show_row_names A Boolean switching rownames on the heatmap on and off, default <- FALSE.
 #' @param show_column_names A Boolean switching colum names on the heatmap on and off, default <- TRUE.
@@ -817,8 +1025,8 @@ set_row_annotation <- function(ncounts_matrix,
 #' @export
 #'
 #' @examples
-#'  x <- 1
-#'  seed <- 1
+#' x <- 1
+#' seed <- 1
 #' input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
 #' ncounts_matrix <- scale_counts(matrixCounts)
@@ -829,39 +1037,39 @@ set_row_annotation <- function(ncounts_matrix,
 #' col_dend <- TRUE
 #' groups <- c("3_DKD_glomerulus_Geometric_S", "1B_DKD_glomerulus_Geometric_S", "2B_DKD_glomerulus_WT")
 #' sample_names <- c(colnames(ncounts_matrix))
-#' group_assignment <- sapply(sample_names, function(sample) { matched <- groups[sapply(groups, function(g) grepl(g, sample))]
-#' if (length(matched) > 0) matched[1] else NA })
+#' group_assignment <- sapply(sample_names, function(sample) {
+#'   matched <- groups[sapply(groups, function(g) grepl(g, sample))]
+#'   if (length(matched) > 0) matched[1] else NA
+#' })
 #' stopifnot(length(sample_names) == length(group_assignment))
 #' sample_metadata <- data.frame(Group = group_assignment, row.names = sample_names)
 #' all(colnames(ncounts_matrix) == rownames(sample_metadata))
 #' group_colors <- list(Group = c("3_DKD_glomerulus_Geometric_S" = "#1b9e77", "1B_DKD_glomerulus_Geometric_S" = "#7570b3", "2B_DKD_glomerulus_WT" = "#e7298a"))
 #' col_ha <- set_sample_annotation(sample_metadata = sample_metadata, annotation_colors = group_colors)
 #' ht <- draw_adv_heatmap(ncounts_matrix)
-
 draw_adv_heatmap <- function(ncounts_matrix, column_name = "Heatmap", colorPalette = NULL, col_ha = NULL, show_row_names = FALSE, show_column_names = TRUE, fontsize_title = 15, fontsize_columnNames = 6, fontsize_rowNames = 4, fontsize_cluster_labels = 8, fontsize_heatmap_legend = 10, fontsize_heatmap_legend_labels = 8, title_heatmapLegend = "Expression", WidthNum = 4.5, HeightNum = 3, UnitSize = "cm", row_annotation = FALSE, annotation_for_rows = NULL, row_split = NULL, col_split = NULL, row_dend = TRUE, col_dend = TRUE) {
-  heatmap_color_scheme <- get_heatmap_colors(colorPalette)            # sets the color Palette for the heatmap
+  heatmap_color_scheme <- get_heatmap_colors(colorPalette) # sets the color Palette for the heatmap
   ht <- ComplexHeatmap::Heatmap(ncounts_matrix,
-                                cluster_rows = if (is.logical(row_dend)) row_dend else row_dend,
-                                cluster_columns = if (is.logical(col_dend)) col_dend else col_dend,
-                                col = heatmap_color_scheme,
-                                row_split = row_split,
-                                column_split = col_split,
-                                top_annotation = col_ha,
-                                show_row_names = show_row_names,
-                                show_column_names = show_column_names,
-                                column_title = column_name,
-                                column_title_gp = grid::gpar(fontsize = fontsize_title),
-                                use_raster = FALSE,
-                                column_names_gp = grid::gpar(fontsize = fontsize_columnNames),
-                                row_names_gp = grid::gpar(fontsize = fontsize_rowNames),
-                                row_title_gp = grid::gpar(fontsize = fontsize_cluster_labels),
-                                heatmap_legend_param = list(title = title_heatmapLegend, title_gp = grid::gpar(fontsize = fontsize_heatmap_legend), labels_gp = grid::gpar(fontsize = fontsize_heatmap_legend_labels)),
-                                width = grid::unit(WidthNum, UnitSize),
-                                height = grid::unit(HeightNum, UnitSize))
+    cluster_rows = if (is.logical(row_dend)) row_dend else row_dend,
+    cluster_columns = if (is.logical(col_dend)) col_dend else col_dend,
+    col = heatmap_color_scheme,
+    row_split = row_split,
+    column_split = col_split,
+    top_annotation = col_ha,
+    show_row_names = show_row_names,
+    show_column_names = show_column_names,
+    column_title = column_name,
+    column_title_gp = grid::gpar(fontsize = fontsize_title),
+    use_raster = FALSE,
+    column_names_gp = grid::gpar(fontsize = fontsize_columnNames),
+    row_names_gp = grid::gpar(fontsize = fontsize_rowNames),
+    row_title_gp = grid::gpar(fontsize = fontsize_cluster_labels),
+    heatmap_legend_param = list(title = title_heatmapLegend, title_gp = grid::gpar(fontsize = fontsize_heatmap_legend), labels_gp = grid::gpar(fontsize = fontsize_heatmap_legend_labels)),
+    width = grid::unit(WidthNum, UnitSize),
+    height = grid::unit(HeightNum, UnitSize)
+  )
 
-  # Wrap addition of row annotation
-  #right_anno <- NULL
-  if (isTRUE(row_annotation)) {
+    if (isTRUE(row_annotation)) {
     ht <- ht + ComplexHeatmap::rowAnnotation(mark = annotation_for_rows)
   }
   hm <- ComplexHeatmap::draw(ht)

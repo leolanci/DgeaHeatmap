@@ -17,17 +17,19 @@ column_clustering(
 \arguments{
 \item{ncounts_matrix}{An input matrix to create the clustering.}
 
-\item{cluster_columns}{A Boolean switching the optional clustering of the rows on and off, default <- TRUE.}
+\item{cluster_columns}{A Boolean switching the optional clustering of the
+rows on and off, default <- TRUE.}
 
-\item{cluster_method}{A string setting the cluster method for the heatmap, default <- "hierarchical".}
+\item{cluster_method}{A string setting the cluster method for the heatmap.}
 
-\item{distance_method}{A string setting the distance method for clustering, default <- "euclidean".}
+\item{distance_method}{A string setting the distance method for clustering.}
 
-\item{k_col}{An integer used to set number of clusters for row clustering, default <- NULL.}
+\item{k_col}{An integer used to set number of clusters for row clustering.}
 
 \item{col_split}{An integer seeting the column clustering by kmeans.}
 
-\item{col_dend}{A Boolean switching column clustering by hierarchical clustering on (default).}
+\item{col_dend}{A Boolean switching column clustering by hierarchical
+clustering on (default).}
 }
 \value{
 col_split where the rows are split into clusters
@@ -36,13 +38,17 @@ col_split where the rows are split into clusters
 Setting the column clustering
 }
 \examples{
- x <- 1
- seed <- 1
-input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
+x <- 1
+seed <- 1
+input_data <- read.csv(system.file("extdata/testfile_counts.csv",
+package = "DgeaHeatmap"))
 matrixCounts <- build_matrix(input_data, x)
 ncounts_matrix <- scale_counts(matrixCounts)
 set.seed
 col_split <- NULL
 col_dend <- TRUE
-columns_clustered <- column_clustering(ncounts_matrix, cluster_columns = TRUE, cluster_method = "hierarchical", distance_method = "euclidean", k_col = NULL, col_split = col_split, col_dend = col_dend)
+columns_clustered <- column_clustering(ncounts_matrix,
+cluster_columns = TRUE, cluster_method = "hierarchical",
+distance_method = "euclidean", k_col = NULL, col_split = col_split,
+col_dend = col_dend)
 }

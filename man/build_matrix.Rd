@@ -7,7 +7,8 @@
 build_matrix(counts_data, x)
 }
 \arguments{
-\item{counts_data}{A data frame with floats or integers that has strings in one column.}
+\item{counts_data}{A data frame with floats or integers that
+has strings in one column.}
 
 \item{x}{Number of column which contains the rownames description.}
 }

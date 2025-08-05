@@ -15,10 +15,9 @@ test_that("basic test", {
 })
 
 test_that("Matrix is build from an input file and one column is put as rownames", {
-
   input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
   x <- 1
-  matrix_class <- c("matrix","array")
+  matrix_class <- c("matrix", "array")
   actual_outcome <- build_matrix(input_data, x)
 
   # testing the outcome of the function to be "matrix" "array"
@@ -32,9 +31,9 @@ test_that("An factor dependent individual matrix is build from a bigger matrix",
   counts_data <- build_matrix(input_data, 1)
   factors_for_matrix <- list("DKD", "glomerulus")
   print(factors_for_matrix)
-  matrix_class <- c("matrix","array")
+  matrix_class <- c("matrix", "array")
   actual_outcome <- individual_matrix(factors_for_matrix, counts_data)
-    # testing the outcome of the function to be "matrix" "array"
+  # testing the outcome of the function to be "matrix" "array"
   expect_equal(class(actual_outcome), matrix_class)
   # testing the outcome to have strings as rownames
   expect_equal(class(rownames(actual_outcome)), "character")
@@ -42,7 +41,6 @@ test_that("An factor dependent individual matrix is build from a bigger matrix",
   actual_output <- ncol(actual_outcome)
   expected_output <- 4
   expect_equal(actual_output, expected_output)
-
 })
 
 
@@ -58,26 +56,21 @@ test_that("Variance of each gene is estimated and only the most variable genes a
 
   # testing for correct class of outcome
   actual_outcome_class <- class(highly_variable_genes)
-  matrix_class <- c("matrix","array")
+  matrix_class <- c("matrix", "array")
   expect_equal(actual_outcome_class, matrix_class)
-
-
 })
 
 test_that("Counts are scaled through Z-score scaling", {
   input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
   counts_data <- build_matrix(input_data, 1)
   scaled_counts <- scale_counts(counts_data)
-  if(any(scaled_counts < 2)){
-    if(any(scaled_counts > (-2))){
+  if (any(scaled_counts < 2)) {
+    if (any(scaled_counts > (-2))) {
       actual_outcome <- FALSE
-    }
-    else {
+    } else {
       actual_outcome <- TRUE
     }
-  }
-
-  else {
+  } else {
     actual_outcome <- TRUE
   }
 
@@ -91,7 +84,7 @@ test_that("summarizing the biological replicates works", {
   input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
   counts_data <- build_matrix(input_data, 1)
   factors_for_matrix <- list("disease")
-  matrix_class <- c("matrix","array")
+  matrix_class <- c("matrix", "array")
   indi_matrix <- individual_matrix(factors_for_matrix, counts_data)
   head(indi_matrix)
   probes <- list("DKD_glomerulus", "DKD_tubule")
@@ -106,31 +99,30 @@ test_that("summarizing the biological replicates works", {
   expect_equal(actual_output, expected_output)
 })
 
-test_that("K-mean generation works",{
+test_that("K-mean generation works", {
   input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
   counts_data <- build_matrix(input_data, 1)
   factors_for_matrix <- list("disease")
-  matrix_class <- c("matrix","array")
+  matrix_class <- c("matrix", "array")
   indi_matrix <- individual_matrix(factors_for_matrix, counts_data)
   probes <- list("DKD_glomerulus", "DKD_tubule")
   SumTable <- summarise_bio_replicates(indi_matrix, probes)
   K_meanTable <- Kmean_generation(SumTable, 3)
   colNumSum <- ncol(SumTable)
-  expected_outcome <- colNumSum +1
+  expected_outcome <- colNumSum + 1
   actual_outcome <- ncol(K_meanTable)
   # testing that a new column is added
   expect_equal(actual_outcome, expected_outcome)
   # testing the outcome of the function to be "matrix" "array"
   actual_outcome <- Kmean_generation(SumTable, 1)
   expect_equal(class(actual_outcome), matrix_class)
-
 })
 
 test_that("function makes list of most variable genes (rows) of each cluster", {
   input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
   counts_data <- build_matrix(input_data, 1)
   factors_for_matrix <- list("disease")
-  matrix_class <- c("matrix","array")
+  matrix_class <- c("matrix", "array")
   indi_matrix <- individual_matrix(factors_for_matrix, counts_data)
   probes <- list("DKD_glomerulus", "DKD_tubule")
   SumTable <- summarise_bio_replicates(indi_matrix, probes)
@@ -139,14 +131,13 @@ test_that("function makes list of most variable genes (rows) of each cluster", {
   # testing the outcome is a list
   expected_outcome <- "list"
   expect_equal(class(actualOutput), expected_outcome)
-
 })
 
 test_that("performing k_mean clustering outside of the heatmap works", {
   input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
   counts_data <- build_matrix(input_data, 1)
   factors_for_matrix <- list("disease")
-  matrix_class <- c("matrix","array")
+  matrix_class <- c("matrix", "array")
   indi_matrix <- individual_matrix(factors_for_matrix, counts_data)
   probes <- list("DKD_glomerulus", "DKD_tubule")
   SumTable <- summarise_bio_replicates(indi_matrix, probes)
@@ -155,12 +146,8 @@ test_that("performing k_mean clustering outside of the heatmap works", {
   # testing that outcomes is right class
   expect_outcome <- "character"
   expect_equal(class(actualOutput), expect_outcome)
-
-
 })
 
 test_that("basic test runs", {
   expect_true(TRUE)
 })
-
-

@@ -26,8 +26,8 @@ metadata <- read.csv(system.file("extdata/MetaDataPackageNanostring.csv", packag
 grouping_columns <- c("segment", "region", "class", "slide_name")
 comparisons <- list(Comp1 = c("Geometric_Segment_glomerulus_DKD_disease3", "PanCK_tubule_DKD_disease4"), Comp2 = c("neg_tubule_DKD_disease4", "PanCK_tubule_DKD_disease4"))
 comp <- apply(metadata[, grouping_columns, drop = FALSE], 1, paste, collapse = "_")
-comp <- gsub(" ", "_", comp)  # Replace spaces with underscores
-metadata$comp <- make.names(comp)  # Clean names for use in model.matrix
+comp <- gsub(" ", "_", comp) # Replace spaces with underscores
+metadata$comp <- make.names(comp) # Clean names for use in model.matrix
 comp_factor <- factor(metadata$comp)
 paired_contrasts <- pairwise_contrasts(comparisons, comp_factor)
 
