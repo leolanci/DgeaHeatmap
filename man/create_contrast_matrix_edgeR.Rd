@@ -7,11 +7,15 @@
 create_contrast_matrix_edgeR(metadata, comparisons = NULL, prefix = "DEA")
 }
 \arguments{
-\item{metadata}{A dataframe containing the meta data information of the raw counts matrix.}
+\item{metadata}{A dataframe containing the meta data information of the raw
+counts matrix.}
 
-\item{comparisons}{An element of the class list, that contains optional information on specific comparisons that are to be conducted (simplifies the results).}
+\item{comparisons}{An element of the class list, that contains optional
+information on specific comparisons that are to be conducted (simplifies
+the results).}
 
-\item{prefix}{A string used as a prefix for the contrast_names that are generated.}
+\item{prefix}{A string used as a prefix for the contrast_names that are
+generated.}
 }
 \value{
 A matrix containing the contrasts for DEA with edgeR.
@@ -20,12 +24,19 @@ A matrix containing the contrasts for DEA with edgeR.
 Creates a contrast matrix for edgeR
 }
 \examples{
-rawCounts <- read.csv(system.file("extdata/RawDataExamplePackageNanostring.csv", package = "DgeaHeatmap"))
+rawCounts <- read.csv(system.file(
+"extdata/RawDataExamplePackageNanostring.csv", package = "DgeaHeatmap"))
 rawCounts <- build_matrix(rawCounts, 1)
-metadata <- read.csv(system.file("extdata/MetaDataPackageNanostring.csv", package = "DgeaHeatmap"))
+metadata <- read.csv(system.file(
+"extdata/MetaDataPackageNanostring.csv", package = "DgeaHeatmap"))
 grouping_columns <- c("segment", "region", "class", "slide_name")
-comparisons <- list(Comp1 = c("Geometric_Segment_glomerulus_DKD_disease3", "PanCK_tubule_DKD_disease4"), Comp2 = c("neg_tubule_DKD_disease4", "PanCK_tubule_DKD_disease4"))
+comparisons <- list(
+Comp1 = c("Geometric_Segment_glomerulus_DKD_disease3",
+"PanCK_tubule_DKD_disease4"),
+Comp2 = c("neg_tubule_DKD_disease4", "PanCK_tubule_DKD_disease4"))
 prefix <- "DEA"
-results_edgeR <- DGEAedgeR(rawCounts, metadata, grouping_columns, comparisons, prefix = "DEA")
-contrast_matrix <- create_contrast_matrix_edgeR(metadata = metadata, comparisons = comparisons, prefix = prefix)
+results_edgeR <- DGEAedgeR(
+rawCounts, metadata, grouping_columns, comparisons, prefix = "DEA")
+contrast_matrix <- create_contrast_matrix_edgeR(
+metadata = metadata, comparisons = comparisons, prefix = prefix)
 }

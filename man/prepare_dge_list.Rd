@@ -9,7 +9,8 @@ prepare_dge_list(rawCounts, metadata)
 \arguments{
 \item{rawCounts}{A matrix containing raw counts (integers).}
 
-\item{metadata}{A dataframe containing the meta data information of the raw counts matrix, with a column containing the comparison factors.}
+\item{metadata}{A dataframe containing the meta data information of the raw
+counts matrix, with a column containing the comparison factors.}
 }
 \value{
 A DGEList object.
@@ -18,8 +19,10 @@ A DGEList object.
 Creates a contrast matrix for edgeR
 }
 \examples{
-rawCounts <- read.csv(system.file("extdata/RawDataExamplePackageNanostring.csv", package = "DgeaHeatmap"))
+rawCounts <- read.csv(system.file(
+"extdata/RawDataExamplePackageNanostring.csv", package = "DgeaHeatmap"))
 rawCounts <- build_matrix(rawCounts, 1)
-metadata <- read.csv(system.file("extdata/MetaDataPackageNanostring.csv", package = "DgeaHeatmap"))
+metadata <- read.csv(system.file(
+"extdata/MetaDataPackageNanostring.csv", package = "DgeaHeatmap"))
 y <- prepare_dge_list(rawCounts, metadata)
 }

@@ -14,25 +14,33 @@ summarize_edgeR_DEA(
 \arguments{
 \item{results_edgeR}{A list containing the results of the DEA.}
 
-\item{lfc_threshold}{A Float, setting the threshold value for the fold change, default = 1.}
+\item{lfc_threshold}{A Float, setting threshold value for the fold change.}
 
-\item{fdr_threshold}{A Float, setting the False Discovery Rate threshold, default = 0.05.}
+\item{fdr_threshold}{A Float, setting the False Discovery Rate threshold.}
 
-\item{return_significant_genes}{A Boolean opting for the output of significantly regulated genes, default = TRUE}
+\item{return_significant_genes}{A Boolean opting for the output of
+significantly regulated genes.}
 }
 \value{
-A list containing the voom data, fitting of the linear model, results of the contrasts, and the generated design.
+A list containing the voom data, fitting of the linear model, results
+of the contrasts, and the generated design.
 }
 \description{
 Summarize the results of the DEA with edgeR
 }
 \examples{
-rawCounts <- read.csv(system.file("extdata/RawDataExamplePackageNanostring.csv", package = "DgeaHeatmap"))
+rawCounts <- read.csv(system.file(
+"extdata/RawDataExamplePackageNanostring.csv", package = "DgeaHeatmap"))
 rawCounts <- build_matrix(rawCounts, 1)
-metadata <- read.csv(system.file("extdata/MetaDataPackageNanostring.csv", package = "DgeaHeatmap"))
+metadata <- read.csv(system.file(
+"extdata/MetaDataPackageNanostring.csv", package = "DgeaHeatmap"))
 grouping_columns <- c("segment", "region", "class", "slide_name")
-comparisons <- list(Comp1 = c("Geometric_Segment_glomerulus_DKD_disease3", "PanCK_tubule_DKD_disease4"), Comp2 = c("neg_tubule_DKD_disease4", "PanCK_tubule_DKD_disease4"))
+comparisons <- list(
+Comp1 = c("Geometric_Segment_glomerulus_DKD_disease3",
+"PanCK_tubule_DKD_disease4"),
+Comp2 = c("neg_tubule_DKD_disease4", "PanCK_tubule_DKD_disease4"))
 prefix <- "DEA"
-results_edgeR <- DGEAedgeR(rawCounts, metadata, grouping_columns, comparisons, prefix = "DEA")
+results_edgeR <- DGEAedgeR(
+rawCounts, metadata, grouping_columns, comparisons, prefix = "DEA")
 sumresults <- summarize_edgeR_DEA(results_edgeR)
 }
