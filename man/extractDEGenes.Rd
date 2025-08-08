@@ -18,35 +18,44 @@ extractDEGenes(
 \arguments{
 \item{results_list}{A list containing the results of the DEA.}
 
-\item{comparisons}{An element of the class list, that contains optional information on specific comparisons that are to be conducted (simplifies the results).}
+\item{comparisons}{An element of the class list, that contains optional
+information on specific comparisons that are to be conducted (simplifies the
+results).}
 
-\item{only_up}{A Boolean opting for only up regulated genes, default = FALSE.}
+\item{only_up}{A Boolean opting for only up regulated genes.}
 
-\item{only_down}{A Boolean opting for only down regulated genes, default = FALSE.}
+\item{only_down}{A Boolean opting for only down regulated genes.}
 
-\item{up_down}{A Boolean opting for only up and down regulated genes, default = FALSE.}
+\item{up_down}{A Boolean opting for only up and down regulated genes.}
 
-\item{only_sig}{A Boolean opting for only significantly regulated genes, default = FALSE.}
+\item{only_sig}{A Boolean opting for only significantly regulated genes.}
 
-\item{padj_cutoff}{A Float, setting the adjusted p-values cutoff, default = 0.05.}
+\item{padj_cutoff}{A Float, setting the adjusted p-values cutoff.}
 
-\item{lfc_cutoff}{A Float, setting the fold change cutoff, default = 0.}
+\item{lfc_cutoff}{A Float, setting the fold change cutoff.}
 }
 \value{
-A list containing the voom data, fitting of the linear model, results of the contrasts, and the generated design.
+A list containing the voom data, fitting of the linear model, results
+of the contrasts, and the generated design.
 }
 \description{
 Extracts the results of the DEA with DESeq2
 }
 \examples{
-rawCounts <- read.csv(system.file("extdata/RawDataExamplePackageNanostring.csv", package = "DgeaHeatmap"))
+rawCounts <- read.csv(system.file(
+"extdata/RawDataExamplePackageNanostring.csv", package = "DgeaHeatmap"))
 rawCounts <- build_matrix(rawCounts, 1)
-metadata <- read.csv(system.file("extdata/MetaDataPackageNanostring.csv", package = "DgeaHeatmap"))
+metadata <- read.csv(system.file(
+"extdata/MetaDataPackageNanostring.csv", package = "DgeaHeatmap"))
 grouping_columns <- c("segment", "region", "class", "slide_name")
-comparisons <- list(Comp1 = c("Geometric_Segment_glomerulus_DKD_disease3", "PanCK_tubule_DKD_disease4"), Comp2 = c("neg_tubule_DKD_disease4", "PanCK_tubule_DKD_disease4"))
+comparisons <- list(
+Comp1 = c("Geometric_Segment_glomerulus_DKD_disease3",
+"PanCK_tubule_DKD_disease4"),
+Comp2 = c("neg_tubule_DKD_disease4", "PanCK_tubule_DKD_disease4"))
 storage.mode(rawCounts) <- "integer"
 sum(!is.finite(as.matrix(rawCounts)))
-results_list_DESeq2 <- DGEADESeq2(rawCounts, metadata, grouping_columns, comparisons)
+results_list_DESeq2 <- DGEADESeq2(rawCounts, metadata, grouping_columns,
+comparisons)
 results_list <- results_list_DESeq2$results
 down_genes <- extractDEGenes(results_list, comparisons, only_down = TRUE)
 }

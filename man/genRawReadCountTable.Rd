@@ -18,7 +18,8 @@ that have passed quality control.
 Function to generating a raw read count table.
 }
 \examples{
-datadir <- system.file("extdata", "WTA_NGS_Example", package = "GeoMxWorkflows")
+datadir <- system.file("extdata", "WTA_NGS_Example",
+package = "GeoMxWorkflows")
 DCCFiles <- dir(file.path(datadir, "dccs"), pattern = ".dcc$",
 full.names = TRUE, recursive = TRUE)
 PKCFiles <- unzip(zipfile = dir(file.path(datadir, "pkcs"),
@@ -26,7 +27,8 @@ pattern = ".zip$", full.names = TRUE, recursive = TRUE))
 SampleAnnotationFile <- dir(file.path(datadir, "annotation"),
 pattern = ".xlsx$", full.names = TRUE, recursive = TRUE)
 rawDataObject <- suppressWarnings(GeomxTools::readNanoStringGeoMxSet(
-dccFiles = DCCFiles, pkcFiles = PKCFiles, phenoDataFile = SampleAnnotationFile,
+dccFiles = DCCFiles, pkcFiles = PKCFiles,
+phenoDataFile = SampleAnnotationFile,
 phenoDataSheet = "Template", phenoDataDccColName = "Sample_ID",
 protocolDataColNames = c("aoi", "roi"), configFile = NULL, analyte = "RNA",
 phenoDataColPrefix = "", experimentDataColNames = NULL))

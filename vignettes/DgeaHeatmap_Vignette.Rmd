@@ -399,23 +399,19 @@ library(ggsankey)
 
 
 if (packageVersion("GeomxTools") < "2.1" &&
-  packageVersion("GeoMxWorkflows") >= "1.0.1") {
-  stop("GeomxTools and Workflow versions do not match. Please use the same 
-  version. Rhis workflow is meant to be used with most current version of 
-  packages.If you are using an older version of Bioconductor please reinstall 
-  GeoMxWorkflows and use vignette(GeoMxWorkflows) instead")
+    packageVersion("GeoMxWorkflows") >= "1.0.1") {
+    stop("GeomxTools and Workflow versions do not match. Please use the same
+    version. Rhis workflow is meant to be used with most current version of
+    packages.If you are using an older version of Bioconductor please reinstall
+    GeoMxWorkflows and use vignette(GeoMxWorkflows) instead")
 }
 
 if (packageVersion("GeomxTools") > "2.1" &&
-  packageVersion("GeoMxWorkflows") <= "1.0.1") {
-  stop("GeomxTools and Workflow versions do not match.
+    packageVersion("GeoMxWorkflows") <= "1.0.1") {
+    stop("GeomxTools and Workflow versions do not match.
          Please use the same version, see install instructions above.")
-
-  # to remove current package version
-  # remove.packages("GeomxTools")
-  # remove.packages("GeoMxWorkflows")
-  # see install instructions above
 }
+
 ```
 
 ```{r readInNanostringRawFiles, echo=FALSE, results='hide', warning=FALSE}

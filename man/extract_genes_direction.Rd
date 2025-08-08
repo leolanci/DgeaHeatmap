@@ -17,17 +17,17 @@ extract_genes_direction(
 \arguments{
 \item{results_list}{A list containing the results of the DEA.}
 
-\item{only_up}{A Boolean opting for only up regulated genes, default = FALSE.}
+\item{only_up}{A Boolean opting for only up regulated genes.}
 
-\item{only_down}{A Boolean opting for only down regulated genes, default = FALSE.}
+\item{only_down}{A Boolean opting for only down regulated genes.}
 
-\item{only_sig}{A Boolean opting for only significantly regulated genes, default = FALSE.}
+\item{only_sig}{A Boolean opting for only significantly regulated genes.}
 
 \item{padj}{A Float, defining the adjusted p-value.}
 
-\item{padj_cutoff}{A Float, setting the adjusted p-values cutoff, default = 0.05.}
+\item{padj_cutoff}{A Float, setting the adjusted p-values cutoff.}
 
-\item{lfc_cutoff}{A Float, setting the fold change cutoff, default = 0.}
+\item{lfc_cutoff}{A Float, setting the fold change cutoff.}
 }
 \value{
 A character vector of contrast names.
@@ -36,15 +36,24 @@ A character vector of contrast names.
 Get list of genes and their direction of regulation
 }
 \examples{
-rawCounts <- read.csv(system.file("extdata/RawDataExamplePackageNanostring.csv", package = "DgeaHeatmap"))
+rawCounts <- read.csv(
+system.file("extdata/RawDataExamplePackageNanostring.csv",
+package = "DgeaHeatmap"))
 rawCounts <- build_matrix(rawCounts, 1)
-metadata <- read.csv(system.file("extdata/MetaDataPackageNanostring.csv", package = "DgeaHeatmap"))
+metadata <- read.csv(system.file("extdata/MetaDataPackageNanostring.csv",
+package = "DgeaHeatmap"))
 grouping_columns <- c("segment", "region", "class", "slide_name")
-comparisons <- list(Comp1 = c("Geometric_Segment_glomerulus_DKD_disease3", "PanCK_tubule_DKD_disease4"), Comp2 = c("neg_tubule_DKD_disease4", "PanCK_tubule_DKD_disease4"))
+comparisons <- list(
+Comp1 = c("Geometric_Segment_glomerulus_DKD_disease3",
+"PanCK_tubule_DKD_disease4"),
+Comp2 = c("neg_tubule_DKD_disease4", "PanCK_tubule_DKD_disease4"))
 storage.mode(rawCounts) <- "integer"
 sum(!is.finite(as.matrix(rawCounts)))
-results_list_DESeq2 <- DGEADESeq2(rawCounts, metadata, grouping_columns, comparisons)
+results_list_DESeq2 <- DGEADESeq2(
+rawCounts, metadata, grouping_columns, comparisons)
 results_list <- results_list_DESeq2$results
-gene_list <- extract_genes_direction(results_list, only_up = TRUE, only_down = FALSE, only_sig = FALSE, padj = NULL, padj_cutoff = 0.05, lfc_cutoff = 0)
+gene_list <- extract_genes_direction(
+results_list, only_up = TRUE, only_down = FALSE, only_sig = FALSE,
+padj = NULL, padj_cutoff = 0.05, lfc_cutoff = 0)
 
 }

@@ -27,10 +27,9 @@ add_demoElem <- function(demoData) {
   Biobase::assayDataElement(demoData, "demoElem") <-
     NanoStringNCTools::assayDataApply(demoData, MARGIN = 2,
                                       FUN = log, base = 10, elt = "exprs")
-  Biobase::assayDataElement(
-    demoData,
-    "demoElem")[seq_len(3), seq_len(2)]
-  return(demoData)
+  Biobase::assayDataElement(demoData,
+                            "demoElem")[seq_len(3), seq_len(2)]
+  demoData
 }
 
 #' Splitting data by group column with feature,
@@ -73,7 +72,7 @@ split_data_by_column <- function(demoData, vGroup, vElt) {
                                         FUN = mean, elt = vElt)
     }
   ))
-  return(demoData)
+  demoData
 }
 
 #' Function for automatized quality control.
@@ -100,7 +99,7 @@ aExprsDataQC <- function(demoData, vFlags) {
   ))
   QCPassed <- demoData[, QCResultsIndex]
   dim(QCPassed)
-  return(QCPassed)
+  QCPassed
 }
 
 #' Function to generating a raw read count table.
@@ -113,7 +112,8 @@ aExprsDataQC <- function(demoData, vFlags) {
 #' @export
 #'
 #' @examples
-#' datadir <- system.file("extdata", "WTA_NGS_Example", package = "GeoMxWorkflows")
+#' datadir <- system.file("extdata", "WTA_NGS_Example",
+#' package = "GeoMxWorkflows")
 #' DCCFiles <- dir(file.path(datadir, "dccs"), pattern = ".dcc$",
 #' full.names = TRUE, recursive = TRUE)
 #' PKCFiles <- unzip(zipfile = dir(file.path(datadir, "pkcs"),
@@ -121,7 +121,8 @@ aExprsDataQC <- function(demoData, vFlags) {
 #' SampleAnnotationFile <- dir(file.path(datadir, "annotation"),
 #' pattern = ".xlsx$", full.names = TRUE, recursive = TRUE)
 #' rawDataObject <- suppressWarnings(GeomxTools::readNanoStringGeoMxSet(
-#' dccFiles = DCCFiles, pkcFiles = PKCFiles, phenoDataFile = SampleAnnotationFile,
+#' dccFiles = DCCFiles, pkcFiles = PKCFiles,
+#' phenoDataFile = SampleAnnotationFile,
 #' phenoDataSheet = "Template", phenoDataDccColName = "Sample_ID",
 #' protocolDataColNames = c("aoi", "roi"), configFile = NULL, analyte = "RNA",
 #' phenoDataColPrefix = "", experimentDataColNames = NULL))
@@ -145,5 +146,5 @@ genRawReadCountTable <- function(demoData) {
   matrix_Exp <- Biobase::exprs(target_demoData)
   class(matrix_Exp)
   df_Exp <- BiocGenerics::as.data.frame(matrix_Exp)
-  return(df_Exp)
+  df_Exp
 }
