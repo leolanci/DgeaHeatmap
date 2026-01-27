@@ -100,7 +100,9 @@ group_assignment <- sapply(sample_names, function(sample) {
 stopifnot(length(sample_names) == length(group_assignment))
 sample_metadata <- data.frame(Group = group_assignment, row.names = sample_names)
 all(colnames(ncounts_matrix) == rownames(sample_metadata))
-group_colors <- list(Group = c("3_DKD_glomerulus_Geometric_S" = "#1b9e77", "1B_DKD_glomerulus_Geometric_S" = "#7570b3", "2B_DKD_glomerulus_WT" = "#e7298a"))
+group_colors <- list(Group = c("3_DKD_glomerulus_Geometric_S" = "#1b9e77",
+"1B_DKD_glomerulus_Geometric_S" = "#7570b3",
+"2B_DKD_glomerulus_WT" = "#e7298a"))
 col_ha <- set_sample_annotation(sample_metadata = sample_metadata, annotation_colors = group_colors)
 ht <- draw_adv_heatmap(ncounts_matrix)
 }
