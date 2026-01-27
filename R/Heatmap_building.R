@@ -84,7 +84,7 @@ filtering_for_top_exprGenes <- function(counts_data, top_number_of_genes) {
 }
 
 
-F#' Function to Z-count scale the values of a matrix.
+#' Function to Z-count scale the values of a matrix.
 #'
 #' @param countsmatrix An input matrix whose values are scaled by Z-count.
 #'
@@ -665,7 +665,7 @@ adv_Heatmap <- function(ncounts_matrix, column_name = "Heatmap",
   # --- Sample Annotation ---
   col_ha <- NULL
   col_ha <- set_sample_annotation(sample_metadata = sample_metadata,
-                                  annotation_colors = group_colors,
+                                  annotation_colors = annotation_colors,
                                   annotation_name_side = annotation_name_side,
                                   fontsize_group_annotation = fontsize_group_annotation,
                                   fontsize_group_annotation_legend = fontsize_group_annotation_legend,
@@ -1033,7 +1033,9 @@ set_row_annotation <- function(ncounts_matrix,
 #' stopifnot(length(sample_names) == length(group_assignment))
 #' sample_metadata <- data.frame(Group = group_assignment, row.names = sample_names)
 #' all(colnames(ncounts_matrix) == rownames(sample_metadata))
-#' group_colors <- list(Group = c("3_DKD_glomerulus_Geometric_S" = "#1b9e77", "1B_DKD_glomerulus_Geometric_S" = "#7570b3", "2B_DKD_glomerulus_WT" = "#e7298a"))
+#' group_colors <- list(Group = c("3_DKD_glomerulus_Geometric_S" = "#1b9e77",
+#' "1B_DKD_glomerulus_Geometric_S" = "#7570b3",
+#' "2B_DKD_glomerulus_WT" = "#e7298a"))
 #' col_ha <- set_sample_annotation(sample_metadata = sample_metadata, annotation_colors = group_colors)
 #' ht <- draw_adv_heatmap(ncounts_matrix)
 draw_adv_heatmap <- function(ncounts_matrix, column_name = "Heatmap", colorPalette = NULL, col_ha = NULL, show_row_names = FALSE, show_column_names = TRUE, fontsize_title = 15, fontsize_columnNames = 6, fontsize_rowNames = 4, fontsize_cluster_labels = 8, fontsize_heatmap_legend = 10, fontsize_heatmap_legend_labels = 8, title_heatmapLegend = "Expression", WidthNum = 4.5, HeightNum = 3, UnitSize = "cm", row_annotation = FALSE, annotation_for_rows = NULL, row_split = NULL, col_split = NULL, row_dend = TRUE, col_dend = TRUE) {
