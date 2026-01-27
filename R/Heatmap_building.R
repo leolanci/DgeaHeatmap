@@ -84,7 +84,7 @@ filtering_for_top_exprGenes <- function(counts_data, top_number_of_genes) {
 }
 
 
-#' Function to Z-count scale the values of a matrix.
+F#' Function to Z-count scale the values of a matrix.
 #'
 #' @param countsmatrix An input matrix whose values are scaled by Z-count.
 #'
