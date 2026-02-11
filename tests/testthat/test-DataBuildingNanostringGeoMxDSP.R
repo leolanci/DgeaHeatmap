@@ -22,7 +22,9 @@ test_that("Build a matrix from an input csv file, with one column as rownames", 
 
   datadir <- system.file("extdata", "WTA_NGS_Example", package = "GeoMxWorkflows")
   DCCFiles <- dir(file.path(datadir, "dccs"), pattern = ".dcc$", full.names = TRUE, recursive = TRUE)
-  PKCFiles <- unzip(zipfile = dir(file.path(datadir, "pkcs"), pattern = ".zip$", full.names = TRUE, recursive = TRUE))
+  PKCFiles <- unzip(zipfile = dir(file.path(datadir, "pkcs"), pattern = ".zip$", full.names = TRUE, recursive = TRUE),
+                    exdir = tempdir()
+                    )
   SampleAnnotationFile <- dir(file.path(datadir, "annotation"), pattern = ".xlsx$", full.names = TRUE, recursive = TRUE)
 
   demoData <- suppressWarnings(
@@ -68,7 +70,9 @@ test_that("Splitting data by group column with feature, pheno or protocol data t
   DCCFiles <- dir(file.path(datadir, "dccs"),
                   pattern = ".dcc$", full.names = TRUE, recursive = TRUE)
   PKCFiles <- unzip(zipfile = dir(file.path(datadir, "pkcs"),
-                                  pattern = ".zip$", full.names = TRUE, recursive = TRUE))
+                                  pattern = ".zip$", full.names = TRUE, recursive = TRUE),
+                    exdir = tempdir()
+                    )
   SampleAnnotationFile <- dir(file.path(datadir, "annotation"),
                               pattern = ".xlsx$", full.names = TRUE, recursive = TRUE)
 
@@ -115,7 +119,9 @@ test_that("Function for automatized quality control.", {
   # Load example data
   datadir <- system.file("extdata", "WTA_NGS_Example", package = "GeoMxWorkflows")
   dcc_files <- dir(file.path(datadir, "dccs"), pattern = ".dcc$", full.names = TRUE)
-  pkc_file <- unzip(zipfile = dir(file.path(datadir, "pkcs"), pattern = ".zip$", full.names = TRUE))
+  pkc_file <- unzip(zipfile = dir(file.path(datadir, "pkcs"), pattern = ".zip$", full.names = TRUE),
+                    exdir = tempdir()
+                    )
   ann_file <- dir(file.path(datadir, "annotation"), pattern = ".xlsx$", full.names = TRUE)
 
   demoData <- suppressWarnings(GeomxTools::readNanoStringGeoMxSet(
@@ -141,7 +147,9 @@ test_that("genRawReadCountTable returns a data frame of raw counts", {
   # Load example data
   datadir <- system.file("extdata", "WTA_NGS_Example", package = "GeoMxWorkflows")
   DCCFiles <- dir(file.path(datadir, "dccs"), pattern = ".dcc$", full.names = TRUE)
-  PKCFiles <- unzip(zipfile = dir(file.path(datadir, "pkcs"), pattern = ".zip$", full.names = TRUE))
+  PKCFiles <- unzip(zipfile = dir(file.path(datadir, "pkcs"), pattern = ".zip$", full.names = TRUE),
+                    exdir = tempdir()
+                    )
   SampleAnnotationFile <- dir(file.path(datadir, "annotation"),
                               pattern = ".xlsx$", full.names = TRUE)
 
