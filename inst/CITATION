@@ -1,0 +1,20 @@
+citHeader("To cite DgeaHeatmap in publications use:")
+
+bibentry(
+  bibtype  = "Article",
+  title    = "DgeaHeatmap: an R package for transcriptomic analysis and heatmap generation",
+  author   = c(person(c("Leonie", "J"), "Lancelle"),
+                person(c("Phani", "S"), "Potru"),
+                person(c("Bjoern"), "Spittau"),
+                person(c("Susanne"), "Wiemann")),
+  journal  = "Bioinformatics Advances",
+  volume   = "5",
+  number   = "1",
+  pages    = "vbaf194",
+  year     = "2025",
+  month    = "08",
+  issn     = "2635-0041",
+  abstract = "The growing use of transcriptomic data from platforms like Nanostring GeoMx DSP demands accessible and flexible tools for differential gene expression analysis and heatmap generation. Current web-based tools often lack transparency, modifiability, and independence from external servers creating barriers for researchers seeking customizable workflows, as well as data privacy and security. Additionally, tools that can be utilized by individuals with minimal bioinformatics expertise provide an inclusive solution, empowering a broader range of users to analyze complex data effectively.Here, we introduce Differential Gene Expression Analysis and Heatmaps (DgeaHeatmap), an R package offering streamlined and user-friendly functions for transcriptomic data analysis particularly yielded by Nanostring GeoMx DSP instruments. The package supports both normalized and raw count data, providing tools to preprocess, filter, and annotate datasets. DgeaHeatmap leverages Z-score scaling and k-means clustering for customizable heatmap generation and incorporates a workflow adapted from GeoMxTools for handling raw Nanostring GeoMx DSP data. By enabling server-independent analyses, the package enhances flexibility, transparency, and reproducibility in transcriptomic research.The package DgeaHeatmap is freely available on GitLab (https://gitlab.ub.uni-bielefeld.de/spittaulab/Dgea/Heatmap/Package.git).",
+  doi      = "10.1093/bioadv/vbaf194",
+  url      = "https://academic.oup.com/bioinformaticsadvances/article-pdf/5/1/vbaf194/64088913/vbaf194.pdf"
+)
