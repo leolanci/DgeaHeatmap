@@ -28,7 +28,8 @@ package = "GeoMxWorkflows")
 DCCFiles <- dir(file.path(datadir, "dccs"),
 pattern = ".dcc$", full.names = TRUE, recursive = TRUE)
 PKCFiles <- unzip(zipfile = dir(file.path(datadir, "pkcs"),
-pattern = ".zip$", full.names = TRUE, recursive = TRUE))
+pattern = ".zip$", full.names = TRUE, recursive = TRUE),
+exdir = tempdir())
 SampleAnnotationFile <- dir(file.path(datadir, "annotation"),
 pattern = ".xlsx$", full.names = TRUE, recursive = TRUE)
 rawDataObject <- suppressWarnings(
