@@ -63,6 +63,7 @@ add_demoElem <- function(demoData) {
 #'   pattern = ".dcc$", full.names = TRUE, recursive = TRUE
 #' )
 #' PKCFiles <- unzip(
+
 #'   zipfile = dir(file.path(datadir, "pkcs"),
 #'     pattern = ".zip$", full.names = TRUE, recursive = TRUE
 #'   ),
