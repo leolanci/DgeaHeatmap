@@ -19,7 +19,8 @@ Calculates the distance matrix
 }
 \examples{
 input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-package = "DgeaHeatmap"))
+  package = "DgeaHeatmap"
+))
 x <- 1
 matrixCounts <- build_matrix(input_data, x)
 matrix <- scale_counts(matrixCounts)

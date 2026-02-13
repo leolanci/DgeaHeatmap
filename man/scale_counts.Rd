@@ -18,7 +18,8 @@ Function to Z-count scale the values of a matrix.
 \examples{
 x <- 1
 input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-package = "DgeaHeatmap"))
+  package = "DgeaHeatmap"
+))
 countsmatrix <- build_matrix(input_data, x)
 scaled_counts <- scale_counts(countsmatrix)
 }

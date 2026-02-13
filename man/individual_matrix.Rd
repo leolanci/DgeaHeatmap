@@ -26,7 +26,8 @@ original matrix with more data.
 factors_for_individual_matrix <- list("DKD", "glomerulus")
 x <- 1
 input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-package = "DgeaHeatmap"))
+  package = "DgeaHeatmap"
+))
 matrixCounts <- build_matrix(input_data, x)
 indiMatrix <- individual_matrix(factors_for_individual_matrix, matrixCounts)
 
