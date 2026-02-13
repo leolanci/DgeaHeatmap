@@ -764,6 +764,6 @@ class(CPM)
 
 df_normCounts <-data.frame("genes" = row.names(CPM), CPM)
 class(df_normCounts)
-write.csv(df_normCounts, "/Users/llancell/Documents/gitLab_SpittauLab/Dgea_Heatmap_Package/tests/testthat/NormCounts_ExampleDataNanostring.csv", row.names = FALSE), row.names = FALSE)
+# write.csv(df_normCounts, "path/to/file/filename", row.names = FALSE)
 
 ```
