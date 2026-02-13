@@ -16,7 +16,6 @@ A NanostringGeoMxSet object.
 Build a matrix from an input csv file, with one column as rownames
 }
 \examples{
-\dontrun{
 datadir <- system.file("extdata",
   "WTA_NGS_Example",
   package = "GeoMxWorkflows"
@@ -41,5 +40,4 @@ demoData <- suppressWarnings(GeomxTools::readNanoStringGeoMxSet(
   analyte = "RNA", phenoDataColPrefix = "", experimentDataColNames = NULL
 ))
 demoData <- add_demoElem(demoData)
-}
 }
