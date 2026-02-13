@@ -140,7 +140,6 @@ show_data_distribution <- function(scaled_counts) {
 }
 
 
-
 #' Function to create an elbow plot to choose k for clustering by k-Means.
 #'
 #' @param top_genes_matrix A matrix for which the best number of clusters in

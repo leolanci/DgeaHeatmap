@@ -8,17 +8,14 @@
 #' @examples
 #' datadir <- system.file("extdata",
 #'   "WTA_NGS_Example",
-#'   package = "GeoMxWorkflows"
-#' )
+#'   package = "GeoMxWorkflows")
 #' DCCFiles <- dir(file.path(datadir, "dccs"),
-#'   pattern = ".dcc$", full.names = TRUE, recursive = TRUE
-#' )
+#'   pattern = ".dcc$", full.names = TRUE, recursive = TRUE)
 #' PKCFiles <- unzip(
 #'   zipfile = dir(file.path(datadir, "pkcs"),
 #'     pattern = ".zip$", full.names = TRUE, recursive = TRUE
 #'   ),
-#'   exdir = tempdir()
-#' )
+#'   exdir = tempdir())
 #' SampleAnnotationFile <- dir(file.path(datadir, "annotation"),
 #'   pattern = ".xlsx$", full.names = TRUE, recursive = TRUE
 #' )

@@ -41,14 +41,16 @@ Setting the column clustering
 x <- 1
 seed <- 1
 input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-package = "DgeaHeatmap"))
+  package = "DgeaHeatmap"
+))
 matrixCounts <- build_matrix(input_data, x)
 ncounts_matrix <- scale_counts(matrixCounts)
 set.seed
 col_split <- NULL
 col_dend <- TRUE
 columns_clustered <- column_clustering(ncounts_matrix,
-cluster_columns = TRUE, cluster_method = "hierarchical",
-distance_method = "euclidean", k_col = NULL, col_split = col_split,
-col_dend = col_dend)
+  cluster_columns = TRUE, cluster_method = "hierarchical",
+  distance_method = "euclidean", k_col = NULL, col_split = col_split,
+  col_dend = col_dend
+)
 }

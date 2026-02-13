@@ -41,13 +41,16 @@ Setting the row clustering
 x <- 1
 seed <- 1
 input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-package = "DgeaHeatmap"))
+  package = "DgeaHeatmap"
+))
 matrixCounts <- build_matrix(input_data, x)
 ncounts_matrix <- scale_counts(matrixCounts)
 set.seed
 row_split <- NULL
 row_dend <- TRUE
-rows_clustered <- row_clustering(ncounts_matrix, cluster_rows = TRUE,
-cluster_method = "hierarchical", distance_method = "euclidean", k_row = NULL,
-row_split = row_split, row_dend = row_dend)
+rows_clustered <- row_clustering(ncounts_matrix,
+  cluster_rows = TRUE,
+  cluster_method = "hierarchical", distance_method = "euclidean", k_row = NULL,
+  row_split = row_split, row_dend = row_dend
+)
 }

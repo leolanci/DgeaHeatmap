@@ -26,9 +26,12 @@ through calculation of the variance.
 x <- 1
 top_number_of_genes <- 20
 input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-package = "DgeaHeatmap"))
+  package = "DgeaHeatmap"
+))
 matrixCounts <- build_matrix(input_data, x)
 counts_data <- matrixCounts
-varGenesMatrix <- filtering_for_top_exprGenes(counts_data,
-top_number_of_genes)
+varGenesMatrix <- filtering_for_top_exprGenes(
+  counts_data,
+  top_number_of_genes
+)
 }
