@@ -3,7 +3,10 @@ citHeader("To cite DgeaHeatmap in publications use:")
 bibentry(
   bibtype  = "Article",
   title    = "DgeaHeatmap: an R package for transcriptomic analysis and heatmap generation",
-  author   = "Lancelle, Leonie J and Potru, Phani S and Spittau, Björn and Wiemann, Susanne""
+  author   = c(person(c("Leonie", "J"), "Lancelle"),
+                person(c("Phani", "S"), "Potru"),
+                person(c("Bjoern"), "Spittau"),
+                person(c("Susanne"), "Wiemann")),
   journal  = "Bioinformatics Advances",
   volume   = "5",
   number   = "1",

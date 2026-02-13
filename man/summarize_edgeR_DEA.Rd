@@ -30,17 +30,26 @@ Summarize the results of the DEA with edgeR
 }
 \examples{
 rawCounts <- read.csv(system.file(
-"extdata/RawDataExamplePackageNanostring.csv", package = "DgeaHeatmap"))
+  "extdata/RawDataExamplePackageNanostring.csv",
+  package = "DgeaHeatmap"
+))
 rawCounts <- build_matrix(rawCounts, 1)
 metadata <- read.csv(system.file(
-"extdata/MetaDataPackageNanostring.csv", package = "DgeaHeatmap"))
+  "extdata/MetaDataPackageNanostring.csv",
+  package = "DgeaHeatmap"
+))
 grouping_columns <- c("segment", "region", "class", "slide_name")
 comparisons <- list(
-Comp1 = c("Geometric_Segment_glomerulus_DKD_disease3",
-"PanCK_tubule_DKD_disease4"),
-Comp2 = c("neg_tubule_DKD_disease4", "PanCK_tubule_DKD_disease4"))
+  Comp1 = c(
+    "Geometric_Segment_glomerulus_DKD_disease3",
+    "PanCK_tubule_DKD_disease4"
+  ),
+  Comp2 = c("neg_tubule_DKD_disease4", "PanCK_tubule_DKD_disease4")
+)
 prefix <- "DEA"
 results_edgeR <- DGEAedgeR(
-rawCounts, metadata, grouping_columns, comparisons, prefix = "DEA")
+  rawCounts, metadata, grouping_columns, comparisons,
+  prefix = "DEA"
+)
 sumresults <- summarize_edgeR_DEA(results_edgeR)
 }
