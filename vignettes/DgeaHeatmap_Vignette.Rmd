@@ -38,7 +38,6 @@ devtools::install_gitlab(repo = "https://gitlab.ub.uni-bielefeld.de/spittaulab/D
 
 This is a basic example which shows you how to solve a common problem:
 ```{r inputnormalizedReadCountsExample, echo=FALSE, results='hide'}
-
 input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
 ```
 
@@ -399,19 +398,18 @@ library(ggsankey)
 
 
 if (packageVersion("GeomxTools") < "2.1" &&
-    packageVersion("GeoMxWorkflows") >= "1.0.1") {
-    stop("GeomxTools and Workflow versions do not match. Please use the same
+  packageVersion("GeoMxWorkflows") >= "1.0.1") {
+  stop("GeomxTools and Workflow versions do not match. Please use the same
     version. Rhis workflow is meant to be used with most current version of
     packages.If you are using an older version of Bioconductor please reinstall
     GeoMxWorkflows and use vignette(GeoMxWorkflows) instead")
 }
 
 if (packageVersion("GeomxTools") > "2.1" &&
-    packageVersion("GeoMxWorkflows") <= "1.0.1") {
-    stop("GeomxTools and Workflow versions do not match.
+  packageVersion("GeoMxWorkflows") <= "1.0.1") {
+  stop("GeomxTools and Workflow versions do not match.
          Please use the same version, see install instructions above.")
 }
-
 ```
 
 ```{r readInNanostringRawFiles, echo=FALSE, results='hide', warning=FALSE}

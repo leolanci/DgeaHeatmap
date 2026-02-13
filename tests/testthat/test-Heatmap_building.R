@@ -155,7 +155,8 @@ test_that("basic test runs", {
 test_that("function_complexHeatmap_var runs without error on valid input", {
   # Setup: Load sample data
   input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-                                     package = "DgeaHeatmap"))
+    package = "DgeaHeatmap"
+  ))
 
   x <- 1
   matrixCounts <- build_matrix(input_data, x)
@@ -209,8 +210,8 @@ test_that("get_heatmap_colors returns NULL when colorPalette is NULL", {
 
 test_that("get_heatmap_colors returns a color vector for valid palette", {
   result <- get_heatmap_colors("RdBu")
-  expect_type(result, "character")  # Should be a character vector of colors
-  expect_true(all(grepl("^#", result)))  # Should be hex color codes
+  expect_type(result, "character") # Should be a character vector of colors
+  expect_true(all(grepl("^#", result))) # Should be hex color codes
 })
 
 test_that("get_heatmap_colors fails gracefully on invalid palette", {
@@ -219,7 +220,8 @@ test_that("get_heatmap_colors fails gracefully on invalid palette", {
 
 test_that("adv_Heatmap works with clustering disabled", {
   input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-                                     package = "DgeaHeatmap"))
+    package = "DgeaHeatmap"
+  ))
   matrixCounts <- build_matrix(input_data, 1)
   ncounts_matrix <- scale_counts(matrixCounts)
 
@@ -236,9 +238,11 @@ test_that("row_clustering works with hierarchical clustering and no k_row", {
   ncounts_matrix <- scale_counts(matrixCounts)
 
   # Run clustering
-  result <- row_clustering(ncounts_matrix, cluster_rows = TRUE,
-                           cluster_method = "hierarchical", distance_method = "euclidean",
-                           k_row = NULL, row_split = NULL, row_dend = TRUE)
+  result <- row_clustering(ncounts_matrix,
+    cluster_rows = TRUE,
+    cluster_method = "hierarchical", distance_method = "euclidean",
+    k_row = NULL, row_split = NULL, row_dend = TRUE
+  )
 
   # Expectations
   expect_type(result, "list")
@@ -253,9 +257,11 @@ test_that("row_clustering works with hierarchical clustering and k_row", {
   matrixCounts <- build_matrix(input_data, 1)
   ncounts_matrix <- scale_counts(matrixCounts)
 
-  result <- row_clustering(ncounts_matrix, cluster_rows = TRUE,
-                           cluster_method = "hierarchical", distance_method = "euclidean",
-                           k_row = 3, row_split = NULL, row_dend = TRUE)
+  result <- row_clustering(ncounts_matrix,
+    cluster_rows = TRUE,
+    cluster_method = "hierarchical", distance_method = "euclidean",
+    k_row = 3, row_split = NULL, row_dend = TRUE
+  )
 
   expect_type(result, "list")
   expect_s3_class(result$row_split, "factor")
@@ -294,7 +300,7 @@ test_that("get_dist returns correct structure for correlation distance", {
   dist_matrix <- get_dist(matrix, "correlation")
 
   expect_s3_class(dist_matrix, "dist")
-  expect_null(attr(dist_matrix, "method"))  # correlation does not assign a method attr
+  expect_null(attr(dist_matrix, "method")) # correlation does not assign a method attr
   expect_equal(length(dist_matrix), nrow(matrix) * (nrow(matrix) - 1) / 2)
 })
 
@@ -317,16 +323,18 @@ test_that("get_dist returns correct structure for correlation distance", {
 #' x <- 1
 #' seed <- 1
 #' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-#' package = "DgeaHeatmap"))
+#'   package = "DgeaHeatmap"
+#' ))
 #' matrixCounts <- build_matrix(input_data, x)
 #' ncounts_matrix <- scale_counts(matrixCounts)
 #' set.seed
 #' col_split <- NULL
 #' col_dend <- TRUE
 #' columns_clustered <- column_clustering(ncounts_matrix,
-#' cluster_columns = TRUE, cluster_method = "hierarchical",
-#' distance_method = "euclidean", k_col = NULL, col_split = col_split,
-#' col_dend = col_dend)
+#'   cluster_columns = TRUE, cluster_method = "hierarchical",
+#'   distance_method = "euclidean", k_col = NULL, col_split = col_split,
+#'   col_dend = col_dend
+#' )
 column_clustering <- function(ncounts_matrix, cluster_columns = TRUE,
                               cluster_method = "hierarchical",
                               distance_method = "euclidean", k_col = NULL,
