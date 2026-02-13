@@ -24,23 +24,34 @@ pheno or protocol data to then get the mean.
 }
 \examples{
 datadir <- system.file("extdata", "WTA_NGS_Example",
-package = "GeoMxWorkflows")
+  package = "GeoMxWorkflows"
+)
 DCCFiles <- dir(file.path(datadir, "dccs"),
-pattern = ".dcc$", full.names = TRUE, recursive = TRUE)
-PKCFiles <- unzip(zipfile = dir(file.path(datadir, "pkcs"),
-pattern = ".zip$", full.names = TRUE, recursive = TRUE),
-exdir = tempdir())
+  pattern = ".dcc$", full.names = TRUE, recursive = TRUE
+)
+PKCFiles <- unzip(
+  zipfile = dir(file.path(datadir, "pkcs"),
+    pattern = ".zip$", full.names = TRUE, recursive = TRUE
+  ),
+  exdir = tempdir()
+)
 SampleAnnotationFile <- dir(file.path(datadir, "annotation"),
-pattern = ".xlsx$", full.names = TRUE, recursive = TRUE)
+  pattern = ".xlsx$", full.names = TRUE, recursive = TRUE
+)
 rawDataObject <- suppressWarnings(
-GeomxTools::readNanoStringGeoMxSet(dccFiles = DCCFiles,
-pkcFiles = PKCFiles, phenoDataFile = SampleAnnotationFile,
-phenoDataSheet = "Template", phenoDataDccColName = "Sample_ID",
-protocolDataColNames = c("aoi", "roi"), configFile = NULL,
-analyte = "RNA", phenoDataColPrefix = "", experimentDataColNames = NULL))
+  GeomxTools::readNanoStringGeoMxSet(
+    dccFiles = DCCFiles,
+    pkcFiles = PKCFiles, phenoDataFile = SampleAnnotationFile,
+    phenoDataSheet = "Template", phenoDataDccColName = "Sample_ID",
+    protocolDataColNames = c("aoi", "roi"), configFile = NULL,
+    analyte = "RNA", phenoDataColPrefix = "", experimentDataColNames = NULL
+  )
+)
 demoData <- add_demoElem(rawDataObject)
 NanoStringNCTools::assayDataApply(
-demoData, MARGIN = 1, FUN = mean, elt = "demoElem")[seq_len(5)]
+  demoData,
+  MARGIN = 1, FUN = mean, elt = "demoElem"
+)[seq_len(5)]
 VGroup <- "aoi"
 vElt <- "demoElem"
 demoData <- split_data_by_column(demoData, VGroup, vElt)

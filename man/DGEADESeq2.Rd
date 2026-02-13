@@ -29,16 +29,24 @@ Performs a differential expression analysis based on DESeq2
 }
 \examples{
 rawCounts <- read.csv(system.file(
-"extdata/RawDataExamplePackageNanostring.csv", package = "DgeaHeatmap"))
+  "extdata/RawDataExamplePackageNanostring.csv",
+  package = "DgeaHeatmap"
+))
 rawCounts <- build_matrix(rawCounts, 1)
 metadata <- read.csv(system.file(
-"extdata/MetaDataPackageNanostring.csv", package = "DgeaHeatmap"))
+  "extdata/MetaDataPackageNanostring.csv",
+  package = "DgeaHeatmap"
+))
 grouping_columns <- c("segment", "region", "class", "slide_name")
-comparisons <- list(Comp1 = c("Geometric_Segment_glomerulus_DKD_disease3",
-"PanCK_tubule_DKD_disease4"), Comp2 = c(
-"neg_tubule_DKD_disease4", "PanCK_tubule_DKD_disease4"))
+comparisons <- list(Comp1 = c(
+  "Geometric_Segment_glomerulus_DKD_disease3",
+  "PanCK_tubule_DKD_disease4"
+), Comp2 = c(
+  "neg_tubule_DKD_disease4", "PanCK_tubule_DKD_disease4"
+))
 storage.mode(rawCounts) <- "integer"
 sum(!is.finite(as.matrix(rawCounts)))
 results_DESeq2 <- DGEADESeq2(
-rawCounts, metadata, grouping_columns, comparisons)
+  rawCounts, metadata, grouping_columns, comparisons
+)
 }

@@ -10,8 +10,7 @@
 #' @examples
 #' x <- 1
 #' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-#'   package = "DgeaHeatmap"
-#' ))
+#' package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
 build_matrix <- function(counts_data, x) {
   list_rownames <- as.list(counts_data[, x])
@@ -36,8 +35,7 @@ build_matrix <- function(counts_data, x) {
 #' factors_for_individual_matrix <- list("DKD", "glomerulus")
 #' x <- 1
 #' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-#'   package = "DgeaHeatmap"
-#' ))
+#' package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
 #' indiMatrix <- individual_matrix(factors_for_individual_matrix, matrixCounts)
 #'
@@ -67,22 +65,18 @@ individual_matrix <- function(factors_for_matrix_devision, mmatrix) {
 #' x <- 1
 #' top_number_of_genes <- 20
 #' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-#'   package = "DgeaHeatmap"
-#' ))
+#' package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
 #' counts_data <- matrixCounts
-#' varGenesMatrix <- filtering_for_top_exprGenes(
-#'   counts_data,
-#'   top_number_of_genes
-#' )
+#' varGenesMatrix <- filtering_for_top_exprGenes(counts_data,
+#' top_number_of_genes)
 filtering_for_top_exprGenes <- function(counts_data, top_number_of_genes) {
   # estimating the variance of each gene
   var_genes <- apply(counts_data, 1, stats::var)
   # Sorting the genes by their variance and creating a new object
-  # with chosen number of most variable genes
+  #with chosen number of most variable genes
   select_var <- names(sort(var_genes,
-    decreasing = TRUE
-  ))[seq_len(top_number_of_genes)]
+                           decreasing = TRUE))[seq_len(top_number_of_genes)]
   highly_variable_genes <- counts_data[select_var, ]
   dim(highly_variable_genes)
 
@@ -103,8 +97,7 @@ filtering_for_top_exprGenes <- function(counts_data, top_number_of_genes) {
 #' @examples
 #' x <- 1
 #' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-#'   package = "DgeaHeatmap"
-#' ))
+#' package = "DgeaHeatmap"))
 #' countsmatrix <- build_matrix(input_data, x)
 #' scaled_counts <- scale_counts(countsmatrix)
 scale_counts <- function(countsmatrix) {
@@ -128,8 +121,7 @@ scale_counts <- function(countsmatrix) {
 #' @examples
 #' x <- 1
 #' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-#'   package = "DgeaHeatmap"
-#' ))
+#' package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
 #' scaled_counts <- scale_counts(matrixCounts)
 #' show_data_distribution(scaled_counts)
@@ -138,6 +130,7 @@ show_data_distribution <- function(scaled_counts) {
     graphics::hist(., main = "", xlab = "Z-score values", col = "dodgerblue2")
   # build histogram to see data distribution
 }
+
 
 
 #' Function to create an elbow plot to choose k for clustering by k-Means.
@@ -153,8 +146,7 @@ show_data_distribution <- function(scaled_counts) {
 #' x <- 1
 #' seed <- 1
 #' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-#'   package = "DgeaHeatmap"
-#' ))
+#' package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
 #' scaled_counts <- scale_counts(matrixCounts)
 #' top_genes_matrix <- scaled_counts
@@ -164,18 +156,15 @@ elbow_plot <- function(top_genes_matrix, maxK = 15) {
   maxK <- maxK
   wss <- function(k) {
     stats::kmeans(top_genes_matrix,
-      algorithm = "Lloyd",
-      k, nstart = 10,
-      iter.max = 50
-    )$tot.withinss
+                  algorithm = "Lloyd",
+                  k, nstart = 10,
+                  iter.max = 50)$tot.withinss
   }
   k.values <- seq_len(maxK) # compute and plot wws for k <- 1 to k <- 15
   wss_values <- purrr::map_dbl(k.values, wss)
-  plot(k.values, wss_values,
-    type = "b", pch = 19,
-    frame = FALSE, xlab = "Number of clusters K",
-    ylab = "Total within-clusters sum of squares"
-  )
+  plot(k.values, wss_values, type = "b", pch = 19,
+       frame = FALSE, xlab = "Number of clusters K",
+       ylab = "Total within-clusters sum of squares")
 }
 
 
@@ -210,8 +199,7 @@ color_setting <- function(colorPalette) {
 #' @examples
 #' x <- 1
 #' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-#'   package = "DgeaHeatmap"
-#' ))
+#' package = "DgeaHeatmap"))
 #' top_genes_matrix <- build_matrix(input_data, x)
 #' probes <- list("disease3", "disease4", "disease1B")
 #' newMatrix <- summarise_bio_replicates(top_genes_matrix, probes)
@@ -224,8 +212,7 @@ summarise_bio_replicates <- function(top_genes_matrix, probes) {
     m_group <- BiocGenerics::grep(p, BiocGenerics::colnames(m_top_genes_matrix))
     # find columns containing "string"
     group_mean <- rowMeans(subset(m_top_genes_matrix, select = m_group),
-      na.rm = TRUE
-    )
+                           na.rm = TRUE)
     # get means of each sample and safe as a numeric values
     m_top_genes_matrix <- BiocGenerics::cbind(m_top_genes_matrix, group_mean)
   }
@@ -250,8 +237,7 @@ summarise_bio_replicates <- function(top_genes_matrix, probes) {
 #' @examples
 #' x <- 1
 #' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-#'   package = "DgeaHeatmap"
-#' ))
+#' package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
 #' m_top_genes_matrix <- scale_counts(matrixCounts)
 #' seed <- 1
@@ -285,18 +271,15 @@ Kmean_generation <- function(m_top_genes_matrix, k) {
 #' x <- 1
 #' number_of_annotations_per_cluster <- 5
 #' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-#'   package = "DgeaHeatmap"
-#' ))
+#' package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
 #' m_top_genes_matrix <- scale_counts(matrixCounts)
 #' seed <- 1
 #' k <- 1
 #' set.seed(seed)
 #' m_kmeans <- Kmean_generation(m_top_genes_matrix, k)
-#' top_x_variable_genes <- most_variable_genes(
-#'   m_kmeans,
-#'   number_of_annotations_per_cluster, k
-#' )
+#' top_x_variable_genes <- most_variable_genes(m_kmeans,
+#' number_of_annotations_per_cluster, k)
 most_variable_genes <- function(m_kmeans,
                                 number_of_annotations_per_cluster, k) {
   last_column <- ncol(m_kmeans)
@@ -316,18 +299,15 @@ most_variable_genes <- function(m_kmeans,
 
     # orders the variances from highest to lowest
     o <- BiocGenerics::order(cluster_matrix[, number_of_last_column],
-      decreasing = TRUE
-    )
+                             decreasing = TRUE)
     # orders matrix according to order of variances ( highest to lowest)
     cluster_matrix <- cluster_matrix[o, ]
     # makes a list of the gene names with the highest variance
-    cluster_genes_highest_var <- as.list(BiocGenerics::rownames(cluster_matrix)[seq_len(number_of_annotations_per_cluster)])
+    cluster_genes_highest_var <- as.list(BiocGenerics::rownames(cluster_matrix) [seq_len(number_of_annotations_per_cluster)])
 
     # creates list with most_variable_genes of all cluster
-    top_x_variable_genes <- append(
-      top_x_variable_genes,
-      cluster_genes_highest_var
-    )
+    top_x_variable_genes <- append(top_x_variable_genes,
+                                   cluster_genes_highest_var)
   }
   top_x_variable_genes
 }
@@ -348,8 +328,7 @@ most_variable_genes <- function(m_kmeans,
 #' x <- 1
 #' number_of_annotations_per_cluster <- 5
 #' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-#'   package = "DgeaHeatmap"
-#' ))
+#' package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
 #' m_top_genes_matrix <- scale_counts(matrixCounts)
 #' seed <- 1
@@ -357,27 +336,21 @@ most_variable_genes <- function(m_kmeans,
 #' fontsize_rowAnnotation <- 8
 #' set.seed(seed)
 #' m_kmeans <- Kmean_generation(m_top_genes_matrix, k)
-#' top_x_genes_cluster <- most_variable_genes(
-#'   m_kmeans,
-#'   number_of_annotations_per_cluster, k
-#' )
-#' anno <- set_annotation(
-#'   m_top_genes_matrix, top_x_genes_cluster,
-#'   fontsize_rowAnnotation
-#' )
+#' top_x_genes_cluster <- most_variable_genes(m_kmeans,
+#' number_of_annotations_per_cluster, k)
+#' anno <- set_annotation(m_top_genes_matrix, top_x_genes_cluster,
+#' fontsize_rowAnnotation)
 #'
 set_annotation <- function(m_top_genes_matrix, top_x_genes_cluster,
                            fontsize_rowAnnotation) {
   # get numeric indices of top_x_genes_clusters
   top_x_genes_clusters <- which(BiocGenerics::rownames(m_top_genes_matrix)
-  %in% top_x_genes_cluster)
+                                %in% top_x_genes_cluster)
   labeling <- BiocGenerics::rownames(m_top_genes_matrix)[top_x_genes_clusters]
-  anno <- ComplexHeatmap::anno_mark(
-    at = top_x_genes_clusters,
-    labels = labeling,
-    labels_gp = grid::gpar(fontsize = fontsize_rowAnnotation),
-    which = "row"
-  )
+  anno <- ComplexHeatmap::anno_mark(at = top_x_genes_clusters,
+                                    labels = labeling,
+                                    labels_gp = grid::gpar(fontsize = fontsize_rowAnnotation),
+                                    which = "row")
 
   return(anno)
 }
@@ -395,8 +368,7 @@ set_annotation <- function(m_top_genes_matrix, top_x_genes_cluster,
 #' @examples
 #' x <- 1
 #' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-#'   package = "DgeaHeatmap"
-#' ))
+#' package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
 #' m_top_genes_matrix <- scale_counts(matrixCounts)
 #' k <- 1
@@ -434,8 +406,7 @@ performing_kMeans <- function(m_top_genes_matrix, k) {
 #' @examples
 #' x <- 1
 #' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-#'   package = "DgeaHeatmap"
-#' ))
+#' package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
 #' m_top_genes_matrix <- scale_counts(matrixCounts)
 #' k <- 1
@@ -445,14 +416,10 @@ performing_kMeans <- function(m_top_genes_matrix, k) {
 #' set.seed(seed)
 #' m_kmeans <- Kmean_generation(m_top_genes_matrix, k)
 #' number_of_annotations_per_cluster <- 5
-#' top_x_genes_cluster <- most_variable_genes(
-#'   m_kmeans,
-#'   number_of_annotations_per_cluster, k
-#' )
-#' anno <- set_annotation(
-#'   m_top_genes_matrix, top_x_genes_cluster,
-#'   fontsize_rowAnnotation
-#' )
+#' top_x_genes_cluster <- most_variable_genes(m_kmeans,
+#' number_of_annotations_per_cluster, k)
+#' anno <- set_annotation(m_top_genes_matrix, top_x_genes_cluster,
+#' fontsize_rowAnnotation)
 #' title <- "Heatmap of Data"
 #' fontsize_columnNames <- 6
 #' fontsize_rowNames <- 4
@@ -462,11 +429,9 @@ performing_kMeans <- function(m_top_genes_matrix, k) {
 #' UnitSize <- "cm"
 #' color_Palette <- "RdBu"
 #' set.seed(seed)
-#' print_heatmap(
-#'   m_top_genes_matrix, title, split, anno, fontsize_columnNames,
-#'   fontsize_rowNames, title_heatmapLegend, WidthNum, HeightNum,
-#'   UnitSize, color_Palette
-#' )
+#' print_heatmap(m_top_genes_matrix, title, split, anno, fontsize_columnNames,
+#' fontsize_rowNames, title_heatmapLegend, WidthNum, HeightNum,
+#' UnitSize, color_Palette)
 print_heatmap <- function(m_top_genes_matrix, title, split, anno,
                           fontsize_columnNames, fontsize_rowNames,
                           title_heatmapLegend, WidthNum, HeightNum,
@@ -514,8 +479,7 @@ print_heatmap <- function(m_top_genes_matrix, title, split, anno,
 #' @examples
 #' x <- 1
 #' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-#'   package = "DgeaHeatmap"
-#' ))
+#' package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
 #' topGenes_matrix <- scale_counts(matrixCounts)
 #' probes <- list("disease3", "disease4", "disease1B")
@@ -532,12 +496,10 @@ print_heatmap <- function(m_top_genes_matrix, title, split, anno,
 #' UnitSize <- "cm"
 #' color_Palette <- "RdBu"
 #' set.seed(seed)
-#' function_complexHeatmap_var(
-#'   topGenes_matrix, probes,
-#'   number_of_annotations_per_cluster, k, Title, fontsize_rowAnnotation,
-#'   fontsize_columnNames, fontsize_rowNames, title_heatmapLegend, WidthNum,
-#'   HeightNum, UnitSize, color_Palette
-#' )
+#' function_complexHeatmap_var(topGenes_matrix, probes,
+#' number_of_annotations_per_cluster, k, Title, fontsize_rowAnnotation,
+#' fontsize_columnNames, fontsize_rowNames, title_heatmapLegend, WidthNum,
+#' HeightNum, UnitSize, color_Palette)
 function_complexHeatmap_var <- function(topGenes_matrix, probes,
                                         number_of_annotations_per_cluster, k,
                                         Title, fontsize_rowAnnotation,
@@ -546,22 +508,16 @@ function_complexHeatmap_var <- function(topGenes_matrix, probes,
                                         HeightNum, UnitSize, color_Palette) {
   m_top_genes_matrix <- summarise_bio_replicates(topGenes_matrix, probes)
   m_kmeans <- Kmean_generation(m_top_genes_matrix, k)
-  top_x_genes_cluster <- most_variable_genes(
-    m_kmeans,
-    number_of_annotations_per_cluster,
-    k
-  )
-  anno <- DgeaHeatmap::set_annotation(
-    m_top_genes_matrix, top_x_genes_cluster,
-    fontsize_rowAnnotation
-  )
+  top_x_genes_cluster <- most_variable_genes(m_kmeans,
+                                             number_of_annotations_per_cluster,
+                                             k)
+  anno <- DgeaHeatmap::set_annotation(m_top_genes_matrix, top_x_genes_cluster,
+                                      fontsize_rowAnnotation)
   split <- performing_kMeans(m_top_genes_matrix, k)
-  hm <- print_heatmap(
-    m_top_genes_matrix, Title, split, anno,
-    fontsize_columnNames, fontsize_rowNames,
-    title_heatmapLegend, WidthNum, HeightNum,
-    UnitSize, color_Palette
-  )
+  hm <- print_heatmap(m_top_genes_matrix, Title, split, anno,
+                      fontsize_columnNames, fontsize_rowNames,
+                      title_heatmapLegend, WidthNum, HeightNum,
+                      UnitSize, color_Palette)
 }
 
 #' Creating a color scheme based on the available color palettes of
@@ -660,8 +616,7 @@ get_heatmap_colors <- function(colorPalette) {
 #' x <- 1
 #' seed <- 1
 #' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-#'   package = "DgeaHeatmap"
-#' ))
+#' package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
 #' ncounts_matrix <- scale_counts(matrixCounts)
 #' set.seed
@@ -688,51 +643,41 @@ adv_Heatmap <- function(ncounts_matrix, column_name = "Heatmap",
   # Clustering logic
   row_split <- col_split <- NULL
   row_dend <- col_dend <- TRUE # default TRUE if unspecified
-
   # --- ROW CLUSTERING ---
   rows_clustered <- row_clustering(ncounts_matrix,
-    cluster_rows = cluster_rows,
-    cluster_method = cluster_method,
-    distance_method = distance_method,
-    k_row = k_row, row_split = row_split,
-    row_dend = row_dend
-  )
+                                   cluster_rows = cluster_rows,
+                                   cluster_method = cluster_method,
+                                   distance_method = distance_method,
+                                   k_row = k_row, row_split = row_split,
+                                   row_dend = row_dend)
   row_split <- rows_clustered$row_split
   row_dend <- rows_clustered$dend
   # --- COLUMN CLUSTERING ---
   columns_clustered <- column_clustering(ncounts_matrix,
-    cluster_columns = cluster_columns,
-    cluster_method = cluster_method,
-    distance_method = distance_method,
-    k_col = k_col, col_split = col_split,
-    col_dend = col_dend
-  )
+                                         cluster_columns = cluster_columns,
+                                         cluster_method = cluster_method,
+                                         distance_method = distance_method,
+                                         k_col = k_col, col_split = col_split,
+                                         col_dend = col_dend)
   col_split <- columns_clustered$col_split
   col_dend <- columns_clustered$dend
   # --- Sample Annotation ---
   col_ha <- NULL
-  col_ha <- set_sample_annotation(
-    sample_metadata = sample_metadata,
-    annotation_colors = annotation_colors,
-    annotation_name_side = annotation_name_side,
-    fontsize_group_annotation = fontsize_group_annotation,
-    fontsize_group_annotation_legend = fontsize_group_annotation_legend,
-    fontsize_group_annotation_labels = fontsize_group_annotation_labels
-  )
-
+  col_ha <- set_sample_annotation(sample_metadata = sample_metadata,
+                                  annotation_colors = annotation_colors,
+                                  annotation_name_side = annotation_name_side,
+                                  fontsize_group_annotation = fontsize_group_annotation,
+                                  fontsize_group_annotation_legend = fontsize_group_annotation_legend,
+                                  fontsize_group_annotation_labels = fontsize_group_annotation_labels)
   # --- Row Annotation ---
   annotation_for_rows <- NULL
-  annotation_for_rows <- set_row_annotation(
-    ncounts_matrix = ncounts_matrix,
-    k_row = k_row, row_annotation = row_annotation,
-    row_annotation_method = row_annotation_method,
-    row_anno_names = row_anno_names,
-    row_anno_number = row_anno_number,
-    fontsize_rowAnnotation = fontsize_rowAnnotation
-  )
-
-  # --- Final Ordering Check --- #
-  # Reset column split if clustering is not active
+  annotation_for_rows <- set_row_annotation(ncounts_matrix = ncounts_matrix,
+                                            k_row = k_row, row_annotation = row_annotation,
+                                            row_annotation_method = row_annotation_method,
+                                            row_anno_names = row_anno_names,
+                                            row_anno_number = row_anno_number,
+                                            fontsize_rowAnnotation = fontsize_rowAnnotation)
+  # --- Final Ordering Check --- ## Reset column split if clustering is not active
   if (!cluster_columns) {
     col_split <- NULL
     col_dend <- FALSE
@@ -742,21 +687,19 @@ adv_Heatmap <- function(ncounts_matrix, column_name = "Heatmap",
     row_dend <- FALSE
   }
   # --- Draw Heatmap ---
-  ht <- draw_adv_heatmap(ncounts_matrix,
-    column_name = column_name,
-    colorPalette = colorPalette, show_row_names = show_row_names,
-    show_column_names = show_column_names, fontsize_title = fontsize_title,
-    fontsize_columnNames = fontsize_columnNames,
-    fontsize_rowNames = fontsize_rowNames,
-    fontsize_cluster_labels = fontsize_cluster_labels,
-    fontsize_heatmap_legend = fontsize_heatmap_legend,
-    fontsize_heatmap_legend_labels = fontsize_heatmap_legend_labels,
-    title_heatmapLegend = title_heatmapLegend, WidthNum = WidthNum,
-    HeightNum = HeightNum, UnitSize = UnitSize, row_annotation = row_annotation,
-    annotation_for_rows = annotation_for_rows, row_split = row_split,
-    col_split = col_split, row_dend = row_dend, col_dend = col_dend,
-    col_ha = col_ha
-  )
+  ht <- draw_adv_heatmap(ncounts_matrix, column_name = column_name,
+                         colorPalette = colorPalette, show_row_names = show_row_names,
+                         show_column_names = show_column_names, fontsize_title = fontsize_title,
+                         fontsize_columnNames = fontsize_columnNames,
+                         fontsize_rowNames = fontsize_rowNames,
+                         fontsize_cluster_labels = fontsize_cluster_labels,
+                         fontsize_heatmap_legend = fontsize_heatmap_legend,
+                         fontsize_heatmap_legend_labels = fontsize_heatmap_legend_labels,
+                         title_heatmapLegend = title_heatmapLegend, WidthNum = WidthNum,
+                         HeightNum = HeightNum, UnitSize = UnitSize, row_annotation = row_annotation,
+                         annotation_for_rows = annotation_for_rows, row_split = row_split,
+                         col_split = col_split, row_dend = row_dend, col_dend = col_dend,
+                         col_ha = col_ha)
   hm <- ComplexHeatmap::draw(ht)
   return(hm)
 }
@@ -781,18 +724,15 @@ adv_Heatmap <- function(ncounts_matrix, column_name = "Heatmap",
 #' x <- 1
 #' seed <- 1
 #' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-#'   package = "DgeaHeatmap"
-#' ))
+#' package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
 #' ncounts_matrix <- scale_counts(matrixCounts)
 #' set.seed
 #' row_split <- NULL
 #' row_dend <- TRUE
-#' rows_clustered <- row_clustering(ncounts_matrix,
-#'   cluster_rows = TRUE,
-#'   cluster_method = "hierarchical", distance_method = "euclidean", k_row = NULL,
-#'   row_split = row_split, row_dend = row_dend
-#' )
+#' rows_clustered <- row_clustering(ncounts_matrix, cluster_rows = TRUE,
+#' cluster_method = "hierarchical", distance_method = "euclidean", k_row = NULL,
+#' row_split = row_split, row_dend = row_dend)
 row_clustering <- function(ncounts_matrix, cluster_rows = TRUE,
                            cluster_method = "hierarchical",
                            distance_method = "euclidean",
@@ -829,8 +769,7 @@ row_clustering <- function(ncounts_matrix, cluster_rows = TRUE,
 #'
 #' @examples
 #' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-#'   package = "DgeaHeatmap"
-#' ))
+#' package = "DgeaHeatmap"))
 #' x <- 1
 #' matrixCounts <- build_matrix(input_data, x)
 #' matrix <- scale_counts(matrixCounts)
@@ -863,18 +802,16 @@ get_dist <- function(x, method) {
 #' x <- 1
 #' seed <- 1
 #' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-#'   package = "DgeaHeatmap"
-#' ))
+#' package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
 #' ncounts_matrix <- scale_counts(matrixCounts)
 #' set.seed
 #' col_split <- NULL
 #' col_dend <- TRUE
 #' columns_clustered <- column_clustering(ncounts_matrix,
-#'   cluster_columns = TRUE, cluster_method = "hierarchical",
-#'   distance_method = "euclidean", k_col = NULL, col_split = col_split,
-#'   col_dend = col_dend
-#' )
+#' cluster_columns = TRUE, cluster_method = "hierarchical",
+#' distance_method = "euclidean", k_col = NULL, col_split = col_split,
+#' col_dend = col_dend)
 column_clustering <- function(ncounts_matrix, cluster_columns = TRUE,
                               cluster_method = "hierarchical",
                               distance_method = "euclidean", k_col = NULL,
@@ -923,41 +860,33 @@ column_clustering <- function(ncounts_matrix, cluster_columns = TRUE,
 #' x <- 1
 #' seed <- 1
 #' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-#'   package = "DgeaHeatmap"
-#' ))
+#' package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
 #' ncounts_matrix <- scale_counts(matrixCounts)
 #' set.seed
-#' groups <- c(
-#'   "3_DKD_glomerulus_Geometric_S", "1B_DKD_glomerulus_Geometric_S",
-#'   "2B_DKD_glomerulus_WT"
-#' )
+#' groups <- c("3_DKD_glomerulus_Geometric_S", "1B_DKD_glomerulus_Geometric_S",
+#' "2B_DKD_glomerulus_WT")
 #' sample_names <- c(colnames(ncounts_matrix))
 #' group_assignment <- sapply(sample_names, function(sample) {
 #'   matched <- groups[sapply(groups, function(g) grepl(g, sample))]
 #'   if (length(matched) > 0) matched[1] else NA
 #' })
 #' stopifnot(length(sample_names) == length(group_assignment))
-#' sample_metadata <- data.frame(
-#'   Group = group_assignment,
-#'   row.names = sample_names
-#' )
+#' sample_metadata <- data.frame(Group = group_assignment,
+#' row.names = sample_names)
 #' all(colnames(ncounts_matrix) == rownames(sample_metadata))
-#' group_colors <- list(Group = c(
-#'   "3_DKD_glomerulus_Geometric_S" = "#1b9e77",
-#'   "1B_DKD_glomerulus_Geometric_S" = "#7570b3",
-#'   "2B_DKD_glomerulus_WT" = "#e7298a"
-#' ))
-#' col_ha <- set_sample_annotation(
-#'   sample_metadata = sample_metadata,
-#'   annotation_colors = group_colors
-#' )
+#' group_colors <- list(Group = c("3_DKD_glomerulus_Geometric_S" = "#1b9e77",
+#' "1B_DKD_glomerulus_Geometric_S" = "#7570b3",
+#' "2B_DKD_glomerulus_WT" = "#e7298a"))
+#' col_ha <- set_sample_annotation(sample_metadata = sample_metadata,
+#' annotation_colors = group_colors)
 set_sample_annotation <- function(sample_metadata = NULL,
                                   annotation_colors = NULL,
                                   annotation_name_side = "right",
                                   fontsize_group_annotation = 8,
                                   fontsize_group_annotation_legend = 10,
-                                  fontsize_group_annotation_labels = 8) {
+                                  fontsize_group_annotation_labels = 8
+) {
   col_ha <- NULL
   if (!is.null(sample_metadata)) {
     col_ha <- ComplexHeatmap::HeatmapAnnotation(
@@ -997,8 +926,7 @@ set_sample_annotation <- function(sample_metadata = NULL,
 #' x <- 1
 #' seed <- 1
 #' input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-#'   package = "DgeaHeatmap"
-#' ))
+#' package = "DgeaHeatmap"))
 #' matrixCounts <- build_matrix(input_data, x)
 #' ncounts_matrix <- scale_counts(matrixCounts)
 #' set.seed(seed)
@@ -1015,15 +943,11 @@ set_row_annotation <- function(ncounts_matrix,
     if (row_annotation_method == "auto") {
       if (!is.null(k_row)) {
         m_kmeans <- Kmean_generation(ncounts_matrix, k_row)
-        top_x_genes_cluster <- most_variable_genes(
-          m_kmeans,
-          row_anno_number, k_row
-        )
-        annotation_for_rows <- set_annotation(
-          ncounts_matrix,
-          top_x_genes_cluster,
-          fontsize_rowAnnotation
-        )
+        top_x_genes_cluster <- most_variable_genes(m_kmeans,
+                                                   row_anno_number, k_row)
+        annotation_for_rows <- set_annotation(ncounts_matrix,
+                                              top_x_genes_cluster,
+                                              fontsize_rowAnnotation)
       } else {
         y <- ncounts_matrix
         top_x_genes_cluster <- list()
@@ -1039,25 +963,18 @@ set_row_annotation <- function(ncounts_matrix,
         cluster_matrix <- y[o, ]
         # makes a list of the gene names with the highest variance
         cluster_genes_highest_var <- as.list(
-          BiocGenerics::rownames(y)[seq_len(row_anno_number)]
-        )
+          BiocGenerics::rownames(y)[seq_len(row_anno_number)])
         # creates list with most_variable_genes of all cluster
-        top_x_genes_cluster <- append(
-          top_x_genes_cluster,
-          cluster_genes_highest_var
-        )
+        top_x_genes_cluster <- append(top_x_genes_cluster,
+                                      cluster_genes_highest_var)
         # set annotation for rows
-        annotation_for_rows <- set_annotation(
-          ncounts_matrix,
-          top_x_genes_cluster,
-          fontsize_rowAnnotation
-        )
+        annotation_for_rows <- set_annotation(ncounts_matrix,
+                                              top_x_genes_cluster,
+                                              fontsize_rowAnnotation)
       }
     } else if (row_annotation_method == "specific") {
-      annotation_for_rows <- set_annotation(
-        ncounts_matrix, row_anno_names,
-        fontsize_rowAnnotation
-      )
+      annotation_for_rows <- set_annotation(ncounts_matrix, row_anno_names,
+                                            fontsize_rowAnnotation)
     }
   }
   return(annotation_for_rows)
@@ -1112,11 +1029,9 @@ set_row_annotation <- function(ncounts_matrix,
 #' stopifnot(length(sample_names) == length(group_assignment))
 #' sample_metadata <- data.frame(Group = group_assignment, row.names = sample_names)
 #' all(colnames(ncounts_matrix) == rownames(sample_metadata))
-#' group_colors <- list(Group = c(
-#'   "3_DKD_glomerulus_Geometric_S" = "#1b9e77",
-#'   "1B_DKD_glomerulus_Geometric_S" = "#7570b3",
-#'   "2B_DKD_glomerulus_WT" = "#e7298a"
-#' ))
+#' group_colors <- list(Group = c("3_DKD_glomerulus_Geometric_S" = "#1b9e77",
+#' "1B_DKD_glomerulus_Geometric_S" = "#7570b3",
+#' "2B_DKD_glomerulus_WT" = "#e7298a"))
 #' col_ha <- set_sample_annotation(sample_metadata = sample_metadata, annotation_colors = group_colors)
 #' ht <- draw_adv_heatmap(ncounts_matrix)
 draw_adv_heatmap <- function(ncounts_matrix, column_name = "Heatmap", colorPalette = NULL, col_ha = NULL, show_row_names = FALSE, show_column_names = TRUE, fontsize_title = 15, fontsize_columnNames = 6, fontsize_rowNames = 4, fontsize_cluster_labels = 8, fontsize_heatmap_legend = 10, fontsize_heatmap_legend_labels = 8, title_heatmapLegend = "Expression", WidthNum = 4.5, HeightNum = 3, UnitSize = "cm", row_annotation = FALSE, annotation_for_rows = NULL, row_split = NULL, col_split = NULL, row_dend = TRUE, col_dend = TRUE) {
