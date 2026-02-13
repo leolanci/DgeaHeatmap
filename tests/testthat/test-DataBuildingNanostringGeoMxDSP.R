@@ -22,9 +22,10 @@ test_that("Build a matrix from an input csv file, with one column as rownames", 
 
   datadir <- system.file("extdata", "WTA_NGS_Example", package = "GeoMxWorkflows")
   DCCFiles <- dir(file.path(datadir, "dccs"), pattern = ".dcc$", full.names = TRUE, recursive = TRUE)
-  PKCFiles <- unzip(zipfile = dir(file.path(datadir, "pkcs"), pattern = ".zip$", full.names = TRUE, recursive = TRUE),
-                    exdir = tempdir()
-                    )
+  PKCFiles <- unzip(
+    zipfile = dir(file.path(datadir, "pkcs"), pattern = ".zip$", full.names = TRUE, recursive = TRUE),
+    exdir = tempdir()
+  )
   SampleAnnotationFile <- dir(file.path(datadir, "annotation"), pattern = ".xlsx$", full.names = TRUE, recursive = TRUE)
 
   demoData <- suppressWarnings(
@@ -66,33 +67,42 @@ test_that("Splitting data by group column with feature, pheno or protocol data t
 
   # Load example data
   datadir <- system.file("extdata", "WTA_NGS_Example",
-                         package = "GeoMxWorkflows")
+    package = "GeoMxWorkflows"
+  )
   DCCFiles <- dir(file.path(datadir, "dccs"),
-                  pattern = ".dcc$", full.names = TRUE, recursive = TRUE)
-  PKCFiles <- unzip(zipfile = dir(file.path(datadir, "pkcs"),
-                                  pattern = ".zip$", full.names = TRUE, recursive = TRUE),
-                    exdir = tempdir()
-                    )
+    pattern = ".dcc$", full.names = TRUE, recursive = TRUE
+  )
+  PKCFiles <- unzip(
+    zipfile = dir(file.path(datadir, "pkcs"),
+      pattern = ".zip$", full.names = TRUE, recursive = TRUE
+    ),
+    exdir = tempdir()
+  )
   SampleAnnotationFile <- dir(file.path(datadir, "annotation"),
-                              pattern = ".xlsx$", full.names = TRUE, recursive = TRUE)
+    pattern = ".xlsx$", full.names = TRUE, recursive = TRUE
+  )
 
   rawDataObject <- suppressWarnings(
-    GeomxTools::readNanoStringGeoMxSet(dccFiles = DCCFiles,
-                                       pkcFiles = PKCFiles,
-                                       phenoDataFile = SampleAnnotationFile,
-                                       phenoDataSheet = "Template",
-                                       phenoDataDccColName = "Sample_ID",
-                                       protocolDataColNames = c("aoi", "roi"),
-                                       configFile = NULL,
-                                       analyte = "RNA",
-                                       phenoDataColPrefix = "",
-                                       experimentDataColNames = NULL))
+    GeomxTools::readNanoStringGeoMxSet(
+      dccFiles = DCCFiles,
+      pkcFiles = PKCFiles,
+      phenoDataFile = SampleAnnotationFile,
+      phenoDataSheet = "Template",
+      phenoDataDccColName = "Sample_ID",
+      protocolDataColNames = c("aoi", "roi"),
+      configFile = NULL,
+      analyte = "RNA",
+      phenoDataColPrefix = "",
+      experimentDataColNames = NULL
+    )
+  )
 
   # Add a dummy expression matrix for testing
   demoData <- rawDataObject
   assayDataElement <- matrix(rnorm(nrow(demoData) * ncol(demoData)),
-                             nrow = nrow(demoData),
-                             ncol = ncol(demoData))
+    nrow = nrow(demoData),
+    ncol = ncol(demoData)
+  )
   dimnames(assayDataElement) <- dimnames(Biobase::exprs(demoData))
   assayDataElement(demoData, "demoElt") <- assayDataElement
 
@@ -108,20 +118,21 @@ test_that("Splitting data by group column with feature, pheno or protocol data t
 
   # Optionally, capture the output of esBy to test side effect
   grouped_result <- NanoStringNCTools::esBy(demoData,
-                                            GROUP = vGroup,
-                                            FUN = function(x) {
-                                              NanoStringNCTools::assayDataApply(x, MARGIN = 1, FUN = mean, elt = vElt)
-                                            })
-
+    GROUP = vGroup,
+    FUN = function(x) {
+      NanoStringNCTools::assayDataApply(x, MARGIN = 1, FUN = mean, elt = vElt)
+    }
+  )
 })
 
 test_that("Function for automatized quality control.", {
   # Load example data
   datadir <- system.file("extdata", "WTA_NGS_Example", package = "GeoMxWorkflows")
   dcc_files <- dir(file.path(datadir, "dccs"), pattern = ".dcc$", full.names = TRUE)
-  pkc_file <- unzip(zipfile = dir(file.path(datadir, "pkcs"), pattern = ".zip$", full.names = TRUE),
-                    exdir = tempdir()
-                    )
+  pkc_file <- unzip(
+    zipfile = dir(file.path(datadir, "pkcs"), pattern = ".zip$", full.names = TRUE),
+    exdir = tempdir()
+  )
   ann_file <- dir(file.path(datadir, "annotation"), pattern = ".xlsx$", full.names = TRUE)
 
   demoData <- suppressWarnings(GeomxTools::readNanoStringGeoMxSet(
@@ -147,11 +158,13 @@ test_that("genRawReadCountTable returns a data frame of raw counts", {
   # Load example data
   datadir <- system.file("extdata", "WTA_NGS_Example", package = "GeoMxWorkflows")
   DCCFiles <- dir(file.path(datadir, "dccs"), pattern = ".dcc$", full.names = TRUE)
-  PKCFiles <- unzip(zipfile = dir(file.path(datadir, "pkcs"), pattern = ".zip$", full.names = TRUE),
-                    exdir = tempdir()
-                    )
+  PKCFiles <- unzip(
+    zipfile = dir(file.path(datadir, "pkcs"), pattern = ".zip$", full.names = TRUE),
+    exdir = tempdir()
+  )
   SampleAnnotationFile <- dir(file.path(datadir, "annotation"),
-                              pattern = ".xlsx$", full.names = TRUE)
+    pattern = ".xlsx$", full.names = TRUE
+  )
 
   # Read and preprocess data
   rawDataObject <- suppressWarnings(GeomxTools::readNanoStringGeoMxSet(
