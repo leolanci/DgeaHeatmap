@@ -155,7 +155,7 @@ DGEADESeq2 <- function(rawCounts, metadata, grouping_columns, comparisons) {
       collapsed <- paste(missing_levels, collapse = ", ")
       message((sprintf("Contrast '%s' skipped:
                        level(s) not found in comp factor: %s", name,
-                       paste(missing_levels, collapsed = ", "))))
+                       collapsed)))
     }
   }
   contrast_names <- names(comparisons)
