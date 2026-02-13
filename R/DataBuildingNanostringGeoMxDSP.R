@@ -6,7 +6,6 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
 #' datadir <- system.file("extdata",
 #'   "WTA_NGS_Example",
 #'   package = "GeoMxWorkflows"
@@ -31,7 +30,6 @@
 #'   analyte = "RNA", phenoDataColPrefix = "", experimentDataColNames = NULL
 #' ))
 #' demoData <- add_demoElem(demoData)
-#' }
 add_demoElem <- function(demoData) {
   Biobase::assayDataElement(demoData, elt = "exprs")
   Biobase::assayDataElement(demoData, "demoElem") <-
