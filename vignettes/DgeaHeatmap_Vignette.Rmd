@@ -10,8 +10,8 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
+    collapse = TRUE,
+    comment = "#>"
 )
 ```
 
@@ -278,8 +278,8 @@ sample_names <- c(colnames(scaled_counts))
 
 # Match each sample name to the correct group
 group_assignment <- sapply(sample_names, function(sample) {
-  matched <- groups[sapply(groups, function(g) grepl(g, sample))]
-  if (length(matched) > 0) matched[1] else NA
+    matched <- groups[sapply(groups, function(g) grepl(g, sample))]
+    if (length(matched) > 0) matched[1] else NA
 })
 
 # Ensure same length
@@ -398,17 +398,16 @@ library(ggsankey)
 
 
 if (packageVersion("GeomxTools") < "2.1" &&
-  packageVersion("GeoMxWorkflows") >= "1.0.1") {
-  stop("GeomxTools and Workflow versions do not match. Please use the same
+    packageVersion("GeoMxWorkflows") >= "1.0.1") {
+    stop("GeomxTools and Workflow versions do not match. Please use the same
     version. Rhis workflow is meant to be used with most current version of
     packages.If you are using an older version of Bioconductor please reinstall
     GeoMxWorkflows and use vignette(GeoMxWorkflows) instead")
 }
 
 if (packageVersion("GeomxTools") > "2.1" &&
-  packageVersion("GeoMxWorkflows") <= "1.0.1") {
-  stop("GeomxTools and Workflow versions do not match.
-         Please use the same version, see install instructions above.")
+    packageVersion("GeoMxWorkflows") <= "1.0.1") {
+    stop("GeomxTools and Workflow versions do not match. Please use the same version, see install instructions above.")
 }
 ```
 
@@ -416,16 +415,16 @@ if (packageVersion("GeomxTools") > "2.1" &&
 datadir <- file.path("C:/Users/llancell/Documents/Demo Data for R Package/Kidney_Dataset")
 
 DCCFiles <- dir(file.path(datadir, "dccs"),
-  pattern = ".dcc$",
-  full.names = TRUE, recursive = TRUE
+    pattern = ".dcc$",
+    full.names = TRUE, recursive = TRUE
 )
 
 # has to be in file directory
 
 PKCFiles <- file.path(datadir, "TAP_H_WTA_v1.0.pkc")
 PKCData <- dir(file.path(datadir, "pkc"),
-  pattern = ".pkc$",
-  full.names = TRUE, recursive = TRUE
+    pattern = ".pkc$",
+    full.names = TRUE, recursive = TRUE
 )
 
 # has to be in file directory
@@ -434,16 +433,16 @@ SampleAnnotationFile <- file.path(datadir, "kidney_demo_AOI_Annotations.xlsx")
 The raw Nanostring GeoMx DSP files are read in and then united into an instance of class "NanostringGeoMxSet".
 ```{r ReadData, echo=TRUE, results='hide', warning=FALSE}
 rawDataObject <- suppressWarnings(readNanoStringGeoMxSet(
-  dccFiles = DCCFiles,
-  pkcFiles = PKCFiles,
-  phenoDataFile = SampleAnnotationFile,
-  phenoDataSheet = "Template",
-  phenoDataDccColName = "Sample_ID",
-  protocolDataColNames = c("aoi", "roi"),
-  configFile = NULL,
-  analyte = "RNA",
-  phenoDataColPrefix = "",
-  experimentDataColNames = NULL
+    dccFiles = DCCFiles,
+    pkcFiles = PKCFiles,
+    phenoDataFile = SampleAnnotationFile,
+    phenoDataSheet = "Template",
+    phenoDataDccColName = "Sample_ID",
+    protocolDataColNames = c("aoi", "roi"),
+    configFile = NULL,
+    analyte = "RNA",
+    phenoDataColPrefix = "",
+    experimentDataColNames = NULL
 ))
 ```
 Anon Analyzing GeoMx-NGS RNA Expression Data with GeomxTools. Available from: 
@@ -547,12 +546,12 @@ copy_df_Expr <- df_Exp # creates copy of counts table
 annotationMatrix <- as.data.frame(annotationMatrix)
 
 for (i in list_columnNames) {
-  matchingRow <- which(annotationMatrix$coldata_2.Samplenummern == i)
-  matchingColumn <- match(i, names(copy_df_Expr))
-  print(matchingColumn)
-  print(matchingRow)
-  colnames(copy_df_Expr)[matchingColumn] <- rownames(annotationMatrix)[matchingRow]
-  print(rownames(annotationMatrix)[matchingRow])
+    matchingRow <- which(annotationMatrix$coldata_2.Samplenummern == i)
+    matchingColumn <- match(i, names(copy_df_Expr))
+    print(matchingColumn)
+    print(matchingRow)
+    colnames(copy_df_Expr)[matchingColumn] <- rownames(annotationMatrix)[matchingRow]
+    print(rownames(annotationMatrix)[matchingRow])
 }
 
 # exchange of "." with "_" in the column names of copy_df_Expr
@@ -588,9 +587,9 @@ Utilizing limma voom, a matrix is created in which each coefficient represents t
 coldata2 <- as.data.frame((coldata_2))
 
 comparisons <- list(
-  "GeometricSegment_glomerulus_Dkd_disease1b_vs_disease2B" = c("Geometric_Segment_glomerulus_DKD_disease1B ", "Geometric_Segment_glomerulus_DKD_disease2B "),
-  "GeometricSegmentglomerulus_DKD_disease1B_vs_disease3" = c("Geometric_Segment_glomerulus_DKD_disease1B ", "Geometric_Segment_glomerulus_DKD_disease3"),
-  "GeometricSegmentglomerulus_DKD_disease2B_vs_disease3" = c("Geometric_Segment_glomerulus_DKD_disease2B ", "Geometric_Segment_glomerulus_DKD_disease3")
+    "GeometricSegment_glomerulus_Dkd_disease1b_vs_disease2B" = c("Geometric_Segment_glomerulus_DKD_disease1B ", "Geometric_Segment_glomerulus_DKD_disease2B "),
+    "GeometricSegmentglomerulus_DKD_disease1B_vs_disease3" = c("Geometric_Segment_glomerulus_DKD_disease1B ", "Geometric_Segment_glomerulus_DKD_disease3"),
+    "GeometricSegmentglomerulus_DKD_disease2B_vs_disease3" = c("Geometric_Segment_glomerulus_DKD_disease2B ", "Geometric_Segment_glomerulus_DKD_disease3")
 )
 
 groupingColumns <- c("segment", "region", "class", "slide_name")
@@ -600,7 +599,7 @@ results_all_DEG <- limma::decideTests(DGEA_results$fit)
 summary(results_all_DEG)
 
 result1 <- topTable(fit2, coef = "GeometricSegment_glomerulus_Dkd_disease1b_vs_disease2B", number = Inf, adjust.method = "fdr") %>%
-  as.data.frame() # differentially expressed genes are obtained by topTreat() function
+    as.data.frame() # differentially expressed genes are obtained by topTreat() function
 
 # filter results to get significantly differentially expressed genes
 topUp <- result1[which(result1$logFC > 0), ][seq_len(100), ] # up reg top 100
@@ -613,13 +612,13 @@ NamesDownReg <- row.names(topDown)
 print(NamesDownReg)
 
 result1 <- result1 %>%
-  dplyr::mutate(isSignificant = case_when(
-    adj.P.Val < 0.05 & abs(logFC) > 1 ~ TRUE,
-    TRUE ~ FALSE # If condictions in the line above are not met, gene is not DE.
-  ))
+    dplyr::mutate(isSignificant = case_when(
+        adj.P.Val < 0.05 & abs(logFC) > 1 ~ TRUE,
+        TRUE ~ FALSE # If condictions in the line above are not met, gene is not DE.
+    ))
 
 sigDEresults <- result1 %>%
-  dplyr::filter(isSignificant == TRUE)
+    dplyr::filter(isSignificant == TRUE)
 ```
 
 
@@ -640,10 +639,10 @@ The results from the differential gene expression analysis are visualized using 
 library(VennDiagram)
 library(limma)
 venn.plot <- vennDiagram(results_all_DEG,
-  imagetype = "tiff",
-  include = c("up", "down"), mar = rep(1, 4), cex = c(1, 1, 0.7), lwd = 1,
-  counts.col = c("red", "blue"),
-  circle.col = c("red", "blue", "green3")
+    imagetype = "tiff",
+    include = c("up", "down"), mar = rep(1, 4), cex = c(1, 1, 0.7), lwd = 1,
+    counts.col = c("red", "blue"),
+    circle.col = c("red", "blue", "green3")
 )
 ```
 ![](inst/extdata/VennLimmaupdownreg.jpeg)
@@ -656,9 +655,9 @@ The raw counts are first structured into a DESeqDataSEt and comparisons are used
 
 ```{r PerformingDEGDESeq2fct,echo=TRUE, include=TRUE, error=TRUE, warning=FALSE, eval=FALSE}
 comparisons <- list(
-  "disease1b_vs_disease2B" = c("Geometric_Segment_glomerulus_DKD_disease1B", "Geometric_Segment_glomerulus_DKD_disease2B"),
-  "disease1b_vs_disease3"  = c("Geometric_Segment_glomerulus_DKD_disease1B", "Geometric_Segment_glomerulus_DKD_disease3"),
-  "disease2B_vs_disease3"  = c("Geometric_Segment_glomerulus_DKD_disease2B", "Geometric_Segment_glomerulus_DKD_disease3")
+    "disease1b_vs_disease2B" = c("Geometric_Segment_glomerulus_DKD_disease1B", "Geometric_Segment_glomerulus_DKD_disease2B"),
+    "disease1b_vs_disease3"  = c("Geometric_Segment_glomerulus_DKD_disease1B", "Geometric_Segment_glomerulus_DKD_disease3"),
+    "disease2B_vs_disease3"  = c("Geometric_Segment_glomerulus_DKD_disease2B", "Geometric_Segment_glomerulus_DKD_disease3")
 )
 int_counts <- round(copy_df_Expr)
 groupingColumns <- c("segment", "region", "class", "slide_name")
@@ -692,10 +691,10 @@ Venn Diagram for up and down regulated genes extracted from the DESeq2 analysis:
 state_mat <- extractDEGenes(results_list_d, contrasts, up_down = TRUE)
 head(state_mat)
 venn.plot <- vennDiagram(state_mat,
-  imagetype = "tiff",
-  include = c("up", "down"), mar = rep(1, 4), cex = c(1.5, 1, 0.7), lwd = 1,
-  counts.col = c("red", "blue"),
-  circle.col = c("red", "blue", "green3")
+    imagetype = "tiff",
+    include = c("up", "down"), mar = rep(1, 4), cex = c(1.5, 1, 0.7), lwd = 1,
+    counts.col = c("red", "blue"),
+    circle.col = c("red", "blue", "green3")
 )
 ```
 ![](inst/extdata/VennDESeq2updownreg.jpeg)
@@ -706,9 +705,9 @@ The raw counts are first used to construct a DGEList object and grouping factors
 
 ```{r DEA_edgeR, eval=FALSE}
 comparisons <- list(
-  "GeometricSegment_glomerulus_Dkd_disease1b_vs_disease2B" = c("Geometric_Segment_glomerulus_DKD_disease1B ", "Geometric_Segment_glomerulus_DKD_disease2B "),
-  "GeometricSegmentglomerulus_DKD_disease1B_vs_disease3" = c("Geometric_Segment_glomerulus_DKD_disease1B ", "Geometric_Segment_glomerulus_DKD_disease3"),
-  "GeometricSegmentglomerulus_DKD_disease2B_vs_disease3" = c("Geometric_Segment_glomerulus_DKD_disease2B ", "Geometric_Segment_glomerulus_DKD_disease3")
+    "GeometricSegment_glomerulus_Dkd_disease1b_vs_disease2B" = c("Geometric_Segment_glomerulus_DKD_disease1B ", "Geometric_Segment_glomerulus_DKD_disease2B "),
+    "GeometricSegmentglomerulus_DKD_disease1B_vs_disease3" = c("Geometric_Segment_glomerulus_DKD_disease1B ", "Geometric_Segment_glomerulus_DKD_disease3"),
+    "GeometricSegmentglomerulus_DKD_disease2B_vs_disease3" = c("Geometric_Segment_glomerulus_DKD_disease2B ", "Geometric_Segment_glomerulus_DKD_disease3")
 )
 groupingColumns <- c("segment", "region", "class", "slide_name")
 results_edgeR <- DGEAedgeR(int_counts, coldata2, groupingColumns, comparisons, prefix = "DEA")
@@ -720,14 +719,14 @@ Venn Diagram for up and down regulated genes extracted from the edgeR analysis:
 ```{r DEA_Venn_edgeR, warning=FALSE, eval=FALSE}
 # Suppose `edgeR_summary` is the output of summarize_edgeR_DEA()
 state_matrix <- edgeR_summary$classified_results %>%
-  lapply(function(df) df$decision) %>% # extract the –1/0/+1 vector for each contrast
-  do.call(cbind, .) # bind into a matrix
+    lapply(function(df) df$decision) %>% # extract the –1/0/+1 vector for each contrast
+    do.call(cbind, .) # bind into a matrix
 colnames(state_matrix) <- names(edgeR_summary$classified_results)
 venn.plot <- vennDiagram(state_matrix,
-  imagetype = "tiff",
-  include = c("up", "down"), mar = rep(1, 4), cex = c(1, 0.8, 0.7), lwd = 1,
-  counts.col = c("red", "blue"),
-  circle.col = c("red", "blue", "green3")
+    imagetype = "tiff",
+    include = c("up", "down"), mar = rep(1, 4), cex = c(1, 0.8, 0.7), lwd = 1,
+    counts.col = c("red", "blue"),
+    circle.col = c("red", "blue", "green3")
 )
 ```
 ![](inst/extdata/VennedgeRupdownreg.jpeg)
