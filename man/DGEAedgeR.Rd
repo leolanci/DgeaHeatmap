@@ -36,26 +36,28 @@ of the contrasts, and the generated design.
 Performs a differential expression analysis based on edgeR
 }
 \examples{
-rawCounts <- read.csv(system.file(
-  "extdata/RawDataExamplePackageNanostring.csv",
-  package = "DgeaHeatmap"
-))
-rawCounts <- build_matrix(rawCounts, 1)
-metadata <- read.csv(system.file(
-  "extdata/MetaDataPackageNanostring.csv",
-  package = "DgeaHeatmap"
-))
-grouping_columns <- c("segment", "region", "class", "slide_name")
-comparisons <- list(Comp1 = c(
-  "Geometric_Segment_glomerulus_DKD_disease3",
-  "PanCK_tubule_DKD_disease4"
-), Comp2 = c(
-  "neg_tubule_DKD_disease4",
-  "PanCK_tubule_DKD_disease4"
-))
-prefix <- "DEA"
-results_edgeR <- DGEAedgeR(
-  rawCounts, metadata, grouping_columns, comparisons,
-  prefix = "DEA"
+set.seed(1)
+counts <- matrix(rnbinom(600, mu = 10, size = 1), ncol = 6)
+colnames(counts) <- paste0("Sample", 1:6)
+rownames(counts) <- paste0("Gene", 1:100)
+
+# Create simple metadata
+metadata <- data.frame(
+    segment = factor(rep(c("A", "B"), each = 3)),
+    row.names = colnames(counts)
 )
+
+comparisons <- list(
+    Comp1 = c("A", "B")
+)
+
+results_edgeR <- DGEAedgeR(
+    rawCounts = counts,
+    metadata = metadata,
+    grouping_columns = "segment",
+    comparisons = comparisons,
+    prefix = "DEA"
+)
+
+names(results_edgeR)
 }

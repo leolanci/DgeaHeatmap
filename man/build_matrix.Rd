@@ -21,7 +21,7 @@ Builds a matrix from an input csv file, with one column as rownames
 \examples{
 x <- 1
 input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-  package = "DgeaHeatmap"
+    package = "DgeaHeatmap"
 ))
 matrixCounts <- build_matrix(input_data, x)
 }

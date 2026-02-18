@@ -81,30 +81,29 @@ Row annotation
 Draw the advanced heatmap
 }
 \examples{
-x <- 1
-seed <- 1
-input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
-matrixCounts <- build_matrix(input_data, x)
-ncounts_matrix <- scale_counts(matrixCounts)
-set.seed(seed)
-row_split <- NULL
-row_dend <- TRUE
-col_split <- NULL
-col_dend <- TRUE
-groups <- c("3_DKD_glomerulus_Geometric_S", "1B_DKD_glomerulus_Geometric_S", "2B_DKD_glomerulus_WT")
-sample_names <- c(colnames(ncounts_matrix))
-group_assignment <- sapply(sample_names, function(sample) {
-  matched <- groups[sapply(groups, function(g) grepl(g, sample))]
-  if (length(matched) > 0) matched[1] else NA
-})
-stopifnot(length(sample_names) == length(group_assignment))
-sample_metadata <- data.frame(Group = group_assignment, row.names = sample_names)
-all(colnames(ncounts_matrix) == rownames(sample_metadata))
-group_colors <- list(Group = c(
-  "3_DKD_glomerulus_Geometric_S" = "#1b9e77",
-  "1B_DKD_glomerulus_Geometric_S" = "#7570b3",
-  "2B_DKD_glomerulus_WT" = "#e7298a"
-))
-col_ha <- set_sample_annotation(sample_metadata = sample_metadata, annotation_colors = group_colors)
-ht <- draw_adv_heatmap(ncounts_matrix)
+set.seed(1)
+mat <- matrix(
+    rnorm(25),
+    nrow = 5,
+    dimnames = list(
+        paste0("Gene", 1:5),
+        paste0("Sample", 1:5)
+    )
+)
+
+sample_metadata <- data.frame(
+    Group = rep(c("A", "B"), length.out = 5),
+    row.names = colnames(mat)
+)
+
+group_colors <- list(
+    Group = c(A = "#1b9e77", B = "#7570b3")
+)
+
+col_ha <- set_sample_annotation(
+    sample_metadata = sample_metadata,
+    annotation_colors = group_colors
+)
+
+ht <- draw_adv_heatmap(mat)
 }

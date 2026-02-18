@@ -23,36 +23,26 @@ Splitting data by group column with feature,
 pheno or protocol data to then get the mean.
 }
 \examples{
-datadir <- system.file("extdata", "WTA_NGS_Example",
-  package = "GeoMxWorkflows"
+demoData <- readRDS(
+    system.file(
+        "extdata",
+        "miniGeoMx.rds",
+        package = "DgeaHeatmap"
+    )
 )
-DCCFiles <- dir(file.path(datadir, "dccs"),
-  pattern = ".dcc$", full.names = TRUE, recursive = TRUE
-)
-PKCFiles <- unzip(
-  zipfile = dir(file.path(datadir, "pkcs"),
-    pattern = ".zip$", full.names = TRUE, recursive = TRUE
-  ),
-  exdir = tempdir()
-)
-SampleAnnotationFile <- dir(file.path(datadir, "annotation"),
-  pattern = ".xlsx$", full.names = TRUE, recursive = TRUE
-)
-rawDataObject <- suppressWarnings(
-  GeomxTools::readNanoStringGeoMxSet(
-    dccFiles = DCCFiles,
-    pkcFiles = PKCFiles, phenoDataFile = SampleAnnotationFile,
-    phenoDataSheet = "Template", phenoDataDccColName = "Sample_ID",
-    protocolDataColNames = c("aoi", "roi"), configFile = NULL,
-    analyte = "RNA", phenoDataColPrefix = "", experimentDataColNames = NULL
-  )
-)
-demoData <- add_demoElem(rawDataObject)
+
+demoData <- add_demoElem(demoData)
+
 NanoStringNCTools::assayDataApply(
-  demoData,
-  MARGIN = 1, FUN = mean, elt = "demoElem"
+    demoData,
+    MARGIN = 1,
+    FUN = mean,
+    elt = "demoElem"
 )[seq_len(5)]
-VGroup <- "aoi"
-vElt <- "demoElem"
-demoData <- split_data_by_column(demoData, VGroup, vElt)
+
+demoData <- split_data_by_column(
+    demoData,
+    vGroup = "aoi",
+    vElt = "demoElem"
+)
 }

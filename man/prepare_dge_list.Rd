@@ -20,13 +20,13 @@ Creates a contrast matrix for edgeR
 }
 \examples{
 rawCounts <- read.csv(system.file(
-  "extdata/RawDataExamplePackageNanostring.csv",
-  package = "DgeaHeatmap"
+    "extdata/RawDataExamplePackageNanostring.csv",
+    package = "DgeaHeatmap"
 ))
 rawCounts <- build_matrix(rawCounts, 1)
 metadata <- read.csv(system.file(
-  "extdata/MetaDataPackageNanostring.csv",
-  package = "DgeaHeatmap"
+    "extdata/MetaDataPackageNanostring.csv",
+    package = "DgeaHeatmap"
 ))
 y <- prepare_dge_list(rawCounts, metadata)
 }

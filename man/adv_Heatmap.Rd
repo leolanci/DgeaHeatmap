@@ -141,14 +141,12 @@ Creating a color scheme based on the available color palettes of
 RColorBrewer for the heatmap.
 }
 \examples{
-colorPalette <- "RdBu"
 x <- 1
-seed <- 1
 input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-  package = "DgeaHeatmap"
+    package = "DgeaHeatmap"
 ))
 matrixCounts <- build_matrix(input_data, x)
 ncounts_matrix <- scale_counts(matrixCounts)
-set.seed
+set.seed(1)
 adv_Heatmap(ncounts_matrix)
 }

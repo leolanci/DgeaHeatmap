@@ -22,7 +22,7 @@ Function to create an elbow plot to choose k for clustering by k-Means.
 x <- 1
 seed <- 1
 input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-  package = "DgeaHeatmap"
+    package = "DgeaHeatmap"
 ))
 matrixCounts <- build_matrix(input_data, x)
 scaled_counts <- scale_counts(matrixCounts)

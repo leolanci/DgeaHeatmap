@@ -28,25 +28,26 @@ of the contrasts, and the generated design.
 Performs a differential expression analysis based on DESeq2
 }
 \examples{
-rawCounts <- read.csv(system.file(
-  "extdata/RawDataExamplePackageNanostring.csv",
-  package = "DgeaHeatmap"
-))
-rawCounts <- build_matrix(rawCounts, 1)
-metadata <- read.csv(system.file(
-  "extdata/MetaDataPackageNanostring.csv",
-  package = "DgeaHeatmap"
-))
-grouping_columns <- c("segment", "region", "class", "slide_name")
-comparisons <- list(Comp1 = c(
-  "Geometric_Segment_glomerulus_DKD_disease3",
-  "PanCK_tubule_DKD_disease4"
-), Comp2 = c(
-  "neg_tubule_DKD_disease4", "PanCK_tubule_DKD_disease4"
-))
-storage.mode(rawCounts) <- "integer"
-sum(!is.finite(as.matrix(rawCounts)))
+set.seed(1)
+
+counts <- matrix(rnbinom(80, mu = 20, size = 1), ncol = 4)
+colnames(counts) <- paste0("Sample", 1:4)
+rownames(counts) <- paste0("Gene", 1:20)
+storage.mode(counts) <- "integer"
+
+metadata <- data.frame(
+    segment = factor(rep(c("A", "B"), each = 2)),
+    row.names = colnames(counts)
+)
+
+comparisons <- list(
+    Comp1 = c("A", "B")
+)
+
 results_DESeq2 <- DGEADESeq2(
-  rawCounts, metadata, grouping_columns, comparisons
+    rawCounts = counts,
+    metadata = metadata,
+    grouping_columns = "segment",
+    comparisons = comparisons
 )
 }
