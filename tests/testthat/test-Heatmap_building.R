@@ -15,10 +15,13 @@ test_that("basic test", {
 })
 
 test_that("Matrix is build from an input file and one column is put as rownames", {
-  input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
-  x <- 1
+  input_data <- data.frame(
+    Gene = paste0("Gene", 1:3),
+    Sample1 = c(1, 2, 3),
+    Sample2 = c(4, 5, 6)
+  )
   matrix_class <- c("matrix", "array")
-  actual_outcome <- build_matrix(input_data, x)
+  actual_outcome <- build_matrix(input_data, 1)
 
   # testing the outcome of the function to be "matrix" "array"
   expect_equal(class(actual_outcome), matrix_class)
