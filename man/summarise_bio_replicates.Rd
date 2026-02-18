@@ -23,7 +23,7 @@ Summarizes columns biological replicates of a matrix into one.
 \examples{
 x <- 1
 input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-  package = "DgeaHeatmap"
+    package = "DgeaHeatmap"
 ))
 top_genes_matrix <- build_matrix(input_data, x)
 probes <- list("disease3", "disease4", "disease1B")

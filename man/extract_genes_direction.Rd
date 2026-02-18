@@ -37,32 +37,32 @@ Get list of genes and their direction of regulation
 }
 \examples{
 rawCounts <- read.csv(
-  system.file("extdata/RawDataExamplePackageNanostring.csv",
-    package = "DgeaHeatmap"
-  )
+    system.file("extdata/RawDataExamplePackageNanostring.csv",
+        package = "DgeaHeatmap"
+    )
 )
 rawCounts <- build_matrix(rawCounts, 1)
 metadata <- read.csv(system.file("extdata/MetaDataPackageNanostring.csv",
-  package = "DgeaHeatmap"
+    package = "DgeaHeatmap"
 ))
 grouping_columns <- c("segment", "region", "class", "slide_name")
 comparisons <- list(
-  Comp1 = c(
-    "Geometric_Segment_glomerulus_DKD_disease3",
-    "PanCK_tubule_DKD_disease4"
-  ),
-  Comp2 = c("neg_tubule_DKD_disease4", "PanCK_tubule_DKD_disease4")
+    Comp1 = c(
+        "Geometric_Segment_glomerulus_DKD_disease3",
+        "PanCK_tubule_DKD_disease4"
+    ),
+    Comp2 = c("neg_tubule_DKD_disease4", "PanCK_tubule_DKD_disease4")
 )
 storage.mode(rawCounts) <- "integer"
 sum(!is.finite(as.matrix(rawCounts)))
 results_list_DESeq2 <- DGEADESeq2(
-  rawCounts, metadata, grouping_columns, comparisons
+    rawCounts, metadata, grouping_columns, comparisons
 )
 results_list <- results_list_DESeq2$results
 gene_list <- extract_genes_direction(
-  results_list,
-  only_up = TRUE, only_down = FALSE, only_sig = FALSE,
-  padj = NULL, padj_cutoff = 0.05, lfc_cutoff = 0
+    results_list,
+    only_up = TRUE, only_down = FALSE, only_sig = FALSE,
+    padj = NULL, padj_cutoff = 0.05, lfc_cutoff = 0
 )
 
 }

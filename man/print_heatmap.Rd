@@ -55,7 +55,7 @@ Function to build a heatmap using other functions.
 \examples{
 x <- 1
 input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-  package = "DgeaHeatmap"
+    package = "DgeaHeatmap"
 ))
 matrixCounts <- build_matrix(input_data, x)
 m_top_genes_matrix <- scale_counts(matrixCounts)
@@ -67,12 +67,12 @@ set.seed(seed)
 m_kmeans <- Kmean_generation(m_top_genes_matrix, k)
 number_of_annotations_per_cluster <- 5
 top_x_genes_cluster <- most_variable_genes(
-  m_kmeans,
-  number_of_annotations_per_cluster, k
+    m_kmeans,
+    number_of_annotations_per_cluster, k
 )
 anno <- set_annotation(
-  m_top_genes_matrix, top_x_genes_cluster,
-  fontsize_rowAnnotation
+    m_top_genes_matrix, top_x_genes_cluster,
+    fontsize_rowAnnotation
 )
 title <- "Heatmap of Data"
 fontsize_columnNames <- 6
@@ -84,8 +84,8 @@ UnitSize <- "cm"
 color_Palette <- "RdBu"
 set.seed(seed)
 print_heatmap(
-  m_top_genes_matrix, title, split, anno, fontsize_columnNames,
-  fontsize_rowNames, title_heatmapLegend, WidthNum, HeightNum,
-  UnitSize, color_Palette
+    m_top_genes_matrix, title, split, anno, fontsize_columnNames,
+    fontsize_rowNames, title_heatmapLegend, WidthNum, HeightNum,
+    UnitSize, color_Palette
 )
 }

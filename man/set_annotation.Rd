@@ -26,7 +26,7 @@ Function to set row annotation for a heatmap.
 x <- 1
 number_of_annotations_per_cluster <- 5
 input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-  package = "DgeaHeatmap"
+    package = "DgeaHeatmap"
 ))
 matrixCounts <- build_matrix(input_data, x)
 m_top_genes_matrix <- scale_counts(matrixCounts)
@@ -36,12 +36,12 @@ fontsize_rowAnnotation <- 8
 set.seed(seed)
 m_kmeans <- Kmean_generation(m_top_genes_matrix, k)
 top_x_genes_cluster <- most_variable_genes(
-  m_kmeans,
-  number_of_annotations_per_cluster, k
+    m_kmeans,
+    number_of_annotations_per_cluster, k
 )
 anno <- set_annotation(
-  m_top_genes_matrix, top_x_genes_cluster,
-  fontsize_rowAnnotation
+    m_top_genes_matrix, top_x_genes_cluster,
+    fontsize_rowAnnotation
 )
 
 }
