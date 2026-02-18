@@ -42,11 +42,11 @@
 #'     comparisons, prefix
 #' )
 DGEALimma <- function(
-  rawCounts,
-  metadata,
-  grouping_columns,
-  comparisons = NULL, # named list of specific comparisons
-  prefix = "DEA"
+    rawCounts,
+    metadata,
+    grouping_columns,
+    comparisons = NULL, # named list of specific comparisons
+    prefix = "DEA"
 ) {
     # Check input
     if (!all(grouping_columns %in% colnames(metadata))) {
@@ -119,26 +119,27 @@ DGEALimma <- function(
 #' @export
 #'
 #' @examples
-#' rawCounts <- read.csv(system.file(
-#'     "extdata/RawDataExamplePackageNanostring.csv",
-#'     package = "DgeaHeatmap"
-#' ))
-#' rawCounts <- build_matrix(rawCounts, 1)
-#' metadata <- read.csv(system.file(
-#'     "extdata/MetaDataPackageNanostring.csv",
-#'     package = "DgeaHeatmap"
-#' ))
-#' grouping_columns <- c("segment", "region", "class", "slide_name")
-#' comparisons <- list(Comp1 = c(
-#'     "Geometric_Segment_glomerulus_DKD_disease3",
-#'     "PanCK_tubule_DKD_disease4"
-#' ), Comp2 = c(
-#'     "neg_tubule_DKD_disease4", "PanCK_tubule_DKD_disease4"
-#' ))
-#' storage.mode(rawCounts) <- "integer"
-#' sum(!is.finite(as.matrix(rawCounts)))
+#' set.seed(1)
+#'
+#' counts <- matrix(rnbinom(80, mu = 20, size = 1), ncol = 4)
+#' colnames(counts) <- paste0("Sample", 1:4)
+#' rownames(counts) <- paste0("Gene", 1:20)
+#' storage.mode(counts) <- "integer"
+#'
+#' metadata <- data.frame(
+#'     segment = factor(rep(c("A", "B"), each = 2)),
+#'     row.names = colnames(counts)
+#' )
+#'
+#' comparisons <- list(
+#'     Comp1 = c("A", "B")
+#' )
+#'
 #' results_DESeq2 <- DGEADESeq2(
-#'     rawCounts, metadata, grouping_columns, comparisons
+#'     rawCounts = counts,
+#'     metadata = metadata,
+#'     grouping_columns = "segment",
+#'     comparisons = comparisons
 #' )
 DGEADESeq2 <- function(rawCounts, metadata, grouping_columns, comparisons) {
     keep <- rowSums(rawCounts > 0) >= 2 # Filter genes with non-zero counts
@@ -191,8 +192,8 @@ DGEADESeq2 <- function(rawCounts, metadata, grouping_columns, comparisons) {
             )
             collapsed <- paste(missing_levels, collapse = ", ")
             message((sprintf(
-                "Contrast '%s' skipped:
-                       level(s) not found in comp factor: %s", name,
+                "Contrast '%s' skipped: level(s) not found in comp factor: %s",
+                name,
                 collapsed
             )))
         }
@@ -246,12 +247,12 @@ DGEADESeq2 <- function(rawCounts, metadata, grouping_columns, comparisons) {
 #' )
 #' results_list <- results_list_DESeq2$results
 #' down_genes <- extractDEGenes(results_list, comparisons, only_down = TRUE)
-extractDEGenes <- function(results_list, comparisons, only_up = FALSE,
-                           only_down = FALSE, up_down = FALSE, only_sig = FALSE,
-                           padj_cutoff = 0.05, lfc_cutoff = 0) {
+extractDEGenes <- function(
+    results_list, comparisons, only_up = FALSE, only_down = FALSE,
+    up_down = FALSE, only_sig = FALSE, padj_cutoff = 0.05, lfc_cutoff = 0) {
     # Check for incompatible options
     if ((only_up + only_down + up_down + only_sig) > 1) {
-        stop("One of 'only_up', 'only_down', 'up_down', or 'only_sig' can be TRUE.")
+        stop("One:'only_up', 'only_down', up_down', or 'only_sig' can be TRUE.")
     }
     # Get union of all genes across all comparisons
     all_genes <- unique(unlist(lapply(results_list, rownames)))
@@ -318,33 +319,35 @@ extractDEGenes <- function(results_list, comparisons, only_up = FALSE,
 #' @export
 #'
 #' @examples
-#' rawCounts <- read.csv(system.file(
-#'     "extdata/RawDataExamplePackageNanostring.csv",
-#'     package = "DgeaHeatmap"
-#' ))
-#' rawCounts <- build_matrix(rawCounts, 1)
-#' metadata <- read.csv(system.file(
-#'     "extdata/MetaDataPackageNanostring.csv",
-#'     package = "DgeaHeatmap"
-#' ))
-#' grouping_columns <- c("segment", "region", "class", "slide_name")
-#' comparisons <- list(Comp1 = c(
-#'     "Geometric_Segment_glomerulus_DKD_disease3",
-#'     "PanCK_tubule_DKD_disease4"
-#' ), Comp2 = c(
-#'     "neg_tubule_DKD_disease4",
-#'     "PanCK_tubule_DKD_disease4"
-#' ))
-#' prefix <- "DEA"
+#' set.seed(1)
+#' counts <- matrix(rnbinom(600, mu = 10, size = 1), ncol = 6)
+#' colnames(counts) <- paste0("Sample", 1:6)
+#' rownames(counts) <- paste0("Gene", 1:100)
+#'
+#' # Create simple metadata
+#' metadata <- data.frame(
+#'     segment = factor(rep(c("A", "B"), each = 3)),
+#'     row.names = colnames(counts)
+#' )
+#'
+#' comparisons <- list(
+#'     Comp1 = c("A", "B")
+#' )
+#'
 #' results_edgeR <- DGEAedgeR(
-#'     rawCounts, metadata, grouping_columns, comparisons,
+#'     rawCounts = counts,
+#'     metadata = metadata,
+#'     grouping_columns = "segment",
+#'     comparisons = comparisons,
 #'     prefix = "DEA"
 #' )
-DGEAedgeR <- function(rawCounts,
-                      metadata,
-                      grouping_columns,
-                      comparisons = NULL,
-                      prefix = "DEA") {
+#'
+#' names(results_edgeR)
+DGEAedgeR <- function(
+    rawCounts, metadata,
+    grouping_columns,
+    comparisons = NULL,
+    prefix = "DEA") {
     # Check grouping columns in metadata
     if (!all(grouping_columns %in% colnames(metadata))) {
         stop("Missing columns in metadata")
@@ -411,29 +414,16 @@ DGEAedgeR <- function(rawCounts,
 #' @export
 #'
 #' @examples
-#' rawCounts <- read.csv(system.file(
-#'     "extdata/RawDataExamplePackageNanostring.csv",
-#'     package = "DgeaHeatmap"
-#' ))
-#' rawCounts <- build_matrix(rawCounts, 1)
-#' metadata <- read.csv(system.file(
-#'     "extdata/MetaDataPackageNanostring.csv",
-#'     package = "DgeaHeatmap"
-#' ))
-#' grouping_columns <- c("segment", "region", "class", "slide_name")
-#' comparisons <- list(
-#'     Comp1 = c(
-#'         "Geometric_Segment_glomerulus_DKD_disease3",
-#'         "PanCK_tubule_DKD_disease4"
-#'     ),
-#'     Comp2 = c("neg_tubule_DKD_disease4", "PanCK_tubule_DKD_disease4")
+#' results_edgeR <- readRDS(
+#'     system.file(
+#'         "extdata",
+#'         "mini_edgeR_results.rds",
+#'         package = "DgeaHeatmap"
+#'     )
 #' )
-#' prefix <- "DEA"
-#' results_edgeR <- DGEAedgeR(
-#'     rawCounts, metadata, grouping_columns, comparisons,
-#'     prefix = "DEA"
-#' )
-#' sumresults <- summarize_edgeR_DEA(results_edgeR)
+#'
+#' summarize_edgeR_DEA(results_edgeR)
+
 summarize_edgeR_DEA <- function(results_edgeR,
                                 lfc_threshold = 1,
                                 fdr_threshold = 0.05,
@@ -528,8 +518,10 @@ pairwise_contrasts <- function(comparisons, comp_factor, prefix = "Contrast") {
     } else {
         # fallback to all pairwise
         comb <- utils::combn(levels(comp_factor), 2)
-        contrast_strings <- apply(comb, 2, function(x) paste0(x[1], " - ", x[2]))
-        contrast_names <- apply(comb, 2, function(x) paste0(prefix, "_", x[1], "_vs_", x[2]))
+        contrast_strings <- apply(
+                comb, 2, function(x) paste0(x[1], " - ", x[2]))
+        contrast_names <- apply(
+                comb, 2, function(x) paste0(prefix, "_", x[1], "_vs_", x[2]))
     }
     return(list(strings = contrast_strings, names = contrast_names))
 }
@@ -656,7 +648,7 @@ extract_genes_direction <- function(results_list,
 #'     metadata = metadata, comparisons = comparisons, prefix = prefix
 #' )
 create_contrast_matrix_edgeR <- function(
-  metadata, comparisons = NULL, prefix = "DEA"
+    metadata, comparisons = NULL, prefix = "DEA"
 ) {
     if (!is.null(comparisons)) {
         # named list of pairs, e.g. list(comp1_vs_comp2 = c("comp1", "comp2"))
@@ -679,7 +671,8 @@ create_contrast_matrix_edgeR <- function(
             contrast_vec[x[2]] <- -1
             contrast_vec
         })
-        colnames(contrast_matrix) <- apply(comb, 2, function(x) paste0(prefix, "_", x[1], "_vs_", x[2]))
+        colnames(contrast_matrix) <- apply(
+            comb, 2, function(x) paste0(prefix, "_", x[1], "_vs_", x[2]))
     }
     return(contrast_matrix)
 }
