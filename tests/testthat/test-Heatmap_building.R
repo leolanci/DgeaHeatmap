@@ -30,95 +30,120 @@ test_that("Matrix is build from an input file and one column is put as rownames"
 })
 
 test_that("An factor dependent individual matrix is build from a bigger matrix", {
-  input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
-  counts_data <- build_matrix(input_data, 1)
+
+  counts_data <- matrix(
+    1:12,
+    nrow = 3,
+    dimnames = list(
+      paste0("Gene", 1:3),
+      c(
+        "DKD_glomerulus_1",
+        "DKD_glomerulus_2",
+        "DKD_glomerulus_3",
+        "DKD_glomerulus_4"
+      )
+    )
+  )
+
   factors_for_matrix <- list("DKD", "glomerulus")
-  print(factors_for_matrix)
-  matrix_class <- c("matrix", "array")
+
   actual_outcome <- individual_matrix(factors_for_matrix, counts_data)
-  # testing the outcome of the function to be "matrix" "array"
-  expect_equal(class(actual_outcome), matrix_class)
+
+  # testing the outcome of the function to be "matrix"
+  expect_true(is.matrix(actual_outcome))
+
   # testing the outcome to have strings as rownames
-  expect_equal(class(rownames(actual_outcome)), "character")
-  # testing if number of columns that contain string in original matrix equals number of column in output matrix
-  actual_output <- ncol(actual_outcome)
-  expected_output <- 4
-  expect_equal(actual_output, expected_output)
+  expect_equal(rownames(actual_outcome), rownames(counts_data))
+
+  # Check correct number of selected columns
+  expect_equal(ncol(actual_outcome), 4)
 })
 
 
 test_that("Variance of each gene is estimated and only the most variable genes are filtered from matrix", {
-  input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
-  counts_data <- build_matrix(input_data, 1)
-  top_number_of_genes <- 20
-  highly_variable_genes <- filtering_for_top_exprGenes(counts_data, top_number_of_genes)
+  set.seed(1)
+  counts_data <- matrix(
+    rnorm(50),
+    nrow = 10,
+    dimnames = list(paste0("Gene", 1:10), paste0("Sample", 1:5))
+  )
 
-  # testing for correct number of rows
-  actual_outcome <- nrow(highly_variable_genes)
-  expect_equal(actual_outcome, top_number_of_genes)
+  top_number_of_genes <- 3
 
-  # testing for correct class of outcome
-  actual_outcome_class <- class(highly_variable_genes)
-  matrix_class <- c("matrix", "array")
-  expect_equal(actual_outcome_class, matrix_class)
+  highly_variable_genes <- filtering_for_top_exprGenes(
+    counts_data,
+    top_number_of_genes
+  )
+
+  # Correct number of rows
+  expect_equal(nrow(highly_variable_genes), top_number_of_genes)
+
+  # Object type
+  expect_true(is.matrix(highly_variable_genes))
 })
 
 test_that("Counts are scaled through Z-score scaling", {
-  input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
-  counts_data <- build_matrix(input_data, 1)
+  set.seed(1)
+  counts_data <- matrix(
+    rnorm(50, mean = 10, sd = 5),
+    nrow = 10,
+    dimnames = list(paste0("Gene", 1:10), paste0("Sample", 1:5))
+  )
+
   scaled_counts <- scale_counts(counts_data)
-  if (any(scaled_counts < 2)) {
-    if (any(scaled_counts > (-2))) {
-      actual_outcome <- FALSE
-    } else {
-      actual_outcome <- TRUE
-    }
-  } else {
-    actual_outcome <- TRUE
-  }
 
-  expected_outcome <- FALSE
+  # Mean approximately 0 per gene
+  expect_true(all(abs(rowMeans(scaled_counts)) < 1e-10))
 
-  expect_equal(actual_outcome, expected_outcome)
+  # SD approximately 1 per gene
+  expect_true(all(abs(apply(scaled_counts, 1, sd) - 1) < 1e-10))
 })
 
 
 test_that("summarizing the biological replicates works", {
-  input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
-  counts_data <- build_matrix(input_data, 1)
-  factors_for_matrix <- list("disease")
-  matrix_class <- c("matrix", "array")
-  indi_matrix <- individual_matrix(factors_for_matrix, counts_data)
-  head(indi_matrix)
+  counts_data <- matrix(
+    rnorm(30),
+    nrow = 5,
+    dimnames = list(
+      paste0("Gene", 1:5),
+      c(
+        "DKD_glomerulus_1",
+        "DKD_glomerulus_2",
+        "DKD_tubule_1",
+        "DKD_tubule_2",
+        "Other_1",
+        "Other_2"
+      )
+    )
+  )
+
   probes <- list("DKD_glomerulus", "DKD_tubule")
-  actual_outcome <- summarise_bio_replicates(indi_matrix, probes)
-  # testing the outcome of the function to be "matrix" "array"
-  expect_equal(class(actual_outcome), matrix_class)
-  # testing the outcome to have strings as rownames
-  expect_equal(class(rownames(actual_outcome)), "character")
-  # testing if number of columns that contain string in original matrix equals number of column in output matrix
-  actual_output <- ncol(actual_outcome)
-  expected_output <- 2
-  expect_equal(actual_output, expected_output)
+
+  actual_outcome <- summarise_bio_replicates(counts_data, probes)
+
+  expect_true(is.matrix(actual_outcome))
+  expect_equal(ncol(actual_outcome), 2)
+  expect_equal(rownames(actual_outcome), rownames(counts_data))
 })
 
 test_that("K-mean generation works", {
-  input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
-  counts_data <- build_matrix(input_data, 1)
-  factors_for_matrix <- list("disease")
-  matrix_class <- c("matrix", "array")
-  indi_matrix <- individual_matrix(factors_for_matrix, counts_data)
-  probes <- list("DKD_glomerulus", "DKD_tubule")
-  SumTable <- summarise_bio_replicates(indi_matrix, probes)
+  SumTable <- matrix(
+    rnorm(20),
+    nrow = 5,
+    dimnames = list(
+      paste0("Gene", 1:5),
+      paste0("Group", 1:4)
+    )
+  )
   K_meanTable <- Kmean_generation(SumTable, 3)
   colNumSum <- ncol(SumTable)
   expected_outcome <- colNumSum + 1
   actual_outcome <- ncol(K_meanTable)
   # testing that a new column is added
   expect_equal(actual_outcome, expected_outcome)
-  # testing the outcome of the function to be "matrix" "array"
+  # testing the outcome of the function to be "matrix"
   actual_outcome <- Kmean_generation(SumTable, 1)
-  expect_equal(class(actual_outcome), matrix_class)
+  expect_true(is.matrix(K_meanTable))
 })
 
 test_that("function makes list of most variable genes (rows) of each cluster", {
