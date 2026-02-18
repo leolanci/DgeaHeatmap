@@ -1,5 +1,5 @@
 .onLoad <- function(libname, pkgname) {
-  utils::globalVariables(c(
-    "."
-  ))
+    utils::globalVariables(c(
+        "."
+    ))
 }
