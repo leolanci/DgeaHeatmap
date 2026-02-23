@@ -147,33 +147,32 @@ test_that("K-mean generation works", {
 })
 
 test_that("function makes list of most variable genes (rows) of each cluster", {
-  input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
-  counts_data <- build_matrix(input_data, 1)
-  factors_for_matrix <- list("disease")
-  matrix_class <- c("matrix", "array")
-  indi_matrix <- individual_matrix(factors_for_matrix, counts_data)
-  probes <- list("DKD_glomerulus", "DKD_tubule")
-  SumTable <- summarise_bio_replicates(indi_matrix, probes)
-  K_meanTable <- Kmean_generation(SumTable, 1)
+  set.seed(1)
+  K_meanTable <- matrix(
+    rnorm(20),
+    nrow = 5,
+    dimnames = list(
+      paste0("Gene", 1:5),
+      paste0("Group", 1:4)
+    )
+  )
+  K_meanTable <- cbind(K_meanTable, cluster = c(1, 1, 1, 1, 1))
   actualOutput <- most_variable_genes(K_meanTable, 1, 2)
-  # testing the outcome is a list
-  expected_outcome <- "list"
-  expect_equal(class(actualOutput), expected_outcome)
+  expect_type(actualOutput, "list")
 })
 
 test_that("performing k_mean clustering outside of the heatmap works", {
-  input_data <- read.csv(system.file("extdata/testfile_counts.csv", package = "DgeaHeatmap"))
-  counts_data <- build_matrix(input_data, 1)
-  factors_for_matrix <- list("disease")
-  matrix_class <- c("matrix", "array")
-  indi_matrix <- individual_matrix(factors_for_matrix, counts_data)
-  probes <- list("DKD_glomerulus", "DKD_tubule")
-  SumTable <- summarise_bio_replicates(indi_matrix, probes)
-  K_meanTable <- Kmean_generation(SumTable, 1)
+  set.seed(1)
+    SumTable <- matrix(
+    rnorm(20),
+    nrow = 5,
+    dimnames = list(
+      paste0("Gene", 1:5),
+      paste0("Group", 1:4)
+    )
+  )
   actualOutput <- performing_kMeans(SumTable, 1)
-  # testing that outcomes is right class
-  expect_outcome <- "character"
-  expect_equal(class(actualOutput), expect_outcome)
+  expect_type(actualOutput, "character")
 })
 
 test_that("basic test runs", {
@@ -183,7 +182,7 @@ test_that("basic test runs", {
 test_that("function_complexHeatmap_var runs without error on valid input", {
   # Setup: Load sample data
   input_data <- read.csv(system.file("extdata/testfile_counts.csv",
-    package = "DgeaHeatmap"
+                                     package = "DgeaHeatmap"
   ))
 
   x <- 1
@@ -267,9 +266,9 @@ test_that("row_clustering works with hierarchical clustering and no k_row", {
 
   # Run clustering
   result <- row_clustering(ncounts_matrix,
-    cluster_rows = TRUE,
-    cluster_method = "hierarchical", distance_method = "euclidean",
-    k_row = NULL, row_split = NULL, row_dend = TRUE
+                           cluster_rows = TRUE,
+                           cluster_method = "hierarchical", distance_method = "euclidean",
+                           k_row = NULL, row_split = NULL, row_dend = TRUE
   )
 
   # Expectations
