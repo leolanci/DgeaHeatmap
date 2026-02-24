@@ -15,7 +15,7 @@ output:
     %\VignetteIndexEntry{Vignette Title}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
-biocViews: Bayesian,Clustering, DifferentialExpression, GeneExpression, Normalization, PrincipalComponent, RNASeq, Regression, Sequencing, Software, Transcription, AlternativeSplicing, BatchEffect,BiomedicalInformatics, CellBiology, Cheminformatics, DataImport, DifferentialSplicing, Epigenetics, ExonArray, FunctionalGenomics, GeneExpression, GeneSetEnrichment, Genetics, ImmunoOncology, Metabolomics, MicroRNAArray, Microarray, MultipleComparison, Normalization, OneChannel, Preprocessing, ProprietaryPlatforms, Proteomics, QualityControl, RNASeq, Regression, Sequencing, SystemsBiology, TimeCourse, TwoChannel, mRNAMicroarray
+biocViews: Bayesian,Clustering, DifferentialExpression, GeneExpression, Normalization, PrincipalComponent, RNASeq, Regression, Sequencing, Software, Transcription, AlternativeSplicing, BatchEffect,BiomedicalInformatics, CellBiology, Cheminformatics, DataImport, DifferentialSplicing, Epigenetics, ExonArray, FunctionalGenomics, GeneSetEnrichment, Genetics, ImmunoOncology, Metabolomics, MicroRNAArray, Microarray, MultipleComparison, OneChannel, Preprocessing, ProprietaryPlatforms, Proteomics, QualityControl, SystemsBiology, TimeCourse, TwoChannel, mRNAMicroarray
 Imports: BiocGenerics, ComplexHeatmap, RColorBrewer, purrr, magrittr, rlang, NanoStringNCTools, Biobase, GeomxTools, stats, limma, edgeR, utils, DESeq2, SummarizedExperiment, dplyr
 URL: https://gitlab.ub.uni-bielefeld.de/spittaulab/Dgea_Heatmap_Package
 BugReports: https://gitlab.ub.uni-bielefeld.de/spittaulab/Dgea_Heatmap_Package/-/issues
