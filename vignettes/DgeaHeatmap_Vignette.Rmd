@@ -394,7 +394,6 @@ library(GeomxTools)
 library("GeoMxWorkflows")
 library(EnvStats)
 library(ggiraph)
-library(ggsankey)
 
 
 if (packageVersion("GeomxTools") < "2.1" &&

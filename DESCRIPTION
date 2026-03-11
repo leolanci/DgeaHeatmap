@@ -34,7 +34,6 @@ Suggests:
     GeoMxWorkflows, 
     VennDiagram,
     ggiraph,
-    ggsankey,
     stringr,
     ggvenn,
     data.table
