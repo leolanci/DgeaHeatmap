@@ -1,0 +1,73 @@
+###############################################################
+# Script to generate example data for the DgeaHeatmap package
+#
+# The files created by this script are stored in:
+#   inst/extdata/
+#
+# These data are provided only for examples, tests, and vignettes
+# in the DgeaHeatmap package.
+#
+# Source:
+# The original data were obtained from the GeoMxWorkflows
+# Bioconductor package example dataset: WTA_NGS_Example.
+#
+# License:
+# The original data are distributed with the GeoMxWorkflows
+# package and follow the same licensing terms.
+# See: https://www.bioconductor.org/packages/release/workflows/html/GeoMxWorkflows.html
+# The files included in this package were subset to reduce size
+# and are used only for examples and tests.
+#
+# Date created:
+# 2025-01-15
+#
+# Last updated:
+# 2026-02-18
+#
+# Maintainer:
+# Name
+###############################################################
+
+Data in inst/extdata were derived from example datasets provided by the
+GeoMxWorkflows Bioconductor package.
+
+The following steps were performed:
+1. The raw count data were extracted from the GeoMxWorkflows example dataset
+   "WTA_NGS_Example"."
+2. To reduce the file size, a subset of genes and samples was selected.
+3. The processed data set was saved as miniGeoMx.rds.
+
+Additionally, simplified data were created to test functions related to
+edgeR analysis. The following steps were performed:
+1. Raw counts and metadata were extracted from the GeoMxWorkflows dataset
+   "WTA_NGS_Example".
+2. The data were reduced to a subset of genes and samples.
+3. The function DGEAedgeR() was used to generate differential expression
+   results.
+4. The resulting object was stored in inst/extdata as
+   mini_edgeR_results.rds.
+
+The datasets MetaDataPackageNanostring.csv and
+RawDataExamplePackageNanostring.csv were created by extracting the data from the
+GeoMxWorkflows data set (WTA_NGS_Example).
+1. Metadata were extracted from the GeoMxWorkflows dataset
+   "WTA_NGS_Example".
+2. The metadata were simplified and stored as
+   inst/extdata/MetaDataPackageNanostring.csv.
+3. Raw counts were extracted and simplified to contain fewer genes and
+   samples.
+4. The resulting dataset was stored as
+   inst/extdata/RawDataExamplePackageNanostring.csv.
+
+The file testfile_counts.csv was created by
+1. Extracting raw counts from the GeoMxWorkflows data set "WTA_NGS_Example".
+2. The file was reduced to a subset of genes and
+   samples.
+2. The counts were normalized using edgeR.
+3. The normalized counts were stored as inst/extdata/testfile_counts.csv.
+
+This dataset is used for testing package functions.
+
+These files are small subsets of the original data and are included only
+for demonstration, testing, and vignette purposes.
+
