@@ -33,9 +33,9 @@ GeoMxWorkflows Bioconductor package.
 
 The following steps were performed:
 1. The raw count data were extracted from the GeoMxWorkflows example dataset
-   "WTA_NGS_Example"."
+   "WTA_NGS_Example".
 2. To reduce the file size, a subset of genes and samples was selected.
-3. The processed data set was saved as miniGeoMx.rds.
+3. The processed dataset was saved as miniGeoMx.rds.
 
 Additionally, simplified data were created to test functions related to
 edgeR analysis. The following steps were performed:
@@ -49,7 +49,7 @@ edgeR analysis. The following steps were performed:
 
 The datasets MetaDataPackageNanostring.csv and
 RawDataExamplePackageNanostring.csv were created by extracting the data from the
-GeoMxWorkflows data set (WTA_NGS_Example).
+GeoMxWorkflows dataset (WTA_NGS_Example).
 1. Metadata were extracted from the GeoMxWorkflows dataset
    "WTA_NGS_Example".
 2. The metadata were simplified and stored as
@@ -60,14 +60,73 @@ GeoMxWorkflows data set (WTA_NGS_Example).
    inst/extdata/RawDataExamplePackageNanostring.csv.
 
 The file testfile_counts.csv was created by
-1. Extracting raw counts from the GeoMxWorkflows data set "WTA_NGS_Example".
+1. Extracting raw counts from the GeoMxWorkflows dataset "WTA_NGS_Example".
 2. The file was reduced to a subset of genes and
    samples.
-2. The counts were normalized using edgeR.
-3. The normalized counts were stored as inst/extdata/testfile_counts.csv.
+3. The counts were normalized using edgeR.
+4. The normalized counts were stored as inst/extdata/testfile_counts.csv.
 
 This dataset is used for testing package functions.
 
 These files are small subsets of the original data and are included only
 for demonstration, testing, and vignette purposes.
 
+The JPEG files in inst/extdata were generated using the example
+code provided in the package README file. The images are Venn
+Diagrams showing results of differential gene expression analyses performed with
+limma, DESeq2, or edgeR.
+
+The analyses were performed using the dataset
+inst/extdata/testfile_counts.csv, which was generated as described
+above.
+
+The following files were created:
+
+-inst/extdata/VennLimmaupdownreg.jpeg
+-inst/extdata/VennDESeq2upreg.jpeg
+
+The images were created using the ggvenn() from the ggvenn package function
+after performing differential expression analysis with limma.
+
+The images
+
+-inst/extdata/VennDESeq2downreg.jpeg
+-inst/extdata/VennDESeq2sigreg.jpeg
+
+were generated using ggvenn() after performing limma-based differential
+expression analysis and filtering for downregulated genes and significantly
+regulated genes.
+
+The image
+
+-inst/extdata/VennDESeq2updownreg.jpeg
+
+shows up- and down-regulated genes identified from a DESeq2
+analysis and was created using the function vennDiagram() from the limma package.
+
+The image
+-inst/extdata/VennedgeRupdownreg.jpeg
+
+shows up- and down-regulated genes identified from an edgeR
+analysis and was generated using the function vennDiagram().
+
+The JPEG files are stored in inst/extdata because they serve as
+example outputs for the workflows demonstrated in the README and
+package documentation. They allow users to compare generated results
+with expected outputs from the example analyses.
+
+inst/extdata/
+"MetaDataPackageNanostring.csv"
+"mini_edgeR_results.rds"
+"miniGeoMx.rds"
+"RawDataExamplePackageNanostring.csv"
+"testfile_counts.csv"
+"VennDESeq2downreg.jpeg"
+"VennDESeq2sigreg.jpeg"
+"VennDESeq2updownreg.jpeg"
+"VennDESeq2upreg.jpeg"
+"VennedgeRupdownreg.jpeg"
+"VennLimmaupdownreg.jpeg"
+
+The files listed above represent all datasets and example outputs
+included in inst/extdata for use in examples, tests, and documentation.
