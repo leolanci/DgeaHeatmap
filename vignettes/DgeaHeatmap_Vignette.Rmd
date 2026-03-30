@@ -644,8 +644,13 @@ venn.plot <- vennDiagram(results_all_DEG,
     circle.col = c("red", "blue", "green3")
 )
 ```
-![](inst/extdata/VennLimmaupdownreg.jpeg)
 
+```{r ImageVennLimmaupdownreg, echo=FALSE, out.width="100%"}
+knitr::include_graphics(
+  system.file("extdata", "VennLimmaupdownreg.png", package = "DgeaHeatmap")
+)
+
+```
 Chen, H., Boutros, P.C. VennDiagram: a package for the generation of highly-customizable Venn and Euler diagrams in R. BMC Bioinformatics 12, 35 (2011). https://doi.org/10.1186/1471-2105-12-35
 
 **DEA DESeq2**
@@ -669,21 +674,40 @@ library(ggvenn)
 up_genes <- extractDEGenes(results_list_d, contrasts, only_up = TRUE)
 ggvenn(up_genes, fill_color = c("red", "green", "blue"))
 ```
-![](inst/extdata/VennDESeq2upreg.jpeg)
+
+```{r ImageVennDESeq2upreg, echo=FALSE, out.width="100%"}
+knitr::include_graphics(
+  system.file("extdata", "VennDESeq2upreg.png", package = "DgeaHeatmap")
+)
+
+```
 
 Venn Diagram for down regulated genes extracted from the DESeq2 analysis:
 ```{r DESeq2_Venn_downreg, eval=FALSE}
 down_genes <- extractDEGenes(results_list_d, contrasts, only_down = TRUE)
 ggvenn(down_genes, fill_color = c("red", "green", "blue"))
 ```
-![](inst/extdata/VennDESeq2downreg.jpeg)
+
+
+```{r ImageVennDESeq2downreg, echo=FALSE, out.width="100%"}
+knitr::include_graphics(
+  system.file("extdata", "VennDESeq2downreg.png", package = "DgeaHeatmap")
+)
+
+```
 
 Venn Diagram for significant genes extracted from the DESeq2 analysis:
 ```{r DESeq2_Venn_sigreg, eval=FALSE}
 sig_genes <- extractDEGenes(results_list_d, contrasts, only_sig = TRUE)
 ggvenn(sig_genes, fill_color = c("red", "green", "blue"))
 ```
-![](inst/extdata/VennDESeq2sigreg.jpeg)
+
+```{r ImageVennDESeq2sigreg, echo=FALSE, out.width="100%"}
+knitr::include_graphics(
+  system.file("extdata", "VennDESeq2sigreg.png", package = "DgeaHeatmap")
+)
+
+```
 
 Venn Diagram for up and down regulated genes extracted from the DESeq2 analysis:
 ```{r DESeq2_Venn_updownreg, eval=FALSE}
@@ -696,7 +720,13 @@ venn.plot <- vennDiagram(state_mat,
     circle.col = c("red", "blue", "green3")
 )
 ```
-![](inst/extdata/VennDESeq2updownreg.jpeg)
+
+```{r ImageVennDESeq2updownreg, echo=FALSE, out.width="100%"}
+knitr::include_graphics(
+  system.file("extdata", "VennDESeq2updownreg.png", package = "DgeaHeatmap")
+)
+
+```
 
 **DEA edgeR**
 
@@ -728,7 +758,13 @@ venn.plot <- vennDiagram(state_matrix,
     circle.col = c("red", "blue", "green3")
 )
 ```
-![](inst/extdata/VennedgeRupdownreg.jpeg)
+
+```{r ImageVennedgeRupdownreg, echo=FALSE, out.width="100%"}
+knitr::include_graphics(
+  system.file("extdata", "VennedgeRupdownreg.png", package = "DgeaHeatmap")
+)
+
+```
 
 Normalized Counts can for example be extracted as in this example:
 
