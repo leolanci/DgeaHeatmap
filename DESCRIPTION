@@ -1,6 +1,7 @@
 Package: DgeaHeatmap
 Title: Implementation of functions to analyze nanostring and other data for DGE and to generate heatmaps
 Version: 0.99.0
+Depends: R (>= 3.5.0)
 Authors@R: 
     person("Leonie Johanna", "Lancelle", , "leonie.lancelle@uni-bielefeld.de", role = c("aut", "cre"),
            comment = c(ORCID = "0009-0004-3138-0752"))
