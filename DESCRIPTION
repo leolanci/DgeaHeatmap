@@ -1,7 +1,7 @@
 Package: DgeaHeatmap
 Title: Implementation of functions to analyze nanostring and other data for DGE and to generate heatmaps
 Version: 0.99.0
-Depends: R (>= 3.5.0)
+Depends: R (>= 4.4.0)
 Authors@R: 
     c(
       person("Leonie Johanna", "Lancelle",
@@ -13,7 +13,7 @@ Description: Package for data extraction from Nanostring GeoMx DSP data, also wo
 License: GPL-3 + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 output: 
     BiocStyle::html_document
   vignette: >
