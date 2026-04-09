@@ -42,11 +42,11 @@
 #'     comparisons, prefix
 #' )
 DGEALimma <- function(
-    rawCounts,
-    metadata,
-    grouping_columns,
-    comparisons = NULL, # named list of specific comparisons
-    prefix = "DEA"
+  rawCounts,
+  metadata,
+  grouping_columns,
+  comparisons = NULL, # named list of specific comparisons
+  prefix = "DEA"
 ) {
     # Check input
     if (!all(grouping_columns %in% colnames(metadata))) {
@@ -248,8 +248,9 @@ DGEADESeq2 <- function(rawCounts, metadata, grouping_columns, comparisons) {
 #' results_list <- results_list_DESeq2$results
 #' down_genes <- extractDEGenes(results_list, comparisons, only_down = TRUE)
 extractDEGenes <- function(
-    results_list, comparisons, only_up = FALSE, only_down = FALSE,
-    up_down = FALSE, only_sig = FALSE, padj_cutoff = 0.05, lfc_cutoff = 0) {
+  results_list, comparisons, only_up = FALSE, only_down = FALSE,
+  up_down = FALSE, only_sig = FALSE, padj_cutoff = 0.05, lfc_cutoff = 0
+) {
     # Check for incompatible options
     if ((only_up + only_down + up_down + only_sig) > 1) {
         stop("One:'only_up', 'only_down', up_down', or 'only_sig' can be TRUE.")
@@ -344,10 +345,11 @@ extractDEGenes <- function(
 #'
 #' names(results_edgeR)
 DGEAedgeR <- function(
-    rawCounts, metadata,
-    grouping_columns,
-    comparisons = NULL,
-    prefix = "DEA") {
+  rawCounts, metadata,
+  grouping_columns,
+  comparisons = NULL,
+  prefix = "DEA"
+) {
     # Check grouping columns in metadata
     if (!all(grouping_columns %in% colnames(metadata))) {
         stop("Missing columns in metadata")
@@ -423,7 +425,6 @@ DGEAedgeR <- function(
 #' )
 #'
 #' summarize_edgeR_DEA(results_edgeR)
-
 summarize_edgeR_DEA <- function(results_edgeR,
                                 lfc_threshold = 1,
                                 fdr_threshold = 0.05,
@@ -519,9 +520,11 @@ pairwise_contrasts <- function(comparisons, comp_factor, prefix = "Contrast") {
         # fallback to all pairwise
         comb <- utils::combn(levels(comp_factor), 2)
         contrast_strings <- apply(
-                comb, 2, function(x) paste0(x[1], " - ", x[2]))
+            comb, 2, function(x) paste0(x[1], " - ", x[2])
+        )
         contrast_names <- apply(
-                comb, 2, function(x) paste0(prefix, "_", x[1], "_vs_", x[2]))
+            comb, 2, function(x) paste0(prefix, "_", x[1], "_vs_", x[2])
+        )
     }
     return(list(strings = contrast_strings, names = contrast_names))
 }
@@ -648,7 +651,7 @@ extract_genes_direction <- function(results_list,
 #'     metadata = metadata, comparisons = comparisons, prefix = prefix
 #' )
 create_contrast_matrix_edgeR <- function(
-    metadata, comparisons = NULL, prefix = "DEA"
+  metadata, comparisons = NULL, prefix = "DEA"
 ) {
     if (!is.null(comparisons)) {
         # named list of pairs, e.g. list(comp1_vs_comp2 = c("comp1", "comp2"))
@@ -672,7 +675,8 @@ create_contrast_matrix_edgeR <- function(
             contrast_vec
         })
         colnames(contrast_matrix) <- apply(
-            comb, 2, function(x) paste0(prefix, "_", x[1], "_vs_", x[2]))
+            comb, 2, function(x) paste0(prefix, "_", x[1], "_vs_", x[2])
+        )
     }
     return(contrast_matrix)
 }

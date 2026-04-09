@@ -136,7 +136,9 @@ scale_counts <- function(countsmatrix) {
 show_data_distribution <- function(scaled_counts) {
     apply(scaled_counts, MARGIN = 1, mean) %>% # calculate the mean per row
         graphics::hist(
-            ., main = "", xlab = "Z-score values", col = "dodgerblue2")
+            .,
+            main = "", xlab = "Z-score values", col = "dodgerblue2"
+        )
     # build histogram to see data distribution
 }
 
@@ -223,14 +225,16 @@ summarise_bio_replicates <- function(top_genes_matrix, probes) {
 
     for (p in probes) {
         m_group <- BiocGenerics::grep(
-            p, BiocGenerics::colnames(m_top_genes_matrix))
+            p, BiocGenerics::colnames(m_top_genes_matrix)
+        )
         # find columns containing "string"
         group_mean <- rowMeans(subset(m_top_genes_matrix, select = m_group),
             na.rm = TRUE
         )
         # get means of each sample and safe as a numeric values
         m_top_genes_matrix <- BiocGenerics::cbind(
-            m_top_genes_matrix, group_mean)
+            m_top_genes_matrix, group_mean
+        )
     }
     m_top_genes_matrix <- m_top_genes_matrix[, -seq_len(number_columns)]
     if (ncol(m_top_genes_matrix) == length(probes)) {
@@ -326,7 +330,9 @@ most_variable_genes <- function(m_kmeans,
         # makes a list of the gene names with the highest variance
         cluster_genes_highest_var <- as.list(
             BiocGenerics::rownames(cluster_matrix)[seq_len(
-                number_of_annotations_per_cluster)])
+                number_of_annotations_per_cluster
+            )]
+        )
 
         # creates list with most_variable_genes of all cluster
         top_x_variable_genes <- append(
@@ -372,8 +378,9 @@ most_variable_genes <- function(m_kmeans,
 #' )
 #'
 set_annotation <- function(
-    m_top_genes_matrix, top_x_genes_cluster,
-    fontsize_rowAnnotation) {
+  m_top_genes_matrix, top_x_genes_cluster,
+  fontsize_rowAnnotation
+) {
     # get numeric indices of top_x_genes_clusters
     top_x_genes_clusters <- which(BiocGenerics::rownames(m_top_genes_matrix)
     %in% top_x_genes_cluster)
@@ -474,9 +481,10 @@ performing_kMeans <- function(m_top_genes_matrix, k) {
 #'     UnitSize, color_Palette
 #' )
 print_heatmap <- function(
-    m_top_genes_matrix, title, split, anno,
-    fontsize_columnNames, fontsize_rowNames,
-    title_heatmapLegend, WidthNum, HeightNum, UnitSize, color_Palette) {
+  m_top_genes_matrix, title, split, anno,
+  fontsize_columnNames, fontsize_rowNames,
+  title_heatmapLegend, WidthNum, HeightNum, UnitSize, color_Palette
+) {
     color_setting(color_Palette)
     ht <- ComplexHeatmap::Heatmap(m_top_genes_matrix,
         name = "mat", split = split,
@@ -756,7 +764,8 @@ adv_Heatmap <- function(ncounts_matrix, column_name = "Heatmap",
         row_annotation = row_annotation,
         annotation_for_rows = annotation_for_rows, row_split = row_split,
         col_split = col_split, row_dend = row_dend, col_dend = col_dend,
-        col_ha = col_ha)
+        col_ha = col_ha
+    )
     hm <- ComplexHeatmap::draw(ht)
     return(hm)
 }
@@ -794,9 +803,10 @@ adv_Heatmap <- function(ncounts_matrix, column_name = "Heatmap",
 #'     k_row = NULL, row_split = row_split, row_dend = row_dend
 #' )
 row_clustering <- function(
-    ncounts_matrix, cluster_rows = TRUE,
-    cluster_method = "hierarchical", distance_method = "euclidean",
-    k_row = NULL, row_split = NULL, row_dend = TRUE) {
+  ncounts_matrix, cluster_rows = TRUE,
+  cluster_method = "hierarchical", distance_method = "euclidean",
+  k_row = NULL, row_split = NULL, row_dend = TRUE
+) {
     row_split <- row_split
     row_dend <- row_dend # default TRUE if unspecified
     if (cluster_rows) {
@@ -876,9 +886,10 @@ get_dist <- function(x, method) {
 #'     col_dend = col_dend
 #' )
 column_clustering <- function(
-    ncounts_matrix, cluster_columns = TRUE, cluster_method = "hierarchical",
-    distance_method = "euclidean", k_col = NULL,
-    col_split = NULL, col_dend = TRUE) {
+  ncounts_matrix, cluster_columns = TRUE, cluster_method = "hierarchical",
+  distance_method = "euclidean", k_col = NULL,
+  col_split = NULL, col_dend = TRUE
+) {
     col_split <- col_split
     col_dend <- col_dend
     if (cluster_columns) {
@@ -953,10 +964,11 @@ column_clustering <- function(
 #'     annotation_colors = group_colors
 #' )
 set_sample_annotation <- function(
-    sample_metadata = NULL, annotation_colors = NULL,
-    annotation_name_side = "right", fontsize_group_annotation = 8,
-    fontsize_group_annotation_legend = 10,
-    fontsize_group_annotation_labels = 8) {
+  sample_metadata = NULL, annotation_colors = NULL,
+  annotation_name_side = "right", fontsize_group_annotation = 8,
+  fontsize_group_annotation_legend = 10,
+  fontsize_group_annotation_labels = 8
+) {
     col_ha <- NULL
     if (!is.null(sample_metadata)) {
         col_ha <- ComplexHeatmap::HeatmapAnnotation(
@@ -964,12 +976,15 @@ set_sample_annotation <- function(
             col = annotation_colors,
             annotation_name_side = annotation_name_side,
             annotation_name_gp = grid::gpar(
-                fontsize = fontsize_group_annotation),
+                fontsize = fontsize_group_annotation
+            ),
             annotation_legend_param = list(
                 title_gp = grid::gpar(
-                    fontsize = fontsize_group_annotation_legend),
+                    fontsize = fontsize_group_annotation_legend
+                ),
                 labels_gp = grid::gpar(
-                    fontsize = fontsize_group_annotation_labels)
+                    fontsize = fontsize_group_annotation_labels
+                )
             )
         )
     }
@@ -1006,13 +1021,14 @@ set_sample_annotation <- function(
 #' set.seed(seed)
 #' annotation_for_rows <- set_row_annotation(ncounts_matrix)
 set_row_annotation <- function(
-    ncounts_matrix,
-    k_row = NULL,
-    row_annotation = FALSE, # FALSE or TRUE
-    row_annotation_method = "auto",
-    row_anno_names = NULL,
-    row_anno_number = 5,
-    fontsize_rowAnnotation = 10) {
+  ncounts_matrix,
+  k_row = NULL,
+  row_annotation = FALSE, # FALSE or TRUE
+  row_annotation_method = "auto",
+  row_anno_names = NULL,
+  row_anno_number = 5,
+  fontsize_rowAnnotation = 10
+) {
     annotation_for_rows <- NULL
     if (row_annotation) {
         if (row_annotation_method == "auto") {
@@ -1038,7 +1054,9 @@ set_row_annotation <- function(
                 number_of_last_column <- ncol(y)
                 # orders the variances from highest to lowest
                 o <- BiocGenerics::order(
-                    y[, number_of_last_column], decreasing = TRUE)
+                    y[, number_of_last_column],
+                    decreasing = TRUE
+                )
                 # orders matrix according to variances (highest to lowest)
                 cluster_matrix <- y[o, ]
                 # makes a list of the gene names with the highest variance

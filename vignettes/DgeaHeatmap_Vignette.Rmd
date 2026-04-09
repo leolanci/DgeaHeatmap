@@ -27,7 +27,7 @@ The goal of DgeaHeatmap is to enable R users to generate heatmaps more easily an
 
 ## Installation
 
-You can install the development version of DgeaHeatmap from [GitLab](https://gitlab.com/) with:
+You can install the development version of DgeaHeatmap from [GitLab](https://gitlab.ub.uni-bielefeld.de/spittaulab/Dgea_Heatmap_Package) with:
 
 ``` r
 # install.packages("pak")
@@ -445,11 +445,9 @@ rawDataObject <- suppressWarnings(readNanoStringGeoMxSet(
 ))
 ```
 Anon Analyzing GeoMx-NGS RNA Expression Data with GeomxTools. Available from: 
-http://bioconductor.riken.jp/packages/3.15/workflows/vignettes/GeoMxWorkflows/
-inst/doc/GeomxTools_RNA-NGS_Analysis.html (September 21, 2023b). 
+https://bioconductor.statistik.tu-dortmund.de/packages/3.18/workflows/vignettes/GeoMxWorkflows/inst/doc/GeomxTools_RNA-NGS_Analysis.html (September 21, 2023b). 
 Anon Developer Introduction to the NanoStringGeoMxSet. Available from: 
-https://www.bioconductor.org/packages/devel/bioc/vignettes/GeomxTools/inst/doc
-/Developer_Introduction_to_the_NanoStringGeoMxSet.html (September 21, 2023c).
+https://www.bioconductor.org/packages/devel/bioc/vignettes/GeomxTools/inst/doc/Developer_Introduction_to_the_NanoStringGeoMxSet.html (September 21, 2023c).
 
 To preprocess the data, the logarithm of the count matrix is computed and added to the demoData object. Furthermore, the data is summarized by splitting it by a chosen column and calculating the mean.
 ```{r examplePreProcess, echo=TRUE, results='hide'}
@@ -473,11 +471,9 @@ df_Exp <- genRawReadCountTable(PrePro_rawDataObject)
 knitr::kable(head(df_Exp[, seq_len(9)]), "pipe")
 ``` 
 Anon Analyzing GeoMx-NGS RNA Expression Data with GeomxTools. Available from: 
-http://bioconductor.riken.jp/packages/3.15/workflows/vignettes/GeoMxWorkflows/
-inst/doc/GeomxTools_RNA-NGS_Analysis.html (September 21, 2023b). 
+https://bioconductor.statistik.tu-dortmund.de/packages/3.18/workflows/vignettes/GeoMxWorkflows/inst/doc/GeomxTools_RNA-NGS_Analysis.html (September 21, 2023b). 
 Anon Developer Introduction to the NanoStringGeoMxSet. Available from: 
-https://www.bioconductor.org/packages/devel/bioc/vignettes/GeomxTools/inst/doc
-/Developer_Introduction_to_the_NanoStringGeoMxSet.html (September 21, 2023c).
+https://www.bioconductor.org/packages/devel/bioc/vignettes/GeomxTools/inst/doc/Developer_Introduction_to_the_NanoStringGeoMxSet.html (September 21, 2023c).
 
 Next, an usable matrix of column data is extracted from the sample data:
 ```{r ColdataDEG, echo=TRUE, results='hide', warning=FALSE}
@@ -616,6 +612,7 @@ result1 <- result1 %>%
         TRUE ~ FALSE # If condictions in the line above are not met, gene is not DE.
     ))
 
+
 sigDEresults <- result1 %>%
     dplyr::filter(isSignificant == TRUE)
 ```
@@ -625,10 +622,9 @@ inesdesantiago (2020) 10 Tips & Tricks for complex model.matrix designs in DGE a
 Sequencing QC and data analysis blog. Available from: 
 Bibliography
 96
-https://seqqc.wordpress.com/2020/11/28/10-tips-tricks-for-complex-model-matrixdesigns-in-dge-analysis/ (September 21, 2023).
+https://seqqc.wordpress.com/2020/11/28/10-tips-tricks-for-complex-model-matrix-designs-in-dge-analysis/ (September 21, 2023).
 Anon Developer Introduction to the NanoStringGeoMxSet. Available from: 
-https://www.bioconductor.org/packages/devel/bioc/vignettes/GeomxTools/inst/doc
-/Developer_Introduction_to_the_NanoStringGeoMxSet.html (September 21, 2023c). 
+https://www.bioconductor.org/packages/devel/bioc/vignettes/GeomxTools/inst/doc/Developer_Introduction_to_the_NanoStringGeoMxSet.html (September 21, 2023c). 
 
 
 **Visualisation with a Venn Diagramm:**
@@ -647,9 +643,8 @@ venn.plot <- vennDiagram(results_all_DEG,
 
 ```{r ImageVennLimmaupdownreg, echo=FALSE, out.width="100%"}
 knitr::include_graphics(
-  system.file("extdata", "VennLimmaupdownreg.png", package = "DgeaHeatmap")
+    system.file("extdata", "VennLimmaupdownreg.png", package = "DgeaHeatmap")
 )
-
 ```
 Chen, H., Boutros, P.C. VennDiagram: a package for the generation of highly-customizable Venn and Euler diagrams in R. BMC Bioinformatics 12, 35 (2011). https://doi.org/10.1186/1471-2105-12-35
 
@@ -677,9 +672,8 @@ ggvenn(up_genes, fill_color = c("red", "green", "blue"))
 
 ```{r ImageVennDESeq2upreg, echo=FALSE, out.width="100%"}
 knitr::include_graphics(
-  system.file("extdata", "VennDESeq2upreg.png", package = "DgeaHeatmap")
+    system.file("extdata", "VennDESeq2upreg.png", package = "DgeaHeatmap")
 )
-
 ```
 
 Venn Diagram for down regulated genes extracted from the DESeq2 analysis:
@@ -691,9 +685,8 @@ ggvenn(down_genes, fill_color = c("red", "green", "blue"))
 
 ```{r ImageVennDESeq2downreg, echo=FALSE, out.width="100%"}
 knitr::include_graphics(
-  system.file("extdata", "VennDESeq2downreg.png", package = "DgeaHeatmap")
+    system.file("extdata", "VennDESeq2downreg.png", package = "DgeaHeatmap")
 )
-
 ```
 
 Venn Diagram for significant genes extracted from the DESeq2 analysis:
@@ -704,9 +697,8 @@ ggvenn(sig_genes, fill_color = c("red", "green", "blue"))
 
 ```{r ImageVennDESeq2sigreg, echo=FALSE, out.width="100%"}
 knitr::include_graphics(
-  system.file("extdata", "VennDESeq2sigreg.png", package = "DgeaHeatmap")
+    system.file("extdata", "VennDESeq2sigreg.png", package = "DgeaHeatmap")
 )
-
 ```
 
 Venn Diagram for up and down regulated genes extracted from the DESeq2 analysis:
@@ -723,9 +715,8 @@ venn.plot <- vennDiagram(state_mat,
 
 ```{r ImageVennDESeq2updownreg, echo=FALSE, out.width="100%"}
 knitr::include_graphics(
-  system.file("extdata", "VennDESeq2updownreg.png", package = "DgeaHeatmap")
+    system.file("extdata", "VennDESeq2updownreg.png", package = "DgeaHeatmap")
 )
-
 ```
 
 **DEA edgeR**
@@ -761,9 +752,8 @@ venn.plot <- vennDiagram(state_matrix,
 
 ```{r ImageVennedgeRupdownreg, echo=FALSE, out.width="100%"}
 knitr::include_graphics(
-  system.file("extdata", "VennedgeRupdownreg.png", package = "DgeaHeatmap")
+    system.file("extdata", "VennedgeRupdownreg.png", package = "DgeaHeatmap")
 )
-
 ```
 
 Normalized Counts can for example be extracted as in this example:
