@@ -1,11 +1,14 @@
 ---
-title: "DgeaHeatmap_Vignette"
+title: "DgeaHeatmap Vignette"
 author: "Lancelle, Leonie Johanna"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{DgeaHeatmap_Vignette}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+date: "`r Sys.Date()`"
+output: 
+  BiocStyle::html_document:
+    toc: true
+  vignette: >
+    %\VignetteIndexEntry{DgeaHeatmap Vignette}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
@@ -411,11 +414,6 @@ if (packageVersion("GeomxTools") > "2.1" &&
 ```
 
 ```{r readInNanostringRawFiles, eval=FALSE, echo=TRUE, results='hide', warning=FALSE}
-if (!requireNamespace("GeoMxWorkflows", quietly = TRUE)) {
-    message("Das Daten-Paket ist nicht installiert.")
-    knitr::opts_chunk$set(eval = FALSE) # Stoppt das Ausführen der Chunks, falls Paket fehlt
-}
-
 datadir <- system.file("extdata/WTA_NGS_Example", package = "GeoMxWorkflows")
 
 

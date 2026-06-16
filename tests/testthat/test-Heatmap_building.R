@@ -1,8 +1,6 @@
 library(testthat)
 library(stringr)
 library(DgeaHeatmap)
-library(tinysnapshot)
-library(visualTest)
 
 test_that("I can use the 3rd edition", {
     local_edition(3)

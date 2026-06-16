@@ -119,6 +119,7 @@ DGEALimma <- function(
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' set.seed(1)
 #'
 #' counts <- matrix(rnbinom(80, mu = 20, size = 1), ncol = 4)
@@ -141,6 +142,7 @@ DGEALimma <- function(
 #'     grouping_columns = "segment",
 #'     comparisons = comparisons
 #' )
+#' }
 DGEADESeq2 <- function(rawCounts, metadata, grouping_columns, comparisons) {
     keep <- rowSums(rawCounts > 0) >= 2 # Filter genes with non-zero counts
     filtered_counts <- rawCounts[keep, ]
