@@ -47,8 +47,8 @@ rawCounts <- read.csv(system.file(
     package = "DgeaHeatmap"
 ))
 rawCounts <- build_matrix(rawCounts, 1)
-metadata <- read.csv(system.file(
-    "extdata/MetaDataPackageNanostring.csv",
+metadata <- readRDS(system.file(
+    "extdata/MetaDataPackageNanostring.rds",
     package = "DgeaHeatmap"
 ))
 grouping_columns <- c("segment", "region", "class", "slide_name")

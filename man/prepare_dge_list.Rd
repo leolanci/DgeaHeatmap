@@ -24,8 +24,8 @@ rawCounts <- read.csv(system.file(
     package = "DgeaHeatmap"
 ))
 rawCounts <- build_matrix(rawCounts, 1)
-metadata <- read.csv(system.file(
-    "extdata/MetaDataPackageNanostring.csv",
+metadata <- readRDS(system.file(
+    "extdata/MetaDataPackageNanostring.rds",
     package = "DgeaHeatmap"
 ))
 y <- prepare_dge_list(rawCounts, metadata)

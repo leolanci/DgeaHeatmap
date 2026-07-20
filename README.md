@@ -25,7 +25,7 @@ devtools::install_gitlab("spittaulab/Dgea_Heatmap_Package", host = "gitlab.ub.un
 ## Usage
 
 <figure>
-<img src="vignettes/plots/Scheme_Workflow_4.png"
+<img src="vignettes/plots/Scheme_Workflow_4.jpg"
 alt="Step-by-step workflow of a data analysis using either Read Counts or raw Nanostring GeoMx DSP data files. (A) Description of the steps starting with Read Counts using functions from the package DgeaHeatmap. (B) The raw files generated through Nanostring GeoMx DSP are loaded, preprocessed, and filtered in order to then extract the Read Counts of all evaluated genes and to perform a differential gene expression analysis. (C) Using prepared data, the depicted functions can be utilized to visualize the data distribution and to choose the fitting number of clusters for the dataset. Heatmaps can be genereated as wished, showing no annotation, automatically generated annotation, or specifically chosen annotation." />
 <figcaption aria-hidden="true">Step-by-step workflow of a data analysis
 using either Read Counts or raw Nanostring GeoMx DSP data files. (A)
@@ -107,37 +107,37 @@ scaled_counts <- scale_counts(varGenesMatrix)
 show_data_distribution(scaled_counts)
 ```
 
-<img src="man/figures/README-exampleShowDataDistribution-1.png" width="100%" />
+<img src="man/figures/README-exampleShowDataDistribution-1.png" alt="" width="100%" />
 
 **Generating an elbow plot to choose k for k-mean generation:**
 
 ``` r
 seed <- 1 # setting a seed for a reproducible outcome
-set.seed(seed)                 # set seed for reproducibility
+set.seed(seed) # set seed for reproducibility
 elbow_plot(scaled_counts)
 ```
 
-<img src="man/figures/README-exampleElbowPlot-1.png" width="100%" />
+<img src="man/figures/README-exampleElbowPlot-1.png" alt="" width="100%" />
 
 This can also be conducted with the transposed matrix to get the number
 of clusters the columns can be divided into:
 
 ``` r
-maxK <- 4                                 # only 4 samples therefore a max of 4 clusters possible
-seed <- 1                                 # setting a seed for a reproducible outcome
-transposed_matrix <- t(scaled_counts)     # transposes matrix
-set.seed(seed)                            # set seed for reproducibility
+maxK <- 4 # only 4 samples therefore a max of 4 clusters possible
+seed <- 1 # setting a seed for a reproducible outcome
+transposed_matrix <- t(scaled_counts) # transposes matrix
+set.seed(seed) # set seed for reproducibility
 elbow_plot(transposed_matrix, maxK)
 ```
 
-<img src="man/figures/README-exampleElbowPlot_columns-1.png" width="100%" />
+<img src="man/figures/README-exampleElbowPlot_columns-1.png" alt="" width="100%" />
 
 As desired, the samples can further be summarized as biological
 replicates to help generate more clearly arranged heatmaps and to give a
 better overview.
 
 ``` r
-#print(colnames(scaled_counts))
+# print(colnames(scaled_counts))
 probes <- list("disease3_DKD_glomerulus_Geometric_Segment", "disease1B_DKD_glomerulus_Geometric_Segment", "disease2B_DKD_glomerulus_WT")
 sumBioRepsMatrix <- summarise_bio_replicates(scaled_counts, probes)
 ```
@@ -154,7 +154,7 @@ sumBioRepsMatrix <- summarise_bio_replicates(scaled_counts, probes)
 **Generating K-means for clustering in the heatmap:**
 
 ``` r
-seed <- 10 #set a seed for reproducibility, but try different seeds first
+seed <- 10 # set a seed for reproducibility, but try different seeds first
 k_clusters <- 3
 set.seed(seed)
 K_meanTable <- Kmean_generation(sumBioRepsMatrix, k_clusters)
@@ -210,8 +210,8 @@ example:**
 ``` r
 seed <- 1
 title <- "Heatmap DKD glomerulus segment"
-fontsize_columnNames <-6
-fontsize_rowNames <-4
+fontsize_columnNames <- 6
+fontsize_rowNames <- 4
 title_heatmap_legend <- "Expression"
 WidthNum <- 4.5
 HeightNum <- 3
@@ -221,7 +221,7 @@ set.seed(seed)
 hm <- print_heatmap(sumBioRepsMatrix, title, split_heatmap_clusters, annotation_for_heatmap, fontsize_columnNames, fontsize_rowNames, title_heatmap_legend, WidthNum, HeightNum, UnitSize, colorPalette)
 ```
 
-<img src="man/figures/README-Heatmap_printheatmap-1.png" width="100%" />
+<img src="man/figures/README-Heatmap_printheatmap-1.png" alt="" width="100%" />
 With “function_complexHeatmap_var”, a heatmap can be created with
 automatic annotation of the x most variable genes from each cluster. As
 input, a matrix with the scaled counts of the most variable genes from a
@@ -230,8 +230,8 @@ replicates.
 
 ``` r
 title <- "Heatmap DKD glomerulus segment"
-fontsize_columnNames <-6
-fontsize_rowNames <-4
+fontsize_columnNames <- 6
+fontsize_rowNames <- 4
 title_heatmap_legend <- "Expression"
 WidthNum <- 4.5
 HeightNum <- 3
@@ -241,7 +241,7 @@ set.seed(seed)
 hm <- function_complexHeatmap_var(scaled_counts, probes, number_of_annotations_per_cluster, k_clusters, title, fontsize_rowAnnotation, fontsize_columnNames, fontsize_rowNames, title_heatmap_legend, WidthNum, HeightNum, UnitSize, colorPalette)
 ```
 
-<img src="man/figures/README-exampleFunctionComplexHeatmapVar-1.png" width="100%" />
+<img src="man/figures/README-exampleFunctionComplexHeatmapVar-1.png" alt="" width="100%" />
 
 **A heatmap can further be generated with annotation of specific genes,
 as in this example:**
@@ -261,8 +261,8 @@ split_heatmap_clusters <- performing_kMeans(sumBioRepsMatrix, k_clusters)
 
 title <- "Heatmap with specific annotation"
 k_clusters <- 2
-fontsize_columnNames <-6
-fontsize_rowNames <-4
+fontsize_columnNames <- 6
+fontsize_rowNames <- 4
 title_heatmap_legend <- "Expression"
 WidthNum <- 4.5
 HeightNum <- 3
@@ -272,7 +272,7 @@ set.seed(seed)
 hm <- print_heatmap(sumBioRepsMatrix, title, split_heatmap_clusters, annotation_for_heatmap, fontsize_columnNames, fontsize_rowNames, title_heatmap_legend, WidthNum, HeightNum, UnitSize, colorPalette)
 ```
 
-<img src="man/figures/README-exampleHeatmapSpecificAnnotation-1.png" width="100%" />
+<img src="man/figures/README-exampleHeatmapSpecificAnnotation-1.png" alt="" width="100%" />
 
 **Generate heatmaps with advanced customization:**
 
@@ -312,38 +312,38 @@ generate a heatmap is the input matrix as shown below.
 
 ``` r
 # default settings of the parameters
-ncounts_matrix <- scaled_counts                       # input matrix
-column_name <- "Heatmap"                              # name for heatmap, default = "Heatmap"
-colorPalette <- NULL                                  # available color palettes from RColorBrewer (), default = NULL
-cluster_method <- "hierarchical"                      # cluster methods, either "hierarchical" or "kmeans", default = "hierarchical"
-distance_method <- "euclidean"                        # method for creating the distance matrix for hierarchical clustering, default = "euclidean"
-cluster_rows <- TRUE                                  # optional clustering of rows, default = TRUE
-cluster_columns <- FALSE                              # optional clustering of columns, default = FALSE
-k_row <- NULL                                          # splitting of rows in heatmaps using k-means, would be an integer, default = NULL
-k_col <- NULL                                          # splitting of columns in heatmaps using k-means, would be an integer, default = NULL
-sample_metadata <- NULL                               # dataframe containing the metadata information of the file, default = NULL
-annotation_colors <- NULL                             # list containing the column groups and the choosen colors for the column annotation per group, default = NULL
-annotation_name_side <- "right"                        # optional change: side of annotation name, default = "right"
-show_row_names <- FALSE                               # optional change: show of rownames on = TRUE & off = FALSE, default = FALSE
-show_column_names <- TRUE                              # optional change: show of column names on = TRUE & off = FALSE, default = TRUE
-row_annotation = FALSE                                # optional row annotation, default = FALSE
-row_annotation_method <- "auto"                        # set if row_annotation = TRUE: options are "auto" & "specific", default = "auto"
-row_anno_names <- NULL                                 # set if row_annotation = TRUE & row_annotation_method = "specific: input list of specific genes for the row annotation, default = NULL
-row_anno_number <- 5                                   # optional change: number of automatic row annotations per cluster, default = 5
-fontsize_title <- 15                                   # optional change: fontsize the heatmap title, default = 15
-fontsize_rowAnnotation <- 8                            # optional change: fontsize of the optional row annotation, default = 8
-fontsize_columnNames <- 6                              # optional change: fontsize of the optional column names, default = 6
-fontsize_rowNames <- 4                                 # optional change: fontsize of the optional row names, default = 4
-fontsize_cluster_labels <- 8                           # optional change: fontsize of the cluster labels, default = 8
-fontsize_group_annotation <- 8                         # optional change: font size of the group annotation title, default = 8.
-fontsize_group_annotation_legend <- 10                 # optional change: fontsize of optional group annotation legend title, default = 10
-fontsize_group_annotation_labels <- 8                  # optional change: fontsize of optional group annotation legend labels, default = 8
-fontsize_heatmap_legend <- 8                           # optional change: fontsize of heatmap legend, default = 10
-fontsize_heatmap_legend_labels <- 8                    # optional change: fontsize of heatmap legend labels, default = 8
-title_heatmapLegend <- "Expression"                    # changeable title of the legend, default "Expression"
-WidthNum <- 4.5                                        # optional change of heatmap width, default = 4.5
-HeightNum <- 3                                         # optional change of heatmap height, default = 3
-UnitSize <- "cm"                                       # optional change of heatmap unit for sizes, default = "cm"
+ncounts_matrix <- scaled_counts # input matrix
+column_name <- "Heatmap" # name for heatmap, default = "Heatmap"
+colorPalette <- NULL # available color palettes from RColorBrewer (), default = NULL
+cluster_method <- "hierarchical" # cluster methods, either "hierarchical" or "kmeans", default = "hierarchical"
+distance_method <- "euclidean" # method for creating the distance matrix for hierarchical clustering, default = "euclidean"
+cluster_rows <- TRUE # optional clustering of rows, default = TRUE
+cluster_columns <- FALSE # optional clustering of columns, default = FALSE
+k_row <- NULL # splitting of rows in heatmaps using k-means, would be an integer, default = NULL
+k_col <- NULL # splitting of columns in heatmaps using k-means, would be an integer, default = NULL
+sample_metadata <- NULL # dataframe containing the metadata information of the file, default = NULL
+annotation_colors <- NULL # list containing the column groups and the choosen colors for the column annotation per group, default = NULL
+annotation_name_side <- "right" # optional change: side of annotation name, default = "right"
+show_row_names <- FALSE # optional change: show of rownames on = TRUE & off = FALSE, default = FALSE
+show_column_names <- TRUE # optional change: show of column names on = TRUE & off = FALSE, default = TRUE
+row_annotation <- FALSE # optional row annotation, default = FALSE
+row_annotation_method <- "auto" # set if row_annotation = TRUE: options are "auto" & "specific", default = "auto"
+row_anno_names <- NULL # set if row_annotation = TRUE & row_annotation_method = "specific: input list of specific genes for the row annotation, default = NULL
+row_anno_number <- 5 # optional change: number of automatic row annotations per cluster, default = 5
+fontsize_title <- 15 # optional change: fontsize the heatmap title, default = 15
+fontsize_rowAnnotation <- 8 # optional change: fontsize of the optional row annotation, default = 8
+fontsize_columnNames <- 6 # optional change: fontsize of the optional column names, default = 6
+fontsize_rowNames <- 4 # optional change: fontsize of the optional row names, default = 4
+fontsize_cluster_labels <- 8 # optional change: fontsize of the cluster labels, default = 8
+fontsize_group_annotation <- 8 # optional change: font size of the group annotation title, default = 8.
+fontsize_group_annotation_legend <- 10 # optional change: fontsize of optional group annotation legend title, default = 10
+fontsize_group_annotation_labels <- 8 # optional change: fontsize of optional group annotation legend labels, default = 8
+fontsize_heatmap_legend <- 8 # optional change: fontsize of heatmap legend, default = 10
+fontsize_heatmap_legend_labels <- 8 # optional change: fontsize of heatmap legend labels, default = 8
+title_heatmapLegend <- "Expression" # changeable title of the legend, default "Expression"
+WidthNum <- 4.5 # optional change of heatmap width, default = 4.5
+HeightNum <- 3 # optional change of heatmap height, default = 3
+UnitSize <- "cm" # optional change of heatmap unit for sizes, default = "cm"
 
 
 set.seed(1)
@@ -351,7 +351,7 @@ set.seed(1)
 hm <- adv_Heatmap(scaled_counts)
 ```
 
-<img src="man/figures/README-exampleadv_Heatmap_default-1.png" width="100%" /><img src="man/figures/README-exampleadv_Heatmap_default-2.png" width="100%" />
+<img src="man/figures/README-exampleadv_Heatmap_default-1.png" alt="" width="100%" /><img src="man/figures/README-exampleadv_Heatmap_default-2.png" alt="" width="100%" />
 
 All the optional parameters can then be changed to the taste and
 specifications of the user. For example, the color scheme can be
@@ -381,7 +381,7 @@ stopifnot(length(sample_names) == length(group_assignment))
 sample_metadata <- data.frame(Group = group_assignment, row.names = sample_names)
 
 # confirm matrix column names match the metadata rownames
-all(colnames(scaled_counts) == rownames(sample_metadata)) 
+all(colnames(scaled_counts) == rownames(sample_metadata))
 #> [1] TRUE
 
 # set a list with the Groups and choose colors for them
@@ -403,45 +403,45 @@ and custom heatmap:
 
 ``` r
 # parameters and their options in adv_Heatmap()
-ncounts_matrix <- scaled_counts                       # input matrix
-column_name <- "Heatmap 1"                              # name for heatmap, default = "Heatmap"
-colorPalette <- "RdBu"                                # available color palettes from RColorBrewer (), default = NULL
-cluster_method <- "hierarchical"                      # cluster methods, either "hierarchical" or "kmeans", default = "hierarchical"
-distance_method <- "euclidean"                        # method for creating the distance matrix for hierarchical clustering, default = "euclidean"
-cluster_rows <- TRUE                                  # optional clustering of rows, default = TRUE
-cluster_columns <- FALSE                              # optional clustering of columns, default = FALSE
-k_row = NULL                                          # splitting of rows in heatmaps using k-means, would be an integer, default = NULL
-k_col = NULL                                          # splitting of columns in heatmaps using k-means, would be an integer, default = NULL
-sample_metadata <- sample_metadata                               # dataframe containing the metadata information of the file, default = NULL
-annotation_colors <- group_colors                     # list containing the column groups and the choosen colors for the column annotation per group, default = NULL
-annotation_name_side <- "right"                        # optional change: side of annotation name, default = "right"
-show_row_names <- TRUE                               # optional change: show of rownames on = TRUE & off = FALSE, default = FALSE
-show_column_names <- TRUE                              # optional change: show of column names on = TRUE & off = FALSE, default = TRUE
-row_annotation <- FALSE                                # optional row annotation, default = FALSE
-row_annotation_method <- "auto"                        # set if row_annotation = TRUE: options are "auto" & "specific", default = "auto"
-row_anno_names <- NULL                                 # set if row_annotation = TRUE & row_annotation_method = "specific: input list of specific genes for the row annotation, default = NULL
-row_anno_number <- 5                                   # optional change: number of automatic row annotations per cluster, default = 5
-fontsize_title <- 15                                   # optional change: fontsize the heatmap title, default = 15
-fontsize_rowAnnotation <-8                            # optional change: fontsize of the optional row annotation, default = 8
-fontsize_columnNames <- 6                              # optional change: fontsize of the optional column names, default = 6
-fontsize_rowNames <- 4                                 # optional change: fontsize of the optional row names, default = 4
-fontsize_cluster_labels <- 8                           # optional change: fontsize of the cluster labels, default = 8
-fontsize_group_annotation <- 9                         # optional change: font size of the group annotation title, default = 8.
-fontsize_group_annotation_legend <- 9                 # optional change: fontsize of optional group annotation legend title, default = 10
-fontsize_group_annotation_labels <- 8                  # optional change: fontsize of optional group annotation legend labels, default = 8
-fontsize_heatmap_legend <- 9                           # optional change: fontsize of heatmap legend, default = 10
-fontsize_heatmap_legend_labels <- 8                    # optional change: fontsize of heatmap legend labels, default = 8
-title_heatmapLegend <- "Expression"                    # changeable title of the legend, default "Expression"
-WidthNum <- 4.5                                        # optional change of heatmap width, default = 4.5
-HeightNum <- 3                                         # optional change of heatmap height, default = 3
-UnitSize <- "cm"                                       # optional change of heatmap unit for sizes, default = "cm"
+ncounts_matrix <- scaled_counts # input matrix
+column_name <- "Heatmap 1" # name for heatmap, default = "Heatmap"
+colorPalette <- "RdBu" # available color palettes from RColorBrewer (), default = NULL
+cluster_method <- "hierarchical" # cluster methods, either "hierarchical" or "kmeans", default = "hierarchical"
+distance_method <- "euclidean" # method for creating the distance matrix for hierarchical clustering, default = "euclidean"
+cluster_rows <- TRUE # optional clustering of rows, default = TRUE
+cluster_columns <- FALSE # optional clustering of columns, default = FALSE
+k_row <- NULL # splitting of rows in heatmaps using k-means, would be an integer, default = NULL
+k_col <- NULL # splitting of columns in heatmaps using k-means, would be an integer, default = NULL
+sample_metadata <- sample_metadata # dataframe containing the metadata information of the file, default = NULL
+annotation_colors <- group_colors # list containing the column groups and the choosen colors for the column annotation per group, default = NULL
+annotation_name_side <- "right" # optional change: side of annotation name, default = "right"
+show_row_names <- TRUE # optional change: show of rownames on = TRUE & off = FALSE, default = FALSE
+show_column_names <- TRUE # optional change: show of column names on = TRUE & off = FALSE, default = TRUE
+row_annotation <- FALSE # optional row annotation, default = FALSE
+row_annotation_method <- "auto" # set if row_annotation = TRUE: options are "auto" & "specific", default = "auto"
+row_anno_names <- NULL # set if row_annotation = TRUE & row_annotation_method = "specific: input list of specific genes for the row annotation, default = NULL
+row_anno_number <- 5 # optional change: number of automatic row annotations per cluster, default = 5
+fontsize_title <- 15 # optional change: fontsize the heatmap title, default = 15
+fontsize_rowAnnotation <- 8 # optional change: fontsize of the optional row annotation, default = 8
+fontsize_columnNames <- 6 # optional change: fontsize of the optional column names, default = 6
+fontsize_rowNames <- 4 # optional change: fontsize of the optional row names, default = 4
+fontsize_cluster_labels <- 8 # optional change: fontsize of the cluster labels, default = 8
+fontsize_group_annotation <- 9 # optional change: font size of the group annotation title, default = 8.
+fontsize_group_annotation_legend <- 9 # optional change: fontsize of optional group annotation legend title, default = 10
+fontsize_group_annotation_labels <- 8 # optional change: fontsize of optional group annotation legend labels, default = 8
+fontsize_heatmap_legend <- 9 # optional change: fontsize of heatmap legend, default = 10
+fontsize_heatmap_legend_labels <- 8 # optional change: fontsize of heatmap legend labels, default = 8
+title_heatmapLegend <- "Expression" # changeable title of the legend, default "Expression"
+WidthNum <- 4.5 # optional change of heatmap width, default = 4.5
+HeightNum <- 3 # optional change of heatmap height, default = 3
+UnitSize <- "cm" # optional change of heatmap unit for sizes, default = "cm"
 
 set.seed(1)
 
-hm <- adv_Heatmap(ncounts_matrix, column_name = column_name, colorPalette = colorPalette, cluster_method = cluster_method, cluster_rows = cluster_rows, cluster_columns = cluster_columns, k_row = k_row, k_col = k_col, sample_metadata = sample_metadata, annotation_colors = annotation_colors, annotation_name_side = annotation_name_side, show_row_names = show_row_names, show_column_names = show_column_names, row_annotation = row_annotation, row_annotation_method = row_annotation_method, row_anno_names = row_anno_names ,row_anno_number = row_anno_number, fontsize_title = fontsize_title, fontsize_rowAnnotation = fontsize_rowAnnotation, fontsize_columnNames = fontsize_columnNames, fontsize_rowNames = fontsize_rowNames, fontsize_cluster_labels = fontsize_cluster_labels, fontsize_group_annotation = fontsize_group_annotation, fontsize_group_annotation_legend = fontsize_group_annotation_legend, fontsize_group_annotation_labels = fontsize_group_annotation_labels, fontsize_heatmap_legend = fontsize_heatmap_legend, fontsize_heatmap_legend_labels = fontsize_heatmap_legend_labels, title_heatmapLegend = title_heatmapLegend, WidthNum = WidthNum, HeightNum = HeightNum, UnitSize = UnitSize)
+hm <- adv_Heatmap(ncounts_matrix, column_name = column_name, colorPalette = colorPalette, cluster_method = cluster_method, cluster_rows = cluster_rows, cluster_columns = cluster_columns, k_row = k_row, k_col = k_col, sample_metadata = sample_metadata, annotation_colors = annotation_colors, annotation_name_side = annotation_name_side, show_row_names = show_row_names, show_column_names = show_column_names, row_annotation = row_annotation, row_annotation_method = row_annotation_method, row_anno_names = row_anno_names, row_anno_number = row_anno_number, fontsize_title = fontsize_title, fontsize_rowAnnotation = fontsize_rowAnnotation, fontsize_columnNames = fontsize_columnNames, fontsize_rowNames = fontsize_rowNames, fontsize_cluster_labels = fontsize_cluster_labels, fontsize_group_annotation = fontsize_group_annotation, fontsize_group_annotation_legend = fontsize_group_annotation_legend, fontsize_group_annotation_labels = fontsize_group_annotation_labels, fontsize_heatmap_legend = fontsize_heatmap_legend, fontsize_heatmap_legend_labels = fontsize_heatmap_legend_labels, title_heatmapLegend = title_heatmapLegend, WidthNum = WidthNum, HeightNum = HeightNum, UnitSize = UnitSize)
 ```
 
-<img src="man/figures/README-exampleadv_heatmap-1.png" width="100%" /><img src="man/figures/README-exampleadv_heatmap-2.png" width="100%" />
+<img src="man/figures/README-exampleadv_heatmap-1.png" alt="" width="100%" /><img src="man/figures/README-exampleadv_heatmap-2.png" alt="" width="100%" />
 
 Alternatively all these options can also be conducted using k-means
 Clustering:
@@ -449,45 +449,45 @@ Clustering:
 ``` r
 # parameters and their options in adv_heatmap()
 
-ncounts_matrix <- scaled_counts                       # input matrix
-column_name <- "Heatmap 2"                              # name for heatmap, default = "Heatmap"
-colorPalette <- "RdBu"                                # available color palettes from RColorBrewer (), default = NULL
-cluster_method <- "kmeans"                      # cluster methods, either "hierarchical" or "kmeans", default = "hierarchical"
-distance_method <- "euclidean"                        # method for creating the distance matrix for hierarchical clustering, default = "euclidean"
-cluster_rows <- TRUE                                  # optional clustering of rows, default = TRUE
-cluster_columns <- TRUE                              # optional clustering of columns, default = FALSE
-k_row <- 3                                          # splitting of rows in heatmaps using k-means, would be an integer, default = NULL
-k_col <- 2                                          # splitting of columns in heatmaps using k-means, would be an integer, default = NULL
-sample_metadata <- sample_metadata                               # dataframe containing the metadata information of the file, default = NULL
-annotation_colors <- group_colors                     # list containing the column groups and the choosen colors for the column annotation per group, default = NULL
-annotation_name_side <- "right"                        # optional change: side of annotation name, default = "right"
-show_row_names <- FALSE                               # optional change: show of rownames on = TRUE & off = FALSE, default = FALSE
-show_column_names <- FALSE                              # optional change: show of column names on = TRUE & off = FALSE, default = TRUE
-row_annotation <- TRUE                                # optional row annotation, default = FALSE
-row_annotation_method <- "auto"                        # set if row_annotation = TRUE: options are "auto" & "specific", default = "auto"
-row_anno_names <- NULL                                 # set if row_annotation = TRUE & row_annotation_method = "specific: input list of specific genes for the row annotation, default = NULL
-row_anno_number <- 5                                   # optional change: number of automatic row annotations per cluster, default = 5
-fontsize_title <- 15                                   # optional change: fontsize the heatmap title, default = 15
-fontsize_rowAnnotation <- 8                            # optional change: fontsize of the optional row annotation, default = 8
-fontsize_columnNames <- 6                              # optional change: fontsize of the optional column names, default = 6
-fontsize_rowNames <- 4                                 # optional change: fontsize of the optional row names, default = 4
-fontsize_cluster_labels <- 12                           # optional change: fontsize of the cluster labels, default = 8
-fontsize_group_annotation <- 10                         # optional change: font size of the group annotation title, default = 8.
-fontsize_group_annotation_legend <- 10                 # optional change: fontsize of optional group annotation legend title, default = 10
-fontsize_group_annotation_labels <- 8                  # optional change: fontsize of optional group annotation legend labels, default = 8
-fontsize_heatmap_legend <- 10                           # optional change: fontsize of heatmap legend, default = 10
-fontsize_heatmap_legend_labels <- 8                    # optional change: fontsize of heatmap legend labels, default = 8
-title_heatmapLegend <- "Expression"                    # changeable title of the legend, default "Expression"
-WidthNum <- 5                                        # optional change of heatmap width, default = 4.5
-HeightNum <- 7                                         # optional change of heatmap height, default = 3
-UnitSize <- "cm"                                       # optional change of heatmap unit for sizes, default = "cm"
+ncounts_matrix <- scaled_counts # input matrix
+column_name <- "Heatmap 2" # name for heatmap, default = "Heatmap"
+colorPalette <- "RdBu" # available color palettes from RColorBrewer (), default = NULL
+cluster_method <- "kmeans" # cluster methods, either "hierarchical" or "kmeans", default = "hierarchical"
+distance_method <- "euclidean" # method for creating the distance matrix for hierarchical clustering, default = "euclidean"
+cluster_rows <- TRUE # optional clustering of rows, default = TRUE
+cluster_columns <- TRUE # optional clustering of columns, default = FALSE
+k_row <- 3 # splitting of rows in heatmaps using k-means, would be an integer, default = NULL
+k_col <- 2 # splitting of columns in heatmaps using k-means, would be an integer, default = NULL
+sample_metadata <- sample_metadata # dataframe containing the metadata information of the file, default = NULL
+annotation_colors <- group_colors # list containing the column groups and the choosen colors for the column annotation per group, default = NULL
+annotation_name_side <- "right" # optional change: side of annotation name, default = "right"
+show_row_names <- FALSE # optional change: show of rownames on = TRUE & off = FALSE, default = FALSE
+show_column_names <- FALSE # optional change: show of column names on = TRUE & off = FALSE, default = TRUE
+row_annotation <- TRUE # optional row annotation, default = FALSE
+row_annotation_method <- "auto" # set if row_annotation = TRUE: options are "auto" & "specific", default = "auto"
+row_anno_names <- NULL # set if row_annotation = TRUE & row_annotation_method = "specific: input list of specific genes for the row annotation, default = NULL
+row_anno_number <- 5 # optional change: number of automatic row annotations per cluster, default = 5
+fontsize_title <- 15 # optional change: fontsize the heatmap title, default = 15
+fontsize_rowAnnotation <- 8 # optional change: fontsize of the optional row annotation, default = 8
+fontsize_columnNames <- 6 # optional change: fontsize of the optional column names, default = 6
+fontsize_rowNames <- 4 # optional change: fontsize of the optional row names, default = 4
+fontsize_cluster_labels <- 12 # optional change: fontsize of the cluster labels, default = 8
+fontsize_group_annotation <- 10 # optional change: font size of the group annotation title, default = 8.
+fontsize_group_annotation_legend <- 10 # optional change: fontsize of optional group annotation legend title, default = 10
+fontsize_group_annotation_labels <- 8 # optional change: fontsize of optional group annotation legend labels, default = 8
+fontsize_heatmap_legend <- 10 # optional change: fontsize of heatmap legend, default = 10
+fontsize_heatmap_legend_labels <- 8 # optional change: fontsize of heatmap legend labels, default = 8
+title_heatmapLegend <- "Expression" # changeable title of the legend, default "Expression"
+WidthNum <- 5 # optional change of heatmap width, default = 4.5
+HeightNum <- 7 # optional change of heatmap height, default = 3
+UnitSize <- "cm" # optional change of heatmap unit for sizes, default = "cm"
 
 set.seed(1)
 
-hm <- adv_Heatmap(ncounts_matrix, column_name = column_name, colorPalette = colorPalette, cluster_method = cluster_method, cluster_rows = cluster_rows, cluster_columns = cluster_columns, k_row = k_row, k_col = k_col, sample_metadata = sample_metadata, annotation_colors = annotation_colors, annotation_name_side = annotation_name_side, show_row_names = show_row_names, show_column_names = show_column_names, row_annotation = row_annotation, row_annotation_method = row_annotation_method, row_anno_names = row_anno_names ,row_anno_number = row_anno_number, fontsize_title = fontsize_title, fontsize_rowAnnotation = fontsize_rowAnnotation, fontsize_columnNames = fontsize_columnNames, fontsize_rowNames = fontsize_rowNames, fontsize_cluster_labels = fontsize_cluster_labels, fontsize_group_annotation = fontsize_group_annotation, fontsize_group_annotation_legend = fontsize_group_annotation_legend, fontsize_group_annotation_labels = fontsize_group_annotation_labels, fontsize_heatmap_legend = fontsize_heatmap_legend, fontsize_heatmap_legend_labels = fontsize_heatmap_legend_labels, title_heatmapLegend = title_heatmapLegend, WidthNum = WidthNum, HeightNum = HeightNum, UnitSize = UnitSize)
+hm <- adv_Heatmap(ncounts_matrix, column_name = column_name, colorPalette = colorPalette, cluster_method = cluster_method, cluster_rows = cluster_rows, cluster_columns = cluster_columns, k_row = k_row, k_col = k_col, sample_metadata = sample_metadata, annotation_colors = annotation_colors, annotation_name_side = annotation_name_side, show_row_names = show_row_names, show_column_names = show_column_names, row_annotation = row_annotation, row_annotation_method = row_annotation_method, row_anno_names = row_anno_names, row_anno_number = row_anno_number, fontsize_title = fontsize_title, fontsize_rowAnnotation = fontsize_rowAnnotation, fontsize_columnNames = fontsize_columnNames, fontsize_rowNames = fontsize_rowNames, fontsize_cluster_labels = fontsize_cluster_labels, fontsize_group_annotation = fontsize_group_annotation, fontsize_group_annotation_legend = fontsize_group_annotation_legend, fontsize_group_annotation_labels = fontsize_group_annotation_labels, fontsize_heatmap_legend = fontsize_heatmap_legend, fontsize_heatmap_legend_labels = fontsize_heatmap_legend_labels, title_heatmapLegend = title_heatmapLegend, WidthNum = WidthNum, HeightNum = HeightNum, UnitSize = UnitSize)
 ```
 
-<img src="man/figures/README-K_meansadv_heatmap-1.png" width="100%" /><img src="man/figures/README-K_meansadv_heatmap-2.png" width="100%" />
+<img src="man/figures/README-K_meansadv_heatmap-1.png" alt="" width="100%" /><img src="man/figures/README-K_meansadv_heatmap-2.png" alt="" width="100%" />
 
 ### Differential Gene Expression Analysis Using Nanostring Data
 
@@ -497,16 +497,18 @@ The raw Nanostring GeoMx DSP files are read in and then united into an
 instance of class “NanostringGeoMxSet”.
 
 ``` r
-rawDataObject <- suppressWarnings(readNanoStringGeoMxSet(dccFiles = DCCFiles,
-                                          pkcFiles = PKCFiles,
-                                          phenoDataFile = SampleAnnotationFile,
-                                          phenoDataSheet = "Template",
-                                          phenoDataDccColName = "Sample_ID",
-                                          protocolDataColNames = c("aoi","roi"),
-                                          configFile = NULL,
-                                          analyte = "RNA",
-                                          phenoDataColPrefix = "",
-                                          experimentDataColNames = NULL))
+rawDataObject <- suppressWarnings(readNanoStringGeoMxSet(
+  dccFiles = DCCFiles,
+  pkcFiles = PKCFiles,
+  phenoDataFile = SampleAnnotationFile,
+  phenoDataSheet = "Template",
+  phenoDataDccColName = "Sample_ID",
+  protocolDataColNames = c("aoi", "roi"),
+  configFile = NULL,
+  analyte = "RNA",
+  phenoDataColPrefix = "",
+  experimentDataColNames = NULL
+))
 ```
 
 Anon Analyzing GeoMx-NGS RNA Expression Data with GeomxTools. Available
@@ -526,10 +528,10 @@ splitting it by a chosen column and calculating the mean.
 PrePro_rawDataObject <- add_demoElem(rawDataObject)
 
 class(PrePro_rawDataObject)
-#loop over the features(1) or samples(2) of the assayData element and get the mean
-assayDataApply(PrePro_rawDataObject, MARGIN=1, FUN=mean, elt="demoElem")[seq_len(5)]
+# loop over the features(1) or samples(2) of the assayData element and get the mean
+assayDataApply(PrePro_rawDataObject, MARGIN = 1, FUN = mean, elt = "demoElem")[seq_len(5)]
 
-#split the data by group column with feature, pheno or protrocol data then get the mean
+# split the data by group column with feature, pheno or protrocol data then get the mean
 VGroup <- "aoi"
 elt <- "demoElem"
 PrePro_rawDataObject <- split_data_by_column(PrePro_rawDataObject, VGroup, elt)
@@ -563,7 +565,7 @@ Next, an usable matrix of column data is extracted from the sample data:
 ``` r
 annotation_matrix <- sData(rawDataObject)
 
-annotation_matrix$Samplename <- paste(annotation_matrix$slide_name, annotation_matrix$class, annotation_matrix$region, annotation_matrix$segment, annotation_matrix$roi, sep="_")
+annotation_matrix$Samplename <- paste(annotation_matrix$slide_name, annotation_matrix$class, annotation_matrix$region, annotation_matrix$segment, annotation_matrix$roi, sep = "_")
 class(annotation_matrix)
 library(tibble)
 
@@ -586,14 +588,14 @@ names(coldata_2)[names(coldata_2) == "annotation_matrix.Samplenummern"] <- "Samp
 
 coldata_2$Samplename <- gsub(" ", "_", coldata_2$Samplename)
 
-list_rownames <- as.list(coldata_2[,1])
+list_rownames <- as.list(coldata_2[, 1])
 
 # Combines sample describing columns into one
 coldata_2$comp <- paste(coldata_2$segment, coldata_2$region, coldata_2$class, coldata_2$slide_name, sep = "_")
 
-annotationMatrix <- data.frame(coldata_2$Samplenummern, coldata_2$Samplename) 
+annotationMatrix <- data.frame(coldata_2$Samplenummern, coldata_2$Samplename)
 
-coldata_2 <- coldata_2[,-1]
+coldata_2 <- coldata_2[, -1]
 coldata_2 <- as.matrix(coldata_2)
 
 list_rownames <- gsub("\\.", "_", list_rownames)
@@ -618,7 +620,7 @@ do this, the following code can be used:
 ``` r
 list_columnNames <- as.list(colnames(df_Exp)) # list of column names in counts table
 
-list_rownames <- as.list(annotationMatrix[,2])
+list_rownames <- as.list(annotationMatrix[, 2])
 
 annotationMatrix <- as.matrix(annotationMatrix)
 rownames(annotationMatrix) <- list_rownames
@@ -658,12 +660,12 @@ metadata and if the column names appear in the same order in both the
 raw data and metadata.
 
 ``` r
-all(colnames(copy_df_Expr) %in% rownames(coldata_2)) #check if all column names of data are in rownames of metadata #check if TRUE
+all(colnames(copy_df_Expr) %in% rownames(coldata_2)) # check if all column names of data are in rownames of metadata #check if TRUE
 #> [1] TRUE
 class(coldata_2)
 #> [1] "matrix" "array"
 
-all(colnames(copy_df_Expr) == rownames(coldata_2)) #check if the order of the data column names == order of metadata rownames
+all(colnames(copy_df_Expr) == rownames(coldata_2)) # check if the order of the data column names == order of metadata rownames
 #> [1] TRUE
 ```
 
@@ -717,12 +719,12 @@ summary(results_all_DEG)
 #> NotSig                                                                                   15748
 #> Up                                                                                        1531
 
-result1 <- limma::topTable(DGEA_results$fit, coef= "Geometric_Segment_glomerulus_DKD_disease1B  - Geometric_Segment_glomerulus_DKD_disease2B ", number = Inf, adjust.method = "fdr") %>%
+result1 <- limma::topTable(DGEA_results$fit, coef = "Geometric_Segment_glomerulus_DKD_disease1B  - Geometric_Segment_glomerulus_DKD_disease2B ", number = Inf, adjust.method = "fdr") %>%
   as.data.frame() # differentially expressed genes are obtained by topTreat() function
 
 # filter results to get significantly differentially expressed genes
-topUp <- result1[which(result1$logFC > 0),] [seq_len(100),] # up reg top 100
-topDown <- result1[which(result1$logFC < 0),] [seq_len(100),] # down reg top 100
+topUp <- result1[which(result1$logFC > 0), ][seq_len(100), ] # up reg top 100
+topDown <- result1[which(result1$logFC < 0), ][seq_len(100), ] # down reg top 100
 
 class(topUp)
 #> [1] "data.frame"
@@ -750,9 +752,9 @@ print(NamesDownReg)
 
 result1 <- result1 %>%
   dplyr::mutate(isSignificant = dplyr::case_when(
-    adj.P.Val < 0.05& abs(logFC) >1 ~TRUE,
+    adj.P.Val < 0.05 & abs(logFC) > 1 ~ TRUE,
     TRUE ~ FALSE # If condictions in the line above are not met, gene is not DE.
-    ))
+  ))
 
 sigDEresults <- result1 %>%
   dplyr::filter(isSignificant == TRUE)
@@ -779,14 +781,15 @@ regulated genes between groups. This is set up in the following way:
 library(VennDiagram)
 library(limma)
 venn.plot <- vennDiagram(results_all_DEG,
-              imagetype = "tiff",
-              include=c("up", "down"), mar=rep(1,4), cex=c(1,1,0.7), lwd=1,
-              counts.col=c("red", "blue"),
-              circle.col = c("red", "blue", "green3"))
+  imagetype = "tiff",
+  include = c("up", "down"), mar = rep(1, 4), cex = c(1, 1, 0.7), lwd = 1,
+  counts.col = c("red", "blue"),
+  circle.col = c("red", "blue", "green3")
+)
 ```
 
 <figure>
-<img src="inst/extdata/VennLimmaupdownreg.jpeg"
+<img src="inst/extdata/VennLimmaupdownreg.png"
 alt="Venn Diagram Limma results" />
 <figcaption aria-hidden="true">Venn Diagram Limma results</figcaption>
 </figure>
@@ -814,7 +817,7 @@ comparisons <- list(
 )
 int_counts <- round(copy_df_Expr)
 groupingColumns <- c("segment", "region", "class", "slide_name")
-results_DESeq2 <- DGEADESeq2(int_counts, coldata2, groupingColumns,comparisons)
+results_DESeq2 <- DGEADESeq2(int_counts, coldata2, groupingColumns, comparisons)
 results_list_d <- results_DESeq2$results
 ```
 
@@ -826,7 +829,7 @@ up_genes <- extractDEGenes(results_list_d, contrasts, only_up = TRUE)
 ggvenn(up_genes, fill_color = c("red", "green", "blue"))
 ```
 
-![](inst/extdata/VennDESeq2upreg.jpeg)
+![](inst/extdata/VennDESeq2upreg.png)
 
 Venn Diagram for down regulated genes extracted from the DESeq2
 analysis:
@@ -836,7 +839,7 @@ down_genes <- extractDEGenes(results_list_d, contrasts, only_down = TRUE)
 ggvenn(down_genes, fill_color = c("red", "green", "blue"))
 ```
 
-![](inst/extdata/VennDESeq2downreg.jpeg)
+![](inst/extdata/VennDESeq2downreg.png)
 
 Venn Diagram for significant genes extracted from the DESeq2 analysis:
 
@@ -845,7 +848,7 @@ sig_genes <- extractDEGenes(results_list_d, contrasts, only_sig = TRUE)
 ggvenn(sig_genes, fill_color = c("red", "green", "blue"))
 ```
 
-![](inst/extdata/VennDESeq2sigreg.jpeg)
+![](inst/extdata/VennDESeq2sigreg.png)
 
 Venn Diagram for up and down regulated genes extracted from the DESeq2
 analysis:
@@ -854,13 +857,14 @@ analysis:
 state_mat <- extractDEGenes(results_list_d, contrasts, up_down = TRUE)
 head(state_mat)
 venn.plot <- vennDiagram(state_mat,
-                         imagetype = "tiff",
-                         include=c("up", "down"), mar=rep(1,4), cex=c(1.5,1,0.7), lwd=1,
-                         counts.col=c("red", "blue"),
-                         circle.col = c("red", "blue", "green3"))
+  imagetype = "tiff",
+  include = c("up", "down"), mar = rep(1, 4), cex = c(1.5, 1, 0.7), lwd = 1,
+  counts.col = c("red", "blue"),
+  circle.col = c("red", "blue", "green3")
+)
 ```
 
-![](inst/extdata/VennDESeq2updownreg.jpeg)
+![](inst/extdata/VennDESeq2updownreg.png)
 
 **DEA edgeR**
 
@@ -891,16 +895,17 @@ analysis:
 ``` r
 # Suppose `edgeR_summary` is the output of summarize_edgeR_DEA()
 state_matrix <- edgeR_summary$classified_results %>%
-  lapply(function(df) df$decision) %>%       # extract the –1/0/+1 vector for each contrast
-  do.call(cbind, .)                          # bind into a matrix
+  lapply(function(df) df$decision) %>% # extract the –1/0/+1 vector for each contrast
+  do.call(cbind, .) # bind into a matrix
 colnames(state_matrix) <- names(edgeR_summary$classified_results)
 venn.plot <- vennDiagram(state_matrix,
-                         imagetype = "tiff",
-                         include=c("up", "down"), mar=rep(1,4), cex=c(1,0.8,0.7), lwd=1,
-                         counts.col=c("red", "blue"),
-                         circle.col = c("red", "blue", "green3"))
+  imagetype = "tiff",
+  include = c("up", "down"), mar = rep(1, 4), cex = c(1, 0.8, 0.7), lwd = 1,
+  counts.col = c("red", "blue"),
+  circle.col = c("red", "blue", "green3")
+)
 ```
 
-![](inst/extdata/VennedgeRupdownreg.jpeg)
+![](inst/extdata/VennedgeRupdownreg.png)
 
 Normalized Counts can for example be extracted as in this example:

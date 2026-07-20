@@ -15,10 +15,10 @@ rawCounts <- read.csv(
 
 rawCounts <- build_matrix(rawCounts, 1)
 
-metadata <- read.csv(
+metadata <- readRDS(
   system.file(
     "extdata",
-    "MetaDataPackageNanostring.csv",
+    "MetaDataPackageNanostring.rds",
     package = "DgeaHeatmap"
   )
 )

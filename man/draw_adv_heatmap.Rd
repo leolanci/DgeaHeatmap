@@ -83,26 +83,26 @@ Draw the advanced heatmap
 \examples{
 set.seed(1)
 mat <- matrix(
-    rnorm(25),
-    nrow = 5,
-    dimnames = list(
-        paste0("Gene", 1:5),
-        paste0("Sample", 1:5)
-    )
+  rnorm(25),
+  nrow = 5,
+  dimnames = list(
+    paste0("Gene", 1:5),
+    paste0("Sample", 1:5)
+  )
 )
 
 sample_metadata <- data.frame(
-    Group = rep(c("A", "B"), length.out = 5),
-    row.names = colnames(mat)
+  Group = rep(c("A", "B"), length.out = 5),
+  row.names = colnames(mat)
 )
 
 group_colors <- list(
-    Group = c(A = "#1b9e77", B = "#7570b3")
+  Group = c(A = "#1b9e77", B = "#7570b3")
 )
 
 col_ha <- set_sample_annotation(
-    sample_metadata = sample_metadata,
-    annotation_colors = group_colors
+  sample_metadata = sample_metadata,
+  annotation_colors = group_colors
 )
 
 ht <- draw_adv_heatmap(mat)

@@ -17,11 +17,11 @@ Build a matrix from an input csv file, with one column as rownames
 }
 \examples{
 demoData <- readRDS(
-    system.file(
-        "extdata",
-        "miniGeoMx.rds",
-        package = "DgeaHeatmap"
-    )
+  system.file(
+    "extdata",
+    "miniGeoMx.rds",
+    package = "DgeaHeatmap"
+  )
 )
 
 demoData <- add_demoElem(demoData)

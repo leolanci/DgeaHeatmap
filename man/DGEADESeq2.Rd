@@ -28,7 +28,6 @@ of the contrasts, and the generated design.
 Performs a differential expression analysis based on DESeq2
 }
 \examples{
-\donttest{
 set.seed(1)
 
 counts <- matrix(rnbinom(80, mu = 20, size = 1), ncol = 4)
@@ -51,5 +50,4 @@ results_DESeq2 <- DGEADESeq2(
     grouping_columns = "segment",
     comparisons = comparisons
 )
-}
 }

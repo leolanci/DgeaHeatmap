@@ -47,13 +47,13 @@ edgeR analysis. The following steps were performed:
 4. The resulting object was stored in inst/extdata as
    mini_edgeR_results.rds.
 
-The datasets MetaDataPackageNanostring.csv and
+The datasets MetaDataPackageNanostring.rds and
 RawDataExamplePackageNanostring.csv were created by extracting the data from the
 GeoMxWorkflows dataset (WTA_NGS_Example).
 1. Metadata were extracted from the GeoMxWorkflows dataset
    "WTA_NGS_Example".
 2. The metadata were simplified and stored as
-   inst/extdata/MetaDataPackageNanostring.csv.
+   inst/extdata/MetaDataPackageNanostring.rds.
 3. Raw counts were extracted and simplified to contain fewer genes and
    samples.
 4. The resulting dataset was stored as
@@ -116,7 +116,7 @@ package documentation. They allow users to compare generated results
 with expected outputs from the example analyses.
 
 inst/extdata/
-"MetaDataPackageNanostring.csv"
+"MetaDataPackageNanostring.rds"
 "mini_edgeR_results.rds"
 "miniGeoMx.rds"
 "RawDataExamplePackageNanostring.csv"

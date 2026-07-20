@@ -25,7 +25,7 @@
 #'     )
 #' )
 #' rawCounts <- build_matrix(rawCounts, 1)
-#' metadata <- read.csv(system.file("extdata/MetaDataPackageNanostring.csv",
+#' metadata <- readRDS(system.file("extdata/MetaDataPackageNanostring.rds",
 #'     package = "DgeaHeatmap"
 #' ))
 #' grouping_columns <- c("segment", "region", "class", "slide_name")
@@ -119,7 +119,6 @@ DGEALimma <- function(
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' set.seed(1)
 #'
 #' counts <- matrix(rnbinom(80, mu = 20, size = 1), ncol = 4)
@@ -142,7 +141,6 @@ DGEALimma <- function(
 #'     grouping_columns = "segment",
 #'     comparisons = comparisons
 #' )
-#' }
 DGEADESeq2 <- function(rawCounts, metadata, grouping_columns, comparisons) {
     keep <- rowSums(rawCounts > 0) >= 2 # Filter genes with non-zero counts
     filtered_counts <- rawCounts[keep, ]
@@ -229,8 +227,8 @@ DGEADESeq2 <- function(rawCounts, metadata, grouping_columns, comparisons) {
 #'     package = "DgeaHeatmap"
 #' ))
 #' rawCounts <- build_matrix(rawCounts, 1)
-#' metadata <- read.csv(system.file(
-#'     "extdata/MetaDataPackageNanostring.csv",
+#' metadata <- readRDS(system.file(
+#'     "extdata/MetaDataPackageNanostring.rds",
 #'     package = "DgeaHeatmap"
 #' ))
 #' grouping_columns <- c("segment", "region", "class", "slide_name")
@@ -490,8 +488,8 @@ summarize_edgeR_DEA <- function(results_edgeR,
 #'     package = "DgeaHeatmap"
 #' ))
 #' rawCounts <- build_matrix(rawCounts, 1)
-#' metadata <- read.csv(system.file(
-#'     "extdata/MetaDataPackageNanostring.csv",
+#' metadata <- readRDS(system.file(
+#'     "extdata/MetaDataPackageNanostring.rds",
 #'     package = "DgeaHeatmap"
 #' ))
 #' grouping_columns <- c("segment", "region", "class", "slide_name")
@@ -552,7 +550,7 @@ pairwise_contrasts <- function(comparisons, comp_factor, prefix = "Contrast") {
 #'     )
 #' )
 #' rawCounts <- build_matrix(rawCounts, 1)
-#' metadata <- read.csv(system.file("extdata/MetaDataPackageNanostring.csv",
+#' metadata <- readRDS(system.file("extdata/MetaDataPackageNanostring.rds",
 #'     package = "DgeaHeatmap"
 #' ))
 #' grouping_columns <- c("segment", "region", "class", "slide_name")
@@ -632,8 +630,8 @@ extract_genes_direction <- function(results_list,
 #'     package = "DgeaHeatmap"
 #' ))
 #' rawCounts <- build_matrix(rawCounts, 1)
-#' metadata <- read.csv(system.file(
-#'     "extdata/MetaDataPackageNanostring.csv",
+#' metadata <- readRDS(system.file(
+#'     "extdata/MetaDataPackageNanostring.rds",
 #'     package = "DgeaHeatmap"
 #' ))
 #' grouping_columns <- c("segment", "region", "class", "slide_name")
@@ -700,8 +698,8 @@ create_contrast_matrix_edgeR <- function(
 #'     package = "DgeaHeatmap"
 #' ))
 #' rawCounts <- build_matrix(rawCounts, 1)
-#' metadata <- read.csv(system.file(
-#'     "extdata/MetaDataPackageNanostring.csv",
+#' metadata <- readRDS(system.file(
+#'     "extdata/MetaDataPackageNanostring.rds",
 #'     package = "DgeaHeatmap"
 #' ))
 #' y <- prepare_dge_list(rawCounts, metadata)

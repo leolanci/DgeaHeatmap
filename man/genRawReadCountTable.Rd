@@ -19,26 +19,26 @@ Function to generating a raw read count table.
 }
 \examples{
 demoData <- readRDS(
-    system.file(
-        "extdata",
-        "miniGeoMx.rds",
-        package = "DgeaHeatmap"
-    )
+  system.file(
+    "extdata",
+    "miniGeoMx.rds",
+    package = "DgeaHeatmap"
+  )
 )
 
 demoData <- add_demoElem(demoData)
 
 NanoStringNCTools::assayDataApply(
-    demoData,
-    MARGIN = 1,
-    FUN = mean,
-    elt = "demoElem"
+  demoData,
+  MARGIN = 1,
+  FUN = mean,
+  elt = "demoElem"
 )[seq_len(5)]
 
 demoData <- split_data_by_column(
-    demoData,
-    vGroup = "aoi",
-    vElt = "demoElem"
+  demoData,
+  vGroup = "aoi",
+  vElt = "demoElem"
 )
 df_Exp <- genRawReadCountTable(demoData)
 }
