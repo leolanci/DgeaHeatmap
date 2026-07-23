@@ -391,7 +391,7 @@ hm <- adv_Heatmap(ncounts_matrix, column_name = column_name, colorPalette = colo
 ### Differential Gene Expression Analysis Using Nanostring Data
 
 **Functions to analyze Nanostring GeoMx DSP data:**
-```{r loadingPackagesNanostringData, warning=FALSE, include=FALSE, results='hide'}
+```{r loadingPackagesNanostringData, eval=requireNamespace("GeoMxWorkflows", quietly = TRUE), warning=FALSE, include=FALSE, results='hide'}
 library(NanoStringNCTools)
 library(GeomxTools)
 library("GeoMxWorkflows")
@@ -472,6 +472,7 @@ QCPassed <- aExprsDataQC(PrePro_rawDataObject, "QCFlags")
 
 df_Exp <- genRawReadCountTable(PrePro_rawDataObject)
 ```
+
 ```{r showExpressionMatrix, echo=FALSE, warning=FALSE}
 file_path <- system.file("extdata", "RawDataExamplePackageNanostring.csv", package = "DgeaHeatmap")
 df_Exp <- read.csv(file_path)
